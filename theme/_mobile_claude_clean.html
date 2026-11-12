@@ -1,0 +1,41 @@
+<div class="mac-frame mac-frame-image mac-orient-portrait"><div class="mac-frame-header"><div class="mac-dots"><span class="mac-dot mac-red"></span><span class="mac-dot mac-yellow"></span><span class="mac-dot mac-green"></span></div><div class="mac-title">preview</div><div class="mac-spacer"></div></div><div class="mac-frame-content"><img alt="Mobile AI Coding Claude Setup Free" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj3GBcULDpr4ndVwNOxRBYcEeaOllsGG4YZXt4zD88SYT7b7PHelWyYM4THkTMwkD5K7HgtvPcp3_ugnv7x_UTH0gxH0J167YcffPZ_HUj5PWJqWLHF8QpFzMXV1n9ErL9T4N2CfxZt250_wYCIDgIwHE0s8GppSULQ6xP6Ee1MDdOayKBveJyCUTwTMZJg/s1600/667672699_122180823458878398_6416597927267434172_n.jpg"/></div></div>
+
+<div class="qcx-teaser">
+<p>Chạy AI coding trên điện thoại với Termux: Ollama, Ubuntu (proot), Claude Code và VS Code trên trình duyệt. Phần hướng dẫn chi tiết mở sau khi bình luận mã.</p>
+</div>
+
+<div id="qcx-resource" class="qcx-resource-marker" data-mode="free" data-resource-id="mobile-claude-setup" data-title="Mobile AI Coding Claude Setup Free" style="display:none!important">resource:mobile-claude-setup</div>
+
+<div class="container"><div class="qcx-content-unlock" style="display:none">
+<h2>Free Code Agent on Mobile</h2>
+<p>Run AI coding tools locally on your phone using Termux, Ubuntu, Ollama, and VS Code.</p>
+
+<h3>Overview</h3>
+<ul>
+  <li><b>Termux</b> – Runs AI models</li>
+  <li><b>Ubuntu</b> – Development environment</li>
+  <li><b>Claude Code</b> – AI coding assistant</li>
+  <li><b>VS Code</b> – Editor via browser</li>
+</ul>
+
+<h3>Install Ollama</h3>
+<pre>pkg update &amp;&amp; pkg upgrade -y
+pkg install git nodejs-lts python -y
+pkg install ollama
+ollama serve</pre>
+
+<h3>Download Model</h3>
+<pre>ollama pull nemotron-3-super:cloud</pre>
+
+<h3>Install Ubuntu</h3>
+<pre>pkg install proot-distro
+proot-distro install ubuntu
+proot-distro login ubuntu</pre>
+
+<h3>Install Claude Code</h3>
+<pre>npm install -g @anthropic-ai/claude-code</pre>
+
+<h3>Install VS Code</h3>
+<pre>curl -fsSL https://code-server.dev/install.sh | sh
+code-server --auth none</pre>
+</div></div>

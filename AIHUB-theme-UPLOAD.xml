@@ -2814,7 +2814,7 @@ pre > button:hover { border-color: var(--accent) !important; color: var(--accent
   font-family: var(--mono) !important;
 }
 #comments h4.postAComment::before {
-  content: '// ';
+  content: none;
   font-family: var(--mono) !important;
   color: var(--fg-dim) !important;
   font-size: 14px !important;
