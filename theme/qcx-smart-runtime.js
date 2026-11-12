@@ -648,12 +648,30 @@
     var readable = article.cloneNode(true);
     readable.querySelectorAll('pre, code, script, style, iframe, form').forEach(function(node) { node.remove(); });
     var words = (readable.textContent || '').trim().split(/\s+/).filter(Boolean).length;
-    /* Reading time under title (keep; TOC stays off). */
+    /* // dd/mm · N phút đọc — under title (TOC stays off). */
     if (words > 0 && !document.querySelector('.qcx-read-time')) {
+      var postHeader = article.parentNode ? article.parentNode.querySelector('.post-header') : null;
+      var dateLabel = '';
+      try {
+        var rawDate =
+          (postHeader && postHeader.getAttribute('data-published')) ||
+          ((document.querySelector('.post-timestamp time[datetime], time[datetime]') || {}).getAttribute &&
+            document.querySelector('.post-timestamp time[datetime], time[datetime]').getAttribute('datetime')) ||
+          '';
+        if (rawDate) {
+          var d = new Date(rawDate);
+          if (!isNaN(d.getTime())) {
+            dateLabel =
+              String(d.getDate()).padStart(2, '0') +
+              '/' +
+              String(d.getMonth() + 1).padStart(2, '0');
+          }
+        }
+      } catch (ignoreDate) {}
+      var mins = Math.max(1, Math.ceil(words / 220));
       var readTime = document.createElement('div');
       readTime.className = 'qcx-read-time';
-      readTime.textContent = Math.max(1, Math.ceil(words / 220)) + ' phút đọc · ' + words + ' từ';
-      var postHeader = article.parentNode ? article.parentNode.querySelector('.post-header') : null;
+      readTime.textContent = (dateLabel ? dateLabel + ' · ' : '') + mins + ' phút đọc';
       if (postHeader) postHeader.appendChild(readTime);
       else article.parentNode.insertBefore(readTime, article);
     }

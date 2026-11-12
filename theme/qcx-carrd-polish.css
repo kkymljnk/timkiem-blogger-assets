@@ -300,6 +300,7 @@ html[data-page-type='homepage'] .qcx-hero {
 [data-page-type='post'] .post-header .qcx-read-time::before,
 .qcx-rescue-single .post-header .qcx-read-time::before,
 .post-item .post-header .qcx-read-time::before {
+  content: '// ' !important;
   color: #3ecf8e !important;
   opacity: 1 !important;
 }

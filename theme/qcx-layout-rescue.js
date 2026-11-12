@@ -455,7 +455,7 @@
     var article = el('article', 'post-item');
     article.innerHTML =
       '<div class="the-article" id="the-article">' +
-      '<header class="post-header">' +
+      '<header class="post-header"' + (published ? ' data-published="' + escapeHtml(published) + '"' : '') + '>' +
       '<h1 class="post-title">' + escapeHtml(title) + '</h1>' +
       '</header>' +
       '<div class="post-body">' + content + '</div>' +

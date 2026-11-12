@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html>
 <html b:css='false' b:defaultwidgetversion='2' b:layoutsVersion='3' b:responsive='true' b:templateUrl='indie.xml' b:templateVersion='4.0.0' expr:lang='data:blog.locale' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr' xmlns:g='http://schemas.google.com/g/2005'>
   <b:attr name='xmlns' value=''/>
@@ -374,9 +374,9 @@ body#layout .qcx-layout-brand span{display:block;color:rgba(230,245,236,.7);font
   <link href='https://4.bp.blogspot.com' rel='preconnect'/>
   <link href='https://cdn.jsdelivr.net' rel='preconnect'/>
   <link href='https://cdnjs.cloudflare.com' rel='preconnect'/>
-  <!-- QCX external theme assets v2026.11.12.9 (jsDelivr, not GitHub raw) -->
-  <link href='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.12.9/theme/qcx-polish.css' rel='stylesheet'/>
-  <link href='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.12.9/theme/qcx-smart-media.css' rel='stylesheet'/>
+  <!-- QCX external theme assets v2026.11.12.10 (jsDelivr, not GitHub raw) -->
+  <link href='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.12.10/theme/qcx-polish.css' rel='stylesheet'/>
+  <link href='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.12.10/theme/qcx-smart-media.css' rel='stylesheet'/>
   <b:if cond='data:view.isHomepage'>
     <link as='fetch' crossorigin='anonymous' href='/feeds/posts/summary?alt=json&amp;max-results=12' rel='preload'/>
   </b:if>
@@ -3574,7 +3574,7 @@ iframe.qcx-blogger-comment-frame {
   font-family: var(--mono);
 }
 .qcx-read-time::before {
-  content: none;
+  content: '// ';
   color: #3ecf8e !important;
   font-weight: 700;
   opacity: 1 !important;
@@ -6280,12 +6280,12 @@ body.qcx-lightbox-open { overflow: hidden !important; }
         <b:section class='qcx-brand-zone' id='brand' maxwidgets='1' name='Thương hiệu CÔNG CỤ.AI' showaddelement='false'>
           <b:widget id='HTML3' locked='true' title='Logo CÔNG CỤ.AI' type='HTML' version='2' visible='true'>
             <b:widget-settings>
-              <b:widget-setting name='content'><![CDATA[<div class="qcx-layout-brand"><img alt="CÔNG CỤ.AI" height="72" src="https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.12.9/theme/qcx-brand-mark.png" width="72"/><div><strong>CÔNG CỤ.AI</strong><span>AI HUB TOOLS · Layout &amp; branding</span></div></div>]]></b:widget-setting>
+              <b:widget-setting name='content'><![CDATA[<div class="qcx-layout-brand"><img alt="CÔNG CỤ.AI" height="72" src="https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.12.10/theme/qcx-brand-mark.png" width="72"/><div><strong>CÔNG CỤ.AI</strong><span>AI HUB TOOLS · Layout &amp; branding</span></div></div>]]></b:widget-setting>
             </b:widget-settings>
             <b:includable id='main'>
   <b:attr name='class' value='widget qcx-brand-widget'/>
   <div class='qcx-layout-brand'>
-    <svg xmlns="http://www.w3.org/2000/svg" class="qcx-brand-mark qcx-brand-svg" viewBox="0 0 512 512" width="72" height="72" role="img" aria-label="CÔNG CỤ.AI" tabindex="0"><g class="qcx-ghost-art"><image href="https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.12.9/theme/qcx-brand-mark.png" x="0" y="0" width="512" height="512" preserveAspectRatio="xMidYMid meet"/></g><g class="qcx-ghost-eyes"><circle class="qcx-eye qcx-eye-l" cx="230.6" cy="189.9" r="13.2" fill="#0a0a0a"/><circle class="qcx-eye qcx-eye-r" cx="294.1" cy="183.5" r="12.8" fill="#0a0a0a"/></g></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" class="qcx-brand-mark qcx-brand-svg" viewBox="0 0 512 512" width="72" height="72" role="img" aria-label="CÔNG CỤ.AI" tabindex="0"><g class="qcx-ghost-art"><image href="https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.12.10/theme/qcx-brand-mark.png" x="0" y="0" width="512" height="512" preserveAspectRatio="xMidYMid meet"/></g><g class="qcx-ghost-eyes"><circle class="qcx-eye qcx-eye-l" cx="230.6" cy="189.9" r="13.2" fill="#0a0a0a"/><circle class="qcx-eye qcx-eye-r" cx="294.1" cy="183.5" r="12.8" fill="#0a0a0a"/></g></svg>
     <div>
       <strong>CÔNG CỤ.AI</strong>
       <span>AI HUB TOOLS · branding</span>
@@ -6526,7 +6526,7 @@ body.qcx-lightbox-open { overflow: hidden !important; }
   </div>
   <div class='qcx-avatar-wrap'>
     <div class='qcx-avatar' aria-label='CÔNG CỤ.AI'>
-      <svg xmlns="http://www.w3.org/2000/svg" class="qcx-brand-mark qcx-brand-svg" viewBox="0 0 512 512" width="300" height="300" role="img" aria-label="CÔNG CỤ.AI" tabindex="0"><g class="qcx-ghost-art"><image href="https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.12.9/theme/qcx-brand-mark.png" x="0" y="0" width="512" height="512" preserveAspectRatio="xMidYMid meet"/></g><g class="qcx-ghost-eyes"><circle class="qcx-eye qcx-eye-l" cx="230.6" cy="189.9" r="13.2" fill="#0a0a0a"/><circle class="qcx-eye qcx-eye-r" cx="294.1" cy="183.5" r="12.8" fill="#0a0a0a"/></g></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" class="qcx-brand-mark qcx-brand-svg" viewBox="0 0 512 512" width="300" height="300" role="img" aria-label="CÔNG CỤ.AI" tabindex="0"><g class="qcx-ghost-art"><image href="https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.12.10/theme/qcx-brand-mark.png" x="0" y="0" width="512" height="512" preserveAspectRatio="xMidYMid meet"/></g><g class="qcx-ghost-eyes"><circle class="qcx-eye qcx-eye-l" cx="230.6" cy="189.9" r="13.2" fill="#0a0a0a"/><circle class="qcx-eye qcx-eye-r" cx="294.1" cy="183.5" r="12.8" fill="#0a0a0a"/></g></svg>
     </div>
   </div>
 </section>
@@ -8290,10 +8290,10 @@ window.addEventListener('load', qcxBootMacFrames, { once: true });
 <!-- moved to CDN: qcx-terminal-lightbox -->
 
 <!-- Rescue: nếu Layout mất Blog widget, tự dựng homepage/cards hoặc single post từ feed. -->
-<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.12.9/theme/qcx-runtime.js'></script>
-<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.12.9/theme/qcx-smart-runtime.js'></script>
-<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.12.9/theme/qcx-secure-resource.js'></script>
-<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.12.9/theme/qcx-layout-rescue.js'></script>
+<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.12.10/theme/qcx-runtime.js'></script>
+<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.12.10/theme/qcx-smart-runtime.js'></script>
+<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.12.10/theme/qcx-secure-resource.js'></script>
+<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.12.10/theme/qcx-layout-rescue.js'></script>
 <!-- moved to CDN: qcx-layout-rescue -->
 
 <!-- moved to CDN: qcx-equal-cards -->
