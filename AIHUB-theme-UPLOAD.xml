@@ -7882,8 +7882,8 @@ body.qcx-lightbox-open { overflow: hidden !important; }
       gap: 8px 12px;
       align-items: center;
       justify-content: space-between;
-      margin: 0 0 6px !important;
-      padding: 0 0 4px !important;
+      margin: 0 0 4px !important;
+      padding: 0 0 2px !important;
       border: 0 !important;
       border-bottom: 1px solid var(--line, #1d2a1f) !important;
     }
@@ -7918,28 +7918,41 @@ body.qcx-lightbox-open { overflow: hidden !important; }
       background: linear-gradient(180deg, #101a12 0%, var(--card, #0e170f) 100%);
       border: 1px solid var(--line, #1d2a1f);
       border-radius: var(--qcx-admin-radius);
-      padding: 12px;
+      padding: 8px 10px 10px;
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22);
+      margin-top: 0 !important;
     }
     #qcx-admin-root .gate {
       max-width: 300px; width: 100%; margin: 0 auto;
       animation: qcx-admin-rise 0.35s ease-out both;
       padding: 10px 12px;
     }
+    /* Beat theme `.post-body h2{margin-top:36px!important}` above Soạn bài / Preview */
     #qcx-admin-root .gate h2,
-    #qcx-admin-root .panel h2 {
-      margin: 0 0 4px;
-      font: 700 11px/1.2 var(--mono);
+    #qcx-admin-root .panel h2,
+    #qcx-admin-root .panel-head h2,
+    #qcx-admin-root h2 {
+      margin: 0 !important;
+      padding: 0 !important;
+      font: 700 11px/1.2 var(--mono) !important;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--qcx-admin-mint);
+      background: none !important;
+      border: 0 !important;
     }
     #qcx-admin-root .panel-head {
-      display: flex; align-items: baseline; justify-content: space-between;
-      gap: 8px; margin-bottom: 8px; padding-bottom: 6px;
-      border-bottom: 1px solid var(--line, #1d2a1f);
+      display: flex !important;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin: 0 0 6px !important;
+      padding: 0 0 4px !important;
+      min-height: 0 !important;
+      border: 0 !important;
+      border-bottom: 1px solid var(--line, #1d2a1f) !important;
     }
-    #qcx-admin-root .panel-head h2 { margin: 0; }
+    #qcx-admin-root .panel-head h2 { margin: 0 !important; color: var(--fg, #e6f5ec); }
 
     /* Beat theme `.grid{grid-template-columns:repeat(4,1fr)!important}` */
     #qcx-admin-root .grid {
@@ -7949,7 +7962,8 @@ body.qcx-lightbox-open { overflow: hidden !important; }
       animation: qcx-admin-rise 0.35s ease-out both;
       width: 100%;
       max-width: 1080px;
-      margin: 0 auto;
+      margin: 0 auto !important;
+      padding: 0 !important;
       align-items: start;
     }
     #qcx-admin-root .grid.hidden,
