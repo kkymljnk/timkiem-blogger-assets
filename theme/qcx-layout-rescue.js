@@ -661,10 +661,26 @@
       });
     }
 
+    function loadByPrefetch() {
+      var p = window.__qcxPostPrefetch;
+      if (!p || typeof p.then !== 'function') return Promise.reject(new Error('no-prefetch'));
+      return p.then(function(full){
+        var entry = full && full.entry;
+        if (!entry) throw new Error('prefetch-miss');
+        var link = pathOf(entryLink(entry));
+        if (link && link !== current) throw new Error('prefetch-path-mismatch');
+        return entry;
+      });
+    }
+
+    if (!embeddedId && window.__qcxPostId) embeddedId = String(window.__qcxPostId);
+
     var loader = isStaticPage
       ? loadFromPagesFeed().catch(function(){ return loadFromPostsFeed(); })
-      : loadByEmbeddedId().catch(function(){
-          return loadFromPostsFeed().catch(function(){ return loadFromPagesFeed(); });
+      : loadByPrefetch().catch(function(){
+          return loadByEmbeddedId().catch(function(){
+            return loadFromPostsFeed().catch(function(){ return loadFromPagesFeed(); });
+          });
         });
 
     return loader.then(function(entry){
