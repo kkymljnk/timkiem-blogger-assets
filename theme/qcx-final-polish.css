@@ -604,6 +604,23 @@ html[data-qcx-unlocked=&#39;1&#39;] .post-body &gt; .separator {
   max-height: none !important;
   overflow: visible !important;
 }
+/* Intro under hero — always visible while locked (outside .qcx-content-unlock). */
+.post-body &gt; .qcx-teaser,
+html:not([data-qcx-unlocked=&#39;1&#39;]) .post-body &gt; .qcx-teaser,
+html[data-qcx-unlocked=&#39;1&#39;] .post-body &gt; .qcx-teaser {
+  display: block !important;
+  visibility: visible !important;
+  margin: 12px 0 16px !important;
+  padding: 0 !important;
+  color: var(--fg, #e6f5ec) !important;
+  font: 400 15px/1.65 var(--sans, &#39;IBM Plex Sans&#39;, &#39;Segoe UI&#39;, sans-serif) !important;
+}
+.post-body &gt; .qcx-teaser &gt; :first-child { margin-top: 0 !important; }
+.post-body &gt; .qcx-teaser &gt; :last-child { margin-bottom: 0 !important; }
+.post-body &gt; .qcx-teaser p {
+  margin: 0 0 0.85em !important;
+  color: inherit !important;
+}
 /* While gating: keep comment chrome compact under the lock CTA. */
 .qcx-comments-shell[data-qcx-unlock-chrome=&#39;1&#39;]:not(.is-settled),
 #comments[data-qcx-unlock-chrome=&#39;1&#39;]:not(.is-settled) {

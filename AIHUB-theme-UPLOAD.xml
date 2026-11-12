@@ -374,9 +374,9 @@ body#layout .qcx-layout-brand span{display:block;color:rgba(230,245,236,.7);font
   <link href='https://4.bp.blogspot.com' rel='preconnect'/>
   <link href='https://cdn.jsdelivr.net' rel='preconnect'/>
   <link href='https://cdnjs.cloudflare.com' rel='preconnect'/>
-  <!-- QCX external theme assets v20261112 (jsDelivr, not GitHub raw) -->
-  <link href='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v20261112/theme/qcx-polish.css' rel='stylesheet'/>
-  <link href='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v20261112/theme/qcx-smart-media.css' rel='stylesheet'/>
+  <!-- QCX external theme assets v20261112c (jsDelivr, not GitHub raw) -->
+  <link href='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v20261112c/theme/qcx-polish.css' rel='stylesheet'/>
+  <link href='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v20261112c/theme/qcx-smart-media.css' rel='stylesheet'/>
   <b:if cond='data:view.isHomepage'>
     <link as='fetch' crossorigin='anonymous' href='/feeds/posts/summary?alt=json&amp;max-results=12' rel='preload'/>
   </b:if>
@@ -8556,10 +8556,10 @@ window.addEventListener('load', qcxBootMacFrames, { once: true });
 <!-- moved to CDN: qcx-terminal-lightbox -->
 
 <!-- Rescue: nếu Layout mất Blog widget, tự dựng homepage/cards hoặc single post từ feed. -->
-<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v20261112/theme/qcx-runtime.js'></script>
-<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v20261112/theme/qcx-smart-runtime.js'></script>
-<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v20261112/theme/qcx-secure-resource.js'></script>
-<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v20261112/theme/qcx-layout-rescue.js'></script>
+<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v20261112c/theme/qcx-runtime.js'></script>
+<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v20261112c/theme/qcx-smart-runtime.js'></script>
+<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v20261112c/theme/qcx-secure-resource.js'></script>
+<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v20261112c/theme/qcx-layout-rescue.js'></script>
 <!-- moved to CDN: qcx-layout-rescue -->
 
 <!-- moved to CDN: qcx-equal-cards -->

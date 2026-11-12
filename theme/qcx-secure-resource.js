@@ -360,6 +360,7 @@
       if (node.classList.contains('qcx-download-anchor')) return true;
       if (node.id === 'qcx-resource' || node.classList.contains('qcx-resource-marker')) return true;
       if (node.classList.contains('separator') || node.classList.contains('mac-frame')) return true;
+      if (node.classList.contains('qcx-teaser')) return true;
       return false;
     };
     var move = [];
@@ -414,14 +415,44 @@
     body.insertBefore(hero, body.firstChild);
   }
 
-  /* Lock CTA after hero (still above comments / article). */
+  /* Intro / teaser stays visible under hero; lock CTA sits after it. */
+  function isIntroStopNode(node) {
+    if (!node || node.nodeType !== 1) return true;
+    if (node.classList.contains('qcx-lock-panel')) return true;
+    if (node.id === 'comments' || node.classList.contains('qcx-comments-shell')) return true;
+    if (node.id === 'qcx-resource' || node.classList.contains('qcx-resource-marker')) return true;
+    if (node.classList.contains('qcx-content-unlock') || node.classList.contains('container')) return true;
+    if (node.querySelector && node.querySelector('.qcx-content-unlock')) return true;
+    return false;
+  }
+
+  function findIntroAnchor(body, hero) {
+    if (!body) return null;
+    var teaser = body.querySelector('.qcx-teaser');
+    if (teaser && body.contains(teaser)) return teaser;
+    var node = hero ? hero.nextElementSibling : body.firstElementChild;
+    var lastIntro = hero || null;
+    while (node) {
+      if (node.classList && node.classList.contains('qcx-lock-panel')) {
+        node = node.nextElementSibling;
+        continue;
+      }
+      if (isIntroStopNode(node)) break;
+      lastIntro = node;
+      node = node.nextElementSibling;
+    }
+    return lastIntro;
+  }
+
+  /* Lock CTA after intro under hero (still above comments / locked body). */
   function placeLockPanelAboveFold(body, panel) {
     if (!body || !panel) return;
     placeHeroUnderTitle(body);
     var hero = findPostHero(body);
-    if (hero) {
-      if (panel.previousElementSibling === hero) return;
-      if (hero.nextSibling) body.insertBefore(panel, hero.nextSibling);
+    var anchor = findIntroAnchor(body, hero);
+    if (anchor) {
+      if (panel.previousElementSibling === anchor) return;
+      if (anchor.nextSibling) body.insertBefore(panel, anchor.nextSibling);
       else body.appendChild(panel);
       return;
     }
