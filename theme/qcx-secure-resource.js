@@ -536,14 +536,10 @@
     panel.setAttribute('data-qcx-lock-ui', '1');
     panel.setAttribute('role', 'region');
     panel.setAttribute('aria-label', isPaid ? 'Nội dung thành viên' : 'Nội dung đang khóa');
-    var lead = isPaid
-      ? 'Mở khoá VIP để truy cập toàn bộ tài nguyên: link tải, file workflow, custom nodes và thông số tối ưu độc quyền.'
-      : 'Bình luận mã xác minh để mở toàn bộ hướng dẫn, lệnh cài đặt và tài nguyên đính kèm của bài này.';
     var badge = isPaid ? 'PHẦN DÀNH CHO THÀNH VIÊN' : 'NỘI DUNG MỞ SAU KHI COMMENT';
     var footTitle = isPaid ? 'Phần còn lại dành cho thành viên' : 'Phần còn lại đang khóa';
     var footDesc = isPaid ? 'Mở khoá để xem toàn bộ hướng dẫn' : 'Bình luận mã để xem toàn bộ hướng dẫn';
     panel.innerHTML =
-      '<p class="qcx-lock-lead"><span class="qcx-lock-ico" aria-hidden="true"></span><span class="qcx-lock-lead-text"></span></p>' +
       '<div class="qcx-lock-divider"><span></span></div>' +
       '<div class="qcx-lock-stage">' +
       '<span class="qcx-lock-ribbon">LOCKED</span>' +
@@ -558,7 +554,6 @@
       '<div class="qcx-lock-foot-copy"><strong></strong><span></span></div>' +
       '<button type="button" class="qcx-lock-cta"><i aria-hidden="true"></i><b></b></button>' +
       '</div>';
-    panel.querySelector('.qcx-lock-lead-text').textContent = lead;
     panel.querySelector('.qcx-lock-divider span').textContent = badge;
     panel.querySelector('.qcx-lock-foot-copy strong').textContent = footTitle;
     panel.querySelector('.qcx-lock-foot-copy span').textContent = footDesc;

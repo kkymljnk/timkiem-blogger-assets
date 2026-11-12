@@ -1016,12 +1016,13 @@ aside.qcx-top-download.is-deferred {
   background: linear-gradient(180deg, rgba(22,16,12,.97), rgba(12,10,9,.99)) !important;
 }
 .qcx-lock-lead {
-  display: flex !important;
-  align-items: flex-start !important;
-  gap: 10px !important;
-  margin: 0 0 14px !important;
-  color: var(--qcx-lock) !important;
-  font: 500 13.5px/1.55 'Space Grotesk', system-ui, sans-serif !important;
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
 }
 .qcx-lock-ico {
   flex: 0 0 auto !important;
