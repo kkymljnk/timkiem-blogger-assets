@@ -1,7 +1,7 @@
 /**
  * TIMKIEM secure resource gate (Blogspot theme client).
  * Secrets never live in post HTML — delivery comes from Cloudflare Worker.
- * v20261113-marker1 — prefer marker resourceId over URL slug for free/start.
+ * v20261113-marker2 — wait for marker id before free boot; prefer marker over slug.
  */
 (function () {
   'use strict';
@@ -1849,7 +1849,8 @@
     var marker = readMarker() || {};
     var labels = collectLabels();
     var mode = detectMode(marker, labels);
-    if (!mode) {
+    var slug = pageSlug();
+    function scheduleBootRetry() {
       /* Marker/labels may arrive after paintRescue — keep watching (feed can take >3s). */
       if (!window.__qcxSecureBootTries) window.__qcxSecureBootTries = 0;
       if (window.__qcxSecureBootTries < 40) {
@@ -1870,6 +1871,20 @@
           window.__qcxSecureBootMo.observe(bootMain, { childList: true, subtree: true });
         }
       }
+    }
+    if (!mode) {
+      scheduleBootRetry();
+      return;
+    }
+    /* Path/label can say free before rescue injects the marker. Wait for
+     * data-resource-id so free/start hits the vault id, not the permalink slug. */
+    if (
+      mode === 'free' &&
+      !(marker && marker.resourceId) &&
+      !readFreeTokenMatch(slug) &&
+      (!window.__qcxSecureBootTries || window.__qcxSecureBootTries < 40)
+    ) {
+      scheduleBootRetry();
       return;
     }
     if (window.__qcxSecureBootMo) {
@@ -1878,7 +1893,6 @@
     }
     if (window.__qcxSecureResourceBooted) return;
     window.__qcxSecureResourceBooted = true;
-    var slug = pageSlug();
     /* Prefer marker resourceId (vault id). Only keep slug when a cached freeToken
      * already exists under the permalink slug (marker id may differ). */
     var matched =
