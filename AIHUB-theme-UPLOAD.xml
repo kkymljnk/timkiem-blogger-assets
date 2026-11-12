@@ -383,29 +383,26 @@ body#layout .qcx-layout-brand span{display:block;color:rgba(230,245,236,.7);font
   <!-- Start post feed ASAP when Blog1 SSR is empty (rescue path). -->
   <b:if cond='data:view.isPost and data:view.postId'>
     <link as='fetch' crossorigin='anonymous' expr:href='&quot;/feeds/posts/default/&quot; + data:view.postId + &quot;?alt=json&quot;' rel='preload'/>
+    <!-- data: tags must stay outside CDATA or Blogger leaves them literal. -->
     <script>
-/*<![CDATA[*/
 (function(){
-  try {
-    var id = '<data:view.postId/>';
-    if (!id) return;
-    window.__qcxPostId = String(id);
-    var path = (location.pathname || '').replace(/\/$/, '');
-    window.__qcxPostPrefetch = fetch('/feeds/posts/default/' + id + '?alt=json', {
-      credentials: 'same-origin',
-      cache: 'no-store'
-    }).then(function(r){ return r.json(); }).then(function(full){
-      try {
-        var entry = full && full.entry;
-        if (entry && path) {
-          sessionStorage.setItem('qcx:post:' + path, JSON.stringify({ t: Date.now(), d: entry }));
-        }
-      } catch (ignore) {}
-      return full;
-    });
-  } catch (e) {}
+  var id = '<data:view.postId/>';
+  if (!id) return;
+  window.__qcxPostId = String(id);
+  var path = (location.pathname || '').replace(/\/$/, '');
+  window.__qcxPostPrefetch = fetch('/feeds/posts/default/' + id + '?alt=json', {
+    credentials: 'same-origin',
+    cache: 'no-store'
+  }).then(function(r){ return r.json(); }).then(function(full){
+    try {
+      var entry = full &amp;&amp; full.entry;
+      if (entry &amp;&amp; path) {
+        sessionStorage.setItem('qcx:post:' + path, JSON.stringify({ t: Date.now(), d: entry }));
+      }
+    } catch (ignore) {}
+    return full;
+  });
 })();
-/*]]>*/
     </script>
   </b:if>
   <link expr:href='data:blog.canonicalUrl' rel='canonical'/>
@@ -6421,7 +6418,7 @@ body.qcx-lightbox-open { overflow: hidden !important; }
 	<main class='main-container'>
       <b:section class='qcx-addon-zone qcx-homepage-widgets' cond='data:view.isLayoutMode or data:view.isHomepage' id='homepage-widgets' maxwidgets='3' name='Thêm banner trang chủ' showaddelement='true'/>
       <div class='main-wrapper'>
-        <b:section class='main' id='main' maxwidgets='1' name='Bài viết chính (Blog)' showaddelement='false'>
+        <b:section class='main' id='main' maxwidgets='1' name='Bài viết chính (Blog)' showaddelement='true'>
           <b:widget id='Blog1' locked='true' title='Bài đăng trên Blog' type='Blog' version='2' visible='true'>
             <b:widget-settings>
               <b:widget-setting name='showDateHeader'>false</b:widget-setting>
