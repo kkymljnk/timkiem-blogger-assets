@@ -741,7 +741,7 @@ aside.qcx-top-download,
 #PopularPosts1 li:hover .item-thumbnail img,
 #sidebar .qcx-sidebar-rail li:hover .item-thumbnail img { transform: scale(1.04) !important; }
 #PopularPosts1 .item-title a:hover,
-#sidebar .qcx-sidebar-rail .item-title a:hover { color: var(--accent) !important; }
+#sidebar .qcx-sidebar-rail .item-title a:hover { color: #9fe7c2 !important; }
 #PopularPosts1 a:focus-visible,
 #sidebar .qcx-sidebar-rail a:focus-visible {
   outline: 2px solid var(--accent) !important;
