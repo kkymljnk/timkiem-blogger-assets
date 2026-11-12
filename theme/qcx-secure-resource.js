@@ -1,7 +1,7 @@
 /**
  * TIMKIEM secure resource gate (Blogspot theme client).
  * Secrets never live in post HTML — delivery comes from Cloudflare Worker.
- * v20261111-remember1 — remember freeToken once per post; no re-code on return visit.
+ * v20261113-marker1 — prefer marker resourceId over URL slug for free/start.
  */
 (function () {
   'use strict';
@@ -1879,12 +1879,15 @@
     if (window.__qcxSecureResourceBooted) return;
     window.__qcxSecureResourceBooted = true;
     var slug = pageSlug();
-    /* Prefer slug when a free token already exists under it (marker id may differ). */
-    var matched = readFreeTokenMatch((marker && marker.resourceId) || slug);
+    /* Prefer marker resourceId (vault id). Only keep slug when a cached freeToken
+     * already exists under the permalink slug (marker id may differ). */
+    var matched =
+      readFreeTokenMatch((marker && marker.resourceId) || '') ||
+      readFreeTokenMatch(slug);
     var resourceId = String(
       (matched && matched.resourceId) ||
-      slug ||
       (marker && marker.resourceId) ||
+      slug ||
       ''
     ).toLowerCase();
     if (!resourceId) {
