@@ -683,12 +683,13 @@
       ensureSidebarSearch();
     }
     try {
-      /* One refresh; __qcxSecureRefresh debounces. Skip if already unlocked. */
-      if (
-        typeof window.__qcxSecureRefresh === 'function' &&
-        document.documentElement.getAttribute('data-qcx-unlocked') !== '1'
-      ) {
-        window.setTimeout(window.__qcxSecureRefresh, 0);
+      /* Force re-attach lock UI — second feed paint often wipes the panel inside the old debounce window. */
+      if (document.documentElement.getAttribute('data-qcx-unlocked') === '1') {
+        /* already open */
+      } else if (typeof window.__qcxSecureRefresh === 'function') {
+        window.setTimeout(function () { window.__qcxSecureRefresh(true); }, 0);
+      } else if (typeof window.__qcxSecureBoot === 'function') {
+        window.setTimeout(window.__qcxSecureBoot, 0);
       }
     } catch (ignore) {}
   }
@@ -769,8 +770,12 @@
           var resultId = (result && result.id && result.id.$t) || '';
           var cachedHtml = (cached.content && cached.content.$t) || '';
           var resultHtml = (result && result.content && result.content.$t) || '';
-          /* Same id alone is not enough — admin/page edits keep id, change content. */
-          if (cachedId && cachedId === resultId && cachedUpdated === resultUpdated && cachedHtml.length === resultHtml.length) {
+          /* Prefer updated timestamp — HTML length flaps between feed endpoints and caused a
+             second paint that wiped the lock panel on every first reload. */
+          if (cachedId && cachedId === resultId && cachedUpdated && cachedUpdated === resultUpdated) {
+            return;
+          }
+          if (cachedId && cachedId === resultId && cachedHtml && cachedHtml === resultHtml) {
             return;
           }
         } catch (ignore) {}

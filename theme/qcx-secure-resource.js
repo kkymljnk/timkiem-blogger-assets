@@ -1850,13 +1850,31 @@
     var labels = collectLabels();
     var mode = detectMode(marker, labels);
     if (!mode) {
-      /* Marker/labels may arrive after paintRescue — retry briefly. */
+      /* Marker/labels may arrive after paintRescue — keep watching (feed can take >3s). */
       if (!window.__qcxSecureBootTries) window.__qcxSecureBootTries = 0;
-      if (window.__qcxSecureBootTries < 8) {
+      if (window.__qcxSecureBootTries < 40) {
         window.__qcxSecureBootTries += 1;
-        window.setTimeout(boot, 400);
+        window.setTimeout(boot, 250);
+      } else if (!window.__qcxSecureBootMo) {
+        var bootMain = document.querySelector('#main') || document.body;
+        if (bootMain) {
+          window.__qcxSecureBootMo = new MutationObserver(function () {
+            if (window.__qcxSecureResourceBooted) {
+              try { window.__qcxSecureBootMo.disconnect(); } catch (ignore) {}
+              return;
+            }
+            if (document.getElementById('qcx-resource') || document.querySelector('.post-body .qcx-content-unlock')) {
+              boot();
+            }
+          });
+          window.__qcxSecureBootMo.observe(bootMain, { childList: true, subtree: true });
+        }
       }
       return;
+    }
+    if (window.__qcxSecureBootMo) {
+      try { window.__qcxSecureBootMo.disconnect(); } catch (ignoreDisc) {}
+      window.__qcxSecureBootMo = null;
     }
     if (window.__qcxSecureResourceBooted) return;
     window.__qcxSecureResourceBooted = true;
@@ -1885,10 +1903,16 @@
     if (mode === 'free') wireFree(config, meta);
     else wirePaid(config);
 
-    /* Rescue re-paints .post-body async — re-attach lock panel after feed render. */
-    window.__qcxSecureRefresh = function () {
+    /* Rescue re-paints .post-body async — re-attach lock panel after feed render.
+     * force=true bypasses debounce when panel was wiped by a second paintRescue. */
+    window.__qcxSecureRefresh = function (force) {
       var now = Date.now();
-      if (window.__qcxSecureRefreshAt && now - window.__qcxSecureRefreshAt < 2000) return;
+      var unlocked = document.documentElement.getAttribute('data-qcx-unlocked') === '1';
+      var hasPanel = !!document.querySelector('.qcx-lock-panel');
+      var hasBody = !!document.querySelector('.post-body');
+      /* Missing panel after rescue repaint must never be swallowed by the 2s debounce. */
+      var mustForce = force === true || (hasBody && !hasPanel && !unlocked && !readFreeToken(config.resourceId));
+      if (!mustForce && window.__qcxSecureRefreshAt && now - window.__qcxSecureRefreshAt < 2000) return;
       window.__qcxSecureRefreshAt = now;
       stripSecrets(document.querySelector('.post-body'));
       removeLegacyDownloadCards();
@@ -1936,13 +1960,17 @@
         }
         window.clearTimeout(moTimer);
         moTimer = window.setTimeout(function () {
-          if (window.__qcxSecureRefresh) window.__qcxSecureRefresh();
-        }, 400);
+          /* force: rescue often repaints within the old 2s debounce window */
+          if (window.__qcxSecureRefresh) window.__qcxSecureRefresh(true);
+        }, 120);
       });
       window.__qcxSecureMo.observe(main, { childList: true, subtree: true });
     }
-    window.setTimeout(function () { window.__qcxSecureRefresh(); }, 800);
+    window.setTimeout(function () { window.__qcxSecureRefresh(true); }, 800);
   }
+
+  /* Expose boot so layout-rescue can re-enter after late feed paint. */
+  window.__qcxSecureBoot = boot;
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', boot, { once: true });
@@ -1951,6 +1979,7 @@
   }
   window.addEventListener('load', function () {
     stripSecrets(document.querySelector('.post-body'));
-    if (window.__qcxSecureRefresh) window.__qcxSecureRefresh();
+    if (window.__qcxSecureRefresh) window.__qcxSecureRefresh(true);
+    else boot();
   }, { once: true });
 })();
