@@ -366,16 +366,23 @@
         })
         .catch(function() { done([]); });
     }
-    /* Prefer recent posts; fall back to pages if the blog is page-heavy. */
-    loadFeed('/feeds/posts/default?alt=json&max-results=' + (QCX_TUTORIAL_COUNT + 3) + '&orderby=published', function(posts) {
-      if (posts.length) {
-        renderItems(posts);
-        return;
-      }
-      loadFeed('/feeds/pages/default?alt=json&max-results=' + (QCX_TUTORIAL_COUNT + 3) + '&orderby=published', function(pages) {
-        renderItems(pages);
+    /* Defer Tutorial feed so it never races the post feed / first paint. */
+    function startTutorialFeed() {
+      loadFeed('/feeds/posts/default?alt=json&max-results=' + (QCX_TUTORIAL_COUNT + 3) + '&orderby=published', function(posts) {
+        if (posts.length) {
+          renderItems(posts);
+          return;
+        }
+        loadFeed('/feeds/pages/default?alt=json&max-results=' + (QCX_TUTORIAL_COUNT + 3) + '&orderby=published', function(pages) {
+          renderItems(pages);
+        });
       });
-    });
+    }
+    if (typeof window.requestIdleCallback === 'function') {
+      window.requestIdleCallback(startTutorialFeed, { timeout: 1800 });
+    } else {
+      window.setTimeout(startTutorialFeed, 700);
+    }
 
     /* Prefetch Tutorial targets on hover/touch so the next post opens faster. */
     if (!rail.getAttribute('data-qcx-prefetch')) {
@@ -873,8 +880,14 @@
       rescuePosts();
       return;
     }
+    var nativeBlog = document.querySelector('.widget.Blog:not(.qcx-rescue-blog)');
+    /* Empty #main (Blog1 missing in Layout) → rescue immediately, no 120ms wait. */
+    if (!nativeBlog) {
+      rescuePosts();
+      return;
+    }
     /* Chờ Blog native ~120ms nếu widget đã có nhưng chưa kịp render card. */
-    if (document.querySelector('.widget.Blog:not(.qcx-rescue-blog)') && !hasUsableNativeBlog()) {
+    if (!hasUsableNativeBlog()) {
       window.setTimeout(function(){
         if (hasUsableNativeBlog()) return;
         rescuePosts();
