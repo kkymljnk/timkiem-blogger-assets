@@ -558,7 +558,8 @@
       if (!raw) return null;
       var parsed = JSON.parse(raw);
       if (!parsed || !parsed.t || !parsed.d) return null;
-      if (Date.now() - parsed.t > 5 * 60 * 1000) return null;
+      /* 30m — cold feed is expensive; keep first paint instant across reloads. */
+      if (Date.now() - parsed.t > 30 * 60 * 1000) return null;
       return parsed.d;
     } catch (err) { return null; }
   }
@@ -578,6 +579,17 @@
     });
   }
 
+  function readEmbeddedPostId() {
+    try {
+      var html = document.documentElement && document.documentElement.innerHTML;
+      if (!html) return '';
+      var m = html.match(/['\"]postId['\"]\s*:\s*['\"]?(\d{6,})/) ||
+        html.match(/\bpostId['\"]?\s*[:=]\s*['\"]?(\d{6,})/) ||
+        html.match(/data-post-id=['\"](\d{6,})['\"]/);
+      return m ? m[1] : '';
+    } catch (err) { return ''; }
+  }
+
   function loadSingleEntry() {
     var current = pathOf(location.href);
     var slug = (location.pathname.split('/').pop() || '').replace(/\.html$/i, '').replace(/-/g, ' ');
@@ -590,6 +602,7 @@
     if (skipPageCache) {
       try { sessionStorage.removeItem(cacheKey); } catch (e) {}
     }
+    var embeddedId = !isStaticPage ? readEmbeddedPostId() : '';
 
     function findInList(entries) {
       return (entries || []).filter(function(entry){
@@ -606,27 +619,53 @@
     }
 
     function loadFromPostsFeed() {
-      // 1) Query nhẹ theo slug → thường ra đúng 1 bài đầy đủ.
-      return fetchJson('/feeds/posts/default?alt=json&max-results=3&q=' + encodeURIComponent(slug))
+      /* Prefer one full-feed hop (recent posts include content). Avoid slow
+         q=slug → summary → by-id waterfall that added ~3–5s on cold load. */
+      function fullById(hit) {
+        var id = postIdOf(hit);
+        if (!id) return Promise.resolve(hit);
+        return fetchJson('/feeds/posts/default/' + id + '?alt=json').then(function(full){
+          return full.entry || hit;
+        });
+      }
+
+      function fromSummary() {
+        return fetchJson('/feeds/posts/summary?alt=json&max-results=50').then(function(summaryPayload){
+          var hit = findInList((summaryPayload.feed && summaryPayload.feed.entry) || []);
+          if (!hit) throw new Error('post-not-found');
+          return fullById(hit);
+        });
+      }
+
+      return fetchJson('/feeds/posts/default?alt=json&max-results=30')
         .then(function(payload){
           var match = findInList((payload.feed && payload.feed.entry) || []);
           if (match) return match;
-          // 2) Fallback: summary 20 bài rồi lấy đúng 1 post theo ID.
-          return fetchJson('/feeds/posts/summary?alt=json&max-results=20').then(function(summaryPayload){
-            var hit = findInList((summaryPayload.feed && summaryPayload.feed.entry) || []);
-            if (!hit) throw new Error('post-not-found');
-            var id = postIdOf(hit);
-            if (!id) return hit;
-            return fetchJson('/feeds/posts/default/' + id + '?alt=json').then(function(full){
-              return full.entry || hit;
-            });
-          });
+          return fromSummary();
+        })
+        .catch(function(){
+          /* If full feed fails/timeouts, still try summary path. */
+          return fromSummary();
         });
+    }
+
+    function loadByEmbeddedId() {
+      if (!embeddedId) return Promise.reject(new Error('no-embedded-id'));
+      return fetchJson('/feeds/posts/default/' + embeddedId + '?alt=json').then(function(full){
+        var entry = full && full.entry;
+        if (!entry) throw new Error('embedded-miss');
+        /* Confirm path when possible — avoid wrong post if theme embeds stale id. */
+        var link = pathOf(entryLink(entry));
+        if (link && link !== current) throw new Error('embedded-path-mismatch');
+        return entry;
+      });
     }
 
     var loader = isStaticPage
       ? loadFromPagesFeed().catch(function(){ return loadFromPostsFeed(); })
-      : loadFromPostsFeed().catch(function(){ return loadFromPagesFeed(); });
+      : loadByEmbeddedId().catch(function(){
+          return loadFromPostsFeed().catch(function(){ return loadFromPagesFeed(); });
+        });
 
     return loader.then(function(entry){
       if (!skipPageCache) writeFeedCache(cacheKey, entry);
