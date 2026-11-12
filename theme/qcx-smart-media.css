@@ -19,6 +19,10 @@
 [data-page-type='post'] .post-header .post-title,
 .qcx-rescue-single .post-header .post-title,
 .post-item .post-header .post-title {
+  float: none !important;
+  display: block !important;
+  clear: both !important;
+  width: 100% !important;
   background: none !important;
   -webkit-background-clip: unset !important;
   background-clip: unset !important;
@@ -48,7 +52,9 @@
 [data-page-type='post'] .post-header .qcx-read-time,
 .qcx-rescue-single .post-header .qcx-read-time,
 .post-item .post-header .qcx-read-time {
-  display: inline-flex !important;
+  display: flex !important;
+  clear: both !important;
+  width: 100% !important;
   margin: 8px 0 0 !important;
 }
 
