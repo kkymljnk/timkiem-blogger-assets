@@ -3135,14 +3135,20 @@ footer.footer #footer.qcx-footer-gadgets .HTML {
     text-overflow: ellipsis !important;
   }
 
+  .footer-navigation-bar > div > ul > li > a:hover,
+  #qcx-native-tabbar > div > ul > li > a:hover,
+  .footer-navigation-bar > div > ul > li > a:focus-visible,
+  #qcx-native-tabbar > div > ul > li > a:focus-visible,
   .footer-navigation-bar > div > ul > li > a:active,
   #qcx-native-tabbar > div > ul > li > a:active,
   .footer-navigation-bar > div > ul > li > a.qcx-nav-active,
   #qcx-native-tabbar > div > ul > li > a.qcx-nav-active,
   .footer-navigation-bar > div > ul > li > a[aria-current='page'],
   #qcx-native-tabbar > div > ul > li > a[aria-current='page'] {
-    color: var(--accent) !important;
-    fill: var(--accent) !important;
+    /* Mint — theme --accent is near-black #1c2420 and hides icons */
+    color: #28d28c !important;
+    fill: #28d28c !important;
+    opacity: 1 !important;
   }
 
   body {
