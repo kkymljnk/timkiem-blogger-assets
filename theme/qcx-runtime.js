@@ -24,8 +24,24 @@
   function bootGhostBlink() {
     var nodes = document.querySelectorAll('.qcx-brand-svg');
     if (!nodes.length) return;
-    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     nodes.forEach(function (svg) {
+      /* Cover baked PNG pupils so blink is visible. */
+      var eyes = svg.querySelectorAll('.qcx-eye');
+      Array.prototype.forEach.call(eyes, function (eye) {
+        var prev = eye.previousElementSibling;
+        if (prev && prev.classList && prev.classList.contains('qcx-eye-socket')) return;
+        var cx = eye.getAttribute('cx');
+        var cy = eye.getAttribute('cy');
+        var r = parseFloat(eye.getAttribute('r') || '13');
+        if (!cx || !cy || !isFinite(r)) return;
+        var socket = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        socket.setAttribute('class', 'qcx-eye-socket');
+        socket.setAttribute('cx', cx);
+        socket.setAttribute('cy', cy);
+        socket.setAttribute('r', String(Math.round((r + 3.3) * 10) / 10));
+        socket.setAttribute('fill', '#f2f2f2');
+        if (eye.parentNode) eye.parentNode.insertBefore(socket, eye);
+      });
       if (svg.getAttribute('data-qcx-blink-bound')) return;
       svg.setAttribute('data-qcx-blink-bound', '1');
       svg.addEventListener('click', function (e) {
@@ -49,28 +65,6 @@
         });
       }
     });
-    if (reduce) return;
-    var heroSvg = document.querySelector('.qcx-hero .qcx-brand-svg, .qcx-avatar .qcx-brand-svg');
-    if (!heroSvg || heroSvg.getAttribute('data-qcx-autoblinked')) return;
-    var fireAuto = function () {
-      if (heroSvg.getAttribute('data-qcx-autoblinked')) return;
-      heroSvg.setAttribute('data-qcx-autoblinked', '1');
-      qcxGhostBlink(heroSvg);
-    };
-    var wrap = document.querySelector('.qcx-avatar-wrap') || heroSvg;
-    if ('IntersectionObserver' in window) {
-      var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (!entry.isIntersecting) return;
-          io.disconnect();
-          window.setTimeout(fireAuto, 1000);
-        });
-      }, { threshold: 0.25 });
-      io.observe(wrap);
-      window.setTimeout(function () { io.disconnect(); fireAuto(); }, 2200);
-    } else {
-      window.setTimeout(fireAuto, 1200);
-    }
   }
 
   function bootEnter() {

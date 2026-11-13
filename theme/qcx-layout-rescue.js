@@ -165,7 +165,7 @@
       '<a class="qcx-cta-btn qcx-cta-outline" href="https://t.me/superkhung" rel="noopener noreferrer" target="_blank">Hỗ trợ Telegram</a>' +
       '</div>' +
       '</div>' +
-      '<div class="qcx-avatar-wrap" data-enter="avatar"><div class="qcx-avatar" aria-label="CÔNG CỤ.AI"><svg xmlns="http://www.w3.org/2000/svg" class="qcx-brand-mark qcx-brand-svg" viewBox="0 0 512 512" width="300" height="300" role="img" aria-label="CÔNG CỤ.AI" tabindex="0"><g class="qcx-ghost-art"><image href="https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.12.5/theme/qcx-brand-mark.png" x="0" y="0" width="512" height="512" preserveAspectRatio="xMidYMid meet"/></g><g class="qcx-ghost-eyes"><circle class="qcx-eye qcx-eye-l" cx="230.6" cy="189.9" r="13.2" fill="#0a0a0a"/><circle class="qcx-eye qcx-eye-r" cx="294.1" cy="183.5" r="12.8" fill="#0a0a0a"/></g></svg></div></div>';
+      '<div class="qcx-avatar-wrap" data-enter="avatar"><div class="qcx-avatar" aria-label="CÔNG CỤ.AI"><svg xmlns="http://www.w3.org/2000/svg" class="qcx-brand-mark qcx-brand-svg" viewBox="0 0 512 512" width="300" height="300" role="img" aria-label="CÔNG CỤ.AI" tabindex="0"><g class="qcx-ghost-art"><image href="https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.12.5/theme/qcx-brand-mark.png" x="0" y="0" width="512" height="512" preserveAspectRatio="xMidYMid meet"/></g><g class="qcx-ghost-eyes"><circle class="qcx-eye-socket" cx="230.6" cy="189.9" r="16.5" fill="#f2f2f2"/><circle class="qcx-eye qcx-eye-l" cx="230.6" cy="189.9" r="13.2" fill="#0a0a0a"/><circle class="qcx-eye-socket" cx="294.1" cy="183.5" r="16" fill="#f2f2f2"/><circle class="qcx-eye qcx-eye-r" cx="294.1" cy="183.5" r="12.8" fill="#0a0a0a"/></g></svg></div></div>';
     /* Place hero ABOVE .main-wrapper so PC sidebar/find: sits with the feed, not beside hero. */
     placeHero(hero, main);
     ensureSidebarSearch();
@@ -221,7 +221,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.53/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.54/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -611,8 +611,12 @@
       'body:not(#layout) .qcx-brand-svg:hover,body:not(#layout) .qcx-brand-svg:active,' +
       '.qcx-avatar:hover,.qcx-avatar:active,.qcx-avatar-wrap:hover .qcx-avatar,.qcx-avatar-wrap:active .qcx-avatar,' +
       '.qcx-brand-svg:hover,.qcx-brand-svg:active{' +
-      'transform:translateY(-3px) scale(1.04)!important;' +
-      'filter:drop-shadow(0 0 12px rgba(0,240,163,.45))!important}' +
+      'transform:translateY(-4px) scale(1.06)!important;' +
+      'filter:drop-shadow(0 0 16px rgba(0,240,163,.6)) drop-shadow(0 8px 18px rgba(0,0,0,.35))!important}' +
+      '.qcx-ghost-eyes,.qcx-eye-socket{pointer-events:none!important}' +
+      '.qcx-eye{transform-box:fill-box;transform-origin:center;will-change:transform}' +
+      '@keyframes qcx-ghost-blink{0%,100%{transform:scaleY(1)}40%,60%{transform:scaleY(.08)}}' +
+      '.qcx-brand-svg.is-blinking .qcx-eye{animation:qcx-ghost-blink .18s ease-in-out 1}' +
       'body#layout .footer-navigation-bar,body#layout #qcx-native-tabbar{display:none!important}';
     var style = document.getElementById('qcx-native-tabbar-css');
     if (!style) {
@@ -800,17 +804,39 @@
   }
   window.__qcxEnsureAtmosphere = ensureAtmosphere;
 
+  function ensureGhostEyeSockets(svg) {
+    if (!svg) return;
+    var eyes = svg.querySelectorAll('.qcx-eye');
+    Array.prototype.forEach.call(eyes, function (eye) {
+      var prev = eye.previousElementSibling;
+      if (prev && prev.classList && prev.classList.contains('qcx-eye-socket')) return;
+      var cx = eye.getAttribute('cx');
+      var cy = eye.getAttribute('cy');
+      var r = parseFloat(eye.getAttribute('r') || '13');
+      if (!cx || !cy || !isFinite(r)) return;
+      var socket = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      socket.setAttribute('class', 'qcx-eye-socket');
+      socket.setAttribute('cx', cx);
+      socket.setAttribute('cy', cy);
+      socket.setAttribute('r', String(Math.round((r + 3.3) * 10) / 10));
+      socket.setAttribute('fill', '#f2f2f2');
+      if (eye.parentNode) eye.parentNode.insertBefore(socket, eye);
+    });
+  }
+
   function ensureGhostBlink() {
     try {
       if (typeof window.qcxBootGhostBlink === 'function') {
         window.qcxBootGhostBlink();
+        document.querySelectorAll('.qcx-brand-svg').forEach(ensureGhostEyeSockets);
         return;
       }
     } catch (ignore) {}
-    /* Minimal fallback if carrd-motion/runtime not ready yet. */
+    /* Minimal fallback if carrd-motion/runtime not ready yet. Hover/click only — no auto blink. */
     var nodes = document.querySelectorAll('.qcx-brand-svg');
     if (!nodes.length) return;
     Array.prototype.forEach.call(nodes, function (svg) {
+      ensureGhostEyeSockets(svg);
       if (svg.getAttribute('data-qcx-blink-bound')) return;
       svg.setAttribute('data-qcx-blink-bound', '1');
       var blinkOnce = function () {
@@ -825,15 +851,12 @@
         blinkOnce();
       });
       svg.addEventListener('pointerenter', blinkOnce);
+      var host = svg.closest ? (svg.closest('.qcx-avatar') || svg.closest('.qcx-avatar-wrap')) : null;
+      if (host && !host.getAttribute('data-qcx-blink-host')) {
+        host.setAttribute('data-qcx-blink-host', '1');
+        host.addEventListener('pointerenter', blinkOnce);
+      }
     });
-    var heroSvg = document.querySelector('.qcx-hero .qcx-brand-svg, .qcx-avatar .qcx-brand-svg');
-    if (!heroSvg || heroSvg.getAttribute('data-qcx-autoblinked')) return;
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    window.setTimeout(function () {
-      if (heroSvg.getAttribute('data-qcx-autoblinked')) return;
-      heroSvg.setAttribute('data-qcx-autoblinked', '1');
-      heroSvg.click();
-    }, 1100);
   }
   window.__qcxEnsureGhostBlink = ensureGhostBlink;
 

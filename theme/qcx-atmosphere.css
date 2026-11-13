@@ -51,7 +51,8 @@ body > #outer-wrapper,
 .qcx-avatar-wrap {
   transition: transform .22s ease, filter .22s ease !important;
 }
-.qcx-ghost-eyes { pointer-events: none; }
+.qcx-ghost-eyes,
+.qcx-eye-socket { pointer-events: none; }
 .qcx-eye {
   transform-box: fill-box;
   transform-origin: center;
@@ -77,8 +78,10 @@ body:not(#layout) .qcx-brand-svg:active,
 .qcx-avatar-wrap:active .qcx-avatar,
 .qcx-brand-svg:hover,
 .qcx-brand-svg:active {
-  transform: translateY(-3px) scale(1.04) !important;
-  filter: drop-shadow(0 0 12px rgba(0, 240, 163, .45)) !important;
+  transform: translateY(-4px) scale(1.06) !important;
+  filter:
+    drop-shadow(0 0 16px rgba(0, 240, 163, .6))
+    drop-shadow(0 8px 18px rgba(0, 0, 0, .35)) !important;
 }
 
 /* Homepage card hover — PC + mobile (restore lift + image zoom) */
