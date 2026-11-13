@@ -221,7 +221,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.44/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.45/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
 
@@ -338,9 +338,14 @@
       '.qcx-tutorial-inline .item-thumbnail img{width:100%!important;height:100%!important;object-fit:cover!important;display:block!important}' +
       '.qcx-tutorial-inline .item-title a{display:-webkit-box!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:2!important;' +
       'overflow:hidden!important;color:#dce9df!important;font:700 11px/1.4 var(--mono),monospace!important;text-decoration:none!important}' +
-      'body:has(#qcx-sidebar-rail-rescue.qcx-tutorial-inline) #HTML4.qcx-sidebar-rail,' +
-      'body:has(#qcx-sidebar-rail-rescue.qcx-tutorial-inline) .post-body>#HTML4{' +
-      'display:none!important;height:0!important;overflow:hidden!important;margin:0!important;padding:0!important;border:0!important}}' +
+      'body:not(#layout):has(#qcx-sidebar-rail-rescue) #sidebar #HTML4,' +
+      'body:not(#layout):has(#qcx-sidebar-rail-rescue) #sidebar #HTML4.qcx-sidebar-rail,' +
+      'body:not(#layout):has(#qcx-sidebar-rail-rescue) #HTML4,' +
+      'body:not(#layout):has(#qcx-sidebar-rail-rescue) .post-body>#HTML4{' +
+      'display:none!important;visibility:hidden!important;height:0!important;max-height:0!important;' +
+      'overflow:hidden!important;margin:0!important;padding:0!important;border:0!important}' +
+      'body:not(#layout):has(#qcx-sidebar-rail-rescue.qcx-tutorial-inline) #sidebar{' +
+      'display:none!important;height:0!important;overflow:hidden!important;margin:0!important;padding:0!important}}' +
       /* P2: Follow card tidy */
       '.qcx-subscribe-card,.qcx-subscribe-card[data-qcx-footer=\"1\"]{display:flex!important;flex-wrap:wrap!important;' +
       'align-items:center!important;justify-content:space-between!important;gap:16px 20px!important;' +
@@ -877,22 +882,42 @@
       if (node === rail) return;
       try { if (node.parentNode) node.parentNode.removeChild(node); } catch (ignoreDup) {}
     });
-    /* Mobile: always hide Layout HTML4 / other sidebar Tutorial clones when rescue exists. */
-    try {
-      if (mobileRail) {
+    /* Mobile: always hide Layout HTML4 / other Tutorial clones when rescue exists.
+       Theme skin forces `#sidebar #HTML4{display:block!important}` — reassert inline hide. */
+    function hideMobileTutorialClones() {
+      try {
+        if (!window.matchMedia('(max-width: 860px)').matches) {
+          if (sidebar) {
+            sidebar.style.removeProperty('display');
+            sidebar.removeAttribute('aria-hidden');
+          }
+          return;
+        }
         document.querySelectorAll('#HTML4, #sidebar .qcx-sidebar-rail, .post-body > .qcx-sidebar-rail').forEach(function(node) {
           if (node === rail || node.id === 'qcx-sidebar-rail-rescue') return;
           node.style.setProperty('display', 'none', 'important');
+          node.style.setProperty('visibility', 'hidden', 'important');
           node.style.setProperty('height', '0', 'important');
+          node.style.setProperty('max-height', '0', 'important');
           node.style.setProperty('overflow', 'hidden', 'important');
           node.style.setProperty('margin', '0', 'important');
           node.style.setProperty('padding', '0', 'important');
           node.setAttribute('hidden', 'hidden');
           node.setAttribute('aria-hidden', 'true');
           node.classList.remove('qcx-tutorial-inline');
+          var cloneList = node.querySelector('.qcx-latest-list');
+          if (cloneList) {
+            cloneList.innerHTML = '';
+            cloneList.removeAttribute('data-qcx-rail-ready');
+          }
         });
-      }
-    } catch (ignoreHtml4) {}
+        if (rail && rail.classList.contains('qcx-tutorial-inline') && sidebar) {
+          sidebar.style.setProperty('display', 'none', 'important');
+          sidebar.setAttribute('aria-hidden', 'true');
+        }
+      } catch (ignoreHtml4) {}
+    }
+    if (mobileRail) hideMobileTutorialClones();
 
     if (window.matchMedia('(min-width: 861px)').matches) {
       var relatedDup = document.querySelector('.qcx-related-smart');
@@ -902,16 +927,26 @@
     /* Mobile: Tutorial directly under lock (before #comments). PC: keep in #sidebar.
        Reassert after unlock chrome moves #comments under the lock. */
     placeTutorialBesideLock(rail, sidebar);
+    hideMobileTutorialClones();
     if (!rail.getAttribute('data-qcx-tutorial-reassert')) {
       rail.setAttribute('data-qcx-tutorial-reassert', '1');
       [200, 600, 1200, 2400, 4500, 8000].forEach(function(ms) {
-        window.setTimeout(function() { placeTutorialBesideLock(rail, sidebar); }, ms);
+        window.setTimeout(function() {
+          placeTutorialBesideLock(rail, sidebar);
+          hideMobileTutorialClones();
+        }, ms);
       });
       try {
-        window.addEventListener('resize', function() { placeTutorialBesideLock(rail, sidebar); });
+        window.addEventListener('resize', function() {
+          placeTutorialBesideLock(rail, sidebar);
+          hideMobileTutorialClones();
+        });
         var postBody = document.querySelector('.post-body');
         if (postBody && typeof MutationObserver === 'function') {
-          var obs = new MutationObserver(function() { placeTutorialBesideLock(rail, sidebar); });
+          var obs = new MutationObserver(function() {
+            placeTutorialBesideLock(rail, sidebar);
+            hideMobileTutorialClones();
+          });
           obs.observe(postBody, { childList: true });
         }
       } catch (ignoreResize) {}

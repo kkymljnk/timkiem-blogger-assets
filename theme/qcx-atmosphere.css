@@ -867,15 +867,28 @@ html[data-qcx-unlocked='1'] .qcx-comments-shell > h4.postAComment {
     font: 700 11px/1.4 var(--mono, monospace) !important;
     text-decoration: none !important;
   }
-  /* One Tutorial only — hide Layout HTML4 clone when rescue rail is inline */
-  body:has(#qcx-sidebar-rail-rescue.qcx-tutorial-inline) #HTML4.qcx-sidebar-rail,
-  body:has(#qcx-sidebar-rail-rescue.qcx-tutorial-inline) .post-body > #HTML4 {
+  /* One Tutorial only — beat theme `body:not(#layout) #sidebar #HTML4{display:block!important}` */
+  body:not(#layout):has(#qcx-sidebar-rail-rescue) #sidebar #HTML4,
+  body:not(#layout):has(#qcx-sidebar-rail-rescue) #sidebar #HTML4.qcx-sidebar-rail,
+  body:not(#layout):has(#qcx-sidebar-rail-rescue.qcx-tutorial-inline) #sidebar #HTML4,
+  body:not(#layout):has(#qcx-sidebar-rail-rescue) #HTML4,
+  body:not(#layout):has(#qcx-sidebar-rail-rescue) .post-body > #HTML4 {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    max-height: 0 !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+  }
+  /* Sidebar column unused on mobile once Tutorial is inlined under lock */
+  body:not(#layout):has(#qcx-sidebar-rail-rescue.qcx-tutorial-inline) #sidebar {
     display: none !important;
     height: 0 !important;
     overflow: hidden !important;
     margin: 0 !important;
     padding: 0 !important;
-    border: 0 !important;
   }
 }
 
