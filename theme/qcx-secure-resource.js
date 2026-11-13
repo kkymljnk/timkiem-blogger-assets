@@ -497,12 +497,13 @@
     body.insertBefore(panel, body.firstChild);
   }
 
-  /* While gating: keep comment chrome compact so it doesn't bury the CTA. */
+  /* While gating: grow with content — no nested scroll (page scroll only). */
   function capCommentsForUnlockChrome(comments) {
     if (!comments) return;
     try {
-      comments.style.setProperty('max-height', 'min(42vh, 320px)', 'important');
-      comments.style.setProperty('overflow', 'auto', 'important');
+      comments.style.setProperty('max-height', 'none', 'important');
+      comments.style.setProperty('overflow-x', 'hidden', 'important');
+      comments.style.setProperty('overflow-y', 'visible', 'important');
     } catch (ignore) {}
   }
 
@@ -668,7 +669,21 @@
   function ensureCommentListHost(box) {
     if (!box) return null;
     var list = box.querySelector('#qcx-comment-list');
-    if (list) return list;
+    function fitCommentListItems(host) {
+      if (!host) return;
+      var items = host.querySelector('.qcx-comment-list-items');
+      if (!items) return;
+      try {
+        items.style.setProperty('max-height', 'none', 'important');
+        items.style.setProperty('overflow', 'visible', 'important');
+        items.style.setProperty('overflow-x', 'hidden', 'important');
+        items.style.setProperty('gap', '2px', 'important');
+      } catch (ignoreFit) {}
+    }
+    if (list) {
+      fitCommentListItems(list);
+      return list;
+    }
     list = createEl('div', 'qcx-comment-list');
     list.id = 'qcx-comment-list';
     list.setAttribute('aria-live', 'polite');
@@ -680,7 +695,7 @@
       '<div class="qcx-comment-list-head" style="display:flex!important;align-items:center!important;justify-content:space-between!important;gap:8px!important;margin:0 0 8px!important">' +
       '<strong style="font:700 12px/1.2 ui-monospace,monospace!important;color:#e6f5ec!important">Bình luận gần đây</strong>' +
       '<span class="qcx-comment-list-state" style="font:600 11px/1 ui-monospace,monospace!important;color:#8fb39f!important">Đang tải…</span></div>' +
-      '<ul class="qcx-comment-list-items" style="list-style:none!important;margin:0!important;padding:0!important;display:flex!important;flex-direction:column!important;gap:6px!important;max-height:220px!important;overflow:auto!important"></ul>';
+      '<ul class="qcx-comment-list-items" style="list-style:none!important;margin:0!important;padding:0!important;display:flex!important;flex-direction:column!important;gap:2px!important;max-height:none!important;overflow:visible!important;overflow-x:hidden!important"></ul>';
     var form = box.querySelector('.comment-form');
     var gate = box.querySelector('.qcx-inline-gate');
     if (gate && gate.parentNode) gate.parentNode.insertBefore(list, gate.nextSibling);
@@ -758,6 +773,8 @@
       comments.removeAttribute('data-qcx-unlock-chrome');
       comments.style.removeProperty('max-height');
       comments.style.removeProperty('overflow');
+      comments.style.removeProperty('overflow-x');
+      comments.style.removeProperty('overflow-y');
       var end = document.querySelector('.qcx-article-end');
       var theArticle = document.querySelector('#the-article, .the-article');
       var postItem = document.querySelector('article.post-item') ||

@@ -955,11 +955,12 @@ html[data-qcx-unlocked='1'] .post-body > .qcx-teaser {
   margin: 0 0 0.85em !important;
   color: inherit !important;
 }
-/* While gating: keep comment chrome compact under the lock CTA. */
+/* While gating: fit comment chrome to content — page scroll only. */
 .qcx-comments-shell[data-qcx-unlock-chrome='1']:not(.is-settled),
 #comments[data-qcx-unlock-chrome='1']:not(.is-settled) {
-  max-height: min(42vh, 320px) !important;
-  overflow: auto !important;
+  max-height: none !important;
+  overflow-x: hidden !important;
+  overflow-y: visible !important;
 }
 /* Gumroad card removed — hard-hide any leftover deferred nodes. */
 .qcx-top-download,
@@ -1706,16 +1707,17 @@ html body .qcx-download-pro .qcx-resource-link:not([data-qcx-rendered='true'])::
   padding: 0 !important;
   display: flex !important;
   flex-direction: column !important;
-  gap: 6px !important;
-  max-height: 220px !important;
-  overflow: auto !important;
+  gap: 2px !important;
+  max-height: none !important;
+  overflow: visible !important;
+  overflow-x: hidden !important;
 }
 #comments .qcx-comment-item {
   display: flex !important;
   align-items: flex-start !important;
   gap: 10px !important;
   margin: 0 !important;
-  padding: 8px 0 !important;
+  padding: 6px 0 !important;
   border: 0 !important;
   background: transparent !important;
   list-style: none !important;
@@ -2265,15 +2267,12 @@ html[data-page-type='homepage'] .qcx-hero {
 }
 #comments .qcx-comment-list-items {
   gap: 2px !important;
-  max-height: 260px !important;
-  scroll-snap-type: y proximity;
+  max-height: none !important;
+  overflow: visible !important;
+  overflow-x: hidden !important;
 }
 #comments .qcx-comment-item {
   padding: 6px 0 !important;
-  scroll-snap-align: start;
-}
-@media (min-width: 861px) {
-  #comments .qcx-comment-list-items { max-height: 320px !important; }
 }
 
 /* Hide article-end: related + share/copy/end-contact (keep header .qcx-signal-x). */

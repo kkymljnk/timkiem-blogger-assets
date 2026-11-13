@@ -316,15 +316,12 @@ html[data-page-type='homepage'] .qcx-hero {
 }
 #comments .qcx-comment-list-items {
   gap: 2px !important;
-  max-height: 260px !important;
-  scroll-snap-type: y proximity;
+  max-height: none !important;
+  overflow: visible !important;
+  overflow-x: hidden !important;
 }
 #comments .qcx-comment-item {
   padding: 6px 0 !important;
-  scroll-snap-align: start;
-}
-@media (min-width: 861px) {
-  #comments .qcx-comment-list-items { max-height: 320px !important; }
 }
 
 /* Hide article-end: related + share/copy/end-contact (keep header .qcx-signal-x). */
