@@ -294,19 +294,20 @@ html[data-qcx-admin='1'] .footer-navigation-bar {
   align-items: center !important;
   gap: 10px !important;
   width: calc(100% - 32px) !important;
-  margin: 0 16px 12px !important;
-  min-height: 44px !important;
+  margin: 0 16px 14px !important;
+  min-height: 48px !important;
   padding: 0 14px !important;
-  border: 1px solid rgba(255, 255, 255, .1) !important;
+  border: 1px solid rgba(0, 240, 163, .42) !important;
   border-radius: 12px !important;
-  background: rgba(255, 255, 255, .04) !important;
-  color: rgba(190, 211, 198, .72) !important;
-  font-size: 13px !important;
+  background: rgba(0, 240, 163, .08) !important;
+  color: #e8fff2 !important;
+  font: 700 14px/1.2 var(--sans, system-ui, sans-serif) !important;
   text-align: left !important;
   cursor: pointer !important;
   flex-shrink: 0 !important;
   visibility: visible !important;
   opacity: 1 !important;
+  box-shadow: 0 0 0 1px rgba(0, 240, 163, .12), 0 8px 22px rgba(0, 0, 0, .35) !important;
 }
 #qcx-menu-search.qcx-menu-search-row > span {
   flex: 1 1 auto !important;
@@ -328,14 +329,17 @@ html[data-qcx-admin='1'] .footer-navigation-bar {
   flex-shrink: 0 !important;
 }
 #qcx-menu-search.qcx-menu-search-row:hover,
-.qcx-menu-search-row:hover {
-  border-color: rgba(255, 255, 255, .16) !important;
-  color: rgba(232, 239, 233, .9) !important;
-  background: rgba(255, 255, 255, .06) !important;
+.qcx-menu-search-row:hover,
+#qcx-menu-search.qcx-menu-search-row:active,
+.qcx-menu-search-row:active {
+  border-color: rgba(0, 240, 163, .65) !important;
+  color: #fff !important;
+  background: rgba(0, 240, 163, .14) !important;
 }
 #qcx-menu-search svg {
   display: block !important;
   flex-shrink: 0 !important;
+  color: #00f0a3 !important;
 }
 #qcx-menu-nav {
   flex: 1 !important;

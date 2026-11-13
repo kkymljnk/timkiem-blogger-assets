@@ -136,7 +136,7 @@
     var spaceHint = isMacHint ? '\u2318 Space' : 'Ctrl Space';
     menuSearch.innerHTML =
       '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.6"/><path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>' +
-      '<span>Tìm bài viết, nhãn…</span>' +
+      '<span>Tìm kiếm bài viết…</span>' +
       '<kbd class="qcx-menu-search-hint" aria-hidden="true">' + spaceHint + '</kbd>';
 
     var menuNav = createElement('nav');

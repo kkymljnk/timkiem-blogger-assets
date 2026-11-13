@@ -221,7 +221,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.50/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.51/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -455,16 +455,22 @@
       'border-radius:10px!important;cursor:pointer!important;flex-shrink:0!important;line-height:1!important;' +
       'color:rgba(190,211,198,.72)!important;font-size:20px!important;padding:0!important}' +
       '#qcx-menu-search.qcx-menu-search-row,.qcx-menu-search-row{display:flex!important;align-items:center!important;' +
-      'gap:10px!important;width:calc(100% - 32px)!important;margin:0 16px 12px!important;min-height:44px!important;' +
-      'padding:0 14px!important;border:1px solid rgba(255,255,255,.1)!important;border-radius:12px!important;' +
-      'background:rgba(255,255,255,.04)!important;color:rgba(190,211,198,.72)!important;font-size:13px!important;' +
-      'text-align:left!important;cursor:pointer!important;flex-shrink:0!important;visibility:visible!important;opacity:1!important}' +
+      'gap:10px!important;width:calc(100% - 32px)!important;margin:0 16px 14px!important;min-height:48px!important;' +
+      'padding:0 14px!important;border:1px solid rgba(0,240,163,.42)!important;border-radius:12px!important;' +
+      'background:rgba(0,240,163,.08)!important;color:#e8fff2!important;' +
+      'font:700 14px/1.2 system-ui,sans-serif!important;text-align:left!important;cursor:pointer!important;' +
+      'flex-shrink:0!important;visibility:visible!important;opacity:1!important;' +
+      'box-shadow:0 0 0 1px rgba(0,240,163,.12),0 8px 22px rgba(0,0,0,.35)!important}' +
       '#qcx-menu-search.qcx-menu-search-row>span{flex:1 1 auto!important;min-width:0!important}' +
+      '#qcx-menu-search svg{color:#00f0a3!important}' +
       '#qcx-menu-search .qcx-menu-search-hint,.qcx-menu-search-row .qcx-menu-search-hint{display:inline-flex!important;' +
       'align-items:center!important;margin-left:auto!important;padding:2px 7px!important;' +
       'border:1px solid rgba(255,255,255,.12)!important;border-radius:6px!important;background:rgba(0,0,0,.28)!important;' +
       'color:rgba(190,211,198,.78)!important;font:600 10px/1.2 var(--mono,ui-monospace,monospace)!important;' +
       'letter-spacing:.02em!important;white-space:nowrap!important;flex-shrink:0!important}' +
+      '#qcx-menu-search.qcx-menu-search-row:hover,.qcx-menu-search-row:hover,' +
+      '#qcx-menu-search.qcx-menu-search-row:active,.qcx-menu-search-row:active{' +
+      'border-color:rgba(0,240,163,.65)!important;color:#fff!important;background:rgba(0,240,163,.14)!important}' +
       '#qcx-menu-nav{flex:1!important;padding:0 0 12px!important;overflow-y:auto!important;' +
       'overscroll-behavior:contain!important;-webkit-overflow-scrolling:touch!important}' +
       '.qcx-menu-link{display:flex!important;align-items:center!important;gap:10px!important;min-height:44px!important;' +
@@ -701,8 +707,15 @@
     ensureMenuDrawer();
     ensureNativeTabbar();
     var menu = document.getElementById('qcx-menu');
+    var menuSearch = document.getElementById('qcx-menu-search');
+    /* Refresh search label in-place so users see the mint Search row without full rebuild. */
+    if (menuSearch) {
+      var searchLabel = menuSearch.querySelector('span');
+      if (searchLabel) searchLabel.textContent = 'Tìm kiếm bài viết…';
+      menuSearch.setAttribute('aria-label', 'Mở tìm kiếm');
+    }
     /* Stale drawer without Search row — tear down and rebuild. */
-    if (menu && !document.getElementById('qcx-menu-search')) {
+    if (menu && !menuSearch) {
       try {
         var staleMenu = document.getElementById('qcx-menu');
         var staleBd = document.getElementById('qcx-menu-backdrop');
