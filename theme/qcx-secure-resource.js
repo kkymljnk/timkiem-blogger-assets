@@ -927,15 +927,18 @@
         ? '<img class="qcx-comment-avatar" src="' + avatarUrl + '" alt="" width="24" height="24" loading="lazy" referrerpolicy="no-referrer" style="width:24px!important;height:24px!important;max-width:24px!important;border-radius:50%!important;object-fit:cover!important;display:block!important">'
         : '<span class="qcx-comment-avatar is-fallback" aria-hidden="true" style="width:24px!important;height:24px!important;border-radius:50%!important;display:block!important"></span>';
       var name = String(c.name || 'Ẩn danh').replace(/</g, '&lt;');
+      var isAdmin = String(c.name || '').trim() === "K'";
+      var nameColor = isAdmin ? '#ff3b3b' : '#eaf7f0';
+      var nameClass = isAdmin ? ' class="is-admin"' : '';
       var time = c.published ? formatCommentTime(c.published) : '';
       var text = String(c.text || '').replace(/</g, '&lt;');
       return (
         '<li class="qcx-comment-item" data-id="' + String(c.id).replace(/"/g, '') + '" style="display:flex!important;align-items:flex-start!important;gap:6px!important;margin:0!important;padding:4px 0!important;list-style:none!important">' +
         avatar +
         '<div class="qcx-comment-body" style="min-width:0!important;flex:1 1 auto!important">' +
-        '<div class="qcx-comment-meta" style="display:flex!important;flex-wrap:wrap!important;align-items:baseline!important;gap:4px 8px!important">' +
-        '<b style="font:700 12px/1.2 ui-monospace,monospace!important;color:#eaf7f0!important">' + name + '</b>' +
-        (time ? '<time style="font:600 11px/1.2 ui-monospace,monospace!important;color:#8fb39f!important">' + time + '</time>' : '') +
+        '<div class="qcx-comment-meta" style="display:flex!important;flex-wrap:nowrap!important;align-items:baseline!important;justify-content:space-between!important;width:100%!important;gap:4px 8px!important">' +
+        '<b' + nameClass + ' style="font:700 12px/1.2 ui-monospace,monospace!important;color:' + nameColor + '!important">' + name + '</b>' +
+        (time ? '<time style="font:600 11px/1.2 ui-monospace,monospace!important;color:#8fb39f!important;margin-left:auto!important;white-space:nowrap!important">' + time + '</time>' : '') +
         '</div>' +
         '<p style="margin:2px 0 0!important;color:#d7ebe0!important;font:500 12px/1.35 system-ui,sans-serif!important;word-break:break-word!important">' + text + '</p>' +
         '</div></li>'

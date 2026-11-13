@@ -1775,8 +1775,10 @@ html body .qcx-download-pro .qcx-resource-link:not([data-qcx-rendered='true'])::
 }
 #comments .qcx-comment-meta {
   display: flex !important;
-  flex-wrap: wrap !important;
+  flex-wrap: nowrap !important;
   align-items: baseline !important;
+  justify-content: space-between !important;
+  width: 100% !important;
   gap: 6px 10px !important;
   color: #eaf7f0 !important;
 }
@@ -1784,9 +1786,14 @@ html body .qcx-download-pro .qcx-resource-link:not([data-qcx-rendered='true'])::
   font: 700 12px/1.2 var(--mono, ui-monospace, monospace) !important;
   color: #eaf7f0 !important;
 }
+#comments .qcx-comment-meta b.is-admin {
+  color: #ff3b3b !important;
+}
 #comments .qcx-comment-meta time {
   color: #8fb39f !important;
   font: 600 11px/1.2 var(--mono, ui-monospace, monospace) !important;
+  margin-left: auto !important;
+  white-space: nowrap !important;
 }
 #comments .qcx-comment-empty {
   margin: 0 !important;
