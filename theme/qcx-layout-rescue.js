@@ -989,21 +989,102 @@
     rescuePosts();
   }
 
+  function isHomepageView() {
+    var pageType = document.documentElement.getAttribute('data-page-type') || '';
+    var pageItem = document.documentElement.getAttribute('data-page-item') || '';
+    if (pageType === 'homepage' || pageType === 'index') return true;
+    if (pageItem === 'multiple' && !/^\/\d{4}\//.test(location.pathname || '')) return true;
+    return (location.pathname || '/') === '/' || /\/search\/label\//i.test(location.pathname || '');
+  }
+
+  /* Homepage/index only — “Drops” section title is leftover AIHUB chrome. */
+  function hideDropsOnHome() {
+    var pageType = document.documentElement.getAttribute('data-page-type') || '';
+    if (pageType === 'post' || pageType === 'page') return;
+    if (!isHomepageView() && pageType && pageType !== 'homepage' && pageType !== 'index') return;
+    document.querySelectorAll('.qcx-section-head').forEach(function(node){
+      if (!/Drops/i.test(node.textContent || '')) return;
+      var next = node.nextElementSibling;
+      try { node.remove(); } catch (err) { node.style.display = 'none'; }
+      if (next && next.classList && next.classList.contains('qcx-rule')) {
+        try { next.remove(); } catch (err2) { next.style.display = 'none'; }
+      }
+    });
+  }
+
+  function ensureSiteFooter() {
+    if (document.querySelector('.qcx-subscribe-card[data-qcx-footer="1"]')) return;
+    var host = document.querySelector('main.main-container') || document.querySelector('#main') || document.body;
+    if (!host) return;
+    var blogId = document.documentElement.getAttribute('data-blog-id') || '5252547691219049876';
+    var home = ((document.querySelector('link[rel="canonical"]') || {}).href) || (location.origin + '/');
+    var title = text(((document.querySelector('meta[property="og:site_name"]') || {}).content) || '') ||
+      text(((document.querySelector('.qcx-hero-title') || {}).textContent) || '') ||
+      'AI HUB TOOLS';
+    var follow = 'https://www.blogger.com/follow.g?blogID=' + encodeURIComponent(blogId) +
+      '&returnUrl=' + encodeURIComponent(home);
+    var card = el('section', 'qcx-subscribe-card');
+    card.setAttribute('data-qcx-footer', '1');
+    card.setAttribute('aria-label', 'Theo dõi blog');
+    card.innerHTML =
+      '<div class="qcx-sc-text">' +
+      '<div class="qcx-sc-title">Theo dõi ' + escapeHtml(title) + '</div>' +
+      '<p class="qcx-sc-desc">Nhận bài mới trên Blogger và cập nhật nhanh qua Telegram.</p>' +
+      '</div>' +
+      '<div class="qcx-sc-actions">' +
+      '<a class="qcx-sc-btn" href="' + follow + '" rel="nofollow noopener" target="_blank">Theo dõi blog</a>' +
+      '<a class="qcx-sc-btn qcx-sc-btn-outline" href="https://t.me/superkhung" rel="noopener noreferrer" target="_blank">Kênh Telegram</a>' +
+      '</div>';
+
+    /* Prefer placing just above footer section so Layout “Chân trang” stays the widget zone. */
+    var footerSection = document.getElementById('footer') || document.querySelector('footer.footer');
+    if (footerSection && footerSection.parentNode) {
+      footerSection.parentNode.insertBefore(card, footerSection);
+    } else {
+      host.appendChild(card);
+    }
+
+    /* Keep a visible HTML shell inside #footer so Chân trang is not empty live. */
+    if (footerSection) {
+      footerSection.classList.add('qcx-footer-gadgets');
+      if (!footerSection.querySelector('.widget.HTML.qcx-footer-links, #HTML5')) {
+        var widget = el('div', 'widget HTML qcx-footer-links');
+        widget.id = 'HTML5';
+        widget.innerHTML =
+          '<div class="widget-content">' +
+          '<div class="qcx-footer-links-row">' +
+          '<a href="/">Trang chủ</a>' +
+          '<a href="/search">Tất cả bài</a>' +
+          '<a href="https://t.me/superkhung" rel="noopener noreferrer" target="_blank">Telegram</a>' +
+          '</div></div>';
+        footerSection.appendChild(widget);
+      }
+    }
+  }
+
   bootRescue();
   ensureSidebarSearch();
   ensureSidebarRail();
   relocateHeroForDesktopRail();
+  hideDropsOnHome();
+  ensureSiteFooter();
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function(){
       ensureSidebarSearch();
       ensureSidebarRail();
       relocateHeroForDesktopRail();
+      hideDropsOnHome();
+      ensureSiteFooter();
     }, { once: true });
   }
   window.setTimeout(ensureSidebarRail, 80);
   window.setTimeout(ensureSidebarRail, 400);
   window.setTimeout(relocateHeroForDesktopRail, 60);
   window.setTimeout(relocateHeroForDesktopRail, 300);
+  window.setTimeout(hideDropsOnHome, 80);
+  window.setTimeout(hideDropsOnHome, 400);
+  window.setTimeout(ensureSiteFooter, 100);
+  window.setTimeout(ensureSiteFooter, 500);
 
   /* Always scrub native Blog1 snippets (CSS leak), even when rescue skips. */
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bootSnippetClean, { once: true });
