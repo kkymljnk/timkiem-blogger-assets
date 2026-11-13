@@ -219,7 +219,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.22/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.23/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
 
@@ -321,12 +321,14 @@
       'width:min(92vw,360px)!important;max-width:360px!important;background:#07110c!important;' +
       'border-right:1px solid rgba(28,36,32,.14)!important;border-radius:0 18px 18px 0!important;' +
       'z-index:99998!important;display:flex!important;flex-direction:column!important;' +
-      'transform:translateX(-105%)!important;transition:transform .28s cubic-bezier(.2,.8,.2,1)!important;' +
+      'transform:translate3d(-105%,0,0)!important;transition:transform .28s cubic-bezier(.2,.8,.2,1)!important;' +
       'overflow:hidden!important;box-shadow:8px 0 48px rgba(0,0,0,.55)!important;margin:0!important;' +
       'padding-top:env(safe-area-inset-top,0px)!important;padding-bottom:env(safe-area-inset-bottom,0px)!important;' +
-      'pointer-events:none!important}' +
-      '#qcx-menu.open,#qcx-menu[aria-hidden=\"false\"]{transform:translateX(0)!important;left:0!important;' +
-      'pointer-events:auto!important}';
+      'visibility:hidden!important;pointer-events:none!important}' +
+      '#qcx-menu[aria-hidden=\"true\"]:not(.open){transform:translate3d(-105%,0,0)!important;' +
+      'visibility:hidden!important;pointer-events:none!important}' +
+      '#qcx-menu.open,#qcx-menu[aria-hidden=\"false\"]{transform:translate3d(0,0,0)!important;left:0!important;' +
+      'visibility:visible!important;pointer-events:auto!important}';
   }
   window.__qcxEnsureMenuDrawer = ensureMenuDrawer;
 
