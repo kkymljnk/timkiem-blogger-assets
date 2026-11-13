@@ -219,7 +219,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.26/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.27/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
 
@@ -1420,6 +1420,8 @@
         'html[data-qcx-admin=\"1\"] .post-header,' +
         'html[data-qcx-admin=\"1\"] .post-header .post-title,' +
         'html[data-qcx-admin=\"1\"] .qcx-read-time,' +
+        'html[data-qcx-admin=\"1\"] .post-header .qcx-read-time,' +
+        'html[data-qcx-admin=\"1\"][data-page-type] .post-header .qcx-read-time,' +
         'html[data-qcx-admin=\"1\"] .qcx-subscribe-card,' +
         'html[data-qcx-admin=\"1\"] #footer .widget.HTML.qcx-footer-links,' +
         'html[data-qcx-admin=\"1\"] #HTML5{display:none!important}' +

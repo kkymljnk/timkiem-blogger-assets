@@ -459,8 +459,11 @@ body#layout #qcx-native-tabbar {
   .qcx-inline-search .qcx-search-shortcut { display: none !important; }
 }
 
-/* Admin gate — strip post chrome leaks (read-time / title) */
+/* Admin gate — strip post chrome leaks (read-time / title).
+   Beat polish `[data-page-type=post] .post-header .qcx-read-time { display:flex !important }`. */
 html[data-qcx-admin='1'] .qcx-read-time,
+html[data-qcx-admin='1'] .post-header .qcx-read-time,
+html[data-qcx-admin='1'][data-page-type] .post-header .qcx-read-time,
 html[data-qcx-admin='1'] .post-header,
 html[data-qcx-admin='1'] .post-header .post-title {
   display: none !important;
