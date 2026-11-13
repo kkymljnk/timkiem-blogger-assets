@@ -839,10 +839,62 @@ html[data-qcx-unlocked='1'] .qcx-comments-shell > h4.postAComment {
   }
   .qcx-tutorial-inline .qcx-related-heading {
     margin: 0 0 10px !important;
+    padding: 0 2px !important;
     font: 700 12px/1.2 var(--mono, monospace) !important;
     letter-spacing: .08em !important;
     text-transform: uppercase !important;
     color: rgba(190, 211, 198, .85) !important;
+  }
+  /* Keep thumb|title row when rail leaves #sidebar (styles were #sidebar-scoped) */
+  .qcx-tutorial-inline {
+    --qcx-latest-thumb-width: 72px;
+    --qcx-latest-thumb-height: 48px;
+  }
+  .qcx-tutorial-inline .qcx-latest-list {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    list-style: none !important;
+  }
+  .qcx-tutorial-inline .qcx-latest-list > li {
+    display: grid !important;
+    grid-template-columns: var(--qcx-latest-thumb-width) minmax(0, 1fr) !important;
+    gap: 10px !important;
+    align-items: center !important;
+    min-height: 56px !important;
+    margin: 0 !important;
+    padding: 8px 0 !important;
+    border-bottom: 1px solid rgba(28, 36, 32, .11) !important;
+    list-style: none !important;
+  }
+  .qcx-tutorial-inline .qcx-latest-list > li:last-child { border-bottom: 0 !important; }
+  .qcx-tutorial-inline .item-thumbnail {
+    width: var(--qcx-latest-thumb-width) !important;
+    height: var(--qcx-latest-thumb-height) !important;
+    margin: 0 !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+    border: 1px solid rgba(28, 36, 32, .14) !important;
+    background: #07110a !important;
+  }
+  .qcx-tutorial-inline .item-thumbnail img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+  }
+  .qcx-tutorial-inline .item-title {
+    min-width: 0 !important;
+    margin: 0 !important;
+  }
+  .qcx-tutorial-inline .item-title a {
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 2 !important;
+    overflow: hidden !important;
+    color: #dce9df !important;
+    font: 700 11px/1.4 var(--mono, monospace) !important;
+    text-decoration: none !important;
   }
   /* One Tutorial only — hide Layout HTML4 clone when rescue rail is inline */
   body:has(#qcx-sidebar-rail-rescue.qcx-tutorial-inline) #HTML4.qcx-sidebar-rail,

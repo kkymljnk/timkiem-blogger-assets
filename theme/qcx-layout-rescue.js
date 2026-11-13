@@ -329,7 +329,15 @@
       '@media (max-width:860px){.qcx-sidebar-rail.qcx-tutorial-inline,#qcx-sidebar-rail-rescue.qcx-tutorial-inline{' +
       'display:block!important;width:100%!important;margin:12px 0 16px!important;padding:12px!important;' +
       'box-sizing:border-box!important;border:1px solid rgba(28,36,32,.14)!important;border-radius:14px!important;' +
-      'background:rgba(4,10,7,.72)!important}' +
+      'background:rgba(4,10,7,.72)!important;--qcx-latest-thumb-width:72px;--qcx-latest-thumb-height:48px}' +
+      '.qcx-tutorial-inline .qcx-latest-list{display:block!important;margin:0!important;padding:0!important;list-style:none!important}' +
+      '.qcx-tutorial-inline .qcx-latest-list>li{display:grid!important;grid-template-columns:72px minmax(0,1fr)!important;' +
+      'gap:10px!important;align-items:center!important;min-height:56px!important;margin:0!important;padding:8px 0!important;' +
+      'border-bottom:1px solid rgba(28,36,32,.11)!important;list-style:none!important}' +
+      '.qcx-tutorial-inline .item-thumbnail{width:72px!important;height:48px!important;margin:0!important;border-radius:8px!important;overflow:hidden!important}' +
+      '.qcx-tutorial-inline .item-thumbnail img{width:100%!important;height:100%!important;object-fit:cover!important;display:block!important}' +
+      '.qcx-tutorial-inline .item-title a{display:-webkit-box!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:2!important;' +
+      'overflow:hidden!important;color:#dce9df!important;font:700 11px/1.4 var(--mono),monospace!important;text-decoration:none!important}' +
       'body:has(#qcx-sidebar-rail-rescue.qcx-tutorial-inline) #HTML4.qcx-sidebar-rail,' +
       'body:has(#qcx-sidebar-rail-rescue.qcx-tutorial-inline) .post-body>#HTML4{' +
       'display:none!important;height:0!important;overflow:hidden!important;margin:0!important;padding:0!important;border:0!important}}' +
@@ -851,9 +859,18 @@
     showSidebarBesideArticle();
 
     /* Prefer existing rail even if already moved into .post-body (mobile inline). */
-    var rail = document.getElementById('qcx-sidebar-rail-rescue') ||
-      document.querySelector('.post-body .qcx-sidebar-rail.qcx-tutorial-inline') ||
-      sidebar.querySelector('#qcx-sidebar-rail-rescue, .qcx-sidebar-rail');
+    var rail = null;
+    var existingRails = document.querySelectorAll('#qcx-sidebar-rail-rescue');
+    if (existingRails.length) {
+      rail = existingRails[0];
+      for (var ri = 1; ri < existingRails.length; ri += 1) {
+        try { if (existingRails[ri].parentNode) existingRails[ri].parentNode.removeChild(existingRails[ri]); } catch (ignoreDup0) {}
+      }
+    }
+    if (!rail) {
+      rail = document.querySelector('.post-body .qcx-sidebar-rail.qcx-tutorial-inline') ||
+        sidebar.querySelector('.qcx-sidebar-rail');
+    }
     if (!rail) {
       var nativeVisible = sidebar.querySelector('#PopularPosts2, .widget.PopularPosts');
       if (nativeVisible) {
@@ -869,9 +886,10 @@
         '</div>';
       sidebar.appendChild(rail);
     }
-    /* Scrub duplicate Tutorial rails (re-inject after move-to-post-body). */
-    document.querySelectorAll('#qcx-sidebar-rail-rescue, .qcx-sidebar-rail.qcx-tutorial-inline').forEach(function(node) {
+    /* Scrub any leftover duplicate Tutorial rails (same id / inline clones). */
+    document.querySelectorAll('#qcx-sidebar-rail-rescue, .post-body > .qcx-sidebar-rail.qcx-tutorial-inline').forEach(function(node) {
       if (node === rail) return;
+      if (node.id === 'HTML4') return;
       try { if (node.parentNode) node.parentNode.removeChild(node); } catch (ignoreDup) {}
     });
     /* Layout HTML4 Tutorial clone — hide when rescue rail is inline on mobile. */
