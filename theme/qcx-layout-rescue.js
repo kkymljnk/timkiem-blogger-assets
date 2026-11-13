@@ -219,7 +219,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.27/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.28/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
 
@@ -308,7 +308,7 @@
   }
   function ensureSubscribeCardPanel() { ensureRaisedChrome(); }
 
-  /* XML drawer CSS — live theme skin often missing; keep menu off-canvas when closed. */
+  /* XML drawer CSS — shell + interior (links/chips); theme Lưu often drops skin rules. */
   function ensureMenuDrawer() {
     var css =
       '#qcx-menu-backdrop{display:none!important;position:fixed!important;inset:0!important;' +
@@ -325,7 +325,57 @@
       '#qcx-menu[aria-hidden=\"true\"]:not(.open){transform:translateX(-105%)!important;' +
       'visibility:hidden!important;pointer-events:none!important}' +
       '#qcx-menu.open,#qcx-menu[aria-hidden=\"false\"]{transform:translateX(0)!important;left:0!important;' +
-      'visibility:visible!important;pointer-events:auto!important}';
+      'visibility:visible!important;pointer-events:auto!important}' +
+      /* Interior: stacked links, chips, hide Bài viết mới */
+      '#qcx-menu-header{display:flex!important;align-items:center!important;justify-content:space-between!important;' +
+      'padding:14px 16px 10px!important;flex-shrink:0!important;gap:10px!important}' +
+      '#qcx-menu-logo{font:700 15px/1.2 var(--mono,monospace)!important;color:#e8fff2!important;' +
+      'letter-spacing:.12em!important;text-transform:uppercase!important}' +
+      '#qcx-menu-close{width:36px!important;height:36px!important;display:grid!important;place-items:center!important;' +
+      'background:rgba(255,255,255,.04)!important;border:1px solid rgba(255,255,255,.08)!important;' +
+      'border-radius:10px!important;cursor:pointer!important;flex-shrink:0!important;line-height:1!important;' +
+      'color:rgba(190,211,198,.72)!important;font-size:20px!important;padding:0!important}' +
+      '#qcx-menu-search.qcx-menu-search-row,.qcx-menu-search-row{display:flex!important;align-items:center!important;' +
+      'gap:10px!important;width:calc(100% - 32px)!important;margin:0 16px 12px!important;min-height:44px!important;' +
+      'padding:0 14px!important;border:1px solid rgba(255,255,255,.1)!important;border-radius:12px!important;' +
+      'background:rgba(255,255,255,.04)!important;color:rgba(190,211,198,.72)!important;font-size:13px!important;' +
+      'text-align:left!important;cursor:pointer!important;flex-shrink:0!important}' +
+      '#qcx-menu-nav{flex:1!important;padding:0 0 12px!important;overflow-y:auto!important;' +
+      'overscroll-behavior:contain!important;-webkit-overflow-scrolling:touch!important}' +
+      '.qcx-menu-link{display:flex!important;align-items:center!important;gap:10px!important;min-height:44px!important;' +
+      'padding:10px 16px!important;margin:0 8px!important;color:var(--fg,#e8efe9)!important;font-size:15px!important;' +
+      'font-weight:600!important;text-decoration:none!important;border:0!important;border-radius:10px!important}' +
+      '.qcx-menu-link:hover,.qcx-menu-link.qcx-menu-current,.qcx-menu-link:focus-visible{' +
+      'background:rgba(255,255,255,.06)!important;color:#e8efe9!important}' +
+      '.qcx-menu-section{padding:16px 16px 8px!important;font-size:11px!important;font-weight:700!important;' +
+      'color:rgba(138,165,150,.85)!important;letter-spacing:.08em!important;text-transform:uppercase!important;' +
+      'border:0!important;margin:0!important}' +
+      '.qcx-menu-label-link{display:flex!important;align-items:center!important;justify-content:space-between!important;' +
+      'min-height:44px!important;padding:10px 16px!important;margin:0 8px!important;border-radius:10px!important;' +
+      'text-decoration:none!important;color:var(--fg,#e8efe9)!important;font-size:14px!important;font-weight:600!important}' +
+      '.qcx-menu-labels-cloud{display:flex!important;flex-wrap:wrap!important;gap:8px!important;' +
+      'padding:4px 16px 12px!important}' +
+      '.qcx-menu-chip{display:inline-flex!important;align-items:center!important;max-width:100%!important;' +
+      'min-height:32px!important;padding:0 12px!important;border:1px solid rgba(28,36,32,.2)!important;' +
+      'border-radius:999px!important;background:rgba(28,36,32,.05)!important;color:rgba(210,230,216,.9)!important;' +
+      'font-size:12px!important;font-weight:600!important;text-decoration:none!important;white-space:nowrap!important}' +
+      '#qcx-menu-footer{padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px))!important;' +
+      'border-top:1px solid rgba(255,255,255,.06)!important;flex-shrink:0!important}' +
+      '#qcx-menu-footer a,.qcx-menu-footer-cta{display:flex!important;align-items:center!important;' +
+      'justify-content:center!important;width:100%!important;min-height:44px!important;border-radius:12px!important;' +
+      'background:rgba(28,36,32,.1)!important;border:1px solid rgba(28,36,32,.28)!important;' +
+      'color:var(--accent,#28d28c)!important;font-size:13px!important;font-weight:700!important;' +
+      'text-decoration:none!important}' +
+      '#qcx-menu .qcx-mobile-menu-hidden{display:none!important}' +
+      'body.qcx-menu-open{overflow:hidden!important}' +
+      /* Desktop hamburger beats chrome-hide */
+      '@media (min-width:861px){' +
+      'body:not(#layout) .centered-top .hamburger-menu,body:not(#layout) button.hamburger-menu{' +
+      'display:inline-flex!important;align-items:center!important;justify-content:center!important;' +
+      'position:relative!important;z-index:40!important;width:40px!important;height:40px!important;' +
+      'min-width:40px!important;padding:0!important;border:1px solid rgba(0,240,163,.28)!important;' +
+      'border-radius:10px!important;background:#24352c!important;color:#e8efe9!important;cursor:pointer!important}' +
+      '}';
     var style = document.getElementById('qcx-menu-drawer');
     if (!style) {
       style = document.createElement('style');
