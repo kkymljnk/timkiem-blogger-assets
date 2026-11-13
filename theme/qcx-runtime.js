@@ -169,11 +169,6 @@
   window.qcxCanonicalArticleUrl = canonicalArticleUrl;
 
   function initMobileNav() {
-    /* Prefer dedicated qcx-mobile-nav-runtime.js (Command Space + native tab bar). */
-    if (document.querySelector('script[src*="qcx-mobile-nav-runtime"]') ||
-        typeof window.qcxBootMobileNav === 'function') {
-      return;
-    }
     var nav = document.querySelector('.footer-navigation-bar');
     var inlineSearches = document.querySelectorAll('.qcx-inline-search');
     if (!nav && !inlineSearches.length) return;

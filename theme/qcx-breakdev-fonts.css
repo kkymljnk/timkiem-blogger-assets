@@ -1,81 +1,45 @@
-/* Clone breakdev.org article typography:
-   title + body = Inter; code = JetBrains Mono
-   https://breakdev.org/evilginx-pro-4-3/ */
+/* Font-only clone from breakdev.org — Inter for title/body, JetBrains Mono for code.
+   No layout / color / size / spacing changes. */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
 :root {
   --qcx-article-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --qcx-article-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-  --sans: var(--qcx-article-sans);
 }
 
-/* Post title — Inter Black / ExtraBold, tight tracking like breakdev h1 */
+/* Titles */
+[data-page-type='post'] .post-header .post-title,
+.qcx-rescue-single .post-header .post-title,
+.post-item .post-header .post-title,
+[data-page-type='page'] .post-header .post-title,
+[data-page-type='post'] .post-body h2,
+[data-page-type='post'] .post-body h3,
+[data-page-type='post'] .post-body h4,
+.qcx-rescue-single .post-body h2,
+.qcx-rescue-single .post-body h3,
+.qcx-rescue-single .post-body h4 {
+  font-family: var(--qcx-article-sans) !important;
+}
+
 [data-page-type='post'] .post-header .post-title,
 .qcx-rescue-single .post-header .post-title,
 .post-item .post-header .post-title,
 [data-page-type='page'] .post-header .post-title {
-  font-family: var(--qcx-article-sans) !important;
   font-weight: 800 !important;
-  font-style: normal !important;
-  letter-spacing: -0.015em !important;
-  line-height: 1.05 !important;
-  text-wrap: balance;
 }
 
-/* In-article headings */
-[data-page-type='post'] .post-body h2,
-.qcx-rescue-single .post-body h2,
-[data-page-type='post'] .post-body h3,
-.qcx-rescue-single .post-body h3,
-[data-page-type='post'] .post-body h4,
-.qcx-rescue-single .post-body h4 {
-  font-family: var(--qcx-article-sans) !important;
-  letter-spacing: -0.01em !important;
-  color: rgba(255, 255, 255, 0.9) !important;
-}
-[data-page-type='post'] .post-body h2,
-.qcx-rescue-single .post-body h2 {
-  font-weight: 700 !important;
-  font-size: clamp(1.35rem, 2.2vw, 1.75rem) !important;
-  line-height: 1.15 !important;
-}
-[data-page-type='post'] .post-body h3,
-.qcx-rescue-single .post-body h3 {
-  font-weight: 600 !important;
-  font-size: clamp(1.2rem, 1.8vw, 1.5rem) !important;
-  line-height: 1.15 !important;
-}
-
-/* Body copy — Inter 20px / ~1.45 like breakdev article paragraphs */
+/* Body text */
 [data-page-type='post'] .post-body,
 .qcx-rescue-single .post-body,
-[data-page-type='page'] .post-body:not(:has(#qcx-admin-root)) {
-  font-family: var(--qcx-article-sans) !important;
-  font-size: 1.125rem !important;
-  font-weight: 400 !important;
-  line-height: 1.45 !important;
-  letter-spacing: normal !important;
-  color: rgba(232, 239, 233, 0.78) !important;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-@media (min-width: 861px) {
-  [data-page-type='post'] .post-body,
-  .qcx-rescue-single .post-body {
-    font-size: 1.25rem !important; /* 20px */
-    line-height: 1.45 !important;
-  }
-}
-
+[data-page-type='page'] .post-body:not(:has(#qcx-admin-root)),
 [data-page-type='post'] .post-body p,
-.qcx-rescue-single .post-body p,
 [data-page-type='post'] .post-body li,
+.qcx-rescue-single .post-body p,
 .qcx-rescue-single .post-body li {
   font-family: var(--qcx-article-sans) !important;
-  font-weight: 400 !important;
 }
 
-/* Keep terminal/code chrome on JetBrains Mono */
+/* Code stays mono */
 [data-page-type='post'] .post-body code,
 [data-page-type='post'] .post-body pre,
 [data-page-type='post'] .post-body kbd,
@@ -86,12 +50,4 @@
 .qcx-rescue-single .post-body pre,
 .qcx-rescue-single .post-body .mac-frame {
   font-family: var(--qcx-article-mono) !important;
-}
-
-/* Read-time / meta under title stays compact sans */
-[data-page-type='post'] .post-header .qcx-read-time,
-.qcx-rescue-single .post-header .qcx-read-time {
-  font-family: var(--qcx-article-sans) !important;
-  font-weight: 500 !important;
-  letter-spacing: 0.02em !important;
 }

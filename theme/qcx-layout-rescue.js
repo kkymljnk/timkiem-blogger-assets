@@ -205,13 +205,9 @@
     var existing = sidebar.querySelector('.qcx-inline-search .qcx-search-text');
     if (existing) {
       existing.textContent = 'search…';
-      bootMobileNavSoon();
       return;
     }
-    if (sidebar.querySelector('.qcx-inline-search')) {
-      bootMobileNavSoon();
-      return;
-    }
+    if (sidebar.querySelector('.qcx-inline-search')) return;
     var widget = el('div', 'widget HTML qcx-sidebar-search');
     widget.innerHTML =
       '<div class="widget-content">' +
@@ -220,12 +216,11 @@
       '<span class="qcx-search-shortcut">Ctrl K</span>' +
       '</div></div>';
     sidebar.insertBefore(widget, sidebar.firstChild);
-    bootMobileNavSoon();
   }
 
-  /* breakdev.org article fonts (Inter title/body + JetBrains Mono code) */
+  /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
   var QCX_FONTS_CSS =
-    'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.7/theme/qcx-breakdev-fonts.css';
+    'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.8/theme/qcx-breakdev-fonts.css';
   function ensureBreakdevFonts() {
     if (document.getElementById('qcx-breakdev-fonts')) return;
     var link = document.createElement('link');
@@ -233,12 +228,6 @@
     link.rel = 'stylesheet';
     link.href = QCX_FONTS_CSS;
     (document.head || document.documentElement).appendChild(link);
-  }
-
-  function bootMobileNavSoon() {
-    try {
-      if (typeof window.qcxBootMobileNav === 'function') window.qcxBootMobileNav();
-    } catch (ignore) {}
   }
 
   /* Fixed Tutorial count — 5 fits the right rail without crowding mobile. */
@@ -1176,7 +1165,6 @@
   hideDropsOnHome();
   ensureAdminChrome();
   ensureSiteFooter();
-  bootMobileNavSoon();
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function(){
       ensureBreakdevFonts();
@@ -1186,7 +1174,6 @@
       hideDropsOnHome();
       ensureAdminChrome();
       ensureSiteFooter();
-      bootMobileNavSoon();
     }, { once: true });
   }
   window.setTimeout(ensureSidebarRail, 80);
@@ -1200,9 +1187,6 @@
   window.setTimeout(ensureAdminChrome, 800);
   window.setTimeout(ensureSiteFooter, 100);
   window.setTimeout(ensureSiteFooter, 500);
-  window.setTimeout(bootMobileNavSoon, 120);
-  window.setTimeout(bootMobileNavSoon, 500);
-  window.setTimeout(bootMobileNavSoon, 1200);
 
   /* Always scrub native Blog1 snippets (CSS leak), even when rescue skips. */
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bootSnippetClean, { once: true });

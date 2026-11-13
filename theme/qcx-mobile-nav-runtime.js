@@ -69,66 +69,12 @@
   window.qcxFacebookShare = openFacebookShare;
   window.qcxCanonicalArticleUrl = canonicalArticleUrl;
 
-  function isAdminPath() {
-    try {
-      if (/\/p\/admin\.html$/i.test(location.pathname || '')) return true;
-      if (document.documentElement.getAttribute('data-qcx-admin') === '1') return true;
-      if (document.getElementById('qcx-admin-root')) return true;
-    } catch (ignore) {}
-    return false;
-  }
-
-  function iconSvg(paths) {
-    return '<span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">' + paths + '</svg></span>';
-  }
-
-  /* Contempo often omits .footer-navigation-bar — inject a native mobile tab bar. */
-  function ensureNativeTabBar() {
-    if (isAdminPath()) return null;
-    var existing = document.querySelector('.footer-navigation-bar, #qcx-native-tabbar');
-    if (existing) return existing;
-
-    var nav = createElement('nav', 'footer-navigation-bar');
-    nav.id = 'qcx-native-tabbar';
-    nav.setAttribute('aria-label', 'Điều hướng ứng dụng');
-    nav.innerHTML =
-      '<div><ul>' +
-      '<li><a href="/" aria-label="Trang chủ">' +
-      iconSvg('<path d="M4 10.5L12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5z"/>') +
-      '<span class="title">Home</span></a></li>' +
-      '<li><a class="sroll-comments" href="#comments" aria-label="Bình luận">' +
-      iconSvg('<path d="M5 6h14a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H10l-5 3v-3H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"/>') +
-      '<span class="title">Chat</span></a></li>' +
-      '<li><a class="open-menu" href="#menu" aria-label="Mở menu">' +
-      iconSvg('<path d="M5 7h14M5 12h14M5 17h14"/>') +
-      '<span class="title">Menu</span></a></li>' +
-      '<li><a class="share-post" href="#share" aria-label="Chia sẻ" data-share-url="">' +
-      iconSvg('<circle cx="18" cy="5" r="2.4"/><circle cx="6" cy="12" r="2.4"/><circle cx="18" cy="19" r="2.4"/><path d="M8.2 13.1l7.5 4.3M15.7 6.6l-7.5 4.3"/>') +
-      '<span class="title">Share</span></a></li>' +
-      '<li><a class="open-search" href="#search" aria-label="Tìm kiếm (Command Space)">' +
-      iconSvg('<circle cx="11" cy="11" r="6.5"/><path d="M16.5 16.5L21 21"/>') +
-      '<span class="title">Search</span></a></li>' +
-      '</ul></div>';
-    document.body.appendChild(nav);
-    return nav;
-  }
-
   function initMobileNav() {
-    if (isAdminPath()) return false;
-    if (document.getElementById('qcx-mobile-search') && typeof window.qcxOpenSearch === 'function') {
-      document.documentElement.setAttribute('data-qcx-nav-ready', 'true');
-      return true;
-    }
-    if (document.documentElement.getAttribute('data-qcx-nav-ready') === 'true' &&
-        document.getElementById('qcx-mobile-search')) {
-      return true;
-    }
-
-    var nav = ensureNativeTabBar() || document.querySelector('.footer-navigation-bar');
+    var nav = document.querySelector('.footer-navigation-bar');
     var inlineSearches = document.querySelectorAll('.qcx-inline-search');
-    if (!nav && !inlineSearches.length) return false;
-
-    /* Mark ready only after Command Space overlay is wired. */
+    if (!nav && !inlineSearches.length) return;
+    if (document.documentElement.getAttribute('data-qcx-nav-ready') === 'true') return;
+    document.documentElement.setAttribute('data-qcx-nav-ready', 'true');
     if (nav) nav.setAttribute('data-qcx-ready', 'true');
 
     var homeButton = nav ? nav.querySelector('li:first-child > a') : null;
@@ -752,40 +698,9 @@
         event.stopImmediatePropagation();
         openSearch();
       }
-      /* macOS Spotlight habit: Ctrl/Cmd + Space also opens Command Space. */
-      if (event.code === 'Space' && (event.metaKey || event.ctrlKey) && !isTyping) {
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        if (searchOverlay.classList.contains('open')) closeSearch();
-        else openSearch();
-      }
     }, true);
-
-    document.documentElement.setAttribute('data-qcx-nav-ready', 'true');
-    return true;
   }
 
-  function bootMobileNav() {
-    try {
-      return !!initMobileNav();
-    } catch (err) {
-      try { console.warn('[qcx] mobile nav boot failed', err); } catch (ignore) {}
-      return false;
-    }
-  }
-
-  window.qcxBootMobileNav = bootMobileNav;
-
-  function scheduleMobileNavBoot() {
-    if (bootMobileNav()) return;
-    [60, 180, 450, 900, 1800].forEach(function(ms) {
-      window.setTimeout(function() { bootMobileNav(); }, ms);
-    });
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', scheduleMobileNavBoot, { once: true });
-  } else {
-    scheduleMobileNavBoot();
-  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initMobileNav, { once: true });
+  else initMobileNav();
 })();
