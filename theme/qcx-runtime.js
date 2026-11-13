@@ -264,66 +264,52 @@
       return link;
     }
 
-    addMenuLink('Trang chủ', '/', location.pathname === '/');
-    var latestMenuLink = addMenuLink('Bài viết mới', '/search?max-results=12', location.pathname === '/search');
-    latestMenuLink.classList.add('qcx-mobile-menu-hidden');
-
-    /* Permanent topics with related Blogger labels grouped underneath. */
-    var labelMap = {};
-    function registerLabel(name, href) {
-      name = (name || '').trim();
-      if (!name || !href || /^(?:50[.,]000|bca|themeblogspot)$/i.test(name) || labelMap[name.toLowerCase()]) return;
-      labelMap[name.toLowerCase()] = { name: name, href: href };
-    }
-    Array.prototype.slice.call(document.querySelectorAll('a[href*="/search/label/"], .post-label a, .post-labels a, .qcx-card-labels a, .label--filter a')).forEach(function(link) {
-      registerLabel(link.textContent, link.href);
-    });
-    Array.prototype.slice.call(document.querySelectorAll('[data-label^="Search: "]')).forEach(function(node) {
-      var name = (node.getAttribute('data-label') || '').replace(/^Search:\s*/i, '');
-      registerLabel(name, '/search/label/' + encodeURIComponent(name));
-    });
-    var labels = Object.keys(labelMap).map(function(key) { return labelMap[key]; }).slice(0, 16);
-    var fixedTopics = [
-      { name: 'Mẹo & Thủ thuật', match: /mẹo|thủ thuật|tip|tips|hướng dẫn|guide|how\s*to/i },
-      { name: 'Công cụ & Tài nguyên', match: /công cụ|tool|resource|source|tài nguyên|template|plugin/i },
-      { name: 'AI & Công nghệ', match: /\bai\b|công nghệ|tech|automation|tự động|openai|claude|chatgpt/i },
-      { name: 'Kỹ năng & Kinh nghiệm', match: /kỹ năng|kinh nghiệm|tutorial|obs|stream|livestream|tiktok|tikfinity/i }
-    ];
-    menuNav.appendChild(createElement('div', 'qcx-menu-section', 'Chuyên mục'));
-    var usedTopicLabels = {};
-    fixedTopics.forEach(function(topic) {
-      var group = createElement('div', 'qcx-menu-topic-group');
-      var related = labels.filter(function(label) { return topic.match.test(label.name); }).slice(0, 4);
-      var topicLink = createElement('a', 'qcx-menu-label-link qcx-menu-topic-link');
-      topicLink.href = related.length ? related[0].href : '/search?max-results=12';
-      topicLink.title = related.length ? 'Xem nhãn ' + related[0].name : 'Xem bài viết mới';
-      topicLink.appendChild(createElement('span', 'qcx-menu-label-name', topic.name));
-      group.appendChild(topicLink);
-      if (related.length) {
-        var relatedWrap = createElement('div', 'qcx-menu-topic-labels');
-        related.forEach(function(label) {
-          usedTopicLabels[label.name.toLowerCase()] = true;
-          var relatedLink = createElement('a');
-          relatedLink.href = label.href;
-          relatedLink.textContent = label.name;
-          relatedLink.title = 'Nhãn ' + label.name;
-          relatedWrap.appendChild(relatedLink);
-        });
-        group.appendChild(relatedWrap);
+    function isCurrentHref(href) {
+      try {
+        var parsed = new URL(href, location.href);
+        var path = parsed.pathname || '/';
+        if (path === '/' || path === '') return location.pathname === '/' || location.pathname === '';
+        if (location.pathname === path && location.search === parsed.search) return true;
+        return location.pathname === path && !parsed.search;
+      } catch (error) {
+        return false;
       }
-      menuNav.appendChild(group);
-    });
-    var leftoverLabels = labels.filter(function(label) {
-      return !usedTopicLabels[label.name.toLowerCase()] && !/^Bài đăng trên Blog$/i.test(label.name);
-    }).slice(0, 12);
-    if (leftoverLabels.length) {
+    }
+
+    /* Bố cục widgets: PageList → Điều hướng */
+    var pageLinks = document.querySelectorAll('#PageList1 .widget-content a, #PageList1 ul a');
+    if (!pageLinks.length) {
+      pageLinks = document.querySelectorAll('.widget.PageList .widget-content a, .widget.PageList ul a');
+    }
+    if (pageLinks.length) {
+      Array.prototype.forEach.call(pageLinks, function(anchor) {
+        var text = (anchor.textContent || '').trim();
+        var href = anchor.getAttribute('href') || '/';
+        if (!text) return;
+        addMenuLink(text, href, isCurrentHref(href));
+      });
+    } else {
+      addMenuLink('Trang chủ', '/', location.pathname === '/' || location.pathname === '');
+    }
+
+    /* Bố cục widgets: Label → Nhãn chips */
+    var labelLinks = document.querySelectorAll('#Label1 a[href*="/search/label/"]');
+    if (!labelLinks.length) {
+      labelLinks = document.querySelectorAll('.widget.Label a[href*="/search/label/"]');
+    }
+    if (labelLinks.length) {
       menuNav.appendChild(createElement('div', 'qcx-menu-section', 'Nhãn'));
       var labelCloud = createElement('div', 'qcx-menu-labels-cloud');
-      leftoverLabels.forEach(function(label) {
+      var seenLabels = {};
+      Array.prototype.forEach.call(labelLinks, function(anchor) {
+        var name = (anchor.textContent || '').trim();
+        var href = anchor.getAttribute('href');
+        if (!name || !href || seenLabels[name.toLowerCase()]) return;
+        seenLabels[name.toLowerCase()] = true;
         var link = createElement('a', 'qcx-menu-chip');
-        link.href = label.href;
-        link.textContent = label.name;
-        link.title = 'Nhãn ' + label.name;
+        link.href = href;
+        link.textContent = name;
+        link.title = 'Nhãn ' + name;
         labelCloud.appendChild(link);
       });
       menuNav.appendChild(labelCloud);

@@ -328,6 +328,12 @@ html[data-qcx-admin='1'] .footer-navigation-bar {
   white-space: nowrap !important;
   flex-shrink: 0 !important;
 }
+@media (max-width: 860px), (pointer: coarse) {
+  #qcx-menu-search .qcx-menu-search-hint,
+  .qcx-menu-search-row .qcx-menu-search-hint {
+    display: none !important;
+  }
+}
 #qcx-menu-search.qcx-menu-search-row:hover,
 .qcx-menu-search-row:hover,
 #qcx-menu-search.qcx-menu-search-row:active,
