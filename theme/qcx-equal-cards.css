@@ -36,8 +36,8 @@
   width: 100% !important;
   height: 100% !important;
   min-height: 0 !important;
-  content-visibility: visible !important;
-  contain-intrinsic-size: auto !important;
+  content-visibility: auto !important;
+  contain-intrinsic-size: auto 360px !important;
 }
 [data-page-item='multiple'] .card-content,
 .qcx-rescue-blog .card-content,

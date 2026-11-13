@@ -119,22 +119,56 @@
     return (entry.category || []).map(function(cat){ return cat.term; }).filter(Boolean);
   }
 
-  function upgradeThumb(url) {
+  function isLikelyAnimatedUrl(url) {
+    var u = String(url || '');
+    if (/\.gif(?:$|[?#])/i.test(u)) return true;
+    if (/\/[^/?#]*gif[^/?#]*\.(?:gif|webp)(?:$|[?#])/i.test(u)) return true;
+    return false;
+  }
+
+  function upgradeThumb(url, opts) {
     if (!url) return '';
+    var anim = !!(opts && opts.anim) || isLikelyAnimatedUrl(url);
+    var crop = anim ? 'w400-h225-c' : 'w800-h450-c';
+    var bare = anim ? 's400' : 's800';
     return String(url)
-      .replace(/\/s\d+-c\//i, '/w800-h450-c/')
-      .replace(/=s\d+-c(?=$|[/?#])/i, '=w800-h450-c')
-      .replace(/\/s72\//i, '/s800/')
-      .replace(/=s72(?=$|[/?#])/i, '=s800');
+      .replace(/\/s\d+-c\//i, '/' + crop + '/')
+      .replace(/=s\d+-c(?=$|[/?#])/i, '=' + crop)
+      .replace(/\/w\d+-h\d+-c\//i, '/' + crop + '/')
+      .replace(/=w\d+-h\d+-c(?=$|[/?#])/i, '=' + crop)
+      .replace(/\/s72\//i, '/' + bare + '/')
+      .replace(/=s72(?=$|[/?#])/i, '=' + bare);
+  }
+
+  function entryThumbMeta(entry) {
+    try {
+      if (entry.media$thumbnail && entry.media$thumbnail.url) {
+        var feedUrl = entry.media$thumbnail.url;
+        return {
+          url: upgradeThumb(feedUrl, { anim: isLikelyAnimatedUrl(feedUrl) }),
+          anim: isLikelyAnimatedUrl(feedUrl),
+          source: 'feed'
+        };
+      }
+    } catch (ignore) {}
+    var html = (entry.content && entry.content.$t) || '';
+    var re = /<img[^>]+src=["']([^"']+)["']/gi;
+    var match;
+    while ((match = re.exec(html))) {
+      var src = match[1];
+      if (isLikelyAnimatedUrl(src)) continue;
+      return { url: upgradeThumb(src), anim: false, source: 'body' };
+    }
+    /* Last resort: allow GIF body thumb but smaller */
+    var gifMatch = String(html).match(/<img[^>]+src=["']([^"']+\.gif[^"']*)["']/i);
+    if (gifMatch) {
+      return { url: upgradeThumb(gifMatch[1], { anim: true }), anim: true, source: 'body-gif' };
+    }
+    return { url: '', anim: false, source: '' };
   }
 
   function entryThumb(entry) {
-    try {
-      if (entry.media$thumbnail && entry.media$thumbnail.url) return upgradeThumb(entry.media$thumbnail.url);
-    } catch (ignore) {}
-    var html = (entry.content && entry.content.$t) || '';
-    var match = String(html).match(/<img[^>]+src=["']([^"']+)["']/i);
-    return match ? upgradeThumb(match[1]) : '';
+    return entryThumbMeta(entry).url;
   }
 
   function ensureHeaderSearch() {
@@ -221,7 +255,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.65/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.66/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -1253,14 +1287,21 @@
     }
   }
 
-  function cardFromEntry(entry) {
+  function cardFromEntry(entry, index) {
     var title = (entry.title && entry.title.$t) || 'Bài viết';
     var href = entryLink(entry) || '/';
     var labels = entryLabels(entry).slice(0, 2);
-    var thumb = entryThumb(entry);
+    var meta = entryThumbMeta(entry);
+    var thumb = meta.url;
+    var eager = index === 0;
     var col = el('div', 'col-md-4');
     var media = thumb
-      ? '<img class="qcx-card-media" alt="' + escapeHtml(title) + '" loading="lazy" src="' + escapeHtml(thumb) + '" width="1200" height="675"/>'
+      ? ('<img class="qcx-card-media" alt="' + escapeHtml(title) + '"' +
+        (meta.anim ? ' data-qcx-anim="1"' : '') +
+        (eager
+          ? ' loading="eager" fetchpriority="high" decoding="async"'
+          : ' loading="lazy" decoding="async"') +
+        ' src="' + escapeHtml(thumb) + '" width="1200" height="675"/>')
       : '<span class="qcx-card-noimg" aria-hidden="true">// no image</span>';
     var labelHtml = labels.map(function(label){
       return '<a href="/search/label/' + encodeURIComponent(label) + '" rel="tag">' + escapeHtml(label) + '</a>';
@@ -1363,7 +1404,7 @@
       var start = (page - 1) * PAGE_SIZE;
       var slice = entries.slice(start, start + PAGE_SIZE);
       row.innerHTML = '';
-      slice.forEach(function(entry){ row.appendChild(cardFromEntry(entry)); });
+      slice.forEach(function(entry, i){ row.appendChild(cardFromEntry(entry, i)); });
       cleanCardSnippets(row);
       window.setTimeout(function(){
         cleanCardSnippets(row);
