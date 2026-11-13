@@ -221,7 +221,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.34/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.35/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
 
@@ -455,12 +455,20 @@
       '.footer-navigation-bar>div>ul>li>a>.icon>svg,#qcx-native-tabbar>div>ul>li>a>.icon>svg{width:22px!important;height:22px!important;fill:currentColor!important}' +
       '.footer-navigation-bar>div>ul>li>a>.title,#qcx-native-tabbar>div>ul>li>a>.title{font-size:10px!important;line-height:1.1!important;' +
       'white-space:nowrap!important;overflow:hidden!important;max-width:100%!important;text-overflow:ellipsis!important}' +
+      '.footer-navigation-bar>div>ul>li>a:hover,#qcx-native-tabbar>div>ul>li>a:hover,' +
+      '.footer-navigation-bar>div>ul>li>a:focus-visible,#qcx-native-tabbar>div>ul>li>a:focus-visible,' +
       '.footer-navigation-bar>div>ul>li>a:active,#qcx-native-tabbar>div>ul>li>a:active,' +
       '.footer-navigation-bar>div>ul>li>a.qcx-nav-active,#qcx-native-tabbar>div>ul>li>a.qcx-nav-active,' +
       '.footer-navigation-bar>div>ul>li>a[aria-current=\"page\"],#qcx-native-tabbar>div>ul>li>a[aria-current=\"page\"]{' +
-      'color:var(--accent,#28d28c)!important;fill:var(--accent,#28d28c)!important}' +
+      'color:#28d28c!important;fill:#28d28c!important;opacity:1!important}' +
+      '.footer-navigation-bar>div>ul>li>a>.icon>svg,#qcx-native-tabbar>div>ul>li>a>.icon>svg,' +
+      '.footer-navigation-bar>div>ul>li>a>.icon>svg path,#qcx-native-tabbar>div>ul>li>a>.icon>svg path{fill:currentColor!important}' +
       'body{padding-bottom:calc(60px + env(safe-area-inset-bottom,0px))!important}' +
       '.centered-top .hamburger-menu,button.hamburger-menu{display:none!important}' +
+      /* Hide signal chrome; pull hero up */
+      '.qcx-signal-header,.qcx-topbar{display:none!important;height:0!important;margin:0!important;padding:0!important;overflow:hidden!important}' +
+      '.qcx-hero{padding-top:8px!important;margin-top:0!important}' +
+      'main.main-container{padding-top:12px!important}' +
       '}' +
       'body#layout .footer-navigation-bar,body#layout #qcx-native-tabbar{display:none!important}';
     var style = document.getElementById('qcx-native-tabbar-css');

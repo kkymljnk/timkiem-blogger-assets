@@ -525,6 +525,23 @@ body.qcx-menu-open {
 
 /* Native mobile tabbar (Home / Menu / Top|Share / Chat) — Search is drawer-only */
 @media (max-width: 860px) {
+  /* Hide signal / online + @superkhung; pull AI HUB hero up */
+  .qcx-signal-header,
+  .qcx-topbar {
+    display: none !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    border: 0 !important;
+  }
+  .qcx-hero {
+    padding-top: 8px !important;
+    margin-top: 0 !important;
+  }
+  main.main-container {
+    padding-top: 12px !important;
+  }
   .footer-navigation-bar,
   #qcx-native-tabbar {
     display: block !important;
@@ -610,14 +627,26 @@ body.qcx-menu-open {
     max-width: 100% !important;
     text-overflow: ellipsis !important;
   }
+  /* Mint — NOT var(--accent) which theme sets to near-black #1c2420 */
+  .footer-navigation-bar > div > ul > li > a:hover,
+  #qcx-native-tabbar > div > ul > li > a:hover,
+  .footer-navigation-bar > div > ul > li > a:focus-visible,
+  #qcx-native-tabbar > div > ul > li > a:focus-visible,
   .footer-navigation-bar > div > ul > li > a:active,
   #qcx-native-tabbar > div > ul > li > a:active,
   .footer-navigation-bar > div > ul > li > a.qcx-nav-active,
   #qcx-native-tabbar > div > ul > li > a.qcx-nav-active,
   .footer-navigation-bar > div > ul > li > a[aria-current='page'],
   #qcx-native-tabbar > div > ul > li > a[aria-current='page'] {
-    color: var(--accent, #28d28c) !important;
-    fill: var(--accent, #28d28c) !important;
+    color: #28d28c !important;
+    fill: #28d28c !important;
+    opacity: 1 !important;
+  }
+  .footer-navigation-bar > div > ul > li > a > .icon > svg,
+  #qcx-native-tabbar > div > ul > li > a > .icon > svg,
+  .footer-navigation-bar > div > ul > li > a > .icon > svg path,
+  #qcx-native-tabbar > div > ul > li > a > .icon > svg path {
+    fill: currentColor !important;
   }
   body {
     padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px)) !important;
