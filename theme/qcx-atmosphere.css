@@ -90,6 +90,34 @@ body > #outer-wrapper,
   transform: scale(1.03) !important;
 }
 
+/* Subscribe rail — restore card panel (was transparent on live) */
+.qcx-subscribe-card,
+.qcx-subscribe-card[data-qcx-footer="1"] {
+  background:
+    linear-gradient(180deg, rgba(16, 24, 18, .96) 0%, rgba(10, 16, 12, .98) 100%) !important;
+  border: 1px solid var(--line, #1d2a1f) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, .28) !important;
+  overflow: hidden !important;
+  position: relative !important;
+}
+.qcx-subscribe-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(520px 220px at 18% 0%, rgba(0, 240, 163, .07), transparent 62%),
+    linear-gradient(var(--line, #1d2a1f) 1px, transparent 1px) 0 0 / 28px 28px,
+    linear-gradient(90deg, var(--line, #1d2a1f) 1px, transparent 1px) 0 0 / 28px 28px;
+  opacity: .55;
+  z-index: 0;
+}
+.qcx-subscribe-card > * {
+  position: relative;
+  z-index: 1;
+}
+
 /* Soften motion only — keep a visible hover cue */
 @media (prefers-reduced-motion: reduce) {
   [data-page-item='multiple'] .card,
