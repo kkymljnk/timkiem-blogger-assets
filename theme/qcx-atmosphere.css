@@ -523,7 +523,7 @@ body.qcx-menu-open {
   background: rgba(255, 255, 255, .06) !important;
 }
 
-/* XML native mobile tabbar (Home / Menu / Search / Top|Share / Chat) */
+/* Native mobile tabbar (Home / Menu / Top|Share / Chat) — Search is drawer-only */
 @media (max-width: 860px) {
   .footer-navigation-bar,
   #qcx-native-tabbar {

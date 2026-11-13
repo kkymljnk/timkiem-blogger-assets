@@ -100,7 +100,71 @@ body#layout .main-wrapper{
   padding:0!important;
   margin:0 0 14px!important;
   box-sizing:border-box!important;
-  overflow:hidden!important;
+  overflow:visible!important;
+}
+/* Layout editor: restore header/menu chrome so Edit/Delete are not clipped. */
+body#layout header:not(.post-header),
+body#layout header{
+  display:block!important;
+  height:auto!important;
+  min-height:0!important;
+  overflow:visible!important;
+  position:static!important;
+  z-index:auto!important;
+  background:transparent!important;
+  border:0!important;
+}
+body#layout .menu.section,
+body#layout #menu.menu,
+body#layout #menu{
+  -webkit-transform:none!important;
+  -ms-transform:none!important;
+  transform:none!important;
+  position:relative!important;
+  top:auto!important;
+  bottom:auto!important;
+  left:auto!important;
+  width:auto!important;
+  min-height:92px!important;
+  overflow:visible!important;
+}
+body#layout .widget .edit,
+body#layout .widget a.edit,
+body#layout span.widget-toolbar,
+body#layout .layout-widget-state{
+  display:inline-block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+}
+/* Layout board: force native header/gadgets visible (live hide stays outside #layout). */
+body#layout header:not(.post-header),
+body#layout #header,
+body#layout .header.section,
+body#layout #header-wrapper,
+body#layout .header-outer,
+body#layout .header-inner{
+  display:block!important;
+  height:auto!important;
+  min-height:0!important;
+  overflow:visible!important;
+  visibility:visible!important;
+  opacity:1!important;
+  position:static!important;
+  z-index:auto!important;
+}
+body#layout .widget{
+  display:block!important;
+}
+body#layout .widget .edit,
+body#layout .widget a.edit,
+body#layout .deletelink,
+body#layout a.delete,
+body#layout .add_widget{
+  display:inline-block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
 }
 body#layout #brand,
 body#layout #header,
@@ -514,7 +578,7 @@ header .header{-webkit-box-flex:1;-ms-flex:1;flex:1;min-height:50px;height:100%;
 .footer-navigation-bar.visible{overflow:hidden}
 .footer-navigation-bar>div{display:-ms-flexbox;display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center}
 .footer-navigation-bar>div>ul{display:-ms-flexbox;display:-webkit-flex;display:flex;width:100%;margin:0;padding:0;list-style:none}
-.footer-navigation-bar>div>ul>li{width:20%}
+.footer-navigation-bar>div>ul>li{width:25%}
 .footer-navigation-bar>div>ul>li>a{min-height:50px;font-size:.6rem;text-transform:uppercase;display:-ms-flexbox;display:-webkit-flex;display:flex;justify-content:center;align-items:center;flex-flow:column;box-sizing:border-box}
 .footer-navigation-bar>div>ul>li>a:not(.empty-link){color:currentColor;fill:currentcolor}
 .footer-navigation-bar>div>ul>li>a.empty-link{pointer-events:none;color:#aaa;fill:#aaa}
@@ -3012,7 +3076,7 @@ footer.footer #footer.qcx-footer-gadgets .HTML {
 
   .footer-navigation-bar > div > ul > li,
   #qcx-native-tabbar > div > ul > li {
-    width: 20% !important;
+    width: 25% !important;
     flex: 1 1 0 !important;
     display: flex !important;
     align-items: center !important;
@@ -6283,8 +6347,8 @@ body.qcx-lightbox-open { overflow: hidden !important; }
   <b:if cond='!data:view.isError'>	
 	<header>
       <div class='main-container'>
-        <b:section class='qcx-brand-zone' id='brand' maxwidgets='1' name='Thương hiệu CÔNG CỤ.AI' showaddelement='false'>
-          <b:widget id='HTML3' locked='true' title='Logo CÔNG CỤ.AI' type='HTML' version='2' visible='true'>
+        <b:section class='qcx-brand-zone' id='brand' maxwidgets='5' name='Thương hiệu CÔNG CỤ.AI' showaddelement='true'>
+          <b:widget id='HTML3' locked='false' title='Logo CÔNG CỤ.AI' type='HTML' version='2' visible='true'>
             <b:widget-settings>
               <b:widget-setting name='content'><![CDATA[<div class="qcx-layout-brand"><img alt="CÔNG CỤ.AI" height="72" src="https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.12.13/theme/qcx-brand-mark.png" width="72"/><div><strong>CÔNG CỤ.AI</strong><span>AI HUB TOOLS · Layout &amp; branding</span></div></div>]]></b:widget-setting>
             </b:widget-settings>
@@ -6300,12 +6364,10 @@ body.qcx-lightbox-open { overflow: hidden !important; }
 </b:includable>
           </b:widget>
         </b:section>
-        <b:section class='header flex-align' id='header' maxwidgets='2' name='Tìm kiếm &amp; Header' showaddelement='false'>
-          <b:widget id='BlogSearch1' locked='true' title='Tìm kiếm' type='BlogSearch' version='2' visible='true'>
+        <b:section class='header flex-align' id='header' maxwidgets='3' name='Tìm kiếm &amp; Header' showaddelement='true'>
+          <b:widget id='BlogSearch1' locked='false' title='Tìm kiếm' type='BlogSearch' version='2' visible='true'>
             <b:includable id='main'>
   <b:attr name='class' value='widget web-search flex-align'/>
-  <b:attr name='id' value=''/>
-  <b:attr name='data-version' value=''/>
   <b:include name='content'/>
 </b:includable>
             <b:includable id='content'>
@@ -6337,40 +6399,34 @@ body.qcx-lightbox-open { overflow: hidden !important; }
   <button class='submit has-hover has-svg-icon' expr:aria-label='data:messages.search' type='submit'/>
 </b:includable>
           </b:widget>
-          <b:widget id='HTML1' locked='true' title='Button' type='HTML' version='2' visible='true'>
+          <b:widget id='HTML1' locked='false' title='Button' type='HTML' version='2' visible='true'>
             <b:widget-settings>
               <b:widget-setting name='content'/>
             </b:widget-settings>
             <b:includable id='main'>
-  <b:attr name='class' value='nav-icon'/>
-  <b:attr name='id' value=''/>
-  <b:attr name='data-version' value=''/>
+  <b:attr name='class' value='widget nav-icon'/>
   <button aria-expanded='false' aria-label='menu' aria-pressed='false' class='open has-hover has-svg-icon'/>
 </b:includable>
           </b:widget>
         </b:section>
-        <b:section class='menu' id='menu' maxwidgets='2' name='Menu điều hướng' showaddelement='false'>
-          <b:widget id='HTML2' locked='true' title='Trang chủ' type='HTML' version='2' visible='true'>
+        <b:section class='menu' id='menu' maxwidgets='4' name='Menu điều hướng' showaddelement='true'>
+          <b:widget id='HTML2' locked='false' title='Trang chủ' type='HTML' version='2' visible='true'>
             <b:widget-settings>
               <b:widget-setting name='content'/>
             </b:widget-settings>
             <b:includable id='main'>
-  <b:attr name='id' value=''/>
-  <b:attr name='data-version' value=''/>
   <div class='title home'>
     <a expr:href='data:blog.homepageUrl' expr:title='data:messages.home'><data:messages.home/></a>
     <button aria-label='close menu' class='close has-svg-icon'/>
   </div>
 </b:includable>
           </b:widget>
-          <b:widget id='PageList1' locked='true' title='Trang chủ' type='PageList' version='2' visible='true'>
+          <b:widget id='PageList1' locked='false' title='Trang chủ' type='PageList' version='2' visible='true'>
             <b:widget-settings>
               <b:widget-setting name='pageListJson'>{}</b:widget-setting>
               <b:widget-setting name='homeTitle'>Trang chủ</b:widget-setting>
             </b:widget-settings>
             <b:includable id='main'>
-  <b:attr name='id' value=''/>
-  <b:attr name='data-version' value=''/>
   <div class='title has-hover'><data:title/></div>
   <b:include name='content'/>
 </b:includable>
@@ -6419,7 +6475,7 @@ body.qcx-lightbox-open { overflow: hidden !important; }
       <b:section class='qcx-addon-zone qcx-homepage-widgets' cond='data:view.isLayoutMode or data:view.isHomepage' id='homepage-widgets' maxwidgets='3' name='Thêm banner trang chủ' showaddelement='true'/>
       <div class='main-wrapper'>
         <b:section class='main' id='main' maxwidgets='1' name='Bài viết chính (Blog)' showaddelement='true'>
-          <b:widget id='Blog1' locked='true' title='Bài đăng trên Blog' type='Blog' version='2' visible='true'>
+          <b:widget id='Blog1' locked='false' title='Bài đăng trên Blog' type='Blog' version='2' visible='true'>
             <b:widget-settings>
               <b:widget-setting name='showDateHeader'>false</b:widget-setting>
               <b:widget-setting name='commentLabel'>Questions</b:widget-setting>
@@ -6442,8 +6498,6 @@ body.qcx-lightbox-open { overflow: hidden !important; }
               <b:widget-setting name='showReactions'>false</b:widget-setting>
             </b:widget-settings>
             <b:includable id='main'>
-  <b:attr name='id' value=''/>
-  <b:attr name='data-version' value=''/>
   <b:if cond='data:view.isPost'> 
     <b:loop values='data:posts' var='post'>
       <b:loop values='data:post.labels' var='label'>
@@ -7466,8 +7520,8 @@ body.qcx-lightbox-open { overflow: hidden !important; }
 </b:includable>
           </b:widget>
         </b:section>
-        <b:section class='sidebar qcx-addon-zone' cond='data:view.isLayoutMode or data:view.isSingleItem' id='sidebar' maxwidgets='1' name='Thanh bên' showaddelement='false'>
-          <b:widget id='HTML4' locked='true' title='Tutorial' type='HTML' version='2' visible='true'>
+        <b:section class='sidebar qcx-addon-zone' cond='data:view.isLayoutMode or data:view.isSingleItem' id='sidebar' maxwidgets='3' name='Thanh bên' showaddelement='true'>
+          <b:widget id='HTML4' locked='false' title='Tutorial' type='HTML' version='2' visible='true'>
             <b:widget-settings>
               <b:widget-setting name='content'><![CDATA[<div class="qcx-related-heading" role="heading" aria-level="2">Tutorial</div><ul class="qcx-latest-list" aria-busy="true" aria-label="Tutorial"></ul>]]></b:widget-setting>
             </b:widget-settings>
@@ -7509,7 +7563,6 @@ body.qcx-lightbox-open { overflow: hidden !important; }
             </b:if>
           </li>
           <li><a aria-label='Menu' class='open-menu' href='javascript:void(0)' role='button' title='Menu'><div class='icon'><svg height='24' viewBox='0 0 24 24' width='24'><path d='M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z'/></svg></div><div class='title'>Menu</div></a></li>
-          <li><a aria-label='Tìm kiếm' class='open-search' href='javascript:void(0)' role='button' title='Tìm kiếm'><div class='icon'><svg height='20' viewBox='0 0 20 20' width='20'><circle cx='9' cy='9' fill='none' r='7' stroke='currentColor' stroke-width='1.2'/><path d='M14 14 L18 18' fill='none' stroke='currentColor' stroke-width='1.2'/></svg></div><div class='title'>Search</div></a></li>
           <b:if cond='data:view.isPost or data:view.isPage'>
             <li><a aria-label='Chia sẻ' class='share-post' expr:data-share-url='data:view.url.canonical' href='javascript:void(0)' role='button' title='Chia sẻ'><div class='icon'><svg height='22' viewBox='0 0 24 24' width='22'><path d='M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z'/></svg></div><div class='title'>Share</div></a></li>
             <li><a aria-label='Telegram' href='https://t.me/superkhung' rel='noopener noreferrer' target='_blank' title='Telegram'><div class='icon'><svg height='22' viewBox='0 0 24 24' width='22'><path d='M9.78,18.65L10.06,14.42L17.74,7.5C18.08,7.19 17.67,7.04 17.22,7.31L7.74,13.3L3.64,12C2.76,11.75 2.75,11.14 3.84,10.7L19.81,4.54C20.54,4.21 21.24,4.72 20.96,5.84L18.24,18.65C18.05,19.56 17.5,19.78 16.74,19.36L12.6,16.3L10.61,18.23C10.38,18.46 10.19,18.65 9.78,18.65Z'/></svg></div><div class='title'>Chat</div></a></li>
