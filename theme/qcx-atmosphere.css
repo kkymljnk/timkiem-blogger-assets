@@ -65,7 +65,7 @@ body > #outer-wrapper,
 .qcx-brand-svg.is-blinking .qcx-eye {
   animation: qcx-ghost-blink .18s ease-in-out 1;
 }
-/* Brand avatar — lift on hover/active (no mint glow) */
+/* Brand avatar — hover/active: no lift/scale/glow (blink only via JS) */
 body:not(#layout) .qcx-avatar:hover,
 body:not(#layout) .qcx-avatar:active,
 body:not(#layout) .qcx-avatar-wrap:hover .qcx-avatar,
@@ -78,7 +78,7 @@ body:not(#layout) .qcx-brand-svg:active,
 .qcx-avatar-wrap:active .qcx-avatar,
 .qcx-brand-svg:hover,
 .qcx-brand-svg:active {
-  transform: translateY(-4px) scale(1.06) !important;
+  transform: none !important;
   filter: none !important;
 }
 
