@@ -232,7 +232,12 @@
     menuSearch.id = 'qcx-menu-search';
     menuSearch.type = 'button';
     menuSearch.setAttribute('aria-label', 'Mở tìm kiếm');
-    menuSearch.innerHTML = '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.6"/><path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Tìm bài viết, nhãn…</span>';
+    var isMacHint = /Mac|iPhone|iPad|iPod/i.test(navigator.platform || '') || /Mac OS/i.test(navigator.userAgent || '');
+    var spaceHint = isMacHint ? '\u2318 Space' : 'Ctrl Space';
+    menuSearch.innerHTML =
+      '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.6"/><path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>' +
+      '<span>Tìm bài viết, nhãn…</span>' +
+      '<kbd class="qcx-menu-search-hint" aria-hidden="true">' + spaceHint + '</kbd>';
 
     var menuNav = createElement('nav');
     menuNav.id = 'qcx-menu-nav';
@@ -791,7 +796,8 @@
       var target = event.target;
       var isTyping = target && (/^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName) || target.isContentEditable);
       var isCmdK = (event.key === 'k' || event.key === 'K') && (event.metaKey || event.ctrlKey);
-      if (isCmdK) {
+      var isCmdSpace = event.key === ' ' && (event.metaKey || event.ctrlKey) && !event.altKey;
+      if (isCmdK || isCmdSpace) {
         event.preventDefault();
         event.stopImmediatePropagation();
         if (searchOverlay.classList.contains('open')) closeSearch();

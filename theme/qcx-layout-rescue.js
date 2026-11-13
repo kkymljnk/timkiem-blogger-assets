@@ -221,7 +221,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.45/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.46/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
 
@@ -370,9 +370,11 @@
       '.qcx-subscribe-card .qcx-sc-btn.qcx-sc-btn-outline:hover,a.qcx-sc-btn.qcx-sc-btn-outline:hover{' +
       'border-color:#28d28c!important;color:#28d28c!important;-webkit-text-fill-color:#28d28c!important}' +
       '@media (max-width:860px){.qcx-subscribe-card,.qcx-subscribe-card[data-qcx-footer=\"1\"]{' +
-      'flex-direction:column!important;align-items:stretch!important;margin:20px 12px 16px!important;padding:14px!important;gap:12px!important}' +
-      '.qcx-subscribe-card .qcx-sc-actions{width:100%!important;flex-direction:column!important}' +
-      '.qcx-subscribe-card .qcx-sc-btn,a.qcx-sc-btn{width:100%!important;min-width:0!important}}' +
+      'flex-direction:column!important;align-items:stretch!important;justify-content:flex-start!important;' +
+      'margin:16px 12px 14px!important;padding:12px!important;gap:8px!important}' +
+      '.qcx-subscribe-card .qcx-sc-text{flex:0 0 auto!important}' +
+      '.qcx-subscribe-card .qcx-sc-actions{width:100%!important;flex-direction:column!important;gap:8px!important}' +
+      '.qcx-subscribe-card .qcx-sc-btn,a.qcx-sc-btn{width:100%!important;min-width:0!important;min-height:40px!important}}' +
       /* P3: // N phút đọc */
       '.qcx-read-time,[data-page-type=\"post\"] .post-header .qcx-read-time,.qcx-rescue-single .post-header .qcx-read-time{' +
       'display:block!important;margin:6px 0 0!important;padding:0!important;' +
@@ -418,7 +420,13 @@
       'gap:10px!important;width:calc(100% - 32px)!important;margin:0 16px 12px!important;min-height:44px!important;' +
       'padding:0 14px!important;border:1px solid rgba(255,255,255,.1)!important;border-radius:12px!important;' +
       'background:rgba(255,255,255,.04)!important;color:rgba(190,211,198,.72)!important;font-size:13px!important;' +
-      'text-align:left!important;cursor:pointer!important;flex-shrink:0!important}' +
+      'text-align:left!important;cursor:pointer!important;flex-shrink:0!important;visibility:visible!important;opacity:1!important}' +
+      '#qcx-menu-search.qcx-menu-search-row>span{flex:1 1 auto!important;min-width:0!important}' +
+      '#qcx-menu-search .qcx-menu-search-hint,.qcx-menu-search-row .qcx-menu-search-hint{display:inline-flex!important;' +
+      'align-items:center!important;margin-left:auto!important;padding:2px 7px!important;' +
+      'border:1px solid rgba(255,255,255,.12)!important;border-radius:6px!important;background:rgba(0,0,0,.28)!important;' +
+      'color:rgba(190,211,198,.78)!important;font:600 10px/1.2 var(--mono,ui-monospace,monospace)!important;' +
+      'letter-spacing:.02em!important;white-space:nowrap!important;flex-shrink:0!important}' +
       '#qcx-menu-nav{flex:1!important;padding:0 0 12px!important;overflow-y:auto!important;' +
       'overscroll-behavior:contain!important;-webkit-overflow-scrolling:touch!important}' +
       '.qcx-menu-link{display:flex!important;align-items:center!important;gap:10px!important;min-height:44px!important;' +
@@ -641,6 +649,17 @@
     ensureMenuDrawer();
     ensureNativeTabbar();
     var menu = document.getElementById('qcx-menu');
+    /* Stale drawer without Search row — tear down and rebuild. */
+    if (menu && !document.getElementById('qcx-menu-search')) {
+      try {
+        var staleMenu = document.getElementById('qcx-menu');
+        var staleBd = document.getElementById('qcx-menu-backdrop');
+        if (staleMenu && staleMenu.parentNode) staleMenu.parentNode.removeChild(staleMenu);
+        if (staleBd && staleBd.parentNode) staleBd.parentNode.removeChild(staleBd);
+      } catch (ignoreStale) {}
+      document.documentElement.removeAttribute('data-qcx-nav-ready');
+      menu = null;
+    }
     if (!menu) {
       if (typeof window.__qcxInitMobileNav === 'function') {
         document.documentElement.removeAttribute('data-qcx-nav-ready');
