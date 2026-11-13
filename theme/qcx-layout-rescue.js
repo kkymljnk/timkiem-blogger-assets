@@ -221,7 +221,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.61/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.62/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -1908,7 +1908,87 @@
         'html[data-qcx-admin=\"1\"] #qcx-admin-root .gate .actions .primary{' +
         'display:inline-flex!important;align-items:center!important;justify-content:center!important;' +
         'background:#7dcea0!important;color:#06110a!important;border:1px solid transparent!important;' +
-        'font-weight:700!important;cursor:pointer!important}';
+        'font-weight:700!important;cursor:pointer!important}' +
+        /* Keep boot img loadable even if theme skin sets display:none */
+        'html[data-qcx-admin=\"1\"] #qcx-admin-boot{' +
+        'display:block!important;position:absolute!important;width:1px!important;height:1px!important;' +
+        'opacity:0!important;pointer-events:none!important;left:-9999px!important;overflow:hidden!important}';
+    /* Failsafe: full cockpit controls when page #qcx-admin-ui never injected */
+    if (!document.getElementById('qcx-admin-ui')) {
+      adminCss +=
+        '#qcx-admin-root{--qcx-admin-radius:8px;--qcx-admin-ok:#7dcea0;--qcx-admin-warn:#e0b35a;' +
+        '--qcx-admin-fill:#141a16;--qcx-admin-hover:#1c2420;--qcx-admin-mint:#7dcea0;' +
+        '--qcx-admin-mint-ink:#06110a;--qcx-admin-input:#0b120c;' +
+        '--sans:\"IBM Plex Sans\",\"Segoe UI\",sans-serif;' +
+        '--mono:\"JetBrains Mono\",ui-monospace,\"SF Mono\",Menlo,Consolas,monospace;' +
+        'color:var(--fg,#e6f5ec);font:13px/1.4 var(--sans)}' +
+        '#qcx-admin-root,#qcx-admin-root *{box-sizing:border-box}' +
+        '#qcx-admin-root header{display:flex!important;position:relative!important;height:auto!important;' +
+        'overflow:visible!important;visibility:visible!important;opacity:1!important;' +
+        'align-items:center;justify-content:space-between;gap:8px 12px;' +
+        'margin:0 0 8px!important;padding:2px 0 6px!important;' +
+        'border:0!important;border-bottom:1px solid var(--line,#1d2a1f)!important;background:transparent!important}' +
+        '#qcx-admin-root header h1{margin:0;font:700 13px/1.2 var(--mono);letter-spacing:.04em;' +
+        'text-transform:uppercase;color:var(--fg,#e6f5ec)}' +
+        '#qcx-admin-root header h1 span{color:var(--qcx-admin-mint)}' +
+        '#qcx-admin-root .panel{' +
+        'background:linear-gradient(180deg,#101a12 0%,var(--card,#0e170f) 100%);' +
+        'border:1px solid var(--line,#1d2a1f);border-radius:var(--qcx-admin-radius);' +
+        'padding:12px;box-shadow:0 6px 20px rgba(0,0,0,.22)}' +
+        '#qcx-admin-root .grid{display:grid!important;' +
+        'grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr)!important;gap:10px!important}' +
+        '#qcx-admin-root .grid.hidden,#qcx-admin-root .hidden{display:none!important}' +
+        '#qcx-admin-root label{display:block;margin:0 0 4px;color:var(--fg-dim,#8aa596);' +
+        'font:600 10px/1.15 var(--mono);letter-spacing:.06em;text-transform:uppercase}' +
+        '#qcx-admin-root .field{margin-bottom:8px}' +
+        '#qcx-admin-root .row{display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px}' +
+        '#qcx-admin-root input,#qcx-admin-root select,#qcx-admin-root textarea{' +
+        'width:100%;min-height:34px;background:var(--qcx-admin-input);' +
+        'border:1px solid #243328;border-radius:7px;color:var(--fg,#e6f5ec);' +
+        'padding:7px 10px;font:500 12.5px/1.35 var(--mono);appearance:none}' +
+        '#qcx-admin-root textarea{min-height:72px;resize:vertical;padding-top:8px}' +
+        '#qcx-admin-root textarea.tall{min-height:120px}' +
+        '#qcx-admin-root input::placeholder,#qcx-admin-root textarea::placeholder{' +
+        'color:#6f8576;opacity:1;font-weight:400}' +
+        '#qcx-admin-root input:focus,#qcx-admin-root select:focus,#qcx-admin-root textarea:focus{' +
+        'outline:none;border-color:var(--qcx-admin-mint);' +
+        'box-shadow:0 0 0 2px rgba(125,206,160,.16);background:#0d1610}' +
+        '#qcx-admin-root input:disabled,#qcx-admin-root textarea:disabled{' +
+        'opacity:.45;cursor:not-allowed;background:#0a100b}' +
+        '#qcx-admin-root .actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}' +
+        '#qcx-admin-root button,#qcx-admin-root .btn{' +
+        'appearance:none;display:inline-flex;align-items:center;justify-content:center;' +
+        'gap:6px;min-height:34px;border:1px solid #2a3830;background:var(--qcx-admin-fill);' +
+        'color:#e8efe9;border-radius:7px;padding:6px 11px;font:700 11px/1 var(--mono);' +
+        'letter-spacing:.03em;cursor:pointer}' +
+        '#qcx-admin-root button:hover{background:var(--qcx-admin-hover);border-color:#3a4a40}' +
+        '#qcx-admin-root button.primary{background:var(--qcx-admin-mint);' +
+        'color:var(--qcx-admin-mint-ink);border-color:var(--qcx-admin-mint)}' +
+        '#qcx-admin-root button.ghost{background:transparent;border-color:#2a3830;' +
+        'color:var(--fg-dim,#8aa596);min-height:30px;padding:4px 9px;font-size:10px}' +
+        '#qcx-admin-root button:disabled{opacity:.4;cursor:not-allowed}' +
+        '#qcx-admin-root .status{margin-top:8px;padding:7px 10px;border-radius:7px;' +
+        'border:1px solid var(--line,#1d2a1f);color:var(--fg-dim,#8aa596);' +
+        'font:11px/1.4 var(--mono);white-space:pre-wrap;background:rgba(10,15,10,.7)}' +
+        '#qcx-admin-root .status.ok{border-color:rgba(125,206,160,.45);color:var(--qcx-admin-ok);' +
+        'background:rgba(125,206,160,.06)}' +
+        '#qcx-admin-root .status.err{border-color:rgba(255,84,112,.45);color:var(--danger,#ff5470);' +
+        'background:rgba(255,84,112,.06)}' +
+        '#qcx-admin-root .status.warn{border-color:rgba(224,179,90,.45);color:var(--qcx-admin-warn);' +
+        'background:rgba(224,179,90,.06)}' +
+        '#qcx-admin-root .seg{display:inline-flex;width:100%;border:1px solid #243328;' +
+        'border-radius:7px;overflow:hidden;background:var(--qcx-admin-input);min-height:34px}' +
+        '#qcx-admin-root .seg button{flex:1;border:0;border-radius:0;min-height:34px;' +
+        'background:transparent;padding:6px 8px;color:var(--fg-dim,#8aa596);font-size:10px}' +
+        '#qcx-admin-root .seg button.active{background:rgba(125,206,160,.16);' +
+        'color:var(--qcx-admin-mint);box-shadow:inset 0 -2px 0 var(--qcx-admin-mint)}' +
+        '#qcx-admin-root .html-out{margin:0;max-height:360px;overflow:auto;background:#080d08;' +
+        'border:1px solid var(--line,#1d2a1f);border-radius:7px;padding:10px;' +
+        'font:11px/1.4 var(--mono);white-space:pre-wrap;word-break:break-word;color:#9bb5a4}' +
+        '#qcx-admin-root .hint{color:var(--fg-dim,#8aa596);font-size:11px;margin:3px 0 0}' +
+        '#qcx-admin-root code{font-family:var(--mono);color:var(--qcx-admin-mint);font-size:.92em}';
+      ensureAdminBootFromFeed();
+    }
     var st = document.getElementById('qcx-admin-chrome-css');
     if (!st) {
       st = document.createElement('style');
@@ -1916,6 +1996,37 @@
       (document.head || document.documentElement).appendChild(st);
     }
     if (st.textContent !== adminCss) st.textContent = adminCss;
+  }
+
+  function ensureAdminBootFromFeed() {
+    if (!isAdminPath()) return;
+    if (document.getElementById('qcx-admin-ui')) return;
+    if (window.__qcxAdminBooted || window.__qcxAdminCdnBooting) return;
+    window.__qcxAdminCdnBooting = 1;
+    try {
+      fetch('/feeds/pages/default/6068260621348294270?alt=json')
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          var h = (d.entry && d.entry.content && d.entry.content.$t) || '';
+          var parts = h.match(/<script\b[^>]*>([\s\S]*?)<\/script>/gi) || [];
+          var raw = '';
+          for (var i = 0; i < parts.length; i++) {
+            if (parts[i].indexOf('qcx-admin-boot-script') >= 0) {
+              raw = parts[i].replace(/^<script\b[^>]*>/i, '').replace(/<\/script>$/i, '');
+              break;
+            }
+          }
+          if (!raw) return;
+          window.__qcxAdminBooted = 1;
+          var s = document.createElement('script');
+          s.text = raw;
+          (document.body || document.documentElement).appendChild(s);
+        })
+        .catch(function () {})
+        .then(function () { window.__qcxAdminCdnBooting = 0; });
+    } catch (ignoreBoot) {
+      window.__qcxAdminCdnBooting = 0;
+    }
   }
 
   function ensureSiteFooter() {
