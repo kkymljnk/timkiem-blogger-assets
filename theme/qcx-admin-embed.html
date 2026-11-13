@@ -20,120 +20,121 @@
     </section>
 
     <section class="grid hidden" id="app" hidden="true" style="display:none!important">
-      <div class="panel">
-        <div class="panel-head">
+      <div class="compose-col">
+        <div class="panel-head compose-title">
           <h2>Soạn bài</h2>
         </div>
 
-        <div class="ai-box" id="aiBox">
-          <div class="row">
-            <div class="field" style="flex:1;min-width:0">
-              <label for="aiBrief">AI brief</label>
-              <textarea id="aiBrief" rows="2" placeholder="VD: Hướng dẫn Termux + Ollama + Claude Code trên Android, FREE unlock bằng bình luận…"></textarea>
-            </div>
+        <div class="card card-ai collapsed" id="aiBox">
+          <div class="ai-strip">
+            <button type="button" class="ghost" id="btnAiToggle" aria-expanded="false">Brief ▸</button>
+            <select id="aiModel" aria-label="Model">
+              <option value="deepseek-v4-flash" selected>deepseek-v4-flash</option>
+              <option value="claude-sonnet-4-6">claude-sonnet-4-6</option>
+              <option value="claude-haiku-4-5-20251001">claude-haiku-4-5</option>
+              <option value="claude-opus-4-8">claude-opus-4-8</option>
+              <option value="gpt-5.5">gpt-5.5</option>
+              <option value="gpt-6-sol">gpt-6-sol</option>
+              <option value="grok-4.7">grok-4.7</option>
+              <option value="glm-5.3-flash">glm-5.3-flash</option>
+              <option value="gemini-3.6-flash-high">gemini-3.6-flash-high</option>
+              <option value="MiniMax-M2.7">MiniMax-M2.7</option>
+              <option value="kimi-k3">kimi-k3</option>
+              <option value="qwen-3.8-max">qwen-3.8-max</option>
+              <option value="deepseek/deepseek-v4-pro">deepseek-v4-pro</option>
+              <option value="NARWHAL">NARWHAL</option>
+            </select>
+            <button type="button" class="primary" id="btnAiGen">AI Gen</button>
           </div>
-          <div class="row ai-row">
-            <div class="field">
-              <label for="aiModel">Model</label>
-              <select id="aiModel">
-                <option value="deepseek-v4-flash" selected>deepseek-v4-flash (nhanh)</option>
-                <option value="claude-sonnet-4-6">claude-sonnet-4-6</option>
-                <option value="claude-haiku-4-5-20251001">claude-haiku-4-5</option>
-                <option value="claude-opus-4-8">claude-opus-4-8</option>
-                <option value="gpt-5.5">gpt-5.5</option>
-                <option value="gpt-6-sol">gpt-6-sol</option>
-                <option value="grok-4.7">grok-4.7</option>
-                <option value="glm-5.3-flash">glm-5.3-flash</option>
-                <option value="gemini-3.6-flash-high">gemini-3.6-flash-high</option>
-                <option value="MiniMax-M2.7">MiniMax-M2.7</option>
-                <option value="kimi-k3">kimi-k3</option>
-                <option value="qwen-3.8-max">qwen-3.8-max</option>
-                <option value="deepseek/deepseek-v4-pro">deepseek-v4-pro</option>
-                <option value="NARWHAL">NARWHAL</option>
-              </select>
-            </div>
-            <div class="field ai-actions">
-              <label>&nbsp;</label>
-              <button type="button" class="primary" id="btnAiGen">AI Gen → form</button>
-            </div>
+          <div class="ai-brief-wrap" id="aiBriefWrap" hidden>
+            <label for="aiBrief">AI brief</label>
+            <textarea id="aiBrief" rows="3" placeholder="VD: Hướng dẫn Termux + Ollama + Claude Code trên Android, FREE unlock bằng bình luận…"></textarea>
           </div>
         </div>
 
-        <div class="row">
+        <div class="card card-meta">
           <div class="field">
             <label for="title">Title</label>
-            <input id="title" type="text" placeholder="Mobile AI Coding Claude Setup Free" />
+            <input id="title" class="input-sans" type="text" placeholder="Mobile AI Coding Claude Setup Free" />
           </div>
           <div class="field">
             <label for="slug">Slug / resourceId</label>
             <input id="slug" type="text" placeholder="mobile-claude-setup" />
+            <p class="hint">Permalink Blogger = vault id (không .html)</p>
           </div>
-        </div>
-
-        <div class="row row-3">
-          <div class="field">
-            <label>Mode</label>
-            <div class="seg" id="modeSeg">
-              <button type="button" data-mode="free" class="active">FREE</button>
-              <button type="button" data-mode="paid">PAID</button>
+          <div class="row row-meta">
+            <div class="field">
+              <label>Mode</label>
+              <div class="seg" id="modeSeg">
+                <button type="button" data-mode="free" class="active">FREE</button>
+                <button type="button" data-mode="paid">PAID</button>
+              </div>
+            </div>
+            <div class="field" id="priceField" hidden>
+              <label for="price">Price</label>
+              <input id="price" type="text" placeholder="50.000" disabled />
+            </div>
+            <div class="field field-labels">
+              <label for="labels">Labels</label>
+              <input id="labels" type="text" placeholder="AI, FREE" />
             </div>
           </div>
+          <div class="field field-optional">
+            <label for="hero">Hero URL <span class="opt">(tùy chọn)</span></label>
+            <input id="hero" type="url" placeholder="https://blogger.googleusercontent.com/..." />
+          </div>
+        </div>
+
+        <div class="card card-editor">
+          <div class="panel-head tight">
+            <h2>Nội dung</h2>
+          </div>
+          <div class="body-tabs" id="bodyTabs">
+            <div class="seg body-tab-seg" id="bodyTabSeg">
+              <button type="button" data-tab="teaser" class="active">Teaser</button>
+              <button type="button" data-tab="locked">Locked</button>
+              <button type="button" data-tab="notes">Notes</button>
+            </div>
+            <div class="field body-pane" data-pane="teaser">
+              <textarea id="teaser" class="tall" placeholder="&lt;p&gt;Lead khi còn khóa…&lt;/p&gt;"></textarea>
+            </div>
+            <div class="field body-pane hidden" data-pane="locked" hidden>
+              <textarea id="locked" class="tall" placeholder="&lt;h2&gt;…&lt;/h2&gt;&lt;p&gt;Sau unlock&lt;/p&gt;"></textarea>
+            </div>
+            <div class="field body-pane hidden" data-pane="notes" hidden>
+              <textarea id="notesHtml" class="tall" placeholder="&lt;p&gt;Hướng dẫn mở file Drive…&lt;/p&gt;"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-vault" id="vaultBar">
           <div class="field">
-            <label for="price">Price</label>
-            <input id="price" type="text" placeholder="50.000" disabled />
+            <label for="driveUrl">Drive URL (vault only)</label>
+            <input id="driveUrl" type="url" placeholder="https://drive.google.com/..." />
           </div>
-          <div class="field">
-            <label for="labels">Labels</label>
-            <input id="labels" type="text" placeholder="AI, FREE" />
+          <div class="actions vault-actions">
+            <button type="button" class="primary" id="btnVault">Lưu vault</button>
+            <button type="button" id="btnPayload">Payload</button>
+            <button type="button" id="btnCopy">Copy</button>
+            <button type="button" class="ghost" id="btnMore" title="Thêm">⋯</button>
           </div>
+          <div class="more-menu hidden" id="moreMenu" hidden>
+            <button type="button" id="btnPreview">Xem HTML</button>
+            <button type="button" id="btnPublishHint">Đăng?</button>
+          </div>
+          <div class="status" id="appStatus">Sẵn sàng.</div>
         </div>
-
-        <div class="field">
-          <label for="hero">Hero URL</label>
-          <input id="hero" type="url" placeholder="https://blogger.googleusercontent.com/..." />
-        </div>
-
-        <div class="body-tabs" id="bodyTabs">
-          <div class="seg body-tab-seg" id="bodyTabSeg">
-            <button type="button" data-tab="teaser" class="active">Teaser</button>
-            <button type="button" data-tab="locked">Locked</button>
-            <button type="button" data-tab="notes">Notes</button>
-          </div>
-          <div class="field body-pane" data-pane="teaser">
-            <textarea id="teaser" class="tall" placeholder="&lt;p&gt;Lead khi còn khóa…&lt;/p&gt;"></textarea>
-          </div>
-          <div class="field body-pane hidden" data-pane="locked" hidden>
-            <textarea id="locked" class="tall" placeholder="&lt;h2&gt;…&lt;/h2&gt;&lt;p&gt;Sau unlock&lt;/p&gt;"></textarea>
-          </div>
-          <div class="field body-pane hidden" data-pane="notes" hidden>
-            <textarea id="notesHtml" class="tall" placeholder="&lt;p&gt;Hướng dẫn mở file Drive…&lt;/p&gt;"></textarea>
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="driveUrl">Drive URL (vault only)</label>
-          <input id="driveUrl" type="url" placeholder="https://drive.google.com/..." />
-        </div>
-
-        <div class="actions">
-          <button type="button" class="primary" id="btnVault">Lưu vault</button>
-          <button type="button" id="btnPreview">Xem HTML</button>
-          <button type="button" id="btnCopy">Copy</button>
-          <button type="button" id="btnPayload">Payload</button>
-          <button type="button" class="ghost" id="btnPublishHint">Đăng?</button>
-        </div>
-        <div class="status" id="appStatus">Sẵn sàng.</div>
       </div>
 
-      <div class="panel">
+      <aside class="panel panel-rail" id="previewRail">
         <div class="panel-head">
-          <h2>Preview</h2>
+          <h2>Checklist</h2>
           <button type="button" class="ghost" id="btnToggleSource">Source</button>
         </div>
-        <div class="preview-meta" id="previewMeta"></div>
-        <div class="html-out collapsed" id="htmlOut" role="region" aria-label="HTML preview">Nhấn “Xem HTML”.</div>
-        <p class="hint publish">Payload → <code>_publish_blogger_post.py</code></p>
-      </div>
+        <ul class="checklist" id="previewMeta" aria-label="Contract checklist"></ul>
+        <div class="html-out collapsed hidden" id="htmlOut" hidden role="region" aria-label="HTML preview"></div>
+        <p class="hint publish ghost-hint" title="python _publish_blogger_post.py">Payload → publish script</p>
+      </aside>
     </section>
   </div>
   </div>
@@ -147,7 +148,7 @@
     s.type='text/css';
     (document.head||document.documentElement).appendChild(s);
   }
-  s.textContent="/* qcx-admin-ui */\n/* TIMKIEM Admin \u2014 dense cockpit (PC + mobile) */\n    #qcx-admin-root, #qcx-admin-root * { box-sizing: border-box; }\n    #qcx-admin-root {\n      --qcx-admin-radius: 8px;\n      --qcx-admin-ok: #7dcea0;\n      --qcx-admin-warn: #e0b35a;\n      --qcx-admin-fill: #141a16;\n      --qcx-admin-hover: #1c2420;\n      --qcx-admin-mint: #7dcea0;\n      --qcx-admin-mint-ink: #06110a;\n      --qcx-admin-input: #0b120c;\n      --sans: 'IBM Plex Sans', 'Segoe UI', sans-serif;\n      --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;\n      margin: 0 auto;\n      min-height: 0;\n      padding: 0 0 24px;\n      color: var(--fg, #e6f5ec);\n      font: 13px/1.4 var(--sans);\n      -webkit-font-smoothing: antialiased;\n      background: transparent;\n      width: 100%;\n      max-width: 1080px;\n    }\n    #qcx-admin-root .wrap {\n      max-width: 1080px;\n      margin: 0 auto;\n      padding: 6px 12px 24px;\n      width: 100%;\n    }\n\n    /* Login gate: compact card, slightly above center */\n    #qcx-admin-root:has(.gate:not(.hidden)) {\n      min-height: calc(100vh - 64px);\n      display: flex;\n      align-items: center;\n      justify-content: center;\n      padding: 12px 10px 28px;\n      max-width: none;\n    }\n    #qcx-admin-root:has(.gate:not(.hidden)) .wrap {\n      width: 100%;\n      max-width: 300px;\n      margin: -10vh auto 0;\n      padding: 0;\n      display: flex;\n      flex-direction: column;\n      align-items: center;\n    }\n    #qcx-admin-root:has(.gate:not(.hidden)) > .wrap > header,\n    #qcx-admin-root:has(.gate:not(.hidden)) #btnLogout {\n      display: none !important;\n    }\n    #qcx-admin-root:has(.gate:not(.hidden)) .gate {\n      width: 100%;\n      max-width: 300px;\n      margin: 0 auto;\n      padding: 10px 12px;\n    }\n    #qcx-admin-root .gate h2 {\n      margin: 0 0 8px;\n      font: 700 10px/1.2 var(--mono);\n      letter-spacing: 0.1em;\n    }\n    #qcx-admin-root .gate .field { margin-bottom: 8px; }\n    #qcx-admin-root .gate .actions {\n      display: flex;\n      width: 100%;\n      margin-top: 8px;\n      padding-top: 0;\n    }\n    #qcx-admin-root .gate .actions .primary,\n    #qcx-admin-root .gate button.primary {\n      width: 100%;\n      flex: 1 1 auto;\n    }\n    /* Hide login hint; gate status only when not .hidden */\n    #qcx-admin-root .gate > .hint,\n    #qcx-admin-root #gateStatus.hidden {\n      display: none !important;\n    }\n\n    /* Beat theme header kill: display:none + height:0 + overflow:hidden */\n    #qcx-admin-root header {\n      display: flex !important;\n      position: relative !important;\n      height: auto !important;\n      min-height: 0 !important;\n      max-height: none !important;\n      overflow: visible !important;\n      visibility: visible !important;\n      opacity: 1 !important;\n      background: transparent !important;\n      flex-wrap: nowrap;\n      gap: 8px 12px;\n      align-items: center;\n      justify-content: space-between;\n      margin: 0 0 8px !important;\n      padding: 2px 0 6px !important;\n      border: 0 !important;\n      border-bottom: 1px solid var(--line, #1d2a1f) !important;\n    }\n    #qcx-admin-root header h1,\n    #qcx-admin-root header button {\n      position: static !important;\n      height: auto !important;\n      overflow: visible !important;\n      visibility: visible !important;\n      opacity: 1 !important;\n    }\n    #qcx-admin-root header h1 {\n      margin: 0;\n      font: 700 13px/1.2 var(--mono);\n      letter-spacing: 0.04em;\n      text-transform: uppercase;\n      color: var(--fg, #e6f5ec);\n    }\n    #qcx-admin-root header h1 span { color: var(--qcx-admin-mint); }\n    #qcx-admin-root header p { display: none !important; }\n    #qcx-admin-root #btnLogout {\n      min-height: 28px;\n      padding: 4px 10px;\n      font: 600 10px/1 var(--mono);\n      letter-spacing: 0.06em;\n      text-transform: uppercase;\n      flex: 0 0 auto;\n      white-space: nowrap;\n    }\n\n    #qcx-admin-root .gate, #qcx-admin-root .panel {\n      background: linear-gradient(180deg, #101a12 0%, var(--card, #0e170f) 100%);\n      border: 1px solid var(--line, #1d2a1f);\n      border-radius: var(--qcx-admin-radius);\n      padding: 12px;\n      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22);\n    }\n    #qcx-admin-root .gate {\n      max-width: 300px; width: 100%; margin: 0 auto;\n      animation: qcx-admin-rise 0.35s ease-out both;\n      padding: 10px 12px;\n    }\n    #qcx-admin-root .gate h2,\n    #qcx-admin-root .panel h2 {\n      margin: 0 0 4px;\n      font: 700 11px/1.2 var(--mono);\n      letter-spacing: 0.1em;\n      text-transform: uppercase;\n      color: var(--qcx-admin-mint);\n    }\n    #qcx-admin-root .panel-head {\n      display: flex; align-items: baseline; justify-content: space-between;\n      gap: 8px; margin-bottom: 8px; padding-bottom: 6px;\n      border-bottom: 1px solid var(--line, #1d2a1f);\n    }\n    #qcx-admin-root .panel-head h2 { margin: 0; }\n\n    /* Beat theme `.grid{grid-template-columns:repeat(4,1fr)!important}` */\n    #qcx-admin-root .grid {\n      display: grid !important;\n      grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr) !important;\n      gap: 10px !important;\n      animation: qcx-admin-rise 0.35s ease-out both;\n      width: 100%;\n      max-width: 1080px;\n      margin: 0 auto;\n      align-items: start;\n    }\n    #qcx-admin-root .grid.hidden,\n    #qcx-admin-root .hidden { display: none !important; }\n    @media (max-width: 900px) {\n      #qcx-admin-root .grid { grid-template-columns: 1fr !important; }\n    }\n\n    #qcx-admin-root label {\n      display: block; margin: 0 0 4px;\n      color: var(--fg-dim, #8aa596);\n      font: 600 10px/1.15 var(--mono);\n      letter-spacing: 0.06em; text-transform: uppercase;\n    }\n    #qcx-admin-root .field { margin-bottom: 8px; }\n    #qcx-admin-root .row {\n      display: grid !important;\n      grid-template-columns: 1fr 1fr !important;\n      gap: 8px;\n    }\n    #qcx-admin-root .row.row-3 {\n      grid-template-columns: 1fr 0.7fr 1.1fr !important;\n    }\n    @media (max-width: 560px) {\n      #qcx-admin-root .row,\n      #qcx-admin-root .row.row-3 { grid-template-columns: 1fr !important; }\n    }\n\n    #qcx-admin-root .ai-box {\n      margin: 0 0 10px;\n      padding: 8px 10px;\n      border: 1px solid rgba(125, 206, 160, 0.28);\n      border-radius: 8px;\n      background: rgba(125, 206, 160, 0.05);\n    }\n    #qcx-admin-root .ai-box textarea { min-height: 52px; }\n    #qcx-admin-root .ai-row .ai-actions button { width: 100%; }\n\n    #qcx-admin-root .body-tabs { margin-bottom: 8px; }\n    #qcx-admin-root .body-tab-seg { margin-bottom: 6px; }\n    #qcx-admin-root .body-pane.hidden { display: none !important; }\n    #qcx-admin-root .body-pane textarea.tall { min-height: 160px; }\n\n    #qcx-admin-root .html-out.collapsed {\n      max-height: 72px;\n      overflow: hidden;\n      opacity: 0.72;\n    }\n    #qcx-admin-root .panel-head .ghost { margin-left: auto; }\n\n    #qcx-admin-root input,\n    #qcx-admin-root select,\n    #qcx-admin-root textarea {\n      width: 100%;\n      min-height: 34px;\n      background: var(--qcx-admin-input);\n      border: 1px solid #243328;\n      border-radius: 7px;\n      color: var(--fg, #e6f5ec);\n      padding: 7px 10px;\n      font: 500 12.5px/1.35 var(--mono);\n      transition: border-color 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;\n    }\n    #qcx-admin-root textarea { min-height: 72px; resize: vertical; padding-top: 8px; }\n    #qcx-admin-root textarea.tall { min-height: 120px; }\n    #qcx-admin-root input::placeholder,\n    #qcx-admin-root textarea::placeholder {\n      color: #6f8576; opacity: 1; font-weight: 400;\n    }\n    #qcx-admin-root input:hover,\n    #qcx-admin-root select:hover,\n    #qcx-admin-root textarea:hover { border-color: #334539; }\n    #qcx-admin-root input:focus,\n    #qcx-admin-root select:focus,\n    #qcx-admin-root textarea:focus {\n      outline: none;\n      border-color: var(--qcx-admin-mint);\n      box-shadow: 0 0 0 2px rgba(125, 206, 160, 0.16);\n      background: #0d1610;\n    }\n    #qcx-admin-root input:disabled,\n    #qcx-admin-root textarea:disabled {\n      opacity: 0.45; cursor: not-allowed; background: #0a100b;\n    }\n\n    #qcx-admin-root .actions {\n      display: flex; flex-wrap: wrap; gap: 6px;\n      margin-top: 10px; padding-top: 2px;\n    }\n    #qcx-admin-root button,\n    #qcx-admin-root .btn {\n      appearance: none;\n      display: inline-flex; align-items: center; justify-content: center;\n      gap: 6px;\n      min-height: 34px;\n      border: 1px solid #2a3830;\n      background: var(--qcx-admin-fill);\n      color: #e8efe9;\n      border-radius: 7px;\n      padding: 6px 11px;\n      font: 700 11px/1 var(--mono);\n      letter-spacing: 0.03em;\n      cursor: pointer;\n      transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;\n    }\n    #qcx-admin-root button:hover {\n      background: var(--qcx-admin-hover);\n      border-color: #3a4a40;\n    }\n    #qcx-admin-root button:active { transform: none; }\n    #qcx-admin-root button.primary {\n      background: var(--qcx-admin-mint);\n      color: var(--qcx-admin-mint-ink);\n      border-color: var(--qcx-admin-mint);\n      box-shadow: none;\n    }\n    #qcx-admin-root button.primary:hover {\n      background: #93dbb2;\n      border-color: #93dbb2;\n      color: var(--qcx-admin-mint-ink);\n    }\n    #qcx-admin-root button.ghost {\n      background: transparent;\n      border-color: #2a3830;\n      color: var(--fg-dim, #8aa596);\n      box-shadow: none;\n      min-height: 30px;\n      padding: 4px 9px;\n      font-size: 10px;\n    }\n    #qcx-admin-root button.ghost:hover {\n      color: var(--fg, #e6f5ec);\n      border-color: var(--qcx-admin-mint);\n      background: rgba(125, 206, 160, 0.06);\n    }\n    #qcx-admin-root button:disabled {\n      opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none;\n    }\n\n    #qcx-admin-root .status {\n      margin-top: 8px; padding: 7px 10px; border-radius: 7px;\n      border: 1px solid var(--line, #1d2a1f);\n      color: var(--fg-dim, #8aa596);\n      font: 11px/1.4 var(--mono);\n      white-space: pre-wrap;\n      background: rgba(10, 15, 10, 0.7);\n    }\n    #qcx-admin-root .status.ok { border-color: rgba(125,206,160,.45); color: var(--qcx-admin-ok); background: rgba(125,206,160,.06); }\n    #qcx-admin-root .status.err { border-color: rgba(255,84,112,.45); color: var(--danger, #ff5470); background: rgba(255,84,112,.06); }\n    #qcx-admin-root .status.warn { border-color: rgba(224,179,90,.45); color: var(--qcx-admin-warn); background: rgba(224,179,90,.06); }\n\n    #qcx-admin-root .preview-meta {\n      display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px;\n    }\n    #qcx-admin-root .chip {\n      border: 1px solid var(--line, #1d2a1f); border-radius: 999px;\n      padding: 3px 8px; font: 500 10px/1 var(--mono);\n      color: var(--fg-dim, #8aa596); background: rgba(0,0,0,.2);\n    }\n    #qcx-admin-root .chip.bad { color: var(--danger, #ff5470); border-color: rgba(255,84,112,.4); }\n    #qcx-admin-root .chip.good { color: var(--qcx-admin-ok); border-color: rgba(125,206,160,.4); }\n\n    #qcx-admin-root .html-out {\n      margin: 0; max-height: 360px; overflow: auto;\n      background: #080d08; border: 1px solid var(--line, #1d2a1f);\n      border-radius: 7px; padding: 10px;\n      font: 11px/1.4 var(--mono);\n      white-space: pre-wrap; word-break: break-word; color: #9bb5a4;\n    }\n    #qcx-admin-root .hint {\n      color: var(--fg-dim, #8aa596); font-size: 11px;\n      margin: 3px 0 0; line-height: 1.35;\n    }\n    #qcx-admin-root .hint.publish {\n      margin-top: 8px;\n    }\n    #qcx-admin-root code {\n      font-family: var(--mono);\n      color: var(--qcx-admin-mint);\n      font-size: 0.92em;\n    }\n\n    #qcx-admin-root .seg {\n      display: inline-flex; width: 100%;\n      border: 1px solid #243328; border-radius: 7px;\n      overflow: hidden; background: var(--qcx-admin-input); min-height: 34px;\n    }\n    #qcx-admin-root .seg button {\n      flex: 1; border: 0; border-radius: 0; min-height: 34px;\n      background: transparent; padding: 6px 8px;\n      color: var(--fg-dim, #8aa596); box-shadow: none; transform: none;\n      font-size: 10px;\n    }\n    #qcx-admin-root .seg button:hover {\n      background: rgba(125, 206, 160, 0.06); color: var(--fg, #e6f5ec); transform: none;\n    }\n    #qcx-admin-root .seg button.active {\n      background: rgba(125, 206, 160, 0.16);\n      color: var(--qcx-admin-mint);\n      box-shadow: inset 0 -2px 0 var(--qcx-admin-mint);\n    }\n\n    /* Sticky action bar on small screens */\n    @media (max-width: 700px) {\n      #qcx-admin-root {\n        max-width: none;\n        width: 100%;\n        padding-bottom: 16px;\n      }\n      #qcx-admin-root .wrap {\n        padding: 8px 10px 72px;\n        max-width: none;\n        width: 100%;\n      }\n      #qcx-admin-root .grid {\n        max-width: none !important;\n        width: 100% !important;\n      }\n      #qcx-admin-root header {\n        gap: 8px;\n        margin-bottom: 6px !important;\n        padding-bottom: 5px !important;\n      }\n      #qcx-admin-root .panel { padding: 10px; width: 100%; }\n      #qcx-admin-root .gate { padding: 12px; max-width: 100%; }\n      #qcx-admin-root:has(.gate:not(.hidden)) .wrap,\n      #qcx-admin-root:has(.gate:not(.hidden)) .gate { max-width: 100%; }\n      #qcx-admin-root textarea { min-height: 64px; }\n      #qcx-admin-root textarea.tall { min-height: 100px; }\n      #qcx-admin-root .html-out { max-height: 220px; }\n      #qcx-admin-root .hint.publish { display: none; }\n      #qcx-admin-root .panel .actions {\n        position: sticky;\n        bottom: 8px;\n        z-index: 5;\n        margin-top: 10px;\n        padding: 8px;\n        border-radius: 8px;\n        background: rgba(10, 16, 12, 0.92);\n        border: 1px solid #243328;\n        backdrop-filter: blur(8px);\n      }\n      #qcx-admin-root .panel .actions button {\n        flex: 1 1 calc(50% - 6px);\n        min-width: 0;\n      }\n      #qcx-admin-root .panel .actions button.primary {\n        flex: 1 1 100%;\n      }\n    }\n\n    @keyframes qcx-admin-rise {\n      from { opacity: 0; transform: translateY(6px); }\n      to { opacity: 1; transform: translateY(0); }\n    }\n    @media (prefers-reduced-motion: reduce) {\n      #qcx-admin-root .gate, #qcx-admin-root .grid { animation: none; }\n      #qcx-admin-root button { transition: none; }\n    }\n\n    html.qcx-admin-standalone, html.qcx-admin-standalone body {\n      margin: 0; min-height: 100%;\n      background:\n        radial-gradient(900px 420px at 12% -8%, rgba(125, 206, 160, 0.08), transparent 55%),\n        linear-gradient(180deg, #0d1410, var(--bg, #0a0f0a));\n      color: var(--fg, #e6f5ec);\n      font-family: var(--sans);\n    }\n    body:has(#qcx-admin-root) .post-header,\n    body:has(#qcx-admin-root) .qcx-read-time,\n    body:has(#qcx-admin-root) #qcx-sidebar-rail-rescue,\n    body:has(#qcx-admin-root) .qcx-sidebar-rail,\n    body:has(#qcx-admin-root) .sidebar-wrapper,\n    body:has(#qcx-admin-root) #sidebar,\n    body:has(#qcx-admin-root) .sidebar,\n    body:has(#qcx-admin-root) .widget.BlogArchive,\n    body:has(#qcx-admin-root) .widget.FollowByEmail,\n    body:has(#qcx-admin-root) .FollowByEmail,\n    body:has(#qcx-admin-root) .qcx-follow-cta,\n    body:has(#qcx-admin-root) .follow-by-email,\n    body:has(#qcx-admin-root) #qcx-admin-root .mac-frame,\n    body:has(#qcx-admin-root) #qcx-admin-boot { display: none !important; }\n\n    /* Collapse Blogspot chrome so admin sits in true page center */\n    body:has(#qcx-admin-root) .main-wrapper,\n    body:has(#qcx-admin-root) .centered-bottom,\n    body:has(#qcx-admin-root) .centered-top,\n    body:has(#qcx-admin-root) .blog-posts,\n    body:has(#qcx-admin-root) .the-article,\n    body:has(#qcx-admin-root) .post-body,\n    body:has(#qcx-admin-root) #main,\n    body:has(#qcx-admin-root) .main {\n      max-width: none !important;\n      width: 100% !important;\n      margin-left: auto !important;\n      margin-right: auto !important;\n      float: none !important;\n      grid-template-columns: 1fr !important;\n      display: block !important;\n    }\n    body:has(#qcx-admin-root) .main-wrapper,\n    body:has(#qcx-admin-root) .centered-bottom {\n      padding-left: 0 !important;\n      padding-right: 0 !important;\n    }\n    body:has(#qcx-admin-root) .content-outer,\n    body:has(#qcx-admin-root) .content-inner,\n    body:has(#qcx-admin-root) .column-center-outer,\n    body:has(#qcx-admin-root) .column-center-inner,\n    body:has(#qcx-admin-root) .main-inner,\n    body:has(#qcx-admin-root) #page_body,\n    body:has(#qcx-admin-root) .page {\n      max-width: none !important;\n      width: 100% !important;\n      margin-left: 0 !important;\n      margin-right: 0 !important;\n      float: none !important;\n      padding-left: 0 !important;\n      padding-right: 0 !important;\n    }\n    body:has(#qcx-admin-root:has(.gate:not(.hidden))) .qcx-follow-strip,\n    body:has(#qcx-admin-root:has(.gate:not(.hidden))) [class*=\"follow\"],\n    body:has(#qcx-admin-root:has(.gate:not(.hidden))) .widget.Profile,\n    body:has(#qcx-admin-root:has(.gate:not(.hidden))) .widget.Attribution {\n      display: none !important;\n    }";
+  s.textContent="/* qcx-admin-ui */\n/* TIMKIEM Admin \u2014 dense cockpit (PC + mobile) */\n    #qcx-admin-root, #qcx-admin-root * { box-sizing: border-box; }\n    #qcx-admin-root {\n      --qcx-admin-radius: 8px;\n      --qcx-admin-ok: #7dcea0;\n      --qcx-admin-warn: #e0b35a;\n      --qcx-admin-fill: #141a16;\n      --qcx-admin-hover: #1c2420;\n      --qcx-admin-mint: #7dcea0;\n      --qcx-admin-mint-ink: #06110a;\n      --qcx-admin-input: #0b120c;\n      --sans: 'IBM Plex Sans', 'Segoe UI', sans-serif;\n      --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;\n      margin: 0 auto;\n      min-height: 0;\n      padding: 0 0 24px;\n      color: var(--fg, #e6f5ec);\n      font: 13px/1.4 var(--sans);\n      -webkit-font-smoothing: antialiased;\n      background: transparent;\n      width: 100%;\n      max-width: 1120px;\n    }\n    #qcx-admin-root .wrap {\n      max-width: 1120px;\n      margin: 0 auto;\n      padding: 6px 12px 24px;\n      width: 100%;\n    }\n\n    /* Login gate: compact card, slightly above center */\n    #qcx-admin-root:has(.gate:not(.hidden)) {\n      min-height: calc(100vh - 64px);\n      display: flex;\n      align-items: center;\n      justify-content: center;\n      padding: 12px 10px 28px;\n      max-width: none;\n    }\n    #qcx-admin-root:has(.gate:not(.hidden)) .wrap {\n      width: 100%;\n      max-width: 300px;\n      margin: -10vh auto 0;\n      padding: 0;\n      display: flex;\n      flex-direction: column;\n      align-items: center;\n    }\n    #qcx-admin-root:has(.gate:not(.hidden)) > .wrap > header,\n    #qcx-admin-root:has(.gate:not(.hidden)) #btnLogout {\n      display: none !important;\n    }\n    #qcx-admin-root:has(.gate:not(.hidden)) .gate {\n      width: 100%;\n      max-width: 300px;\n      margin: 0 auto;\n      padding: 10px 12px;\n    }\n    #qcx-admin-root .gate h2 {\n      margin: 0 0 8px;\n      font: 700 10px/1.2 var(--mono);\n      letter-spacing: 0.1em;\n    }\n    #qcx-admin-root .gate .field { margin-bottom: 8px; }\n    #qcx-admin-root .gate .actions {\n      display: flex;\n      width: 100%;\n      margin-top: 8px;\n      padding-top: 0;\n    }\n    #qcx-admin-root .gate .actions .primary,\n    #qcx-admin-root .gate button.primary {\n      width: 100%;\n      flex: 1 1 auto;\n    }\n    /* Hide login hint; gate status only when not .hidden */\n    #qcx-admin-root .gate > .hint,\n    #qcx-admin-root #gateStatus.hidden {\n      display: none !important;\n    }\n\n    /* Beat theme header kill: display:none + height:0 + overflow:hidden */\n    #qcx-admin-root header {\n      display: flex !important;\n      position: relative !important;\n      height: auto !important;\n      min-height: 0 !important;\n      max-height: none !important;\n      overflow: visible !important;\n      visibility: visible !important;\n      opacity: 1 !important;\n      background: transparent !important;\n      flex-wrap: nowrap;\n      gap: 8px 12px;\n      align-items: center;\n      justify-content: space-between;\n      margin: 0 0 8px !important;\n      padding: 2px 0 6px !important;\n      border: 0 !important;\n      border-bottom: 1px solid var(--line, #1d2a1f) !important;\n    }\n    #qcx-admin-root header h1,\n    #qcx-admin-root header button {\n      position: static !important;\n      height: auto !important;\n      overflow: visible !important;\n      visibility: visible !important;\n      opacity: 1 !important;\n    }\n    #qcx-admin-root header h1 {\n      margin: 0;\n      font: 700 13px/1.2 var(--mono);\n      letter-spacing: 0.04em;\n      text-transform: uppercase;\n      color: var(--fg, #e6f5ec);\n    }\n    #qcx-admin-root header h1 span { color: var(--qcx-admin-mint); }\n    #qcx-admin-root header p { display: none !important; }\n    #qcx-admin-root #btnLogout {\n      min-height: 28px;\n      padding: 4px 10px;\n      font: 600 10px/1 var(--mono);\n      letter-spacing: 0.06em;\n      text-transform: uppercase;\n      flex: 0 0 auto;\n      white-space: nowrap;\n    }\n\n    #qcx-admin-root .gate, #qcx-admin-root .panel {\n      background: linear-gradient(180deg, #101a12 0%, var(--card, #0e170f) 100%);\n      border: 1px solid var(--line, #1d2a1f);\n      border-radius: var(--qcx-admin-radius);\n      padding: 12px;\n      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22);\n    }\n    #qcx-admin-root .gate {\n      max-width: 300px; width: 100%; margin: 0 auto;\n      animation: qcx-admin-rise 0.35s ease-out both;\n      padding: 10px 12px;\n    }\n    #qcx-admin-root .gate h2,\n    #qcx-admin-root .panel h2,\n    #qcx-admin-root .compose-title h2,\n    #qcx-admin-root .card h2 {\n      margin: 0 0 4px;\n      font: 700 11px/1.2 var(--mono);\n      letter-spacing: 0.1em;\n      text-transform: uppercase;\n      color: var(--qcx-admin-mint);\n    }\n    #qcx-admin-root .panel-head {\n      display: flex; align-items: baseline; justify-content: space-between;\n      gap: 8px; margin-bottom: 8px; padding-bottom: 6px;\n      border-bottom: 1px solid var(--line, #1d2a1f);\n    }\n    #qcx-admin-root .panel-head h2 { margin: 0; }\n\n    /* Beat theme `.grid{grid-template-columns:repeat(4,1fr)!important}` */\n    #qcx-admin-root .grid {\n      display: grid !important;\n      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) !important;\n      gap: 14px !important;\n      animation: qcx-admin-rise 0.35s ease-out both;\n      width: 100%;\n      max-width: 1120px;\n      margin: 0 auto;\n      align-items: start;\n    }\n    #qcx-admin-root .grid.hidden,\n    #qcx-admin-root .hidden { display: none !important; }\n    @media (max-width: 900px) {\n      #qcx-admin-root .grid { grid-template-columns: 1fr !important; }\n    }\n\n    #qcx-admin-root .compose-col {\n      display: flex;\n      flex-direction: column;\n      gap: 14px;\n      min-width: 0;\n    }\n    #qcx-admin-root .compose-title {\n      margin: 0;\n      padding-bottom: 4px;\n      border-bottom: 0;\n    }\n    #qcx-admin-root .card {\n      margin: 0;\n      padding: 14px;\n      border: 1px solid var(--line, #1d2a1f);\n      border-radius: var(--qcx-admin-radius);\n      background: rgba(14, 20, 16, 0.72);\n    }\n    #qcx-admin-root .card .field { margin-bottom: 10px; }\n    #qcx-admin-root .card .field:last-child { margin-bottom: 0; }\n    #qcx-admin-root .panel-head.tight {\n      margin-bottom: 10px;\n      padding-bottom: 6px;\n    }\n\n    #qcx-admin-root label {\n      display: block; margin: 0 0 4px;\n      color: var(--fg-dim, #8aa596);\n      font: 600 10px/1.15 var(--mono);\n      letter-spacing: 0.06em; text-transform: uppercase;\n    }\n    #qcx-admin-root .field { margin-bottom: 10px; }\n    #qcx-admin-root .row {\n      display: grid !important;\n      grid-template-columns: 1fr 1fr !important;\n      gap: 12px;\n    }\n    #qcx-admin-root .row.row-meta {\n      grid-template-columns: auto 1fr 1.2fr !important;\n      gap: 12px;\n      align-items: end;\n    }\n    #qcx-admin-root .row.row-meta #priceField[hidden],\n    #qcx-admin-root .row.row-meta #priceField.hidden {\n      display: none !important;\n    }\n    #qcx-admin-root .row.row-meta:not(:has(#priceField:not([hidden]))) {\n      grid-template-columns: auto 1.2fr !important;\n    }\n    @media (max-width: 560px) {\n      #qcx-admin-root .row,\n      #qcx-admin-root .row.row-meta { grid-template-columns: 1fr !important; }\n    }\n\n    #qcx-admin-root .card-ai {\n      padding: 10px 12px;\n      border-color: rgba(125, 206, 160, 0.28);\n      background: rgba(125, 206, 160, 0.05);\n    }\n    #qcx-admin-root .ai-strip {\n      display: grid;\n      grid-template-columns: auto minmax(0, 1fr) auto;\n      gap: 8px;\n      align-items: center;\n    }\n    #qcx-admin-root .ai-strip select {\n      min-height: 32px;\n      font-size: 11px;\n    }\n    #qcx-admin-root .ai-brief-wrap {\n      margin-top: 10px;\n      padding-top: 10px;\n      border-top: 1px solid rgba(125, 206, 160, 0.18);\n    }\n    #qcx-admin-root .ai-brief-wrap[hidden],\n    #qcx-admin-root .ai-brief-wrap.hidden { display: none !important; }\n    #qcx-admin-root .ai-brief-wrap textarea {\n      min-height: 72px;\n      font-family: var(--sans);\n    }\n    #qcx-admin-root .input-sans { font-family: var(--sans) !important; font-weight: 600; }\n    #qcx-admin-root .field-optional { opacity: 0.88; }\n    #qcx-admin-root .field-optional .opt {\n      text-transform: none;\n      letter-spacing: 0;\n      font-weight: 500;\n      color: #6f8576;\n    }\n\n    #qcx-admin-root .body-tabs { margin-bottom: 0; }\n    #qcx-admin-root .body-tab-seg { margin-bottom: 8px; }\n    #qcx-admin-root .body-pane.hidden { display: none !important; }\n    #qcx-admin-root .body-pane { margin-bottom: 0; }\n    #qcx-admin-root .body-pane textarea.tall { min-height: 260px; }\n\n    #qcx-admin-root .card-vault {\n      position: sticky;\n      bottom: 8px;\n      z-index: 4;\n      backdrop-filter: blur(10px);\n      background: rgba(12, 18, 14, 0.94);\n      border-color: #2a3830;\n    }\n    #qcx-admin-root .vault-actions {\n      margin-top: 0;\n      display: grid;\n      grid-template-columns: 1.4fr 1fr 1fr auto;\n      gap: 8px;\n    }\n    #qcx-admin-root .vault-actions button { width: 100%; }\n    #qcx-admin-root .more-menu {\n      display: flex;\n      flex-wrap: wrap;\n      gap: 6px;\n      margin-top: 8px;\n    }\n    #qcx-admin-root .more-menu[hidden],\n    #qcx-admin-root .more-menu.hidden { display: none !important; }\n    #qcx-admin-root .card-vault .status {\n      margin-top: 8px;\n      padding: 6px 8px;\n      font-size: 10.5px;\n    }\n\n    #qcx-admin-root .panel-rail {\n      position: sticky;\n      top: 10px;\n      padding: 14px;\n    }\n    #qcx-admin-root .checklist {\n      list-style: none;\n      margin: 0 0 10px;\n      padding: 0;\n      display: flex;\n      flex-direction: column;\n      gap: 6px;\n    }\n    #qcx-admin-root .checklist .check {\n      display: grid;\n      grid-template-columns: 18px minmax(0, 1fr) auto;\n      gap: 8px;\n      align-items: baseline;\n      padding: 7px 9px;\n      border-radius: 7px;\n      border: 1px solid var(--line, #1d2a1f);\n      background: rgba(0, 0, 0, 0.18);\n      font: 500 11px/1.3 var(--mono);\n    }\n    #qcx-admin-root .checklist .check.pass {\n      border-color: rgba(125, 206, 160, 0.35);\n      color: var(--qcx-admin-ok);\n    }\n    #qcx-admin-root .checklist .check.fail {\n      border-color: rgba(255, 84, 112, 0.35);\n      color: var(--danger, #ff5470);\n    }\n    #qcx-admin-root .checklist .tick { font-weight: 700; }\n    #qcx-admin-root .checklist .check-label { color: inherit; }\n    #qcx-admin-root .checklist .check-detail {\n      color: var(--fg-dim, #8aa596);\n      font-size: 10px;\n      max-width: 46%;\n      overflow: hidden;\n      text-overflow: ellipsis;\n      white-space: nowrap;\n      text-align: right;\n    }\n    #qcx-admin-root .html-out.collapsed,\n    #qcx-admin-root .html-out.hidden,\n    #qcx-admin-root .html-out[hidden] {\n      display: none !important;\n    }\n    #qcx-admin-root .panel-head .ghost { margin-left: auto; }\n    #qcx-admin-root .ghost-hint {\n      opacity: 0.65;\n      cursor: help;\n      font-size: 10px;\n    }\n\n    #qcx-admin-root input,\n    #qcx-admin-root select,\n    #qcx-admin-root textarea {\n      width: 100%;\n      min-height: 34px;\n      background: var(--qcx-admin-input);\n      border: 1px solid #243328;\n      border-radius: 7px;\n      color: var(--fg, #e6f5ec);\n      padding: 7px 10px;\n      font: 500 12.5px/1.35 var(--mono);\n      transition: border-color 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;\n    }\n    #qcx-admin-root textarea { min-height: 72px; resize: vertical; padding-top: 8px; }\n    #qcx-admin-root textarea.tall { min-height: 120px; }\n    #qcx-admin-root input::placeholder,\n    #qcx-admin-root textarea::placeholder {\n      color: #6f8576; opacity: 1; font-weight: 400;\n    }\n    #qcx-admin-root input:hover,\n    #qcx-admin-root select:hover,\n    #qcx-admin-root textarea:hover { border-color: #334539; }\n    #qcx-admin-root input:focus,\n    #qcx-admin-root select:focus,\n    #qcx-admin-root textarea:focus {\n      outline: none;\n      border-color: var(--qcx-admin-mint);\n      box-shadow: 0 0 0 2px rgba(125, 206, 160, 0.16);\n      background: #0d1610;\n    }\n    #qcx-admin-root input:disabled,\n    #qcx-admin-root textarea:disabled {\n      opacity: 0.45; cursor: not-allowed; background: #0a100b;\n    }\n\n    #qcx-admin-root .actions {\n      display: flex; flex-wrap: wrap; gap: 6px;\n      margin-top: 10px; padding-top: 2px;\n    }\n    #qcx-admin-root button,\n    #qcx-admin-root .btn {\n      appearance: none;\n      display: inline-flex; align-items: center; justify-content: center;\n      gap: 6px;\n      min-height: 34px;\n      border: 1px solid #2a3830;\n      background: var(--qcx-admin-fill);\n      color: #e8efe9;\n      border-radius: 7px;\n      padding: 6px 11px;\n      font: 700 11px/1 var(--mono);\n      letter-spacing: 0.03em;\n      cursor: pointer;\n      transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;\n    }\n    #qcx-admin-root button:hover {\n      background: var(--qcx-admin-hover);\n      border-color: #3a4a40;\n    }\n    #qcx-admin-root button:active { transform: none; }\n    #qcx-admin-root button.primary {\n      background: var(--qcx-admin-mint);\n      color: var(--qcx-admin-mint-ink);\n      border-color: var(--qcx-admin-mint);\n      box-shadow: none;\n    }\n    #qcx-admin-root button.primary:hover {\n      background: #93dbb2;\n      border-color: #93dbb2;\n      color: var(--qcx-admin-mint-ink);\n    }\n    #qcx-admin-root button.ghost {\n      background: transparent;\n      border-color: #2a3830;\n      color: var(--fg-dim, #8aa596);\n      box-shadow: none;\n      min-height: 30px;\n      padding: 4px 9px;\n      font-size: 10px;\n    }\n    #qcx-admin-root button.ghost:hover {\n      color: var(--fg, #e6f5ec);\n      border-color: var(--qcx-admin-mint);\n      background: rgba(125, 206, 160, 0.06);\n    }\n    #qcx-admin-root button:disabled {\n      opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none;\n    }\n\n    #qcx-admin-root .status {\n      margin-top: 8px; padding: 7px 10px; border-radius: 7px;\n      border: 1px solid var(--line, #1d2a1f);\n      color: var(--fg-dim, #8aa596);\n      font: 11px/1.4 var(--mono);\n      white-space: pre-wrap;\n      background: rgba(10, 15, 10, 0.7);\n    }\n    #qcx-admin-root .status.ok { border-color: rgba(125,206,160,.45); color: var(--qcx-admin-ok); background: rgba(125,206,160,.06); }\n    #qcx-admin-root .status.err { border-color: rgba(255,84,112,.45); color: var(--danger, #ff5470); background: rgba(255,84,112,.06); }\n    #qcx-admin-root .status.warn { border-color: rgba(224,179,90,.45); color: var(--qcx-admin-warn); background: rgba(224,179,90,.06); }\n\n    #qcx-admin-root .html-out {\n      margin: 0; max-height: 360px; overflow: auto;\n      background: #080d08; border: 1px solid var(--line, #1d2a1f);\n      border-radius: 7px; padding: 10px;\n      font: 11px/1.4 var(--mono);\n      white-space: pre-wrap; word-break: break-word; color: #9bb5a4;\n    }\n    #qcx-admin-root .hint {\n      color: var(--fg-dim, #8aa596); font-size: 11px;\n      margin: 3px 0 0; line-height: 1.35;\n    }\n    #qcx-admin-root .hint.publish {\n      margin-top: 8px;\n    }\n    #qcx-admin-root code {\n      font-family: var(--mono);\n      color: var(--qcx-admin-mint);\n      font-size: 0.92em;\n    }\n\n    #qcx-admin-root .seg {\n      display: inline-flex; width: 100%;\n      border: 1px solid #243328; border-radius: 7px;\n      overflow: hidden; background: var(--qcx-admin-input); min-height: 34px;\n    }\n    #qcx-admin-root .seg button {\n      flex: 1; border: 0; border-radius: 0; min-height: 34px;\n      background: transparent; padding: 6px 8px;\n      color: var(--fg-dim, #8aa596); box-shadow: none; transform: none;\n      font-size: 10px;\n    }\n    #qcx-admin-root .seg button:hover {\n      background: rgba(125, 206, 160, 0.06); color: var(--fg, #e6f5ec); transform: none;\n    }\n    #qcx-admin-root .seg button.active {\n      background: rgba(125, 206, 160, 0.16);\n      color: var(--qcx-admin-mint);\n      box-shadow: inset 0 -2px 0 var(--qcx-admin-mint);\n    }\n\n    /* Sticky vault + stacked rail on small screens */\n    @media (max-width: 700px) {\n      #qcx-admin-root {\n        max-width: none;\n        width: 100%;\n        padding-bottom: 16px;\n      }\n      #qcx-admin-root .wrap {\n        padding: 8px 10px 88px;\n        max-width: none;\n        width: 100%;\n      }\n      #qcx-admin-root .grid {\n        max-width: none !important;\n        width: 100% !important;\n        gap: 12px !important;\n      }\n      #qcx-admin-root header {\n        gap: 8px;\n        margin-bottom: 6px !important;\n        padding-bottom: 5px !important;\n      }\n      #qcx-admin-root .panel,\n      #qcx-admin-root .card { padding: 12px; width: 100%; }\n      #qcx-admin-root .panel-rail { position: static; order: 2; }\n      #qcx-admin-root .compose-col { order: 1; }\n      #qcx-admin-root .gate { padding: 12px; max-width: 100%; }\n      #qcx-admin-root:has(.gate:not(.hidden)) .wrap,\n      #qcx-admin-root:has(.gate:not(.hidden)) .gate { max-width: 100%; }\n      #qcx-admin-root textarea { min-height: 64px; }\n      #qcx-admin-root textarea.tall { min-height: 180px; }\n      #qcx-admin-root .html-out { max-height: 220px; }\n      #qcx-admin-root .hint.publish { display: none; }\n      #qcx-admin-root .ai-strip {\n        grid-template-columns: 1fr;\n      }\n      #qcx-admin-root .vault-actions {\n        grid-template-columns: 1fr 1fr;\n      }\n      #qcx-admin-root .vault-actions .primary {\n        grid-column: 1 / -1;\n      }\n      #qcx-admin-root .card-vault {\n        position: sticky;\n        bottom: 6px;\n        z-index: 5;\n      }\n      #qcx-admin-root .checklist .check {\n        grid-template-columns: 18px minmax(0, 1fr);\n      }\n      #qcx-admin-root .checklist .check-detail {\n        grid-column: 2;\n        max-width: none;\n        text-align: left;\n      }\n    }\n\n    @keyframes qcx-admin-rise {\n      from { opacity: 0; transform: translateY(6px); }\n      to { opacity: 1; transform: translateY(0); }\n    }\n    @media (prefers-reduced-motion: reduce) {\n      #qcx-admin-root .gate, #qcx-admin-root .grid { animation: none; }\n      #qcx-admin-root button { transition: none; }\n    }\n\n    html.qcx-admin-standalone, html.qcx-admin-standalone body {\n      margin: 0; min-height: 100%;\n      background:\n        radial-gradient(900px 420px at 12% -8%, rgba(125, 206, 160, 0.08), transparent 55%),\n        linear-gradient(180deg, #0d1410, var(--bg, #0a0f0a));\n      color: var(--fg, #e6f5ec);\n      font-family: var(--sans);\n    }\n    body:has(#qcx-admin-root) .post-header,\n    body:has(#qcx-admin-root) .qcx-read-time,\n    body:has(#qcx-admin-root) #qcx-sidebar-rail-rescue,\n    body:has(#qcx-admin-root) .qcx-sidebar-rail,\n    body:has(#qcx-admin-root) .sidebar-wrapper,\n    body:has(#qcx-admin-root) #sidebar,\n    body:has(#qcx-admin-root) .sidebar,\n    body:has(#qcx-admin-root) .widget.BlogArchive,\n    body:has(#qcx-admin-root) .widget.FollowByEmail,\n    body:has(#qcx-admin-root) .FollowByEmail,\n    body:has(#qcx-admin-root) .qcx-follow-cta,\n    body:has(#qcx-admin-root) .follow-by-email,\n    body:has(#qcx-admin-root) #qcx-admin-root .mac-frame,\n    body:has(#qcx-admin-root) #qcx-admin-boot { display: none !important; }\n\n    /* Collapse Blogspot chrome so admin sits in true page center */\n    body:has(#qcx-admin-root) .main-wrapper,\n    body:has(#qcx-admin-root) .centered-bottom,\n    body:has(#qcx-admin-root) .centered-top,\n    body:has(#qcx-admin-root) .blog-posts,\n    body:has(#qcx-admin-root) .the-article,\n    body:has(#qcx-admin-root) .post-body,\n    body:has(#qcx-admin-root) #main,\n    body:has(#qcx-admin-root) .main {\n      max-width: none !important;\n      width: 100% !important;\n      margin-left: auto !important;\n      margin-right: auto !important;\n      float: none !important;\n      grid-template-columns: 1fr !important;\n      display: block !important;\n    }\n    body:has(#qcx-admin-root) .main-wrapper,\n    body:has(#qcx-admin-root) .centered-bottom {\n      padding-left: 0 !important;\n      padding-right: 0 !important;\n    }\n    body:has(#qcx-admin-root) .content-outer,\n    body:has(#qcx-admin-root) .content-inner,\n    body:has(#qcx-admin-root) .column-center-outer,\n    body:has(#qcx-admin-root) .column-center-inner,\n    body:has(#qcx-admin-root) .main-inner,\n    body:has(#qcx-admin-root) #page_body,\n    body:has(#qcx-admin-root) .page {\n      max-width: none !important;\n      width: 100% !important;\n      margin-left: 0 !important;\n      margin-right: 0 !important;\n      float: none !important;\n      padding-left: 0 !important;\n      padding-right: 0 !important;\n    }\n    body:has(#qcx-admin-root:has(.gate:not(.hidden))) .qcx-follow-strip,\n    body:has(#qcx-admin-root:has(.gate:not(.hidden))) [class*=\"follow\"],\n    body:has(#qcx-admin-root:has(.gate:not(.hidden))) .widget.Profile,\n    body:has(#qcx-admin-root:has(.gate:not(.hidden))) .widget.Attribution {\n      display: none !important;\n    }";
 })();
 
 (function () {
@@ -343,31 +344,42 @@
     return { ok: !errors.length, errors: errors, html: html };
   }
 
+  function checkItem(ok, label, detail) {
+    return '<li class="check ' + (ok ? 'pass' : 'fail') + '">' +
+      '<span class="tick" aria-hidden="true">' + (ok ? '✓' : '✗') + '</span>' +
+      '<span class="check-label">' + label + '</span>' +
+      (detail ? '<span class="check-detail">' + detail + '</span>' : '') +
+      '</li>';
+  }
+
   function renderPreview() {
     var data = collectForm();
     var check = validate(data, false);
     htmlOut.textContent = check.html;
-    var chips = [];
-    chips.push('<span class="chip">mode=' + data.mode + '</span>');
-    chips.push('<span class="chip">id=' + (data.resourceId || '—') + '</span>');
-    chips.push('<span class="chip">labels=' + data.labels.join('|') + '</span>');
+    var titleOk = !!data.title;
+    var slugOk = !!data.resourceId && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(data.resourceId);
+    var labelsOk = data.labels && data.labels.length > 0;
+    var teaserOk = !!data.teaser;
+    var lockedOk = !!data.locked;
+    var driveOk = !!data.driveUrl;
+    var noDriveInHtml = !/drive\.google\.com/i.test(check.html) &&
+      !/drive\.google\.com/i.test(data.teaser + data.locked);
+    var modeDetail = data.mode.toUpperCase() +
+      (data.mode === 'paid' ? (data.price ? ' · ' + data.price : ' · thiếu giá') : '');
+    var items = [
+      checkItem(titleOk, 'Title', titleOk ? data.title.slice(0, 48) : 'Thiếu'),
+      checkItem(slugOk, 'Slug', slugOk ? data.resourceId : (data.resourceId || '—')),
+      checkItem(data.mode === 'free' || !!data.price, 'Mode', modeDetail),
+      checkItem(labelsOk, 'Labels', labelsOk ? data.labels.join(', ') : '—'),
+      checkItem(teaserOk, 'Teaser', teaserOk ? 'có' : 'trống'),
+      checkItem(lockedOk, 'Locked', lockedOk ? 'có' : 'Thiếu'),
+      checkItem(driveOk, 'Drive', driveOk ? 'vault' : 'chưa'),
+      checkItem(noDriveInHtml, 'No Drive in HTML', noDriveInHtml ? 'ok' : 'lỗi')
+    ];
     if (data.heroRaw) {
-      if (!data.heroIsCdn) {
-        chips.push('<span class="chip bad">Hero không phải CDN Blogspot</span>');
-      } else if (data.hero !== data.heroRaw) {
-        chips.push('<span class="chip good">hero→s1600</span>');
-      } else {
-        chips.push('<span class="chip good">hero CDN</span>');
-      }
+      items.push(checkItem(data.heroIsCdn, 'Hero CDN', data.heroIsCdn ? 'Blogspot' : 'không phải CDN'));
     }
-    if (/drive\.google\.com/i.test(check.html)) {
-      chips.push('<span class="chip bad">Drive trong HTML</span>');
-    } else {
-      chips.push('<span class="chip good">No Drive in HTML</span>');
-    }
-    if (check.ok) chips.push('<span class="chip good">contract ok</span>');
-    else chips.push('<span class="chip bad">' + check.errors[0] + '</span>');
-    previewMeta.innerHTML = chips.join('');
+    previewMeta.innerHTML = items.join('');
     return check;
   }
 
@@ -398,7 +410,13 @@
     Array.prototype.forEach.call(document.querySelectorAll('#modeSeg button'), function (btn) {
       btn.classList.toggle('active', btn.getAttribute('data-mode') === mode);
     });
-    priceEl.disabled = mode !== 'paid';
+    var paid = mode === 'paid';
+    priceEl.disabled = !paid;
+    var priceField = document.getElementById('priceField');
+    if (priceField) {
+      priceField.hidden = !paid;
+      priceField.classList.toggle('hidden', !paid);
+    }
     var labels = document.getElementById('labels');
     if (mode === 'free' && !/FREE/i.test(labels.value)) {
       labels.value = labels.value ? ('FREE, ' + labels.value.replace(/^\s*VIP\s*,?\s*/i, '')) : 'FREE';
@@ -510,14 +528,58 @@
     this.dataset.touched = '1';
   });
 
+  function setAiExpanded(open) {
+    var box = document.getElementById('aiBox');
+    var wrap = document.getElementById('aiBriefWrap');
+    var toggle = document.getElementById('btnAiToggle');
+    box.classList.toggle('collapsed', !open);
+    if (open) {
+      wrap.removeAttribute('hidden');
+      wrap.classList.remove('hidden');
+    } else {
+      wrap.setAttribute('hidden', 'true');
+      wrap.classList.add('hidden');
+    }
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    toggle.textContent = open ? 'Brief ▾' : 'Brief ▸';
+  }
+
+  document.getElementById('btnAiToggle').addEventListener('click', function () {
+    setAiExpanded(document.getElementById('aiBox').classList.contains('collapsed'));
+  });
+
+  document.getElementById('btnMore').addEventListener('click', function () {
+    var menu = document.getElementById('moreMenu');
+    var open = menu.hasAttribute('hidden') || menu.classList.contains('hidden');
+    if (open) {
+      menu.removeAttribute('hidden');
+      menu.classList.remove('hidden');
+    } else {
+      menu.setAttribute('hidden', 'true');
+      menu.classList.add('hidden');
+    }
+  });
+
+  function setSourceOpen(open) {
+    if (open) {
+      htmlOut.classList.remove('collapsed', 'hidden');
+      htmlOut.removeAttribute('hidden');
+      document.getElementById('btnToggleSource').textContent = 'Ẩn source';
+    } else {
+      htmlOut.classList.add('collapsed', 'hidden');
+      htmlOut.setAttribute('hidden', 'true');
+      document.getElementById('btnToggleSource').textContent = 'Source';
+    }
+  }
+
   document.getElementById('btnToggleSource').addEventListener('click', function () {
-    htmlOut.classList.toggle('collapsed');
-    this.textContent = htmlOut.classList.contains('collapsed') ? 'Source' : 'Ẩn source';
+    setSourceOpen(htmlOut.classList.contains('hidden') || htmlOut.hasAttribute('hidden'));
   });
 
   document.getElementById('btnAiGen').addEventListener('click', function () {
     var brief = (document.getElementById('aiBrief').value || '').trim();
     if (brief.length < 8) {
+      setAiExpanded(true);
       setStatus(appStatus, 'Brief AI cần ≥ 8 ký tự.', 'err');
       return;
     }
@@ -560,7 +622,8 @@
         persistDraft();
         renderPreview();
         setBodyTab('teaser');
-        setStatus(appStatus, 'AI OK · đã điền title/teaser/locked/labels. Điền Drive rồi Lưu vault.', 'ok');
+        setAiExpanded(false);
+        setStatus(appStatus, 'AI OK · đã điền form. Điền Drive rồi Lưu vault.', 'ok');
       })
       .catch(function () {
         btn.disabled = false;
@@ -570,8 +633,9 @@
 
   document.getElementById('btnPreview').addEventListener('click', function () {
     var check = renderPreview();
-    htmlOut.classList.remove('collapsed');
-    document.getElementById('btnToggleSource').textContent = 'Ẩn source';
+    setSourceOpen(true);
+    document.getElementById('moreMenu').setAttribute('hidden', 'true');
+    document.getElementById('moreMenu').classList.add('hidden');
     setStatus(appStatus, check.ok ? 'HTML contract OK.' : check.errors.join('\n'), check.ok ? 'ok' : 'err');
   });
 

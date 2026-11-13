@@ -221,7 +221,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.62/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.65/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -1936,18 +1936,39 @@
         'border:1px solid var(--line,#1d2a1f);border-radius:var(--qcx-admin-radius);' +
         'padding:12px;box-shadow:0 6px 20px rgba(0,0,0,.22)}' +
         '#qcx-admin-root .grid{display:grid!important;' +
-        'grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr)!important;gap:10px!important}' +
+        'grid-template-columns:minmax(0,1.6fr) minmax(0,1fr)!important;gap:14px!important}' +
         '#qcx-admin-root .grid.hidden,#qcx-admin-root .hidden{display:none!important}' +
+        '#qcx-admin-root .compose-col{display:flex;flex-direction:column;gap:14px;min-width:0}' +
+        '#qcx-admin-root .card{margin:0;padding:14px;border:1px solid var(--line,#1d2a1f);' +
+        'border-radius:var(--qcx-admin-radius);background:rgba(14,20,16,.72)}' +
+        '#qcx-admin-root .card-ai{padding:10px 12px;border-color:rgba(125,206,160,.28);' +
+        'background:rgba(125,206,160,.05)}' +
+        '#qcx-admin-root .ai-strip{display:grid;grid-template-columns:auto minmax(0,1fr) auto;' +
+        'gap:8px;align-items:center}' +
+        '#qcx-admin-root .ai-brief-wrap[hidden],#qcx-admin-root .ai-brief-wrap.hidden{display:none!important}' +
+        '#qcx-admin-root .card-vault{position:sticky;bottom:8px;z-index:4;' +
+        'background:rgba(12,18,14,.94);border-color:#2a3830}' +
+        '#qcx-admin-root .vault-actions{display:grid;grid-template-columns:1.4fr 1fr 1fr auto;gap:8px;margin-top:0}' +
+        '#qcx-admin-root .checklist{list-style:none;margin:0 0 10px;padding:0;display:flex;flex-direction:column;gap:6px}' +
+        '#qcx-admin-root .checklist .check{display:grid;grid-template-columns:18px minmax(0,1fr) auto;' +
+        'gap:8px;align-items:baseline;padding:7px 9px;border-radius:7px;border:1px solid var(--line,#1d2a1f);' +
+        'background:rgba(0,0,0,.18);font:500 11px/1.3 var(--mono)}' +
+        '#qcx-admin-root .checklist .check.pass{border-color:rgba(125,206,160,.35);color:var(--qcx-admin-ok)}' +
+        '#qcx-admin-root .checklist .check.fail{border-color:rgba(255,84,112,.35);color:var(--danger,#ff5470)}' +
+        '#qcx-admin-root .html-out.hidden,#qcx-admin-root .html-out[hidden]{display:none!important}' +
+        '#qcx-admin-root .panel-rail{position:sticky;top:10px}' +
         '#qcx-admin-root label{display:block;margin:0 0 4px;color:var(--fg-dim,#8aa596);' +
         'font:600 10px/1.15 var(--mono);letter-spacing:.06em;text-transform:uppercase}' +
-        '#qcx-admin-root .field{margin-bottom:8px}' +
-        '#qcx-admin-root .row{display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px}' +
+        '#qcx-admin-root .field{margin-bottom:10px}' +
+        '#qcx-admin-root .row{display:grid!important;grid-template-columns:1fr 1fr!important;gap:12px}' +
+        '#qcx-admin-root .row.row-meta{grid-template-columns:auto 1fr 1.2fr!important;gap:12px;align-items:end}' +
         '#qcx-admin-root input,#qcx-admin-root select,#qcx-admin-root textarea{' +
         'width:100%;min-height:34px;background:var(--qcx-admin-input);' +
         'border:1px solid #243328;border-radius:7px;color:var(--fg,#e6f5ec);' +
         'padding:7px 10px;font:500 12.5px/1.35 var(--mono);appearance:none}' +
         '#qcx-admin-root textarea{min-height:72px;resize:vertical;padding-top:8px}' +
-        '#qcx-admin-root textarea.tall{min-height:120px}' +
+        '#qcx-admin-root textarea.tall{min-height:260px}' +
+        '#qcx-admin-root .input-sans{font-family:var(--sans)!important;font-weight:600}' +
         '#qcx-admin-root input::placeholder,#qcx-admin-root textarea::placeholder{' +
         'color:#6f8576;opacity:1;font-weight:400}' +
         '#qcx-admin-root input:focus,#qcx-admin-root select:focus,#qcx-admin-root textarea:focus{' +
