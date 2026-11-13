@@ -123,6 +123,90 @@ body > #outer-wrapper,
   z-index: 1 !important;
 }
 
+/* Raised chrome — pager (overrides theme .qcx-pager 8% wash) */
+.nav-pagination .blog-pager > a,
+.nav-pagination .blog-pager > button,
+.blog-pager .older-link,
+.blog-pager .newer-link,
+.qcx-pager .theme-button,
+.qcx-pager button.theme-button,
+.qcx-rescue-pager .theme-button,
+.qcx-rescue-pager button.theme-button {
+  background-color: #24352c !important;
+  background-image: none !important;
+  border: 1px solid rgba(0, 240, 163, .28) !important;
+  border-radius: 10px !important;
+  color: #e8efe9 !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .05),
+    0 8px 24px rgba(0, 0, 0, .4) !important;
+  isolation: isolate !important;
+}
+.nav-pagination .blog-pager > a:hover,
+.nav-pagination .blog-pager > button:hover,
+.blog-pager .older-link:hover,
+.blog-pager .newer-link:hover,
+.qcx-pager .theme-button:hover,
+.qcx-pager button.theme-button:hover,
+.qcx-rescue-pager .theme-button:hover,
+.qcx-rescue-pager button.theme-button:hover {
+  background-color: #2a3d34 !important;
+  background-image: none !important;
+  border-color: rgba(0, 240, 163, .45) !important;
+  color: #00f0a3 !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .06),
+    0 10px 28px rgba(0, 0, 0, .48) !important;
+}
+
+/* Raised chrome — inline search field (not plain text on grid) */
+.qcx-inline-search,
+.qcx-inline-search.qcx-results-search,
+.qcx-inline-search.qcx-sidebar-search {
+  background-color: #24352c !important;
+  background-image: none !important;
+  border: 1px solid rgba(0, 240, 163, .22) !important;
+  border-radius: 12px !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .05),
+    0 8px 24px rgba(0, 0, 0, .4) !important;
+  isolation: isolate !important;
+}
+.qcx-inline-search:hover,
+.qcx-inline-search:focus-visible {
+  border-color: rgba(0, 240, 163, .4) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .06),
+    0 10px 28px rgba(0, 0, 0, .48) !important;
+}
+.qcx-inline-search .qcx-search-shortcut {
+  display: inline-flex !important;
+  align-items: center !important;
+  background: rgba(0, 0, 0, .35) !important;
+  border: 1px solid rgba(0, 240, 163, .25) !important;
+  color: #00f0a3 !important;
+  border-radius: 6px !important;
+  padding: 3px 7px !important;
+}
+
+/* Raised chrome — admin login gate (not page-grid wash) */
+#qcx-admin-root .gate,
+html[data-qcx-admin='1'] #qcx-admin-root .gate {
+  background-color: #24352c !important;
+  background-image: none !important;
+  border: 1px solid rgba(0, 240, 163, .28) !important;
+  border-radius: 12px !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .06),
+    0 0 0 1px rgba(0, 0, 0, .45),
+    0 16px 42px rgba(0, 0, 0, .55) !important;
+  isolation: isolate !important;
+}
+html[data-qcx-admin='1'] #qcx-admin-root:has(.gate:not(.hidden)) > .wrap > header,
+html[data-qcx-admin='1'] #qcx-admin-root:has(.gate:not(.hidden)) #btnLogout {
+  display: none !important;
+}
+
 /* Soften motion only — keep a visible hover cue */
 @media (prefers-reduced-motion: reduce) {
   [data-page-item='multiple'] .card,
