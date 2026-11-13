@@ -26,6 +26,23 @@ html[data-page-type='homepage'] .qcx-hero {
   html[data-page-type='homepage'] .qcx-hero {
     min-height: 0 !important;
     align-content: start !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    grid-template-columns: 64px minmax(0, 1fr) !important;
+    gap: 6px 14px !important;
+  }
+  .qcx-avatar {
+    width: 64px !important;
+    height: 64px !important;
+    min-width: 64px !important;
+  }
+  .qcx-hero-title {
+    font-size: 20px !important;
+    line-height: 1.2 !important;
+  }
+  .qcx-bio {
+    font-size: 13px !important;
+    line-height: 1.4 !important;
   }
   main.main-container > .qcx-hero { margin-bottom: 4px !important; }
   .qcx-rule { margin-bottom: 4px !important; }

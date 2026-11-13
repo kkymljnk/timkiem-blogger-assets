@@ -221,9 +221,10 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.47/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.48/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
+  var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
 
   function ensureStylesheet(id, href) {
     var link = document.getElementById(id);
@@ -243,6 +244,43 @@
     ensureStylesheet('qcx-breakdev-fonts', QCX_FONTS_CSS);
   }
   window.__qcxEnsureBreakdevFonts = ensureBreakdevFonts;
+
+  /* Blogger favicon.ico is empty — force brand default (same as apple-touch / schema logo). */
+  function ensureDefaultFavicon() {
+    var head = document.head || document.documentElement;
+    var iconLinks = head.querySelectorAll('link[rel="icon"], link[rel="shortcut icon"]');
+    if (!iconLinks.length) {
+      var icon = document.createElement('link');
+      icon.rel = 'icon';
+      icon.type = 'image/x-icon';
+      icon.href = QCX_SITE_FAVICON;
+      head.appendChild(icon);
+    } else {
+      iconLinks.forEach(function(link) {
+        if (link.getAttribute('href') !== QCX_SITE_FAVICON) {
+          link.setAttribute('href', QCX_SITE_FAVICON);
+          if (!link.getAttribute('type')) link.setAttribute('type', 'image/x-icon');
+        }
+      });
+    }
+    var apple = head.querySelector('link[rel="apple-touch-icon"]');
+    if (!apple) {
+      apple = document.createElement('link');
+      apple.rel = 'apple-touch-icon';
+      apple.setAttribute('sizes', '180x180');
+      apple.href = QCX_SITE_FAVICON;
+      head.appendChild(apple);
+    } else {
+      var appleHref = apple.getAttribute('href') || '';
+      if (!appleHref || /blogspot\.com\/favicon\.ico/i.test(appleHref) || appleHref !== QCX_SITE_FAVICON) {
+        /* Keep existing non-blogger apple-touch if already brand; else force default. */
+        if (!appleHref || /blogspot\.com\/favicon\.ico/i.test(appleHref)) {
+          apple.setAttribute('href', QCX_SITE_FAVICON);
+        }
+      }
+    }
+  }
+  window.__qcxEnsureDefaultFavicon = ensureDefaultFavicon;
 
   /* Inline raised chrome — subscribe + pager + search (skip jsDelivr lag). */
   function ensureRaisedChrome() {
@@ -550,9 +588,19 @@
       'body:not(#layout) .qcx-signal-header,body:not(#layout) .qcx-topbar,' +
       '.qcx-signal-header,.qcx-topbar{display:none!important;height:0!important;min-height:0!important;' +
       'margin:0!important;padding:0!important;overflow:hidden!important;visibility:hidden!important;border:0!important}' +
-      'body:not(#layout) .qcx-hero,.qcx-hero{padding-top:8px!important;margin-top:0!important}' +
+      'body:not(#layout) .qcx-hero,.qcx-hero{padding-top:8px!important;margin-top:0!important;' +
+      'width:100%!important;max-width:100%!important;box-sizing:border-box!important;' +
+      'grid-template-columns:64px minmax(0,1fr)!important;gap:6px 14px!important}' +
+      '.qcx-avatar{width:64px!important;height:64px!important;min-width:64px!important}' +
+      '.qcx-hero-title{font-size:20px!important;line-height:1.2!important}' +
+      '.qcx-bio{font-size:13px!important;line-height:1.4!important}' +
       'body:not(#layout) main.main-container,main.main-container{padding-top:12px!important}' +
       '}' +
+      '.qcx-avatar,.qcx-avatar-wrap,.qcx-brand-svg{transition:transform .22s ease,filter .22s ease!important}' +
+      '.qcx-avatar:hover,.qcx-avatar:active,.qcx-avatar-wrap:hover .qcx-avatar,.qcx-avatar-wrap:active .qcx-avatar,' +
+      '.qcx-brand-svg:hover,.qcx-brand-svg:active{' +
+      'transform:translateY(-3px) scale(1.04)!important;' +
+      'filter:drop-shadow(0 0 12px rgba(0,240,163,.45))!important}' +
       'body#layout .footer-navigation-bar,body#layout #qcx-native-tabbar{display:none!important}';
     var style = document.getElementById('qcx-native-tabbar-css');
     if (!style) {
@@ -1831,6 +1879,7 @@
   /* Re-entry after CDN bump: refresh atmosphere/fonts/menu/ghost. */
   if (already) {
     ensureBreakdevFonts();
+    ensureDefaultFavicon();
     ensureAtmosphere();
     ensureMenuDrawer();
     ensureMobileNavReady();
@@ -1841,6 +1890,7 @@
 
   bootRescue();
   ensureBreakdevFonts();
+  ensureDefaultFavicon();
   ensureAtmosphere();
   ensureSidebarSearch();
   ensureSidebarRail();
@@ -1852,6 +1902,7 @@
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function(){
       ensureBreakdevFonts();
+      ensureDefaultFavicon();
       ensureAtmosphere();
       ensureSidebarSearch();
       ensureSidebarRail();

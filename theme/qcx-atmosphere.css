@@ -45,6 +45,11 @@ body > #outer-wrapper,
   overflow: visible;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+  transition: transform .22s ease, filter .22s ease !important;
+}
+.qcx-avatar,
+.qcx-avatar-wrap {
+  transition: transform .22s ease, filter .22s ease !important;
 }
 .qcx-ghost-eyes { pointer-events: none; }
 .qcx-eye {
@@ -58,6 +63,16 @@ body > #outer-wrapper,
 }
 .qcx-brand-svg.is-blinking .qcx-eye {
   animation: qcx-ghost-blink .18s ease-in-out 1;
+}
+/* Brand avatar — lift + mint glow (PC hover, mobile active) */
+.qcx-avatar:hover,
+.qcx-avatar:active,
+.qcx-avatar-wrap:hover .qcx-avatar,
+.qcx-avatar-wrap:active .qcx-avatar,
+.qcx-brand-svg:hover,
+.qcx-brand-svg:active {
+  transform: translateY(-3px) scale(1.04) !important;
+  filter: drop-shadow(0 0 12px rgba(0, 240, 163, .45)) !important;
 }
 
 /* Homepage card hover — PC + mobile (restore lift + image zoom) */
@@ -535,6 +550,24 @@ body.qcx-menu-open {
   .qcx-hero {
     padding-top: 8px !important;
     margin-top: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    grid-template-columns: 64px minmax(0, 1fr) !important;
+    gap: 6px 14px !important;
+  }
+  .qcx-avatar {
+    width: 64px !important;
+    height: 64px !important;
+    min-width: 64px !important;
+  }
+  .qcx-hero-title {
+    font-size: 20px !important;
+    line-height: 1.2 !important;
+  }
+  .qcx-bio {
+    font-size: 13px !important;
+    line-height: 1.4 !important;
   }
   body:not(#layout) main.main-container,
   main.main-container {
