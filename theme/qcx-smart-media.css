@@ -851,9 +851,107 @@ body.qcx-panel-open { overflow: hidden !important; }
   #sidebar .qcx-inline-search,
   #sidebar .widget.qcx-sidebar-search,
   .qcx-inline-search.qcx-sidebar-search { display: none !important; }
+  #qcx-native-tabbar,
+  .footer-navigation-bar { display: none !important; }
 }
 @media (max-width: 860px) {
   .qcx-inline-search { display: none !important; }
+
+  /* Native app tab bar (injected when Contempo bar is missing) */
+  #qcx-native-tabbar,
+  .footer-navigation-bar[data-qcx-ready='true'] {
+    display: block !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    z-index: 9500 !important;
+    background: rgba(8, 12, 9, .92) !important;
+    border-top: 1px solid rgba(28, 36, 32, .18) !important;
+    box-shadow: 0 -8px 28px rgba(0, 0, 0, .45) !important;
+    backdrop-filter: blur(18px) saturate(1.2) !important;
+    -webkit-backdrop-filter: blur(18px) saturate(1.2) !important;
+    padding-bottom: env(safe-area-inset-bottom, 0px) !important;
+    transform: none !important;
+    overflow: visible !important;
+  }
+  #qcx-native-tabbar > div,
+  .footer-navigation-bar[data-qcx-ready='true'] > div {
+    display: flex !important;
+    width: 100% !important;
+  }
+  #qcx-native-tabbar > div > ul,
+  .footer-navigation-bar[data-qcx-ready='true'] > div > ul {
+    display: flex !important;
+    width: 100% !important;
+    min-height: 56px !important;
+    margin: 0 !important;
+    padding: 4px 0 2px !important;
+    list-style: none !important;
+  }
+  #qcx-native-tabbar > div > ul > li,
+  .footer-navigation-bar[data-qcx-ready='true'] > div > ul > li {
+    flex: 1 1 0 !important;
+    display: flex !important;
+  }
+  #qcx-native-tabbar a,
+  .footer-navigation-bar[data-qcx-ready='true'] a {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    min-height: 48px !important;
+    gap: 2px !important;
+    padding: 4px 2px !important;
+    color: rgba(190, 211, 198, .72) !important;
+    font: 600 10px/1.1 var(--mono, 'JetBrains Mono', monospace) !important;
+    text-decoration: none !important;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  #qcx-native-tabbar a .icon,
+  .footer-navigation-bar[data-qcx-ready='true'] a .icon {
+    display: flex !important;
+    width: 24px !important;
+    height: 24px !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  #qcx-native-tabbar a .icon svg,
+  .footer-navigation-bar[data-qcx-ready='true'] a .icon svg {
+    width: 22px !important;
+    height: 22px !important;
+  }
+  #qcx-native-tabbar a.qcx-nav-active,
+  #qcx-native-tabbar a:active,
+  .footer-navigation-bar[data-qcx-ready='true'] a.qcx-nav-active,
+  .footer-navigation-bar[data-qcx-ready='true'] a:active {
+    color: var(--accent, #20d99a) !important;
+  }
+  body:has(#qcx-native-tabbar),
+  body:has(.footer-navigation-bar[data-qcx-ready='true']) {
+    padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  /* Command Space — mobile sheet feel */
+  #qcx-mobile-search {
+    align-items: flex-end !important;
+    padding: 0 0 calc(64px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+  #qcx-mobile-search .qcx-mobile-search-window {
+    width: 100% !important;
+    max-width: none !important;
+    border-radius: 16px 16px 0 0 !important;
+    border-bottom: 0 !important;
+  }
+}
+
+/* Admin: never show app tab bar over login */
+html:has(#qcx-admin-root) #qcx-native-tabbar,
+html:has(#qcx-admin-root) .footer-navigation-bar {
+  display: none !important;
 }
 
 /* Stable, compact pager controls with all text contained inside the button. */
