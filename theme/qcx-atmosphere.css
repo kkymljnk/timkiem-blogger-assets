@@ -208,44 +208,15 @@ body > #outer-wrapper,
   pointer-events: auto !important;
 }
 
-/* Desktop: hide tabbar; PC menu FAB (centered-top is chrome-hidden by skin) */
+/* Desktop: hide tabbar + PC menu FAB (menu stays on mobile tabbar) */
 @media (min-width: 861px) {
   .footer-navigation-bar,
   #qcx-native-tabbar {
     display: none !important;
   }
-  #qcx-pc-menu-btn {
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    position: fixed !important;
-    top: 16px !important;
-    left: 16px !important;
-    z-index: 9600 !important;
-    width: 44px !important;
-    height: 44px !important;
-    min-width: 44px !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    border: 1px solid rgba(0, 240, 163, .28) !important;
-    border-radius: 10px !important;
-    background: #24352c !important;
-    color: #e8efe9 !important;
-    fill: currentColor !important;
-    cursor: pointer !important;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, .4) !important;
-  }
-  #qcx-pc-menu-btn svg {
-    display: block !important;
-    width: 22px !important;
-    height: 22px !important;
-    fill: currentColor !important;
-  }
 }
-@media (max-width: 860px) {
-  #qcx-pc-menu-btn {
-    display: none !important;
-  }
+#qcx-pc-menu-btn {
+  display: none !important;
 }
 body#layout #qcx-pc-menu-btn,
 html[data-qcx-admin='1'] #qcx-pc-menu-btn,
