@@ -311,14 +311,17 @@ html[data-page-type='homepage'] .qcx-hero {
 /* Post hero meta — title + reading time only. */
 [data-page-type='post'] .post-header .qcx-read-time,
 .qcx-rescue-single .post-header .qcx-read-time {
-  opacity: .9;
+  opacity: 1;
   letter-spacing: .04em;
+  color: #eaf7f0 !important;
+  -webkit-text-fill-color: #eaf7f0 !important;
 }
 [data-page-type='post'] .post-header .qcx-read-time::before,
 .qcx-rescue-single .post-header .qcx-read-time::before,
 .post-item .post-header .qcx-read-time::before {
   content: '// ' !important;
-  color: #3ecf8e !important;
+  color: #28d28c !important;
+  -webkit-text-fill-color: #28d28c !important;
   opacity: 1 !important;
 }
 

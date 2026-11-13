@@ -8,6 +8,38 @@
     return node;
   }
 
+  /* // N phút đọc — upsert; recalc when unlock paints more body text. */
+  function ensureReadTime(article) {
+    var isAdminPage = document.documentElement.getAttribute('data-qcx-admin') === '1' ||
+      /\/p\/admin(?:\.html)?\/?$/i.test(location.pathname);
+    if (isAdminPage) return null;
+    var host = article ||
+      document.querySelector('.post-body, .qcx-content-unlock, #the-article .post-body, article .post-body');
+    if (!host) return null;
+    var readable = host.cloneNode(true);
+    readable.querySelectorAll('pre, code, script, style, iframe, form, .qcx-read-time, .qcx-comment-list, #comments').forEach(function(node) {
+      try { node.remove(); } catch (ignore) {}
+    });
+    var words = (readable.textContent || '').trim().split(/\s+/).filter(Boolean).length;
+    if (words <= 0) return null;
+    var mins = Math.max(1, Math.ceil(words / 220));
+    var label = mins + ' phút đọc';
+    var readTime = document.querySelector('.qcx-read-time');
+    if (!readTime) {
+      readTime = document.createElement('div');
+      readTime.className = 'qcx-read-time';
+      var postHeader = (host.closest && host.closest('.post-item, .the-article, article')) ||
+        document.querySelector('.post-item, .the-article, article');
+      var header = postHeader ? postHeader.querySelector('.post-header') : document.querySelector('.post-header');
+      if (header) header.appendChild(readTime);
+      else if (host.parentNode) host.parentNode.insertBefore(readTime, host);
+      else return null;
+    }
+    if (readTime.textContent !== label) readTime.textContent = label;
+    return readTime;
+  }
+  window.__qcxEnsureReadTime = ensureReadTime;
+
   function highResolutionUrl(url) {
     if (!url || url.indexOf('data:') === 0) return url;
     if (!/(?:blogger\.googleusercontent\.com|bp\.blogspot\.com|googleusercontent\.com)/i.test(url)) return url;
@@ -644,22 +676,8 @@
       if (!frame.title) frame.title = 'Embedded media';
     });
 
-    /* Reading time, excluding code and embedded widgets. */
-    var readable = article.cloneNode(true);
-    readable.querySelectorAll('pre, code, script, style, iframe, form').forEach(function(node) { node.remove(); });
-    var words = (readable.textContent || '').trim().split(/\s+/).filter(Boolean).length;
-    /* // N phút đọc — under title (TOC stays off; no dd/mm). Never on admin gate. */
-    var isAdminPage = document.documentElement.getAttribute('data-qcx-admin') === '1' ||
-      /\/p\/admin(?:\.html)?\/?$/i.test(location.pathname);
-    if (words > 0 && !isAdminPage && !document.querySelector('.qcx-read-time')) {
-      var postHeader = article.parentNode ? article.parentNode.querySelector('.post-header') : null;
-      var mins = Math.max(1, Math.ceil(words / 220));
-      var readTime = document.createElement('div');
-      readTime.className = 'qcx-read-time';
-      readTime.textContent = mins + ' phút đọc';
-      if (postHeader) postHeader.appendChild(readTime);
-      else article.parentNode.insertBefore(readTime, article);
-    }
+    /* // N phút đọc — upsert realtime (recalc after unlock). Never on admin gate. */
+    ensureReadTime(article);
 
     /* TOC disabled — post chrome keeps title + read-time only. */
     article.querySelectorAll('.qcx-toc').forEach(function(node) { try { node.remove(); } catch (ignore) {} });
@@ -910,6 +928,7 @@
 
   function bootSmartArticle() {
     try { initSmartArticle(); } catch (err) { try { console.warn('qcx smart article', err); } catch (e) {} }
+    try { ensureReadTime(); } catch (errRt) {}
     try { initMobileCommercialCta(); } catch (err2) {}
   }
   if (document.readyState === 'complete') {
@@ -921,4 +940,7 @@
     }, { once: true });
   }
   window.setTimeout(bootSmartArticle, 1200);
+  window.addEventListener('qcx:content-unlocked', function() {
+    window.setTimeout(function() { try { ensureReadTime(); } catch (e) {} }, 50);
+  });
 })();

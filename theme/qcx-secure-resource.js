@@ -935,7 +935,7 @@
         avatar +
         '<div class="qcx-comment-body" style="min-width:0!important;flex:1 1 auto!important">' +
         '<div class="qcx-comment-meta" style="display:flex!important;flex-wrap:nowrap!important;align-items:baseline!important;justify-content:space-between!important;width:100%!important;gap:4px 8px!important">' +
-        '<b' + nameClass + ' style="font:700 12px/1.2 ui-monospace,monospace!important;color:' + nameColor + '!important">' + name + '</b>' +
+        '<b' + nameClass + ' style="font:800 13px/1.25 system-ui,-apple-system,sans-serif!important;color:' + nameColor + '!important">' + name + '</b>' +
         (time ? '<time style="font:600 11px/1.2 ui-monospace,monospace!important;color:#8fb39f!important;margin-left:auto!important;white-space:nowrap!important">' + time + '</time>' : '') +
         '</div>' +
         '<p style="margin:2px 0 0!important;color:#d7ebe0!important;font:500 12px/1.35 system-ui,sans-serif!important;word-break:break-word!important">' + text + '</p>' +
@@ -1160,6 +1160,15 @@
     return null;
   }
 
+  function notifyContentUnlocked() {
+    try {
+      if (typeof window.__qcxEnsureReadTime === 'function') window.__qcxEnsureReadTime();
+    } catch (ignoreRt) {}
+    try {
+      window.dispatchEvent(new CustomEvent('qcx:content-unlocked'));
+    } catch (ignoreEv) {}
+  }
+
   function revealLockedContent() {
     var unhidden = document.querySelector('[data-qcx-unhidden], .qcx-content-unlock');
     if (unhidden) {
@@ -1183,6 +1192,7 @@
     placeHeroUnderTitle(body);
     restoreUnlockCommentsChrome();
     removeLegacyDownloadCards();
+    notifyContentUnlocked();
   }
 
 

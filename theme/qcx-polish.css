@@ -1786,11 +1786,14 @@ html body .qcx-download-pro .qcx-resource-link:not([data-qcx-rendered='true'])::
   gap: 6px 10px !important;
   color: #eaf7f0 !important;
 }
-#comments .qcx-comment-meta b {
-  font: 700 12px/1.2 var(--mono, ui-monospace, monospace) !important;
+#comments .qcx-comment-meta b,
+.qcx-comment-list .qcx-comment-meta b {
+  font: 800 13px/1.25 system-ui, -apple-system, sans-serif !important;
   color: #eaf7f0 !important;
+  font-weight: 800 !important;
 }
-#comments .qcx-comment-meta b.is-admin {
+#comments .qcx-comment-meta b.is-admin,
+.qcx-comment-list .qcx-comment-meta b.is-admin {
   color: #ff3b3b !important;
 }
 #comments .qcx-comment-meta time {
@@ -2303,14 +2306,17 @@ html[data-page-type='homepage'] .qcx-hero {
 /* Post hero meta — title + reading time only. */
 [data-page-type='post'] .post-header .qcx-read-time,
 .qcx-rescue-single .post-header .qcx-read-time {
-  opacity: .9;
+  opacity: 1;
   letter-spacing: .04em;
+  color: #eaf7f0 !important;
+  -webkit-text-fill-color: #eaf7f0 !important;
 }
 [data-page-type='post'] .post-header .qcx-read-time::before,
 .qcx-rescue-single .post-header .qcx-read-time::before,
 .post-item .post-header .qcx-read-time::before {
   content: '// ' !important;
-  color: #3ecf8e !important;
+  color: #28d28c !important;
+  -webkit-text-fill-color: #28d28c !important;
   opacity: 1 !important;
 }
 

@@ -872,6 +872,18 @@ html[data-qcx-unlocked='1'] .qcx-comments-shell > h4.postAComment {
   margin: 0 !important;
 }
 
+/* Commenter names — clearly bold (system-ui beats mono weight) */
+#comments .qcx-comment-meta b,
+.qcx-comment-list .qcx-comment-meta b {
+  font: 800 13px/1.25 system-ui, -apple-system, sans-serif !important;
+  font-weight: 800 !important;
+  color: #eaf7f0 !important;
+}
+#comments .qcx-comment-meta b.is-admin,
+.qcx-comment-list .qcx-comment-meta b.is-admin {
+  color: #ff3b3b !important;
+}
+
 /* ── Post chrome P1: Tutorial inline under lock on mobile ── */
 @media (max-width: 860px) {
   .qcx-sidebar-rail.qcx-tutorial-inline,
@@ -1075,7 +1087,7 @@ a.qcx-sc-btn.qcx-sc-btn-outline:hover {
   }
 }
 
-/* ── Post chrome P3: // N phút đọc gọn ── */
+/* ── Post chrome P3: // mint, N phút đọc trắng ── */
 [data-page-type='post'] .post-header .qcx-read-time,
 .qcx-rescue-single .post-header .qcx-read-time,
 .post-item .post-header .qcx-read-time,
@@ -1085,8 +1097,8 @@ a.qcx-sc-btn.qcx-sc-btn-outline:hover {
   padding: 0 !important;
   font: 500 12px/1.35 var(--mono, 'JetBrains Mono', monospace) !important;
   letter-spacing: .02em !important;
-  color: #28d28c !important;
-  -webkit-text-fill-color: #28d28c !important;
+  color: #eaf7f0 !important;
+  -webkit-text-fill-color: #eaf7f0 !important;
   opacity: 1 !important;
 }
 [data-page-type='post'] .post-header .qcx-read-time::before,
