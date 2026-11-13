@@ -90,7 +90,7 @@ body:not(#layout) .qcx-brand-svg:active,
 [data-page-item='multiple'] .card-header img,
 .all_posts .card-header img,
 .qcx-rescue-blog .card-header img {
-  transition: transform .22s ease !important;
+  transition: transform .22s ease, filter .22s ease !important;
 }
 [data-page-item='multiple'] .card:hover,
 [data-page-item='multiple'] .card:active,
@@ -99,8 +99,11 @@ body:not(#layout) .qcx-brand-svg:active,
 .qcx-rescue-blog .card:hover,
 .qcx-rescue-blog .card:active {
   transform: translateY(-4px) !important;
-  border-color: rgba(28, 36, 32, .5) !important;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, .45), 0 0 0 1px rgba(28, 36, 32, .08) !important;
+  border-color: rgba(0, 240, 163, .42) !important;
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, .45),
+    0 0 0 1px rgba(0, 240, 163, .18),
+    0 0 28px rgba(0, 240, 163, .22) !important;
 }
 [data-page-item='multiple'] .card:hover .card-header img,
 [data-page-item='multiple'] .card:active .card-header img,
@@ -109,6 +112,7 @@ body:not(#layout) .qcx-brand-svg:active,
 .qcx-rescue-blog .card:hover .card-header img,
 .qcx-rescue-blog .card:active .card-header img {
   transform: scale(1.03) !important;
+  filter: brightness(1.06) saturate(1.05) !important;
 }
 
 /* Subscribe rail — elevated matte CTA (not page-grid, not same as #0a0f0a) */

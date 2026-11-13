@@ -221,7 +221,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.49/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.50/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -773,14 +773,18 @@
     Array.prototype.forEach.call(nodes, function (svg) {
       if (svg.getAttribute('data-qcx-blink-bound')) return;
       svg.setAttribute('data-qcx-blink-bound', '1');
-      svg.addEventListener('click', function (e) {
-        e.preventDefault();
+      var blinkOnce = function () {
         if (svg.classList.contains('is-blinking')) return;
         svg.classList.remove('is-blinking');
         void svg.offsetWidth;
         svg.classList.add('is-blinking');
         window.setTimeout(function () { svg.classList.remove('is-blinking'); }, 280);
+      };
+      svg.addEventListener('click', function (e) {
+        e.preventDefault();
+        blinkOnce();
       });
+      svg.addEventListener('pointerenter', blinkOnce);
     });
     var heroSvg = document.querySelector('.qcx-hero .qcx-brand-svg, .qcx-avatar .qcx-brand-svg');
     if (!heroSvg || heroSvg.getAttribute('data-qcx-autoblinked')) return;

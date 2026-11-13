@@ -920,7 +920,11 @@ html body .qcx-top-download .qcx-download-button.qcx-follow-gate b {
 .qcx-lock-panel.is-done,
 .qcx-lock-panel[hidden],
 html[data-qcx-unlocked='1'] .qcx-lock-panel { display: none !important; }
-/* While locked: hide article text only — hero stays under title/meta. */
+/* While locked: hide article text only — hero stays under title/meta.
+   Early-hide raw SSR children BEFORE JS wraps .qcx-content-unlock (FOUC). */
+html:not([data-qcx-unlocked='1']) .post-body > :not(.mac-frame):not(.mac-frame-image):not(.separator):not(.qcx-teaser):not(.qcx-lock-panel):not(.qcx-content-unlock):not(#comments):not(.qcx-comments-shell):not(#qcx-resource):not(.qcx-resource-marker):not(.qcx-sidebar-rail):not(#HTML4):not(#qcx-sidebar-rail-rescue) {
+  display: none !important;
+}
 html:not([data-qcx-unlocked='1']) .post-body .qcx-content-unlock:not(.is-open) {
   display: none !important;
 }

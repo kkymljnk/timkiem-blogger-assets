@@ -32,12 +32,22 @@
         e.preventDefault();
         qcxGhostBlink(svg);
       });
+      svg.addEventListener('pointerenter', function () {
+        qcxGhostBlink(svg);
+      });
       svg.addEventListener('keydown', function (e) {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
           qcxGhostBlink(svg);
         }
       });
+      var host = svg.closest ? (svg.closest('.qcx-avatar') || svg.closest('.qcx-avatar-wrap')) : null;
+      if (host && !host.getAttribute('data-qcx-blink-host')) {
+        host.setAttribute('data-qcx-blink-host', '1');
+        host.addEventListener('pointerenter', function () {
+          qcxGhostBlink(svg);
+        });
+      }
     });
     if (reduce) return;
     var heroSvg = document.querySelector('.qcx-hero .qcx-brand-svg, .qcx-avatar .qcx-brand-svg');

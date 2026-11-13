@@ -415,16 +415,16 @@
     return unlock;
   }
 
-  /* Paint unlocked UI immediately when freeToken is cached; delivery still validates in background. */
-  function optimisticUnlockIfCached(config) {
+  /* Cached freeToken only — do NOT paint unlock until delivery validates (avoids flash→relock). */
+  function hasCachedFreeToken(config) {
     if (!config || config.mode === 'paid') return false;
-    if (!readFreeToken(config.resourceId)) return false;
-    markPageUnlocked();
+    return !!readFreeToken(config.resourceId);
+  }
+  /* Prep wrap/hide only; never mark unlocked here. */
+  function prepareLockShell(config) {
     var body = document.querySelector('.post-body');
     if (body) ensureUnlockTarget(body);
-    revealLockedContent();
     removeLegacyDownloadCards();
-    return true;
   }
 
   function findPostHero(body) {
@@ -515,11 +515,10 @@
     });
     var unlock = ensureUnlockTarget(body);
     var rid = config && config.resourceId;
-    var cachedFree = config && config.mode !== 'paid' && !!readFreeToken(rid);
+    /* freeToken alone must NOT unlock UI — wait for delivery validate to avoid FOUC/revoke flash. */
     var alreadyUnlocked =
       document.documentElement.getAttribute('data-qcx-unlocked') === '1' ||
       isPageUnlocked(rid) ||
-      cachedFree ||
       (unlock && unlock.classList.contains('is-open'));
     if (alreadyUnlocked) {
       markPageUnlocked();
@@ -732,14 +731,13 @@
     return box;
   }
 
-  /* resourceId scopes token check — never treat another post's freeToken as unlock. */
+  /* UI unlock state only — freeToken alone must not count (validate delivery first). */
   function isPageUnlocked(resourceId) {
     if (document.documentElement.getAttribute('data-qcx-unlocked') === '1') return true;
     var unlock = document.querySelector('.qcx-content-unlock.is-open');
     if (unlock) return true;
     var panel = document.querySelector('.qcx-lock-panel.is-done');
     if (panel) return true;
-    if (resourceId && readFreeToken(resourceId)) return true;
     return false;
   }
 
@@ -1693,21 +1691,19 @@
       if (state.unlocked) return;
       var existing = readFreeToken(config.resourceId);
       if (existing) {
-        markUnlockedAndDismiss();
+        setStatus('Đang mở khoá…', 'busy');
         validateCachedDelivery(config.resourceId, existing, function () {
           cleanGateParams();
         }).then(function (out) {
           if (out && out.ok) {
             state.unlocked = true;
             state.commentOk = true;
+            markUnlockedAndDismiss();
             revealLockedContent();
             restoreUnlockCommentsChrome();
             return;
           }
           if (!isHardTokenFailure(out)) {
-            /* Soft fail — keep token; content already optimistic. */
-            markPageUnlocked();
-            revealLockedContent();
             setStatus('Đang mở lại tài nguyên…', 'busy');
             return;
           }
@@ -1790,26 +1786,22 @@
     }
 
     cleanGateParams();
-    /* Boot: cached freeToken → UI already optimistic; delivery validates in background. */
+    /* Boot: stay locked until delivery validates cached freeToken (no optimistic flash). */
     var cached = readFreeToken(config.resourceId);
     if (cached) {
-      markPageUnlocked();
-      revealLockedContent();
-      state.unlocked = true;
-      state.commentOk = true;
       validateCachedDelivery(config.resourceId, cached, function () {
         markUnlockedAndDismiss();
       }).then(function (out) {
         if (out && out.ok) {
+          state.unlocked = true;
+          state.commentOk = true;
+          markPageUnlocked();
           revealLockedContent();
           restoreUnlockCommentsChrome();
           return;
         }
         if (!isHardTokenFailure(out)) {
-          /* Keep unlock across soft/network failures on F5. */
-          markPageUnlocked();
-          revealLockedContent();
-          restoreUnlockCommentsChrome();
+          /* Soft/network: retry once already done inside validate — stay locked, retry later via Mở khoá. */
           return;
         }
         state.unlocked = false;
@@ -1978,7 +1970,7 @@
       resourceId: resourceId
     };
     removeLegacyDownloadCards();
-    optimisticUnlockIfCached(config);
+    prepareLockShell(config);
     ensureLockPanel(config);
     var meta = blogMeta();
     if (mode === 'free') wireFree(config, meta);
@@ -2001,25 +1993,21 @@
       window.__qcxSecureRefreshAt = now;
       stripSecrets(document.querySelector('.post-body'));
       removeLegacyDownloadCards();
-      if (config.mode === 'free' && readFreeToken(config.resourceId)) {
-        optimisticUnlockIfCached(config);
-      }
+      prepareLockShell(config);
       ensureLockPanel(config);
       if (config.mode === 'free') {
         var token = readFreeToken(config.resourceId);
-        if (token) {
-          markPageUnlocked();
+        if (token && !unlocked) {
           validateCachedDelivery(config.resourceId, token, null).then(function (out) {
             if (out && out.ok) {
               if (out.resourceId) pinConfigResourceId(config, out.resourceId);
+              markPageUnlocked();
               revealLockedContent();
               restoreUnlockCommentsChrome();
               return;
             }
             if (!isHardTokenFailure(out)) {
-              markPageUnlocked();
-              revealLockedContent();
-              restoreUnlockCommentsChrome();
+              /* Soft fail — stay locked; user can retry via Mở khoá. */
               return;
             }
             revokeUnlockAfterHardFailure(config);
