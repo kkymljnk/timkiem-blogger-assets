@@ -594,7 +594,7 @@
       if (!raw) return null;
       var parsed = JSON.parse(raw);
       if (!parsed || !parsed.t || !parsed.d) return null;
-      /* 30m — cold feed is expensive; keep first paint instant across reloads. */
+      /* 30m — cold feed is expensive; keep first paint instant across navigates. */
       if (Date.now() - parsed.t > 30 * 60 * 1000) return null;
       return parsed.d;
     } catch (err) { return null; }
@@ -602,6 +602,18 @@
 
   function writeFeedCache(key, data) {
     try { sessionStorage.setItem(key, JSON.stringify({ t: Date.now(), d: data })); } catch (err) {}
+  }
+
+  /* F5/reload must not trust sessionStorage — instant paintRescue then feed re-paint = flash. */
+  function isReloadNavigation() {
+    try {
+      var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+      if (nav && nav.type) return nav.type === 'reload';
+    } catch (ignore) {}
+    try {
+      return performance.navigation && performance.navigation.type === 1;
+    } catch (ignore2) {}
+    return false;
   }
 
   function loadHomepageEntries() {
@@ -632,7 +644,8 @@
     var pageType = document.documentElement.getAttribute('data-page-type') || '';
     var isStaticPage = pageType === 'page' || /\/p\//i.test(location.pathname);
     var cacheKey = (isStaticPage ? 'qcx:page:' : 'qcx:post:') + current;
-    var skipPageCache = isStaticPage && /\/p\/admin\.html$/i.test(current);
+    var skipPageCache =
+      (isStaticPage && /\/p\/admin\.html$/i.test(current)) || isReloadNavigation();
     var cached = skipPageCache ? null : readFeedCache(cacheKey);
     if (cached) return Promise.resolve(cached);
     if (skipPageCache) {
@@ -834,10 +847,15 @@
     var cacheKey = isSingle
       ? ((isStaticPage ? 'qcx:page:' : 'qcx:post:') + currentPath)
       : 'qcx:feed:summary:12';
-    var cached = readFeedCache(cacheKey);
+    /* Reload: skip sessionStorage instant paint (F5 stale flash). Keep for navigate. */
+    var skipInstantCache = isSingle && isReloadNavigation();
+    if (skipInstantCache) {
+      try { sessionStorage.removeItem(cacheKey); } catch (e) {}
+    }
+    var cached = skipInstantCache ? null : readFeedCache(cacheKey);
     var skel = null;
 
-    /* Cache hit → paint ngay, không hiện chữ loading. */
+    /* Cache hit → paint ngay (navigate only). Reload always skeleton → fresh feed. */
     if (cached) {
       paintRescue(main, isSingle, cached);
     } else {
