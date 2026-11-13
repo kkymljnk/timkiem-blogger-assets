@@ -525,20 +525,26 @@ body.qcx-menu-open {
 
 /* Native mobile tabbar (Home / Menu / Top|Share / Chat) — Search is drawer-only */
 @media (max-width: 860px) {
-  /* Hide signal / online + @superkhung; pull AI HUB hero up */
+  /* Beat skin `body:not(#layout) .qcx-signal-header{display:block!important}` */
+  body:not(#layout) .qcx-signal-header,
+  body:not(#layout) .qcx-topbar,
   .qcx-signal-header,
   .qcx-topbar {
     display: none !important;
     height: 0 !important;
+    min-height: 0 !important;
     margin: 0 !important;
     padding: 0 !important;
     overflow: hidden !important;
     border: 0 !important;
+    visibility: hidden !important;
   }
+  body:not(#layout) .qcx-hero,
   .qcx-hero {
     padding-top: 8px !important;
     margin-top: 0 !important;
   }
+  body:not(#layout) main.main-container,
   main.main-container {
     padding-top: 12px !important;
   }

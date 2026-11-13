@@ -221,7 +221,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.35/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.36/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
 
@@ -465,10 +465,12 @@
       '.footer-navigation-bar>div>ul>li>a>.icon>svg path,#qcx-native-tabbar>div>ul>li>a>.icon>svg path{fill:currentColor!important}' +
       'body{padding-bottom:calc(60px + env(safe-area-inset-bottom,0px))!important}' +
       '.centered-top .hamburger-menu,button.hamburger-menu{display:none!important}' +
-      /* Hide signal chrome; pull hero up */
-      '.qcx-signal-header,.qcx-topbar{display:none!important;height:0!important;margin:0!important;padding:0!important;overflow:hidden!important}' +
-      '.qcx-hero{padding-top:8px!important;margin-top:0!important}' +
-      'main.main-container{padding-top:12px!important}' +
+      /* Beat skin forcing signal visible on mobile */
+      'body:not(#layout) .qcx-signal-header,body:not(#layout) .qcx-topbar,' +
+      '.qcx-signal-header,.qcx-topbar{display:none!important;height:0!important;min-height:0!important;' +
+      'margin:0!important;padding:0!important;overflow:hidden!important;visibility:hidden!important;border:0!important}' +
+      'body:not(#layout) .qcx-hero,.qcx-hero{padding-top:8px!important;margin-top:0!important}' +
+      'body:not(#layout) main.main-container,main.main-container{padding-top:12px!important}' +
       '}' +
       'body#layout .footer-navigation-bar,body#layout #qcx-native-tabbar{display:none!important}';
     var style = document.getElementById('qcx-native-tabbar-css');
