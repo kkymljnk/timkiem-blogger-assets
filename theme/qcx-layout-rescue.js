@@ -804,10 +804,12 @@
     if (mobile && lock && lock.parentNode) {
       rail.classList.add('qcx-tutorial-inline');
       try {
-        /* Always: lock → Tutorial → (comments / rest) */
-        if (lock.nextSibling !== rail) lock.parentNode.insertBefore(rail, lock.nextSibling);
         var comments = document.getElementById('comments') || document.querySelector('.qcx-comments-shell');
-        if (comments && comments.parentNode === lock.parentNode && comments.previousSibling !== rail) {
+        /* Always: lock → Tutorial → comments → rest */
+        if (lock.nextElementSibling !== rail) {
+          lock.parentNode.insertBefore(rail, lock.nextElementSibling);
+        }
+        if (comments && comments.parentNode === lock.parentNode && rail.nextElementSibling !== comments) {
           if (rail.nextSibling) rail.parentNode.insertBefore(comments, rail.nextSibling);
           else rail.parentNode.appendChild(comments);
         }
@@ -845,7 +847,10 @@
     if (!sidebar) return;
     showSidebarBesideArticle();
 
-    var rail = sidebar.querySelector('#qcx-sidebar-rail-rescue, .qcx-sidebar-rail');
+    /* Prefer existing rail even if already moved into .post-body (mobile inline). */
+    var rail = document.getElementById('qcx-sidebar-rail-rescue') ||
+      document.querySelector('.post-body .qcx-sidebar-rail.qcx-tutorial-inline') ||
+      sidebar.querySelector('#qcx-sidebar-rail-rescue, .qcx-sidebar-rail');
     if (!rail) {
       var nativeVisible = sidebar.querySelector('#PopularPosts2, .widget.PopularPosts');
       if (nativeVisible) {
@@ -861,6 +866,21 @@
         '</div>';
       sidebar.appendChild(rail);
     }
+    /* Scrub duplicate Tutorial rails (re-inject after move-to-post-body). */
+    document.querySelectorAll('#qcx-sidebar-rail-rescue, .qcx-sidebar-rail.qcx-tutorial-inline').forEach(function(node) {
+      if (node === rail) return;
+      try { if (node.parentNode) node.parentNode.removeChild(node); } catch (ignoreDup) {}
+    });
+    /* Layout HTML4 Tutorial clone — hide when rescue rail is inline on mobile. */
+    try {
+      if (window.matchMedia('(max-width: 860px)').matches) {
+        document.querySelectorAll('#sidebar #HTML4.qcx-sidebar-rail, .post-body #HTML4.qcx-sidebar-rail').forEach(function(node) {
+          if (node === rail) return;
+          node.style.setProperty('display', 'none', 'important');
+          node.setAttribute('hidden', 'hidden');
+        });
+      }
+    } catch (ignoreHtml4) {}
 
     if (window.matchMedia('(min-width: 861px)').matches) {
       var relatedDup = document.querySelector('.qcx-related-smart');
@@ -872,11 +892,16 @@
     placeTutorialBesideLock(rail, sidebar);
     if (!rail.getAttribute('data-qcx-tutorial-reassert')) {
       rail.setAttribute('data-qcx-tutorial-reassert', '1');
-      [300, 900, 1800, 3200].forEach(function(ms) {
+      [200, 600, 1200, 2400, 4500, 8000].forEach(function(ms) {
         window.setTimeout(function() { placeTutorialBesideLock(rail, sidebar); }, ms);
       });
       try {
         window.addEventListener('resize', function() { placeTutorialBesideLock(rail, sidebar); });
+        var postBody = document.querySelector('.post-body');
+        if (postBody && typeof MutationObserver === 'function') {
+          var obs = new MutationObserver(function() { placeTutorialBesideLock(rail, sidebar); });
+          obs.observe(postBody, { childList: true });
+        }
       } catch (ignoreResize) {}
     }
 
