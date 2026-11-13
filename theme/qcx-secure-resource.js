@@ -19,7 +19,44 @@
     return document.documentElement.getAttribute('data-page-type') || '';
   }
 
+  function isAdminPage() {
+    try {
+      if (/\/p\/admin\.html$/i.test(location.pathname || '')) return true;
+      if (document.getElementById('qcx-admin-root')) return true;
+      if (document.documentElement.getAttribute('data-qcx-admin') === '1') return true;
+    } catch (ignore) {}
+    return false;
+  }
+
+  function bypassAdminLock() {
+    try {
+      document.documentElement.setAttribute('data-qcx-admin', '1');
+      document.documentElement.setAttribute('data-qcx-unlocked', '1');
+      Array.prototype.slice.call(document.querySelectorAll('.qcx-lock-panel')).forEach(function (panel) {
+        try { panel.remove(); } catch (err) {
+          panel.hidden = true;
+          panel.style.setProperty('display', 'none', 'important');
+          panel.classList.add('is-done');
+        }
+      });
+      Array.prototype.slice.call(document.querySelectorAll('.qcx-content-unlock, [data-qcx-unhidden]')).forEach(function (node) {
+        node.hidden = false;
+        node.classList.add('is-open');
+        node.style.removeProperty('display');
+        node.style.setProperty('display', 'block', 'important');
+      });
+      var root = document.getElementById('qcx-admin-root');
+      if (root) {
+        root.hidden = false;
+        root.style.removeProperty('display');
+        root.style.removeProperty('height');
+        root.style.removeProperty('visibility');
+      }
+    } catch (ignore) {}
+  }
+
   function isPostPage() {
+    if (isAdminPage()) return false;
     return pageType() === 'post' || !!document.querySelector('.the-article .post-body, article.post-item .post-body');
   }
 
@@ -1841,6 +1878,13 @@
   }
 
   function boot() {
+    /* Admin must never enter the comment/paywall gate — it hid #qcx-admin-root (height 0 / “trắng”). */
+    if (isAdminPage()) {
+      bypassAdminLock();
+      window.__qcxSecureResourceBooted = true;
+      window.__qcxSecureRefresh = function () { bypassAdminLock(); };
+      return;
+    }
     if (!isPostPage()) return;
     killLegacyGatePopups();
     var article = document.querySelector('.the-article, article.post-item, .blog-posts');
@@ -1923,6 +1967,10 @@
     /* Rescue re-paints .post-body async — re-attach lock panel after feed render.
      * force=true bypasses debounce when panel was wiped by a second paintRescue. */
     window.__qcxSecureRefresh = function (force) {
+      if (isAdminPage()) {
+        bypassAdminLock();
+        return;
+      }
       var now = Date.now();
       var unlocked = document.documentElement.getAttribute('data-qcx-unlocked') === '1';
       var hasPanel = !!document.querySelector('.qcx-lock-panel');

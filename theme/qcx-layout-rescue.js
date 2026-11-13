@@ -483,10 +483,11 @@
     var sanitized = sanitizePostHtml((entry.content && entry.content.$t) || (entry.summary && entry.summary.$t) || '');
     var content = (sanitized && typeof sanitized === 'object') ? (sanitized.html || '') : String(sanitized || '');
     var adminScripts = (sanitized && typeof sanitized === 'object') ? (sanitized.scripts || []) : [];
+    var isAdmin = !!(sanitized && sanitized.isAdmin) || /\/p\/admin\.html$/i.test(pathOf(location.href));
     var labelHtml = labels.map(function(label){
       return '<a href="/search/label/' + encodeURIComponent(label) + '" rel="tag">' + escapeHtml(label) + '</a>';
     }).join('');
-    var shell = el('div', 'widget Blog qcx-rescue-blog qcx-rescue-single qcx-feed-in');
+    var shell = el('div', 'widget Blog qcx-rescue-blog qcx-rescue-single qcx-feed-in' + (isAdmin ? ' qcx-admin-rescue' : ''));
     shell.id = 'Blog1';
     var article = el('article', 'post-item');
     article.innerHTML =
@@ -500,6 +501,22 @@
     main.appendChild(shell);
     updateMacPath(title);
     document.title = title;
+    if (isAdmin) {
+      try {
+        document.documentElement.setAttribute('data-qcx-admin', '1');
+        document.documentElement.setAttribute('data-qcx-unlocked', '1');
+        /* Unwrap any lock shell that may be baked into the pages feed HTML. */
+        article.querySelectorAll('.qcx-lock-panel').forEach(function(node){
+          try { node.remove(); } catch (err) { node.style.display = 'none'; }
+        });
+        article.querySelectorAll('.qcx-content-unlock, [data-qcx-unhidden]').forEach(function(node){
+          node.hidden = false;
+          node.classList.add('is-open');
+          node.style.removeProperty('display');
+          node.style.setProperty('display', 'block', 'important');
+        });
+      } catch (ignoreAdmin) {}
+    }
     if (adminScripts.length) {
       window.setTimeout(function(){ rehydrateAdminScripts(adminScripts); }, 0);
     }
@@ -751,7 +768,24 @@
     return col;
   }
 
+  function ensureSkeletonCss() {
+    if (document.getElementById('qcx-skel-css')) return;
+    var st = document.createElement('style');
+    st.id = 'qcx-skel-css';
+    st.textContent =
+      '.qcx-rescue-skel{background:transparent!important;min-height:240px}' +
+      '.qcx-skel-block,.qcx-skel-line,.qcx-skel-media{display:block;border-radius:10px;' +
+      'background:linear-gradient(90deg,rgba(0,240,163,.06),rgba(0,240,163,.14),rgba(0,240,163,.06));' +
+      'background-size:200% 100%;animation:qcxSkel 1.1s ease-in-out infinite}' +
+      '.qcx-skel-block{height:18px;margin:0 0 12px}.qcx-skel-w90{width:90%}.qcx-skel-w40{width:40%}' +
+      '.qcx-skel-body{height:180px;width:100%;margin-top:18px}' +
+      '.qcx-skel-media{height:140px;width:100%;margin:0 0 10px}.qcx-skel-line{height:12px;margin:0 0 8px}' +
+      '@keyframes qcxSkel{0%{background-position:100% 0}100%{background-position:-100% 0}}';
+    (document.head || document.documentElement).appendChild(st);
+  }
+
   function mountSkeleton(main, isSingle) {
+    ensureSkeletonCss();
     if (!isSingle) ensureHero(main);
     var shell = el('div', 'widget Blog qcx-rescue-blog qcx-rescue-skel');
     shell.id = 'Blog1';
@@ -787,6 +821,17 @@
       ensureSidebarSearch();
     }
     try {
+      var adminNow = /\/p\/admin\.html$/i.test(pathOf(location.href)) ||
+        !!document.getElementById('qcx-admin-root') ||
+        document.documentElement.getAttribute('data-qcx-admin') === '1';
+      if (adminNow) {
+        document.documentElement.setAttribute('data-qcx-admin', '1');
+        document.documentElement.setAttribute('data-qcx-unlocked', '1');
+        if (typeof window.__qcxSecureRefresh === 'function') {
+          window.setTimeout(function () { window.__qcxSecureRefresh(true); }, 0);
+        }
+        return;
+      }
       /* Force re-attach lock UI — second feed paint often wipes the panel inside the old debounce window. */
       if (document.documentElement.getAttribute('data-qcx-unlocked') === '1') {
         /* already open */
