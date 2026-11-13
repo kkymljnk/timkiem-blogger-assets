@@ -1378,10 +1378,21 @@ html body .qcx-download-pro .qcx-resource-link:not([data-qcx-rendered='true'])::
 #comments .qcx-inline-gate:not([hidden]) {
   display: block !important;
 }
+#comments .qcx-inline-gate.is-open,
+#comments .qcx-inline-gate:not([hidden]) {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  overflow: visible !important;
+}
 #comments .qcx-inline-gate-dialog,
 #comments .qcx-gate-compact-wrap {
   margin: 0 !important;
   padding: 10px 12px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  overflow: visible !important;
 }
 #comments .qcx-gate-compact {
   display: flex !important;
@@ -1468,6 +1479,7 @@ html body .qcx-download-pro .qcx-resource-link:not([data-qcx-rendered='true'])::
   max-width: 100% !important;
   max-height: none !important;
   overflow: visible !important;
+  box-sizing: border-box !important;
   padding: 14px 14px 12px !important;
   border-radius: 16px !important;
   background:
