@@ -745,25 +745,32 @@
     try { document.documentElement.setAttribute('data-qcx-unlocked', '1'); } catch (ignore) {}
   }
 
-  /* During unlock: keep #comments near gate — after lock panel or above share. */
+  /* Unlock chrome only — keep #comments in settled slot (no DOM drag beside lock). */
   function placeCommentsForUnlock(comments) {
     if (!comments) return null;
     try {
-      comments.classList.remove('is-settled');
       comments.setAttribute('data-qcx-unlock-chrome', '1');
-      var panel = document.querySelector('.qcx-lock-panel');
-      var end = document.querySelector('.qcx-article-end');
-      if (panel && panel.parentNode) {
-        if (comments.previousSibling !== panel) panel.parentNode.insertBefore(comments, panel.nextSibling);
-      } else if (end && end.parentNode) {
-        if (comments.nextSibling !== end) end.parentNode.insertBefore(comments, end);
-      }
+      /* Stay in settled position so layout does not jump; gate lives inside #comments. */
+      placeCommentsSettled(comments);
+      comments.setAttribute('data-qcx-unlock-chrome', '1');
+      comments.classList.remove('is-settled');
       capCommentsForUnlockChrome(comments);
     } catch (ignore) {}
     return comments;
   }
 
-  /* After unlock: settle #comments under share row (native widget slot). */
+  function commentsInSettledSlot(comments) {
+    if (!comments || !comments.parentNode) return false;
+    var end = document.querySelector('.qcx-article-end');
+    if (end && end.parentNode === comments.parentNode && comments.previousElementSibling === end) {
+      return true;
+    }
+    var theArticle = document.querySelector('#the-article, .the-article');
+    if (!end && theArticle && comments.previousElementSibling === theArticle) return true;
+    return false;
+  }
+
+  /* Settle #comments under share / article-end — skip if already parked. */
   function placeCommentsSettled(comments) {
     if (!comments) return null;
     try {
@@ -773,23 +780,27 @@
       comments.style.removeProperty('overflow');
       comments.style.removeProperty('overflow-x');
       comments.style.removeProperty('overflow-y');
+      if (comments.getAttribute('data-qcx-layout-settled') === '1' && commentsInSettledSlot(comments)) {
+        return comments;
+      }
       var end = document.querySelector('.qcx-article-end');
       var theArticle = document.querySelector('#the-article, .the-article');
       var postItem = document.querySelector('article.post-item') ||
         (theArticle && theArticle.closest('article.post-item'));
       if (end && end.parentNode) {
-        if (comments.previousSibling !== end) {
+        if (comments.previousElementSibling !== end || comments.parentNode !== end.parentNode) {
           if (end.nextSibling) end.parentNode.insertBefore(comments, end.nextSibling);
           else end.parentNode.appendChild(comments);
         }
       } else if (theArticle && theArticle.parentNode) {
-        if (comments.previousSibling !== theArticle) {
+        if (comments.previousElementSibling !== theArticle || comments.parentNode !== theArticle.parentNode) {
           if (theArticle.nextSibling) theArticle.parentNode.insertBefore(comments, theArticle.nextSibling);
           else theArticle.parentNode.appendChild(comments);
         }
-      } else if (postItem) {
+      } else if (postItem && comments.parentNode !== postItem) {
         postItem.appendChild(comments);
       }
+      comments.setAttribute('data-qcx-layout-settled', '1');
     } catch (ignore) {}
     return comments;
   }

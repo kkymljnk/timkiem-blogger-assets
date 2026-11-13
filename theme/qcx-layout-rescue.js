@@ -221,7 +221,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.60/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.61/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -912,7 +912,7 @@
   }
 
   /* Mobile: park Tutorial BELOW #comments (after article + comments).
-     Never insert as lock.nextSibling — that puts Tutorial above unlocked body. */
+     Settle-once — skip DOM moves when already correct to avoid layout thrash. */
   function placeTutorialBesideLock(rail, sidebar) {
     if (!rail) return;
     var lock = document.querySelector('.qcx-lock-panel:not(.is-done)');
@@ -927,24 +927,34 @@
           document.querySelector('.post-body');
         if (comments && comments.parentNode) {
           /* Prefer: …content → #comments → Tutorial */
-          if (rail.previousElementSibling !== comments || rail.parentNode !== comments.parentNode) {
-            if (comments.nextSibling) {
-              comments.parentNode.insertBefore(rail, comments.nextSibling);
-            } else {
-              comments.parentNode.appendChild(rail);
-            }
+          var alreadyBelow = rail.previousElementSibling === comments &&
+            rail.parentNode === comments.parentNode;
+          if (alreadyBelow) {
+            rail.setAttribute('data-qcx-layout-settled', '1');
+            return;
           }
+          if (comments.nextSibling) {
+            comments.parentNode.insertBefore(rail, comments.nextSibling);
+          } else {
+            comments.parentNode.appendChild(rail);
+          }
+          rail.setAttribute('data-qcx-layout-settled', '1');
         } else if (postBody) {
-          if (rail.parentNode !== postBody || postBody.lastElementChild !== rail) {
-            postBody.appendChild(rail);
+          if (rail.parentNode === postBody && postBody.lastElementChild === rail) {
+            rail.setAttribute('data-qcx-layout-settled', '1');
+            return;
           }
+          postBody.appendChild(rail);
+          rail.setAttribute('data-qcx-layout-settled', '1');
         } else if (lock && lock.parentNode) {
           lock.parentNode.appendChild(rail);
+          rail.removeAttribute('data-qcx-layout-settled');
         }
       } catch (ignoreIns) {}
       return;
     }
     rail.classList.remove('qcx-tutorial-inline');
+    rail.removeAttribute('data-qcx-layout-settled');
     if (sidebar && rail.parentNode !== sidebar) {
       try { sidebar.appendChild(rail); } catch (ignoreBack) {}
     }
@@ -1073,30 +1083,32 @@
     }
 
     /* Mobile: Tutorial below #comments. PC: keep in #sidebar.
-       Reassert after unlock chrome moves #comments. */
-    placeTutorialBesideLock(rail, sidebar);
-    hideMobileTutorialClones();
+       Settle-once — short boot reassert only; no MutationObserver thrash. */
+    function settleTutorialLayout() {
+      placeTutorialBesideLock(rail, sidebar);
+      hideMobileTutorialClones();
+    }
+    settleTutorialLayout();
     if (!rail.getAttribute('data-qcx-tutorial-reassert')) {
       rail.setAttribute('data-qcx-tutorial-reassert', '1');
-      [200, 600, 1200, 2400, 4500, 8000].forEach(function(ms) {
-        window.setTimeout(function() {
-          placeTutorialBesideLock(rail, sidebar);
-          hideMobileTutorialClones();
-        }, ms);
+      [300, 1200].forEach(function(ms) {
+        window.setTimeout(settleTutorialLayout, ms);
       });
       try {
+        var lastMobile = null;
+        try { lastMobile = window.matchMedia('(max-width: 860px)').matches; } catch (ignoreMq1) {}
         window.addEventListener('resize', function() {
-          placeTutorialBesideLock(rail, sidebar);
-          hideMobileTutorialClones();
+          var nowMobile = false;
+          try { nowMobile = window.matchMedia('(max-width: 860px)').matches; } catch (ignoreMq2) {}
+          if (nowMobile === lastMobile) return;
+          lastMobile = nowMobile;
+          rail.removeAttribute('data-qcx-layout-settled');
+          settleTutorialLayout();
         });
-        var postBody = document.querySelector('.post-body');
-        if (postBody && typeof MutationObserver === 'function') {
-          var obs = new MutationObserver(function() {
-            placeTutorialBesideLock(rail, sidebar);
-            hideMobileTutorialClones();
-          });
-          obs.observe(postBody, { childList: true });
-        }
+        window.addEventListener('qcx:content-unlocked', function() {
+          rail.removeAttribute('data-qcx-layout-settled');
+          window.setTimeout(settleTutorialLayout, 50);
+        });
       } catch (ignoreResize) {}
     }
 
