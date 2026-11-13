@@ -1,5 +1,5 @@
 (function(){
-  if (document.documentElement.getAttribute('data-qcx-rescue') === 'true') return;
+  var already = document.documentElement.getAttribute('data-qcx-rescue') === 'true';
   document.documentElement.setAttribute('data-qcx-rescue', 'true');
 
   function text(value) {
@@ -219,7 +219,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.9/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.10/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
 
@@ -235,6 +235,7 @@
   function ensureBreakdevFonts() {
     ensureStylesheet('qcx-breakdev-fonts', QCX_FONTS_CSS);
   }
+  window.__qcxEnsureBreakdevFonts = ensureBreakdevFonts;
 
   /* Theme often drops .qcx-backdrop / scanline / ghost-blink CSS — restore. */
   function ensureAtmosphere() {
@@ -254,6 +255,7 @@
       else document.body.insertBefore(scan, document.body.firstChild);
     }
   }
+  window.__qcxEnsureAtmosphere = ensureAtmosphere;
 
   function ensureGhostBlink() {
     try {
@@ -286,6 +288,7 @@
       heroSvg.click();
     }, 1100);
   }
+  window.__qcxEnsureGhostBlink = ensureGhostBlink;
 
   /* Fixed Tutorial count — 5 fits the right rail without crowding mobile. */
   var QCX_TUTORIAL_COUNT = 5;
@@ -1212,6 +1215,15 @@
         footerSection.appendChild(widget);
       }
     }
+  }
+
+  /* Re-entry after CDN bump: refresh atmosphere/fonts/ghost only. */
+  if (already) {
+    ensureBreakdevFonts();
+    ensureAtmosphere();
+    ensureGhostBlink();
+    window.setTimeout(ensureGhostBlink, 400);
+    return;
   }
 
   bootRescue();
