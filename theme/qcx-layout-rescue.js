@@ -219,13 +219,18 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.28/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.29/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
 
   function ensureStylesheet(id, href) {
-    if (document.getElementById(id)) return;
-    var link = document.createElement('link');
+    var link = document.getElementById(id);
+    if (link) {
+      /* CDN bump: refresh href so atmosphere/fonts pick up new tag without full reload race. */
+      if (link.getAttribute('href') !== href) link.setAttribute('href', href);
+      return;
+    }
+    link = document.createElement('link');
     link.id = id;
     link.rel = 'stylesheet';
     link.href = href;
@@ -1574,10 +1579,11 @@
     }
   }
 
-  /* Re-entry after CDN bump: refresh atmosphere/fonts/ghost only. */
+  /* Re-entry after CDN bump: refresh atmosphere/fonts/menu/ghost. */
   if (already) {
     ensureBreakdevFonts();
     ensureAtmosphere();
+    ensureMenuDrawer();
     ensureGhostBlink();
     window.setTimeout(ensureGhostBlink, 400);
     return;
