@@ -221,7 +221,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.38/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.39/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
 
@@ -858,7 +858,9 @@
     if (!sidebar) return;
     showSidebarBesideArticle();
 
-    /* Prefer existing rail even if already moved into .post-body (mobile inline). */
+    /* Prefer #qcx-sidebar-rail-rescue only — never adopt #HTML4 (causes triple Tutorial on mobile). */
+    var mobileRail = false;
+    try { mobileRail = window.matchMedia('(max-width: 860px)').matches; } catch (ignoreMq0) {}
     var rail = null;
     var existingRails = document.querySelectorAll('#qcx-sidebar-rail-rescue');
     if (existingRails.length) {
@@ -868,14 +870,13 @@
       }
     }
     if (!rail) {
-      rail = document.querySelector('.post-body .qcx-sidebar-rail.qcx-tutorial-inline') ||
-        sidebar.querySelector('.qcx-sidebar-rail');
-    }
-    if (!rail) {
-      var nativeVisible = sidebar.querySelector('#PopularPosts2, .widget.PopularPosts');
-      if (nativeVisible) {
-        var ncs = window.getComputedStyle(nativeVisible);
-        if (ncs.display !== 'none' && ncs.visibility !== 'hidden') return;
+      /* PC: keep native sidebar Tutorial (HTML4 / PopularPosts) — no rescue inject. */
+      if (!mobileRail) {
+        var nativeVisible = sidebar.querySelector('#PopularPosts2, .widget.PopularPosts, #HTML4.qcx-sidebar-rail');
+        if (nativeVisible) {
+          var ncs = window.getComputedStyle(nativeVisible);
+          if (ncs.display !== 'none' && ncs.visibility !== 'hidden') return;
+        }
       }
       rail = el('div', 'widget HTML qcx-sidebar-rail');
       rail.id = 'qcx-sidebar-rail-rescue';
@@ -886,22 +887,24 @@
         '</div>';
       sidebar.appendChild(rail);
     }
-    /* Scrub any leftover duplicate Tutorial rails (same id / inline clones). */
+    /* Scrub duplicate rescue ids + stray inline clones (not the chosen rail). */
     document.querySelectorAll('#qcx-sidebar-rail-rescue, .post-body > .qcx-sidebar-rail.qcx-tutorial-inline').forEach(function(node) {
       if (node === rail) return;
-      if (node.id === 'HTML4') return;
       try { if (node.parentNode) node.parentNode.removeChild(node); } catch (ignoreDup) {}
     });
-    /* Layout HTML4 Tutorial clone — hide when rescue rail is inline on mobile. */
+    /* Mobile: always hide Layout HTML4 / other sidebar Tutorial clones when rescue exists. */
     try {
-      if (window.matchMedia('(max-width: 860px)').matches) {
-        document.querySelectorAll('#HTML4.qcx-sidebar-rail, #sidebar #HTML4, .post-body #HTML4').forEach(function(node) {
-          if (node === rail) return;
+      if (mobileRail) {
+        document.querySelectorAll('#HTML4, #sidebar .qcx-sidebar-rail, .post-body > .qcx-sidebar-rail').forEach(function(node) {
+          if (node === rail || node.id === 'qcx-sidebar-rail-rescue') return;
           node.style.setProperty('display', 'none', 'important');
           node.style.setProperty('height', '0', 'important');
           node.style.setProperty('overflow', 'hidden', 'important');
+          node.style.setProperty('margin', '0', 'important');
+          node.style.setProperty('padding', '0', 'important');
           node.setAttribute('hidden', 'hidden');
           node.setAttribute('aria-hidden', 'true');
+          node.classList.remove('qcx-tutorial-inline');
         });
       }
     } catch (ignoreHtml4) {}
