@@ -1,10 +1,6 @@
 <!-- TIMKIEM admin · CSS via runtime #qcx-admin-ui · markup+script only -->
 <div id="qcx-admin-root">
-  <!-- Blogspot pages-feed rescue strips script/style; img onload rehydrates marked script from pages feed -->
-  <img id="qcx-admin-boot" alt="" width="1" height="1" decoding="async"
-    src="https://www.blogger.com/img/blogger_logo_round_35.png"
-    style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;left:-9999px;display:block!important"
-    onload="(function(){if(window.__qcxAdminBooted)return;window.__qcxAdminBooted=1;fetch('/feeds/pages/default/6068260621348294270?alt=json').then(function(r){return r.json()}).then(function(d){var h=(d.entry&&d.entry.content&&d.entry.content.$t)||'';var parts=h.match(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)||[];var raw='';for(var i=0;i<parts.length;i++){if(parts[i].indexOf('qcx-admin-boot-script')>=0){raw=parts[i].replace(/^<script\b[^>]*>/i,'').replace(/<\/script>$/i,'');break;}}if(!raw)return;var s=document.createElement('script');s.text=raw;(document.body||document.documentElement).appendChild(s);}).catch(function(){})})()" />]*>([\s\S]*?)<\/script>/gi)||[];var raw='';for(var i=0;i<parts.length;i++){if(parts[i].indexOf('qcx-admin-boot-script')>=0){raw=parts[i].replace(/^<script\b[^>]*>/i,'').replace(/<\/script>$/i,'');break;}}if(!raw)return;var s=document.createElement('script');s.text=raw;(document.body||document.documentElement).appendChild(s);}).catch(function(){})})()" />
+  <!-- Admin boot: CDN qcx-layout-rescue ensureAdminBootFromFeed -->
   <div class="wrap">
     <header>
       <h1>TIMKIEM <span>admin</span></h1>
