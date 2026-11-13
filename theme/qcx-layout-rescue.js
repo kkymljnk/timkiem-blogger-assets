@@ -232,10 +232,38 @@
 
   /* Blogger Layout often strips theme-added sidebar gadgets. Inject a visible
      Tutorial rail on single posts/pages only — never on homepage. */
+  function hideSidebarOnFeed() {
+    var sidebar = document.querySelector('#sidebar');
+    if (!sidebar) return;
+    sidebar.style.setProperty('display', 'none', 'important');
+    sidebar.setAttribute('hidden', 'hidden');
+    sidebar.setAttribute('aria-hidden', 'true');
+    var wrap = document.querySelector('.main-wrapper');
+    if (wrap) wrap.style.setProperty('grid-template-columns', 'minmax(0, 1fr)', 'important');
+  }
+
+  function showSidebarBesideArticle() {
+    var sidebar = document.querySelector('#sidebar');
+    var wrap = document.querySelector('.main-wrapper');
+    if (wrap && window.matchMedia('(min-width: 861px)').matches) {
+      wrap.style.setProperty(
+        'grid-template-columns',
+        'minmax(0, 1fr) minmax(220px, 280px)',
+        'important'
+      );
+    }
+    if (sidebar) {
+      sidebar.style.removeProperty('display');
+      sidebar.removeAttribute('hidden');
+      sidebar.removeAttribute('aria-hidden');
+    }
+  }
+
   function ensureSidebarRail() {
     if (!isSingleArticlePage()) {
       var homeRail = document.querySelector('#qcx-sidebar-rail-rescue, #sidebar .qcx-sidebar-rail');
       if (homeRail && homeRail.parentNode) homeRail.parentNode.removeChild(homeRail);
+      hideSidebarOnFeed();
       return;
     }
     var sidebar = document.querySelector('#sidebar');
@@ -246,6 +274,7 @@
       wrap.appendChild(sidebar);
     }
     if (!sidebar) return;
+    showSidebarBesideArticle();
 
     var rail = sidebar.querySelector('#qcx-sidebar-rail-rescue, .qcx-sidebar-rail');
     if (!rail) {
