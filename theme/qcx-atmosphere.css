@@ -561,7 +561,7 @@ body.qcx-menu-open {
   }
   .footer-navigation-bar > div > ul > li,
   #qcx-native-tabbar > div > ul > li {
-    width: 20% !important;
+    width: 25% !important;
     flex: 1 1 0 !important;
     display: flex !important;
     align-items: center !important;

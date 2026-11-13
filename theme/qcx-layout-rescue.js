@@ -219,7 +219,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.31/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.32/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
 
@@ -438,7 +438,7 @@
       '.footer-navigation-bar>div,#qcx-native-tabbar>div{display:flex!important;width:100%!important;align-items:stretch!important}' +
       '.footer-navigation-bar>div>ul,#qcx-native-tabbar>div>ul{display:flex!important;width:100%!important;' +
       'min-height:56px!important;margin:0!important;padding:4px 0 2px!important;list-style:none!important}' +
-      '.footer-navigation-bar>div>ul>li,#qcx-native-tabbar>div>ul>li{width:20%!important;flex:1 1 0!important;' +
+      '.footer-navigation-bar>div>ul>li,#qcx-native-tabbar>div>ul>li{width:25%!important;flex:1 1 0!important;' +
       'display:flex!important;align-items:center!important;justify-content:center!important}' +
       '.footer-navigation-bar>div>ul>li>a,#qcx-native-tabbar>div>ul>li>a{display:flex!important;flex-direction:column!important;' +
       'align-items:center!important;justify-content:center!important;width:100%!important;min-height:48px!important;' +
@@ -467,39 +467,8 @@
     if (style.textContent !== css) style.textContent = css;
   }
 
-  function ensureNativeTabbar() {
-    if (isAdminPath()) return;
-    ensureNativeTabbarCss();
-    if (document.getElementById('qcx-native-tabbar') || document.querySelector('.footer-navigation-bar')) return;
-    var isHome = location.pathname === '/' || document.documentElement.getAttribute('data-page-type') === 'homepage';
-    var isSingle = isSingleArticlePage();
-    var homeHref = ((document.querySelector('link[rel=\"canonical\"]') || {}).href) || (location.origin + '/');
-    try {
-      var u = new URL(homeHref);
-      homeHref = u.origin + '/';
-    } catch (ignoreUrl) {
-      homeHref = location.origin + '/';
-    }
-    var homeLink = isHome
-      ? '<a aria-current=\"page\" class=\"qcx-nav-active\" aria-label=\"Trang chủ\" href=\"' + homeHref + '\" role=\"button\" title=\"Trang chủ\"><div class=\"icon\"><svg height=\"24\" viewBox=\"0 0 24 24\" width=\"24\"><path d=\"M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z\"/></svg></div><div class=\"title\">Home</div></a>'
-      : '<a aria-label=\"Trang chủ\" href=\"' + homeHref + '\" role=\"button\" title=\"Trang chủ\"><div class=\"icon\"><svg height=\"24\" viewBox=\"0 0 24 24\" width=\"24\"><path d=\"M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z\"/></svg></div><div class=\"title\">Home</div></a>';
-    var fourthFifth = isSingle
-      ? '<li><a aria-label=\"Chia sẻ\" class=\"share-post\" data-share-url=\"' + location.href + '\" href=\"javascript:void(0)\" role=\"button\" title=\"Chia sẻ\"><div class=\"icon\"><svg height=\"22\" viewBox=\"0 0 24 24\" width=\"22\"><path d=\"M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z\"/></svg></div><div class=\"title\">Share</div></a></li>' +
-        '<li><a aria-label=\"Telegram\" href=\"https://t.me/superkhung\" rel=\"noopener noreferrer\" target=\"_blank\" title=\"Telegram\"><div class=\"icon\"><svg height=\"22\" viewBox=\"0 0 24 24\" width=\"22\"><path d=\"M9.78,18.65L10.06,14.42L17.74,7.5C18.08,7.19 17.67,7.04 17.22,7.31L7.74,13.3L3.64,12C2.76,11.75 2.75,11.14 3.84,10.7L19.81,4.54C20.54,4.21 21.24,4.72 20.96,5.84L18.24,18.65C18.05,19.56 17.5,19.78 16.74,19.36L12.6,16.3L10.61,18.23C10.38,18.46 10.19,18.65 9.78,18.65Z\"/></svg></div><div class=\"title\">Chat</div></a></li>'
-      : '<li><a aria-label=\"Lên đầu trang\" class=\"scroll-top\" href=\"javascript:void(0)\" role=\"button\" title=\"Lên đầu\"><div class=\"icon\"><svg height=\"24\" viewBox=\"0 0 24 24\" width=\"24\"><path d=\"M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92,12.08L18.5,13.5L13,8V20Z\"/></svg></div><div class=\"title\">Top</div></a></li>' +
-        '<li><a aria-label=\"Telegram\" href=\"https://t.me/superkhung\" rel=\"noopener noreferrer\" target=\"_blank\" title=\"Telegram\"><div class=\"icon\"><svg height=\"22\" viewBox=\"0 0 24 24\" width=\"22\"><path d=\"M9.78,18.65L10.06,14.42L17.74,7.5C18.08,7.19 17.67,7.04 17.22,7.31L7.74,13.3L3.64,12C2.76,11.75 2.75,11.14 3.84,10.7L19.81,4.54C20.54,4.21 21.24,4.72 20.96,5.84L18.24,18.65C18.05,19.56 17.5,19.78 16.74,19.36L12.6,16.3L10.61,18.23C10.38,18.46 10.19,18.65 9.78,18.65Z\"/></svg></div><div class=\"title\">Chat</div></a></li>';
-    var nav = document.createElement('nav');
-    nav.id = 'qcx-native-tabbar';
-    nav.className = 'footer-navigation-bar qcx-native-tabbar';
-    nav.setAttribute('aria-label', 'Điều hướng mobile');
-    nav.innerHTML =
-      '<div><ul>' +
-      '<li>' + homeLink + '</li>' +
-      '<li><a aria-label=\"Menu\" class=\"open-menu\" href=\"javascript:void(0)\" role=\"button\" title=\"Menu\"><div class=\"icon\"><svg height=\"24\" viewBox=\"0 0 24 24\" width=\"24\"><path d=\"M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z\"/></svg></div><div class=\"title\">Menu</div></a></li>' +
-      '<li><a aria-label=\"Tìm kiếm\" class=\"open-search\" href=\"javascript:void(0)\" role=\"button\" title=\"Tìm kiếm\"><div class=\"icon\"><svg height=\"20\" viewBox=\"0 0 20 20\" width=\"20\"><circle cx=\"9\" cy=\"9\" fill=\"none\" r=\"7\" stroke=\"currentColor\" stroke-width=\"1.2\"/><path d=\"M14 14 L18 18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.2\"/></svg></div><div class=\"title\">Search</div></a></li>' +
-      fourthFifth +
-      '</ul></div>';
-    document.body.appendChild(nav);
+  function bindNativeTabbarActions(nav) {
+    if (!nav) return;
     var scrollTop = nav.querySelector('.scroll-top');
     if (scrollTop && !scrollTop.getAttribute('data-qcx-bound')) {
       scrollTop.setAttribute('data-qcx-bound', '1');
@@ -518,16 +487,64 @@
         setMenuOpenState(true);
       }, true);
     }
-    var openSearch = nav.querySelector('.open-search');
-    if (openSearch && !openSearch.getAttribute('data-qcx-bound')) {
-      openSearch.setAttribute('data-qcx-bound', '1');
-      openSearch.addEventListener('click', function(event) {
+    var share = nav.querySelector('.share-post');
+    if (share && !share.getAttribute('data-qcx-bound')) {
+      share.setAttribute('data-qcx-bound', '1');
+      share.addEventListener('click', function(event) {
         event.preventDefault();
-        event.stopImmediatePropagation();
-        if (typeof window.qcxOpenSearch === 'function') window.qcxOpenSearch();
-        else location.href = '/search?max-results=12';
+        var url = share.getAttribute('data-share-url') || location.href;
+        if (navigator.share) {
+          try { navigator.share({ url: url, title: document.title }); } catch (ignoreShare) {}
+        } else if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).catch(function(){});
+        }
       }, true);
     }
+  }
+
+  /* Tabbar: Home | Menu | Top/Share | Chat — Search lives in drawer only. */
+  function ensureNativeTabbar() {
+    if (isAdminPath()) return;
+    ensureNativeTabbarCss();
+    var existing = document.getElementById('qcx-native-tabbar') || document.querySelector('.footer-navigation-bar');
+    if (existing) {
+      /* Drop redundant Search tab (menu drawer has search). */
+      existing.querySelectorAll('a.open-search').forEach(function(a) {
+        var li = a.closest('li');
+        if (li && li.parentNode) li.parentNode.removeChild(li);
+      });
+      bindNativeTabbarActions(existing);
+      return;
+    }
+    var isHome = location.pathname === '/' || document.documentElement.getAttribute('data-page-type') === 'homepage';
+    var isSingle = isSingleArticlePage();
+    var homeHref = ((document.querySelector('link[rel=\"canonical\"]') || {}).href) || (location.origin + '/');
+    try {
+      var u = new URL(homeHref);
+      homeHref = u.origin + '/';
+    } catch (ignoreUrl) {
+      homeHref = location.origin + '/';
+    }
+    var homeLink = isHome
+      ? '<a aria-current=\"page\" class=\"qcx-nav-active\" aria-label=\"Trang chủ\" href=\"' + homeHref + '\" role=\"button\" title=\"Trang chủ\"><div class=\"icon\"><svg height=\"24\" viewBox=\"0 0 24 24\" width=\"24\"><path d=\"M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z\"/></svg></div><div class=\"title\">Home</div></a>'
+      : '<a aria-label=\"Trang chủ\" href=\"' + homeHref + '\" role=\"button\" title=\"Trang chủ\"><div class=\"icon\"><svg height=\"24\" viewBox=\"0 0 24 24\" width=\"24\"><path d=\"M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z\"/></svg></div><div class=\"title\">Home</div></a>';
+    var thirdFourth = isSingle
+      ? '<li><a aria-label=\"Chia sẻ\" class=\"share-post\" data-share-url=\"' + location.href + '\" href=\"javascript:void(0)\" role=\"button\" title=\"Chia sẻ\"><div class=\"icon\"><svg height=\"22\" viewBox=\"0 0 24 24\" width=\"22\"><path d=\"M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z\"/></svg></div><div class=\"title\">Share</div></a></li>' +
+        '<li><a aria-label=\"Telegram\" href=\"https://t.me/superkhung\" rel=\"noopener noreferrer\" target=\"_blank\" title=\"Telegram\"><div class=\"icon\"><svg height=\"22\" viewBox=\"0 0 24 24\" width=\"22\"><path d=\"M9.78,18.65L10.06,14.42L17.74,7.5C18.08,7.19 17.67,7.04 17.22,7.31L7.74,13.3L3.64,12C2.76,11.75 2.75,11.14 3.84,10.7L19.81,4.54C20.54,4.21 21.24,4.72 20.96,5.84L18.24,18.65C18.05,19.56 17.5,19.78 16.74,19.36L12.6,16.3L10.61,18.23C10.38,18.46 10.19,18.65 9.78,18.65Z\"/></svg></div><div class=\"title\">Chat</div></a></li>'
+      : '<li><a aria-label=\"Lên đầu trang\" class=\"scroll-top\" href=\"javascript:void(0)\" role=\"button\" title=\"Lên đầu\"><div class=\"icon\"><svg height=\"24\" viewBox=\"0 0 24 24\" width=\"24\"><path d=\"M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92,12.08L18.5,13.5L13,8V20Z\"/></svg></div><div class=\"title\">Top</div></a></li>' +
+        '<li><a aria-label=\"Telegram\" href=\"https://t.me/superkhung\" rel=\"noopener noreferrer\" target=\"_blank\" title=\"Telegram\"><div class=\"icon\"><svg height=\"22\" viewBox=\"0 0 24 24\" width=\"22\"><path d=\"M9.78,18.65L10.06,14.42L17.74,7.5C18.08,7.19 17.67,7.04 17.22,7.31L7.74,13.3L3.64,12C2.76,11.75 2.75,11.14 3.84,10.7L19.81,4.54C20.54,4.21 21.24,4.72 20.96,5.84L18.24,18.65C18.05,19.56 17.5,19.78 16.74,19.36L12.6,16.3L10.61,18.23C10.38,18.46 10.19,18.65 9.78,18.65Z\"/></svg></div><div class=\"title\">Chat</div></a></li>';
+    var nav = document.createElement('nav');
+    nav.id = 'qcx-native-tabbar';
+    nav.className = 'footer-navigation-bar qcx-native-tabbar';
+    nav.setAttribute('aria-label', 'Điều hướng mobile');
+    nav.innerHTML =
+      '<div><ul>' +
+      '<li>' + homeLink + '</li>' +
+      '<li><a aria-label=\"Menu\" class=\"open-menu\" href=\"javascript:void(0)\" role=\"button\" title=\"Menu\"><div class=\"icon\"><svg height=\"24\" viewBox=\"0 0 24 24\" width=\"24\"><path d=\"M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z\"/></svg></div><div class=\"title\">Menu</div></a></li>' +
+      thirdFourth +
+      '</ul></div>';
+    document.body.appendChild(nav);
+    bindNativeTabbarActions(nav);
   }
   window.__qcxEnsureNativeTabbar = ensureNativeTabbar;
 
