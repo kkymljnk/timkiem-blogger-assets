@@ -216,16 +216,33 @@
     cursor: pointer !important;
     color: var(--fg-dim) !important;
   }
+  .footer-navigation-bar a.qcx-nav-enabled:hover,
+  .footer-navigation-bar a.qcx-nav-enabled:focus-visible,
   .footer-navigation-bar a.qcx-nav-enabled:active,
-  .footer-navigation-bar a.qcx-nav-active {
-    color: var(--accent) !important;
-    background: rgba(28,36,32,.075) !important;
+  .footer-navigation-bar a.qcx-nav-active,
+  #qcx-native-tabbar a.qcx-nav-enabled:hover,
+  #qcx-native-tabbar a.qcx-nav-enabled:focus-visible,
+  #qcx-native-tabbar a.qcx-nav-enabled:active,
+  #qcx-native-tabbar a.qcx-nav-active {
+    /* Mint — theme --accent is near-black #1c2420 and hides icons */
+    color: #28d28c !important;
+    background: rgba(40, 210, 140, 0.08) !important;
   }
+  .footer-navigation-bar a.qcx-nav-enabled:hover svg,
+  .footer-navigation-bar a.qcx-nav-enabled:focus-visible svg,
   .footer-navigation-bar a.qcx-nav-enabled:active svg,
-  .footer-navigation-bar a.qcx-nav-active svg {
-    color: var(--accent) !important;
-    fill: var(--accent) !important;
-    stroke: var(--accent) !important;
+  .footer-navigation-bar a.qcx-nav-active svg,
+  #qcx-native-tabbar a.qcx-nav-enabled:hover svg,
+  #qcx-native-tabbar a.qcx-nav-enabled:focus-visible svg,
+  #qcx-native-tabbar a.qcx-nav-enabled:active svg,
+  #qcx-native-tabbar a.qcx-nav-active svg,
+  .footer-navigation-bar a.qcx-nav-enabled:hover svg path,
+  .footer-navigation-bar a.qcx-nav-active svg path,
+  #qcx-native-tabbar a.qcx-nav-enabled:hover svg path,
+  #qcx-native-tabbar a.qcx-nav-active svg path {
+    color: #28d28c !important;
+    fill: #28d28c !important;
+    stroke: none !important;
   }
 }
 #qcx-menu-backdrop.open { display: block !important; }

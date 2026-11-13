@@ -633,7 +633,9 @@ body.qcx-menu-open {
     max-width: 100% !important;
     text-overflow: ellipsis !important;
   }
-  /* Mint — NOT var(--accent) which theme sets to near-black #1c2420 */
+  /* Mint — NOT var(--accent) which theme sets to near-black #1c2420.
+     smart-media sets svg { color/fill: var(--accent) } on .qcx-nav-active —
+     currentColor then paints icons black, so force #28d28c on svg/path too. */
   .footer-navigation-bar > div > ul > li > a:hover,
   #qcx-native-tabbar > div > ul > li > a:hover,
   .footer-navigation-bar > div > ul > li > a:focus-visible,
@@ -648,11 +650,25 @@ body.qcx-menu-open {
     fill: #28d28c !important;
     opacity: 1 !important;
   }
-  .footer-navigation-bar > div > ul > li > a > .icon > svg,
-  #qcx-native-tabbar > div > ul > li > a > .icon > svg,
-  .footer-navigation-bar > div > ul > li > a > .icon > svg path,
-  #qcx-native-tabbar > div > ul > li > a > .icon > svg path {
-    fill: currentColor !important;
+  .footer-navigation-bar > div > ul > li > a:hover > .icon > svg,
+  #qcx-native-tabbar > div > ul > li > a:hover > .icon > svg,
+  .footer-navigation-bar > div > ul > li > a:focus-visible > .icon > svg,
+  #qcx-native-tabbar > div > ul > li > a:focus-visible > .icon > svg,
+  .footer-navigation-bar > div > ul > li > a:active > .icon > svg,
+  #qcx-native-tabbar > div > ul > li > a:active > .icon > svg,
+  .footer-navigation-bar > div > ul > li > a.qcx-nav-active > .icon > svg,
+  #qcx-native-tabbar > div > ul > li > a.qcx-nav-active > .icon > svg,
+  .footer-navigation-bar > div > ul > li > a[aria-current='page'] > .icon > svg,
+  #qcx-native-tabbar > div > ul > li > a[aria-current='page'] > .icon > svg,
+  .footer-navigation-bar > div > ul > li > a:hover > .icon > svg path,
+  #qcx-native-tabbar > div > ul > li > a:hover > .icon > svg path,
+  .footer-navigation-bar > div > ul > li > a.qcx-nav-active > .icon > svg path,
+  #qcx-native-tabbar > div > ul > li > a.qcx-nav-active > .icon > svg path,
+  .footer-navigation-bar > div > ul > li > a[aria-current='page'] > .icon > svg path,
+  #qcx-native-tabbar > div > ul > li > a[aria-current='page'] > .icon > svg path {
+    color: #28d28c !important;
+    fill: #28d28c !important;
+    stroke: none !important;
   }
   body {
     padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px)) !important;
