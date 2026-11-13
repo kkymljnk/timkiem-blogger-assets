@@ -674,8 +674,8 @@
       var items = host.querySelector('.qcx-comment-list-items');
       if (!items) return;
       try {
-        items.style.setProperty('max-height', 'none', 'important');
-        items.style.setProperty('overflow', 'visible', 'important');
+        items.style.setProperty('max-height', 'min(42vh, 280px)', 'important');
+        items.style.setProperty('overflow-y', 'auto', 'important');
         items.style.setProperty('overflow-x', 'hidden', 'important');
         items.style.setProperty('gap', '2px', 'important');
       } catch (ignoreFit) {}
@@ -695,7 +695,7 @@
       '<div class="qcx-comment-list-head" style="display:flex!important;align-items:center!important;justify-content:space-between!important;gap:8px!important;margin:0 0 8px!important">' +
       '<strong style="font:700 12px/1.2 ui-monospace,monospace!important;color:#e6f5ec!important">Bình luận gần đây</strong>' +
       '<span class="qcx-comment-list-state" style="font:600 11px/1 ui-monospace,monospace!important;color:#8fb39f!important">Đang tải…</span></div>' +
-      '<ul class="qcx-comment-list-items" style="list-style:none!important;margin:0!important;padding:0!important;display:flex!important;flex-direction:column!important;gap:2px!important;max-height:none!important;overflow:visible!important;overflow-x:hidden!important"></ul>';
+      '<ul class="qcx-comment-list-items" style="list-style:none!important;margin:0!important;padding:0!important;display:flex!important;flex-direction:column!important;gap:2px!important;max-height:min(42vh,280px)!important;overflow-y:auto!important;overflow-x:hidden!important"></ul>';
     var form = box.querySelector('.comment-form');
     var gate = box.querySelector('.qcx-inline-gate');
     if (gate && gate.parentNode) gate.parentNode.insertBefore(list, gate.nextSibling);
@@ -924,20 +924,20 @@
     itemsEl.innerHTML = comments.map(function (c) {
       var avatarUrl = String(c.avatar || '').replace(/"/g, '');
       var avatar = avatarUrl
-        ? '<img class="qcx-comment-avatar" src="' + avatarUrl + '" alt="" width="32" height="32" loading="lazy" referrerpolicy="no-referrer" style="width:32px!important;height:32px!important;max-width:32px!important;border-radius:50%!important;object-fit:cover!important;display:block!important">'
-        : '<span class="qcx-comment-avatar is-fallback" aria-hidden="true" style="width:32px!important;height:32px!important;border-radius:50%!important;display:block!important"></span>';
+        ? '<img class="qcx-comment-avatar" src="' + avatarUrl + '" alt="" width="24" height="24" loading="lazy" referrerpolicy="no-referrer" style="width:24px!important;height:24px!important;max-width:24px!important;border-radius:50%!important;object-fit:cover!important;display:block!important">'
+        : '<span class="qcx-comment-avatar is-fallback" aria-hidden="true" style="width:24px!important;height:24px!important;border-radius:50%!important;display:block!important"></span>';
       var name = String(c.name || 'Ẩn danh').replace(/</g, '&lt;');
       var time = c.published ? formatCommentTime(c.published) : '';
       var text = String(c.text || '').replace(/</g, '&lt;');
       return (
-        '<li class="qcx-comment-item" data-id="' + String(c.id).replace(/"/g, '') + '" style="display:flex!important;align-items:flex-start!important;gap:10px!important;margin:0!important;padding:8px 0!important;list-style:none!important">' +
+        '<li class="qcx-comment-item" data-id="' + String(c.id).replace(/"/g, '') + '" style="display:flex!important;align-items:flex-start!important;gap:6px!important;margin:0!important;padding:4px 0!important;list-style:none!important">' +
         avatar +
         '<div class="qcx-comment-body" style="min-width:0!important;flex:1 1 auto!important">' +
-        '<div class="qcx-comment-meta" style="display:flex!important;flex-wrap:wrap!important;align-items:baseline!important;gap:6px 10px!important">' +
+        '<div class="qcx-comment-meta" style="display:flex!important;flex-wrap:wrap!important;align-items:baseline!important;gap:4px 8px!important">' +
         '<b style="font:700 12px/1.2 ui-monospace,monospace!important;color:#eaf7f0!important">' + name + '</b>' +
         (time ? '<time style="font:600 11px/1.2 ui-monospace,monospace!important;color:#8fb39f!important">' + time + '</time>' : '') +
         '</div>' +
-        '<p style="margin:4px 0 0!important;color:#d7ebe0!important;font:500 13px/1.4 system-ui,sans-serif!important;word-break:break-word!important">' + text + '</p>' +
+        '<p style="margin:2px 0 0!important;color:#d7ebe0!important;font:500 12px/1.35 system-ui,sans-serif!important;word-break:break-word!important">' + text + '</p>' +
         '</div></li>'
       );
     }).join('');

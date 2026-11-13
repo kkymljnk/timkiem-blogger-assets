@@ -316,12 +316,13 @@ html[data-page-type='homepage'] .qcx-hero {
 }
 #comments .qcx-comment-list-items {
   gap: 2px !important;
-  max-height: none !important;
-  overflow: visible !important;
+  max-height: min(42vh, 280px) !important;
+  overflow-y: auto !important;
   overflow-x: hidden !important;
 }
 #comments .qcx-comment-item {
-  padding: 6px 0 !important;
+  padding: 4px 0 !important;
+  gap: 6px !important;
 }
 
 /* Hide article-end: related + share/copy/end-contact (keep header .qcx-signal-x). */

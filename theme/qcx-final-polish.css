@@ -1054,10 +1054,15 @@ html body .qcx-download-pro .qcx-resource-link:not([data-qcx-rendered='true'])::
   flex-wrap: wrap !important;
   align-items: center !important;
   gap: 8px 10px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
 }
 #comments .qcx-gate-compact .qcx-gate-check-title {
   font: 700 12px/1.2 var(--mono, ui-monospace, monospace) !important;
   color: #e6f5ec !important;
+  flex: 0 1 auto !important;
+  min-width: 0 !important;
 }
 #comments .qcx-gate-compact .qcx-gate-code {
   display: inline-flex !important;
@@ -1069,6 +1074,12 @@ html body .qcx-download-pro .qcx-resource-link:not([data-qcx-rendered='true'])::
   color: #e8efe9 !important;
   font: 800 12px/1 var(--mono, ui-monospace, monospace) !important;
   letter-spacing: .04em !important;
+  min-width: 0 !important;
+  flex: 1 1 auto !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  box-sizing: border-box !important;
 }
 #comments .qcx-gate-compact .qcx-gate-copy {
   display: inline-flex !important;
@@ -1082,6 +1093,10 @@ html body .qcx-download-pro .qcx-resource-link:not([data-qcx-rendered='true'])::
   color: #9dffd0 !important;
   font: 700 11px/1 var(--mono, ui-monospace, monospace) !important;
   cursor: pointer !important;
+  flex: 0 0 auto !important;
+  flex-shrink: 0 !important;
+  margin-left: auto !important;
+  box-sizing: border-box !important;
 }
 #comments .qcx-gate-status-silent,
 #comments .qcx-gate-check-comment,
@@ -1374,30 +1389,30 @@ html body .qcx-download-pro .qcx-resource-link:not([data-qcx-rendered='true'])::
   display: flex !important;
   flex-direction: column !important;
   gap: 2px !important;
-  max-height: none !important;
-  overflow: visible !important;
+  max-height: min(42vh, 280px) !important;
+  overflow-y: auto !important;
   overflow-x: hidden !important;
 }
 #comments .qcx-comment-item {
   display: flex !important;
   align-items: flex-start !important;
-  gap: 10px !important;
+  gap: 6px !important;
   margin: 0 !important;
-  padding: 6px 0 !important;
+  padding: 4px 0 !important;
   border: 0 !important;
   background: transparent !important;
   list-style: none !important;
 }
 #comments .qcx-comment-avatar,
 #comments img.qcx-comment-avatar {
-  width: 32px !important;
-  height: 32px !important;
-  max-width: 32px !important;
-  min-width: 32px !important;
+  width: 24px !important;
+  height: 24px !important;
+  max-width: 24px !important;
+  min-width: 24px !important;
   border-radius: 50% !important;
   object-fit: cover !important;
   display: block !important;
-  flex: 0 0 32px !important;
+  flex: 0 0 24px !important;
   background: #163023 !important;
 }
 #comments .qcx-comment-avatar.is-fallback {
