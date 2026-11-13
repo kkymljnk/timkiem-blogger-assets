@@ -328,9 +328,16 @@ button.hamburger-menu svg {
   clear: both !important;
   margin-top: 0 !important;
 }
+/* Desktop: hide results-page search field (Ctrl K / command palette still works). */
+@media (min-width: 861px) {
+  .qcx-inline-search.qcx-results-search {
+    display: none !important;
+  }
+}
 @media (max-width: 860px) {
   .qcx-inline-search,
   .qcx-inline-search.qcx-results-search {
+    display: flex !important;
     max-width: none !important;
     margin-bottom: 22px !important;
   }
