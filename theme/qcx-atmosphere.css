@@ -118,7 +118,5 @@ body > #outer-wrapper,
   .qcx-rescue-blog .card:active .card-header img {
     transform: none !important;
   }
-  .qcx-brand-svg.is-blinking .qcx-eye {
-    animation: none;
-  }
+  /* Click blink still runs under reduced-motion (auto-blink is skipped in JS). */
 }
