@@ -221,7 +221,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.40/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.41/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
 
@@ -834,22 +834,43 @@
       }
     }
     if (!rail) {
-      /* PC: keep native sidebar Tutorial (HTML4 / PopularPosts) — no rescue inject. */
+      /* PC: reuse Layout #HTML4 shell (heading+empty list) and fill feed — do not early-return. */
       if (!mobileRail) {
-        var nativeVisible = sidebar.querySelector('#PopularPosts2, .widget.PopularPosts, #HTML4.qcx-sidebar-rail');
-        if (nativeVisible) {
-          var ncs = window.getComputedStyle(nativeVisible);
-          if (ncs.display !== 'none' && ncs.visibility !== 'hidden') return;
+        var nativeShell = sidebar.querySelector('#HTML4.qcx-sidebar-rail, #HTML4');
+        if (nativeShell) {
+          var ncs = window.getComputedStyle(nativeShell);
+          if (ncs.display !== 'none' && ncs.visibility !== 'hidden') {
+            rail = nativeShell;
+            if (!rail.classList.contains('qcx-sidebar-rail')) rail.classList.add('qcx-sidebar-rail');
+            if (!rail.querySelector('.qcx-latest-list')) {
+              var shell = rail.querySelector('.widget-content') || rail;
+              if (!rail.querySelector('.qcx-related-heading')) {
+                shell.insertAdjacentHTML('afterbegin',
+                  '<div aria-level="2" class="qcx-related-heading" role="heading">Tutorial</div>');
+              }
+              shell.insertAdjacentHTML('beforeend',
+                '<ul class="qcx-latest-list" aria-busy="true" aria-label="Tutorial"></ul>');
+            }
+          }
+        }
+        if (!rail) {
+          var nativeOther = sidebar.querySelector('#PopularPosts2, .widget.PopularPosts');
+          if (nativeOther) {
+            var ocs = window.getComputedStyle(nativeOther);
+            if (ocs.display !== 'none' && ocs.visibility !== 'hidden') return;
+          }
         }
       }
-      rail = el('div', 'widget HTML qcx-sidebar-rail');
-      rail.id = 'qcx-sidebar-rail-rescue';
-      rail.innerHTML =
-        '<div class="widget-content">' +
-        '<div aria-level="2" class="qcx-related-heading" role="heading">Tutorial</div>' +
-        '<ul class="qcx-latest-list" aria-busy="true" aria-label="Tutorial"></ul>' +
-        '</div>';
-      sidebar.appendChild(rail);
+      if (!rail) {
+        rail = el('div', 'widget HTML qcx-sidebar-rail');
+        rail.id = 'qcx-sidebar-rail-rescue';
+        rail.innerHTML =
+          '<div class="widget-content">' +
+          '<div aria-level="2" class="qcx-related-heading" role="heading">Tutorial</div>' +
+          '<ul class="qcx-latest-list" aria-busy="true" aria-label="Tutorial"></ul>' +
+          '</div>';
+        sidebar.appendChild(rail);
+      }
     }
     /* Scrub duplicate rescue ids + stray inline clones (not the chosen rail). */
     document.querySelectorAll('#qcx-sidebar-rail-rescue, .post-body > .qcx-sidebar-rail.qcx-tutorial-inline').forEach(function(node) {
