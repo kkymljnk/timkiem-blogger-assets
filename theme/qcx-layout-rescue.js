@@ -793,7 +793,8 @@
     }
   }
 
-  /* Mobile: park Tutorial under .qcx-lock-panel (before #comments). PC: restore to sidebar. */
+  /* Mobile: park Tutorial under .qcx-lock-panel (before #comments). PC: restore to sidebar.
+     Unlock chrome may re-insert #comments as lock.nextSibling — reassert lock → rail → comments. */
   function placeTutorialBesideLock(rail, sidebar) {
     if (!rail) return;
     var lock = document.querySelector('.qcx-lock-panel:not(.is-done)');
@@ -802,10 +803,15 @@
     try { mobile = window.matchMedia('(max-width: 860px)').matches; } catch (ignoreMq) {}
     if (mobile && lock && lock.parentNode) {
       rail.classList.add('qcx-tutorial-inline');
-      var next = lock.nextSibling;
-      if (next !== rail) {
-        try { lock.parentNode.insertBefore(rail, next); } catch (ignoreIns) {}
-      }
+      try {
+        /* Always: lock → Tutorial → (comments / rest) */
+        if (lock.nextSibling !== rail) lock.parentNode.insertBefore(rail, lock.nextSibling);
+        var comments = document.getElementById('comments') || document.querySelector('.qcx-comments-shell');
+        if (comments && comments.parentNode === lock.parentNode && comments.previousSibling !== rail) {
+          if (rail.nextSibling) rail.parentNode.insertBefore(comments, rail.nextSibling);
+          else rail.parentNode.appendChild(comments);
+        }
+      } catch (ignoreIns) {}
       return;
     }
     rail.classList.remove('qcx-tutorial-inline');
@@ -861,8 +867,18 @@
       if (relatedDup) relatedDup.hidden = true;
     }
 
-    /* Mobile: Tutorial directly under lock (before #comments). PC: keep in #sidebar. */
+    /* Mobile: Tutorial directly under lock (before #comments). PC: keep in #sidebar.
+       Reassert after unlock chrome moves #comments under the lock. */
     placeTutorialBesideLock(rail, sidebar);
+    if (!rail.getAttribute('data-qcx-tutorial-reassert')) {
+      rail.setAttribute('data-qcx-tutorial-reassert', '1');
+      [300, 900, 1800, 3200].forEach(function(ms) {
+        window.setTimeout(function() { placeTutorialBesideLock(rail, sidebar); }, ms);
+      });
+      try {
+        window.addEventListener('resize', function() { placeTutorialBesideLock(rail, sidebar); });
+      } catch (ignoreResize) {}
+    }
 
     var list = rail.querySelector('.qcx-latest-list');
     if (!list || list.getAttribute('data-qcx-rail-ready') === 'true') return;
