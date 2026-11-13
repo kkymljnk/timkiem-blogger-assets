@@ -1370,7 +1370,11 @@
       commentOk: false,
       starting: false,
       listRefreshing: false,
-      unlocked: false
+      unlocked: false,
+      sawCode: false,
+      pollBackoffMs: 0,
+      pollInflight: false,
+      pollPausedUntil: 0
     };
 
     function bindGateRefs(nextGate) {
@@ -1399,11 +1403,14 @@
       return gate;
     }
 
-    /* Compact UI: silent while busy/ok; show status on error so revoke reason is visible. */
+    /* Silent only for plain waiting; show ok / sawCode / 429 so unlock progress is visible. */
     function setStatus(text, kind) {
       if (!status) return;
       status.textContent = text || '';
-      var silent = kind !== 'err';
+      var msg = String(text || '');
+      var forceVisible = kind === 'ok' || kind === 'err' ||
+        /Đã thấy mã|Quá tải|đang mở khoá|đang mở khóa|xác minh/i.test(msg);
+      var silent = kind !== 'err' && !forceVisible;
       status.className = 'qcx-gate-status' +
         (silent ? ' qcx-gate-status-silent' : '') +
         (kind === 'ok' ? ' is-ok' : kind === 'err' ? ' is-err' : kind === 'busy' ? ' is-busy' : '');
@@ -1436,8 +1443,21 @@
     }
 
     function stopCommentPoll() {
+      window.clearTimeout(state.pollTimer);
       window.clearInterval(state.pollTimer);
       state.pollTimer = 0;
+      state.pollPausedUntil = 0;
+      state.pollBackoffMs = 0;
+    }
+
+    function scheduleCommentPoll(delayMs) {
+      window.clearTimeout(state.pollTimer);
+      window.clearInterval(state.pollTimer);
+      var wait = Math.max(0, Number(delayMs) || 0);
+      state.pollTimer = window.setTimeout(function () {
+        state.pollTimer = 0;
+        pollComment(true);
+      }, wait);
     }
 
     function stopListPoll() {
@@ -1499,10 +1519,12 @@
         var sawCode = !!(state.commentCode && result.comments.some(function (c) {
           return (c.text || '').indexOf(state.commentCode) !== -1;
         }));
+        state.sawCode = sawCode;
         listEl.classList.toggle('has-code', sawCode);
         if (sawCode && state.nonce && !state.commentOk) {
           setStatus('Đã thấy mã — đang mở khoá…', 'ok');
-          pollComment(true);
+          /* Priority check — skip if mid-backoff unless pause already elapsed. */
+          if (Date.now() >= (state.pollPausedUntil || 0)) pollComment(true);
           state.listFastUntil = Date.now() + 30 * 1000;
         }
         return result;
@@ -1579,6 +1601,12 @@
 
     function pollComment(auto) {
       if (!state.nonce || state.commentOk || state.unlocked) return;
+      if (state.pollInflight) return;
+      if (auto && Date.now() < (state.pollPausedUntil || 0)) {
+        scheduleCommentPoll(state.pollPausedUntil - Date.now());
+        return;
+      }
+      state.pollInflight = true;
       api('/api/free/check-comment', {
         method: 'POST',
         body: JSON.stringify({
@@ -1586,12 +1614,27 @@
           nonce: state.nonce
         })
       }).then(function (result) {
+        state.pollInflight = false;
         if (!result.ok || !result.data || !result.data.ok) {
-          /* Auto: stay silent on rate-limit / transient errors. */
+          if (result.status === 429) {
+            state.pollBackoffMs = Math.min(30000, Math.max(5000, (state.pollBackoffMs || 2500) * 2));
+            state.pollPausedUntil = Date.now() + state.pollBackoffMs;
+            setStatus(
+              state.sawCode
+                ? 'Đã thấy mã — quá tải, thử lại sau ' + Math.round(state.pollBackoffMs / 1000) + 's…'
+                : 'Quá tải — thử lại sau vài giây…',
+              'err'
+            );
+            if (auto) scheduleCommentPoll(state.pollBackoffMs);
+            return;
+          }
           if (!auto) setStatus((result.data && result.data.error) || 'Không kiểm tra được.', 'err');
-          else setStatus('Đang chờ…', 'busy');
+          else setStatus(state.sawCode ? 'Đã thấy mã — đang mở khoá…' : 'Đang chờ…', state.sawCode ? 'ok' : 'busy');
+          if (auto) scheduleCommentPoll(5000);
           return;
         }
+        state.pollBackoffMs = 0;
+        state.pollPausedUntil = 0;
         var data = result.data.data || {};
         if (data.steps && data.steps.commentCode) applyCode(data.steps.commentCode);
         if (data.freeToken) {
@@ -1601,22 +1644,29 @@
           return;
         }
         if (data.found) {
+          state.sawCode = true;
           setStatus(data.message || 'Đã thấy bình luận. Đang hoàn tất…', 'ok');
           refreshCommentList({ busy: false });
+        } else if (state.sawCode) {
+          setStatus('Đã thấy mã — đang mở khoá…', 'ok');
         } else {
           setStatus('Đang chờ…', 'busy');
         }
+        if (auto) scheduleCommentPoll(5000);
       }).catch(function () {
+        state.pollInflight = false;
         if (!auto) setStatus('Lỗi mạng khi kiểm tra bình luận.', 'err');
-        else setStatus('Đang chờ…', 'busy');
+        else setStatus(state.sawCode ? 'Đã thấy mã — đang mở khoá…' : 'Đang chờ…', state.sawCode ? 'ok' : 'busy');
+        if (auto) scheduleCommentPoll(5000);
       });
     }
 
     function startCommentPoll() {
       stopCommentPoll();
-      state.pollTimer = window.setInterval(function () {
-        pollComment(true);
-      }, 3000);
+      state.pollBackoffMs = 0;
+      state.pollPausedUntil = 0;
+      /* First tick soon, then self-schedule every 5s (or longer on 429 backoff). */
+      scheduleCommentPoll(500);
       window.setTimeout(stopCommentPoll, 10 * 60 * 1000);
     }
 
