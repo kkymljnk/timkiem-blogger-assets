@@ -221,9 +221,19 @@
   /* Fixed Tutorial count — 5 fits the right rail without crowding mobile. */
   var QCX_TUTORIAL_COUNT = 5;
 
+  function isAdminPath() {
+    try {
+      if (/\/p\/admin\.html$/i.test(location.pathname || '')) return true;
+      if (document.documentElement.getAttribute('data-qcx-admin') === '1') return true;
+      if (document.getElementById('qcx-admin-root')) return true;
+    } catch (ignore) {}
+    return false;
+  }
+
   function isSingleArticlePage() {
     var pageType = document.documentElement.getAttribute('data-page-type') || '';
     var pageItem = document.documentElement.getAttribute('data-page-item') || '';
+    if (isAdminPath()) return false;
     if (pageType === 'homepage' || pageType === 'index') return false;
     if (pageItem === 'multiple') return false;
     return pageType === 'post' || pageType === 'page' || pageItem === 'single' ||
@@ -260,9 +270,17 @@
   }
 
   function ensureSidebarRail() {
-    if (!isSingleArticlePage()) {
-      var homeRail = document.querySelector('#qcx-sidebar-rail-rescue, #sidebar .qcx-sidebar-rail');
-      if (homeRail && homeRail.parentNode) homeRail.parentNode.removeChild(homeRail);
+    /* Admin: never show Tutorial rail — full-width login/composer. */
+    if (isAdminPath() || !isSingleArticlePage()) {
+      var homeRail = document.querySelector('#qcx-sidebar-rail-rescue, #sidebar .qcx-sidebar-rail, #sidebar #HTML4');
+      if (homeRail && homeRail.id === 'qcx-sidebar-rail-rescue' && homeRail.parentNode) {
+        homeRail.parentNode.removeChild(homeRail);
+      } else if (homeRail && homeRail.classList && homeRail.classList.contains('qcx-sidebar-rail') && homeRail.id === 'qcx-sidebar-rail-rescue') {
+        try { homeRail.parentNode.removeChild(homeRail); } catch (ignoreRail) {}
+      }
+      document.querySelectorAll('#qcx-sidebar-rail-rescue').forEach(function(node){
+        try { node.parentNode.removeChild(node); } catch (ignore2) {}
+      });
       hideSidebarOnFeed();
       return;
     }
@@ -1012,7 +1030,72 @@
     });
   }
 
+  function ensureAdminChrome() {
+    if (!isAdminPath()) return;
+    try { document.documentElement.setAttribute('data-qcx-admin', '1'); } catch (ignore) {}
+    hideSidebarOnFeed();
+    document.querySelectorAll('#qcx-sidebar-rail-rescue').forEach(function(node){
+      try { node.parentNode.removeChild(node); } catch (ignoreRail) {}
+    });
+    /* Strip post chrome + homepage footer so login sits centered. */
+    document.querySelectorAll(
+      '.post-title, .qcx-read-time, .qcx-subscribe-card, .qcx-footer-links-row, #HTML5.qcx-footer-links'
+    ).forEach(function(node){
+      try {
+        if (node.classList && node.classList.contains('qcx-subscribe-card') && node.getAttribute('data-qcx-footer') === '1') {
+          node.remove();
+          return;
+        }
+        if (node.id === 'HTML5' || (node.classList && node.classList.contains('qcx-footer-links-row'))) {
+          var w = node.closest ? node.closest('.widget') : null;
+          if (w) { w.style.setProperty('display', 'none', 'important'); return; }
+        }
+        node.style.setProperty('display', 'none', 'important');
+      } catch (ignoreHide) {}
+    });
+    var wrap = document.querySelector('.main-wrapper');
+    if (wrap) wrap.style.setProperty('grid-template-columns', 'minmax(0, 1fr)', 'important');
+    if (!document.getElementById('qcx-admin-chrome-css')) {
+      var st = document.createElement('style');
+      st.id = 'qcx-admin-chrome-css';
+      st.textContent =
+        'html[data-qcx-admin=\"1\"] #sidebar,' +
+        'html[data-qcx-admin=\"1\"] .qcx-sidebar-rail,' +
+        'html[data-qcx-admin=\"1\"] #HTML4,' +
+        'html[data-qcx-admin=\"1\"] .post-header .post-title,' +
+        'html[data-qcx-admin=\"1\"] .qcx-read-time,' +
+        'html[data-qcx-admin=\"1\"] .qcx-subscribe-card,' +
+        'html[data-qcx-admin=\"1\"] #footer .widget.HTML.qcx-footer-links,' +
+        'html[data-qcx-admin=\"1\"] #HTML5{display:none!important}' +
+        'html[data-qcx-admin=\"1\"] .main-wrapper{grid-template-columns:minmax(0,1fr)!important}' +
+        'html[data-qcx-admin=\"1\"] #main,' +
+        'html[data-qcx-admin=\"1\"] .centered-bottom,' +
+        'html[data-qcx-admin=\"1\"] .post-body{max-width:100%!important;width:100%!important}' +
+        'html[data-qcx-admin=\"1\"] #qcx-admin-root:has(.gate:not(.hidden)){' +
+        'min-height:calc(100vh - 72px)!important;display:flex!important;' +
+        'align-items:center!important;justify-content:center!important;' +
+        'padding:24px 12px 48px!important;max-width:none!important;margin:0 auto!important}' +
+        'html[data-qcx-admin=\"1\"] #qcx-admin-root:has(.gate:not(.hidden)) .wrap{' +
+        'width:100%!important;max-width:320px!important;margin:-8vh auto 0!important;padding:0!important}' +
+        'html[data-qcx-admin=\"1\"] #qcx-admin-root .gate{' +
+        'width:100%!important;max-width:320px!important;margin:0 auto!important;' +
+        'padding:16px 16px 14px!important;border:1px solid rgba(0,240,163,.22)!important;' +
+        'border-radius:12px!important;background:rgba(10,18,14,.92)!important}' +
+        'html[data-qcx-admin=\"1\"] #qcx-admin-root .gate input,' +
+        'html[data-qcx-admin=\"1\"] #qcx-admin-root .gate button{' +
+        'width:100%!important;box-sizing:border-box!important;' +
+        'background:#0b120c!important;color:#e6f5ec!important;' +
+        'border:1px solid rgba(0,240,163,.28)!important;border-radius:8px!important}' +
+        'html[data-qcx-admin=\"1\"] #qcx-admin-root .gate button.primary,' +
+        'html[data-qcx-admin=\"1\"] #qcx-admin-root .gate .actions .primary{' +
+        'background:#7dcea0!important;color:#06110a!important;border-color:transparent!important;' +
+        'font-weight:700!important;margin-top:8px!important;padding:10px 12px!important}';
+      (document.head || document.documentElement).appendChild(st);
+    }
+  }
+
   function ensureSiteFooter() {
+    if (isAdminPath()) return;
     if (document.querySelector('.qcx-subscribe-card[data-qcx-footer="1"]')) return;
     var host = document.querySelector('main.main-container') || document.querySelector('#main') || document.body;
     if (!host) return;
@@ -1067,6 +1150,7 @@
   ensureSidebarRail();
   relocateHeroForDesktopRail();
   hideDropsOnHome();
+  ensureAdminChrome();
   ensureSiteFooter();
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function(){
@@ -1074,6 +1158,7 @@
       ensureSidebarRail();
       relocateHeroForDesktopRail();
       hideDropsOnHome();
+      ensureAdminChrome();
       ensureSiteFooter();
     }, { once: true });
   }
@@ -1083,6 +1168,9 @@
   window.setTimeout(relocateHeroForDesktopRail, 300);
   window.setTimeout(hideDropsOnHome, 80);
   window.setTimeout(hideDropsOnHome, 400);
+  window.setTimeout(ensureAdminChrome, 60);
+  window.setTimeout(ensureAdminChrome, 300);
+  window.setTimeout(ensureAdminChrome, 800);
   window.setTimeout(ensureSiteFooter, 100);
   window.setTimeout(ensureSiteFooter, 500);
 
