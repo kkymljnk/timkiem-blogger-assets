@@ -219,7 +219,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.15/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.16/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
 
@@ -247,7 +247,7 @@
     }
     style.textContent =
       '.qcx-subscribe-card,.qcx-subscribe-card[data-qcx-footer="1"]{' +
-      'background-color:#1c2822!important;background-image:none!important;' +
+      'background-color:#24352c!important;background-image:none!important;' +
       'border:1px solid rgba(0,240,163,.28)!important;border-radius:14px!important;' +
       'box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 0 0 1px rgba(0,0,0,.45),0 16px 42px rgba(0,0,0,.55)!important;' +
       'overflow:hidden!important;position:relative!important;isolation:isolate!important}' +

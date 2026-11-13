@@ -93,7 +93,7 @@ body > #outer-wrapper,
 /* Subscribe rail — elevated matte CTA (not page-grid, not same as #0a0f0a) */
 .qcx-subscribe-card,
 .qcx-subscribe-card[data-qcx-footer="1"] {
-  background-color: #1c2822 !important;
+  background-color: #24352c !important;
   background-image: none !important;
   border: 1px solid rgba(0, 240, 163, .28) !important;
   border-radius: 14px !important;
