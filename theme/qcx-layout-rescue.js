@@ -219,7 +219,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.20/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.22/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
 
@@ -272,15 +272,29 @@
       '.qcx-rescue-pager .theme-button:hover,.qcx-rescue-pager button.theme-button:hover{' +
       'background-color:#2a3d34!important;background-image:none!important;' +
       'border-color:rgba(0,240,163,.45)!important;color:#00f0a3!important}' +
+      '.qcx-results-heading{display:block!important;margin:12px 0 14px!important;padding:0 0 12px!important;' +
+      'border-bottom:1px dashed var(--line,#1d2a1f)!important}' +
+      '.qcx-results-heading::before{content:\"// chuyên mục\"!important;display:block!important;margin:0 0 8px!important;' +
+      'color:var(--accent,#28d28c)!important;font:700 10px/1.2 var(--mono),monospace!important;' +
+      'letter-spacing:.13em!important;text-transform:uppercase!important}' +
       '.qcx-inline-search,.qcx-inline-search.qcx-results-search,.qcx-inline-search.qcx-sidebar-search{' +
+      'display:flex!important;align-items:center!important;gap:10px!important;' +
+      'width:100%!important;max-width:720px!important;min-height:44px!important;height:auto!important;' +
+      'margin:0 0 28px!important;padding:0 14px!important;box-sizing:border-box!important;' +
       'background-color:#24352c!important;background-image:none!important;' +
       'border:1px solid rgba(0,240,163,.22)!important;border-radius:12px!important;' +
       'box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 8px 24px rgba(0,0,0,.4)!important;isolation:isolate!important}' +
-      '.qcx-inline-search:hover,.qcx-inline-search:focus-visible{' +
-      'border-color:rgba(0,240,163,.4)!important}' +
-      '.qcx-inline-search .qcx-search-shortcut{display:inline-flex!important;align-items:center!important;' +
+      '.qcx-inline-search.qcx-sidebar-search{max-width:none!important;margin:0!important}' +
+      '.qcx-inline-search:hover,.qcx-inline-search:focus-visible{border-color:rgba(0,240,163,.4)!important}' +
+      '.qcx-inline-search .qcx-search-icon{display:block!important;flex:0 0 auto!important;width:18px!important;height:18px!important;' +
+      'color:rgba(138,165,150,.85)!important}' +
+      '.qcx-inline-search .qcx-search-text{flex:1 1 auto!important;min-width:0!important;' +
+      'color:rgba(138,165,150,.72)!important;font:500 13px/1.3 var(--mono),monospace!important;text-align:left!important}' +
+      '.qcx-inline-search .qcx-search-text::before{content:none!important}' +
+      '.qcx-inline-search .qcx-search-shortcut{display:inline-flex!important;align-items:center!important;flex:0 0 auto!important;' +
       'background:rgba(0,0,0,.35)!important;border:1px solid rgba(0,240,163,.25)!important;' +
       'color:#00f0a3!important;border-radius:6px!important;padding:3px 7px!important}' +
+      '.all_posts,[data-page-item=\"multiple\"] .all_posts{clear:both!important;margin-top:0!important}' +
       '#qcx-admin-root .gate,html[data-qcx-admin=\"1\"] #qcx-admin-root .gate{' +
       'background-color:#24352c!important;background-image:none!important;' +
       'border:1px solid rgba(0,240,163,.28)!important;border-radius:12px!important;' +
@@ -291,10 +305,36 @@
   }
   function ensureSubscribeCardPanel() { ensureRaisedChrome(); }
 
+  /* XML drawer CSS — live theme skin often missing; keep menu off-canvas when closed. */
+  function ensureMenuDrawer() {
+    var style = document.getElementById('qcx-menu-drawer');
+    if (!style) {
+      style = document.createElement('style');
+      style.id = 'qcx-menu-drawer';
+      (document.head || document.documentElement).appendChild(style);
+    }
+    style.textContent =
+      '#qcx-menu-backdrop{display:none!important;position:fixed!important;inset:0!important;' +
+      'background:rgba(0,0,0,.72)!important;z-index:99997!important}' +
+      '#qcx-menu-backdrop.open{display:block!important}' +
+      '#qcx-menu{position:fixed!important;top:0!important;left:0!important;bottom:0!important;' +
+      'width:min(92vw,360px)!important;max-width:360px!important;background:#07110c!important;' +
+      'border-right:1px solid rgba(28,36,32,.14)!important;border-radius:0 18px 18px 0!important;' +
+      'z-index:99998!important;display:flex!important;flex-direction:column!important;' +
+      'transform:translateX(-105%)!important;transition:transform .28s cubic-bezier(.2,.8,.2,1)!important;' +
+      'overflow:hidden!important;box-shadow:8px 0 48px rgba(0,0,0,.55)!important;margin:0!important;' +
+      'padding-top:env(safe-area-inset-top,0px)!important;padding-bottom:env(safe-area-inset-bottom,0px)!important;' +
+      'pointer-events:none!important}' +
+      '#qcx-menu.open,#qcx-menu[aria-hidden=\"false\"]{transform:translateX(0)!important;left:0!important;' +
+      'pointer-events:auto!important}';
+  }
+  window.__qcxEnsureMenuDrawer = ensureMenuDrawer;
+
   /* Theme often drops .qcx-backdrop / scanline / ghost-blink CSS — restore. */
   function ensureAtmosphere() {
     ensureStylesheet('qcx-atmosphere', QCX_ATMOSPHERE_CSS);
     ensureRaisedChrome();
+    ensureMenuDrawer();
     if (!document.querySelector('.qcx-backdrop')) {
       var backdrop = document.createElement('div');
       backdrop.className = 'qcx-backdrop';
@@ -964,6 +1004,8 @@
     else {
       renderHomepage(main, result || []);
       ensureSidebarSearch();
+      hideSidebarOnFeed();
+      ensureSidebarRail();
     }
     try {
       var adminNow = /\/p\/admin\.html$/i.test(pathOf(location.href)) ||
