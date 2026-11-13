@@ -219,7 +219,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.23/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.24/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
 
@@ -247,7 +247,7 @@
     } else {
       style.id = 'qcx-raised-chrome';
     }
-    style.textContent =
+    var css =
       '.qcx-subscribe-card,.qcx-subscribe-card[data-qcx-footer="1"]{' +
       'background-color:#24352c!important;background-image:none!important;' +
       'border:1px solid rgba(0,240,163,.28)!important;border-radius:14px!important;' +
@@ -302,18 +302,13 @@
       'isolation:isolate!important}' +
       'html[data-qcx-admin=\"1\"] #qcx-admin-root:has(.gate:not(.hidden))>.wrap>header,' +
       'html[data-qcx-admin=\"1\"] #qcx-admin-root:has(.gate:not(.hidden)) #btnLogout{display:none!important}';
+    if (style.textContent !== css) style.textContent = css;
   }
   function ensureSubscribeCardPanel() { ensureRaisedChrome(); }
 
   /* XML drawer CSS — live theme skin often missing; keep menu off-canvas when closed. */
   function ensureMenuDrawer() {
-    var style = document.getElementById('qcx-menu-drawer');
-    if (!style) {
-      style = document.createElement('style');
-      style.id = 'qcx-menu-drawer';
-      (document.head || document.documentElement).appendChild(style);
-    }
-    style.textContent =
+    var css =
       '#qcx-menu-backdrop{display:none!important;position:fixed!important;inset:0!important;' +
       'background:rgba(0,0,0,.72)!important;z-index:99997!important}' +
       '#qcx-menu-backdrop.open{display:block!important}' +
@@ -321,22 +316,101 @@
       'width:min(92vw,360px)!important;max-width:360px!important;background:#07110c!important;' +
       'border-right:1px solid rgba(28,36,32,.14)!important;border-radius:0 18px 18px 0!important;' +
       'z-index:99998!important;display:flex!important;flex-direction:column!important;' +
-      'transform:translate3d(-105%,0,0)!important;transition:transform .28s cubic-bezier(.2,.8,.2,1)!important;' +
+      'transform:translateX(-105%)!important;transition:transform .28s cubic-bezier(.2,.8,.2,1)!important;' +
       'overflow:hidden!important;box-shadow:8px 0 48px rgba(0,0,0,.55)!important;margin:0!important;' +
       'padding-top:env(safe-area-inset-top,0px)!important;padding-bottom:env(safe-area-inset-bottom,0px)!important;' +
       'visibility:hidden!important;pointer-events:none!important}' +
-      '#qcx-menu[aria-hidden=\"true\"]:not(.open){transform:translate3d(-105%,0,0)!important;' +
+      '#qcx-menu[aria-hidden=\"true\"]:not(.open){transform:translateX(-105%)!important;' +
       'visibility:hidden!important;pointer-events:none!important}' +
-      '#qcx-menu.open,#qcx-menu[aria-hidden=\"false\"]{transform:translate3d(0,0,0)!important;left:0!important;' +
-      'visibility:visible!important;pointer-events:auto!important}';
+      '#qcx-menu.open,#qcx-menu[aria-hidden=\"false\"]{transform:translateX(0)!important;left:0!important;' +
+      'visibility:visible!important;pointer-events:auto!important}' +
+      '.centered-top .hamburger-menu,button.hamburger-menu{display:inline-flex!important;' +
+      'align-items:center!important;justify-content:center!important;position:relative!important;z-index:40!important;' +
+      'width:40px!important;height:40px!important;min-width:40px!important;padding:0!important;' +
+      'border:1px solid rgba(0,240,163,.28)!important;border-radius:10px!important;background:#24352c!important;' +
+      'color:#e8efe9!important;fill:currentColor!important;cursor:pointer!important}';
+    var style = document.getElementById('qcx-menu-drawer');
+    if (!style) {
+      style = document.createElement('style');
+      style.id = 'qcx-menu-drawer';
+      (document.head || document.documentElement).appendChild(style);
+    }
+    /* Avoid rewriting identical CSS — restyling mid-transition freezes the drawer open anim. */
+    if (style.textContent !== css) style.textContent = css;
   }
   window.__qcxEnsureMenuDrawer = ensureMenuDrawer;
+
+  function setMenuOpenState(open) {
+    var menu = document.getElementById('qcx-menu');
+    var backdrop = document.getElementById('qcx-menu-backdrop');
+    if (!menu) return;
+    if (open) {
+      menu.classList.add('open');
+      menu.setAttribute('aria-hidden', 'false');
+      if (backdrop) {
+        backdrop.classList.add('open');
+        backdrop.setAttribute('aria-hidden', 'false');
+      }
+      document.body.classList.add('qcx-menu-open', 'qcx-panel-open');
+    } else {
+      menu.classList.remove('open');
+      menu.setAttribute('aria-hidden', 'true');
+      if (backdrop) {
+        backdrop.classList.remove('open');
+        backdrop.setAttribute('aria-hidden', 'true');
+      }
+      document.body.classList.remove('qcx-menu-open', 'qcx-panel-open');
+    }
+  }
+
+  /* Footer nav often missing from live theme — rebuild drawer + wire hamburger. */
+  function ensureMobileNavReady() {
+    ensureMenuDrawer();
+    var menu = document.getElementById('qcx-menu');
+    if (!menu) {
+      if (typeof window.__qcxInitMobileNav === 'function') {
+        document.documentElement.removeAttribute('data-qcx-nav-ready');
+        try { window.__qcxInitMobileNav(); } catch (ignoreInit) {}
+        menu = document.getElementById('qcx-menu');
+      }
+      if (!menu && !document.getElementById('qcx-mobile-nav-rescue')) {
+        document.documentElement.removeAttribute('data-qcx-nav-ready');
+        var script = document.createElement('script');
+        script.id = 'qcx-mobile-nav-rescue';
+        script.src = QCX_CDN + 'qcx-mobile-nav-runtime.js';
+        script.async = true;
+        (document.head || document.documentElement).appendChild(script);
+      }
+    }
+    var ham = document.querySelector('.hamburger-menu');
+    if (ham && !ham.getAttribute('data-qcx-menu-bound')) {
+      ham.setAttribute('data-qcx-menu-bound', '1');
+      ham.setAttribute('aria-label', 'Mở menu');
+      ham.setAttribute('aria-expanded', 'false');
+      ham.addEventListener('click', function(event) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        var current = document.getElementById('qcx-menu');
+        if (!current) {
+          ensureMobileNavReady();
+          current = document.getElementById('qcx-menu');
+        }
+        if (!current) return;
+        var willOpen = !current.classList.contains('open');
+        setMenuOpenState(willOpen);
+        ham.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+        ham.setAttribute('aria-label', willOpen ? 'Đóng menu' : 'Mở menu');
+      }, true);
+    }
+  }
+  window.__qcxEnsureMobileNavReady = ensureMobileNavReady;
 
   /* Theme often drops .qcx-backdrop / scanline / ghost-blink CSS — restore. */
   function ensureAtmosphere() {
     ensureStylesheet('qcx-atmosphere', QCX_ATMOSPHERE_CSS);
     ensureRaisedChrome();
     ensureMenuDrawer();
+    ensureMobileNavReady();
     if (!document.querySelector('.qcx-backdrop')) {
       var backdrop = document.createElement('div');
       backdrop.className = 'qcx-backdrop';
@@ -1377,6 +1451,8 @@
   window.setTimeout(ensureSiteFooter, 100);
   window.setTimeout(ensureSiteFooter, 500);
   window.setTimeout(ensureAtmosphere, 80);
+  window.setTimeout(ensureMobileNavReady, 120);
+  window.setTimeout(ensureMobileNavReady, 500);
   window.setTimeout(ensureGhostBlink, 200);
   window.setTimeout(ensureGhostBlink, 800);
   window.setTimeout(ensureGhostBlink, 1600);

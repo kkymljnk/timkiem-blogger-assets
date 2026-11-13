@@ -172,13 +172,18 @@
   function initMobileNav() {
     var nav = document.querySelector('.footer-navigation-bar');
     var inlineSearches = document.querySelectorAll('.qcx-inline-search');
-    if (!nav && !inlineSearches.length) return;
-    if (document.documentElement.getAttribute('data-qcx-nav-ready') === 'true') return;
+    var hamburger = document.querySelector('.hamburger-menu');
+    /* Contempo often strips footer-navigation-bar; hamburger / inline search still need the drawer. */
+    if (!nav && !inlineSearches.length && !hamburger) return;
+    if (document.documentElement.getAttribute('data-qcx-nav-ready') === 'true') {
+      if (document.getElementById('qcx-menu')) return;
+      document.documentElement.removeAttribute('data-qcx-nav-ready');
+    }
     document.documentElement.setAttribute('data-qcx-nav-ready', 'true');
     if (nav) nav.setAttribute('data-qcx-ready', 'true');
 
     var homeButton = nav ? nav.querySelector('li:first-child > a') : null;
-    var menuButton = nav ? nav.querySelector('.open-menu') : null;
+    var menuButton = (nav && nav.querySelector('.open-menu')) || hamburger;
     var searchButton = nav ? nav.querySelector('.open-search') : null;
     var commentButton = nav ? nav.querySelector('.sroll-comments') : null;
     var shareButton = nav ? nav.querySelector('.share-post') : null;
@@ -801,6 +806,7 @@
     }, true);
   }
 
+  window.__qcxInitMobileNav = initMobileNav;
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initMobileNav, { once: true });
   else initMobileNav();
 })();
