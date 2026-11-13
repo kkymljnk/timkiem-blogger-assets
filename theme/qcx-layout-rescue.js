@@ -219,15 +219,72 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_FONTS_CSS =
-    'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.8/theme/qcx-breakdev-fonts.css';
-  function ensureBreakdevFonts() {
-    if (document.getElementById('qcx-breakdev-fonts')) return;
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.9/theme/';
+  var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
+  var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
+
+  function ensureStylesheet(id, href) {
+    if (document.getElementById(id)) return;
     var link = document.createElement('link');
-    link.id = 'qcx-breakdev-fonts';
+    link.id = id;
     link.rel = 'stylesheet';
-    link.href = QCX_FONTS_CSS;
+    link.href = href;
     (document.head || document.documentElement).appendChild(link);
+  }
+
+  function ensureBreakdevFonts() {
+    ensureStylesheet('qcx-breakdev-fonts', QCX_FONTS_CSS);
+  }
+
+  /* Theme often drops .qcx-backdrop / scanline / ghost-blink CSS — restore. */
+  function ensureAtmosphere() {
+    ensureStylesheet('qcx-atmosphere', QCX_ATMOSPHERE_CSS);
+    if (!document.querySelector('.qcx-backdrop')) {
+      var backdrop = document.createElement('div');
+      backdrop.className = 'qcx-backdrop';
+      backdrop.setAttribute('aria-hidden', 'true');
+      document.body.insertBefore(backdrop, document.body.firstChild);
+    }
+    if (!document.querySelector('.qcx-scanline')) {
+      var scan = document.createElement('div');
+      scan.className = 'qcx-scanline';
+      scan.setAttribute('aria-hidden', 'true');
+      var after = document.querySelector('.qcx-backdrop');
+      if (after && after.nextSibling) document.body.insertBefore(scan, after.nextSibling);
+      else document.body.insertBefore(scan, document.body.firstChild);
+    }
+  }
+
+  function ensureGhostBlink() {
+    try {
+      if (typeof window.qcxBootGhostBlink === 'function') {
+        window.qcxBootGhostBlink();
+        return;
+      }
+    } catch (ignore) {}
+    /* Minimal fallback if carrd-motion/runtime not ready yet. */
+    var nodes = document.querySelectorAll('.qcx-brand-svg');
+    if (!nodes.length) return;
+    Array.prototype.forEach.call(nodes, function (svg) {
+      if (svg.getAttribute('data-qcx-blink-bound')) return;
+      svg.setAttribute('data-qcx-blink-bound', '1');
+      svg.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (svg.classList.contains('is-blinking')) return;
+        svg.classList.remove('is-blinking');
+        void svg.offsetWidth;
+        svg.classList.add('is-blinking');
+        window.setTimeout(function () { svg.classList.remove('is-blinking'); }, 280);
+      });
+    });
+    var heroSvg = document.querySelector('.qcx-hero .qcx-brand-svg, .qcx-avatar .qcx-brand-svg');
+    if (!heroSvg || heroSvg.getAttribute('data-qcx-autoblinked')) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    window.setTimeout(function () {
+      if (heroSvg.getAttribute('data-qcx-autoblinked')) return;
+      heroSvg.setAttribute('data-qcx-autoblinked', '1');
+      heroSvg.click();
+    }, 1100);
   }
 
   /* Fixed Tutorial count — 5 fits the right rail without crowding mobile. */
@@ -1159,21 +1216,25 @@
 
   bootRescue();
   ensureBreakdevFonts();
+  ensureAtmosphere();
   ensureSidebarSearch();
   ensureSidebarRail();
   relocateHeroForDesktopRail();
   hideDropsOnHome();
   ensureAdminChrome();
   ensureSiteFooter();
+  ensureGhostBlink();
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function(){
       ensureBreakdevFonts();
+      ensureAtmosphere();
       ensureSidebarSearch();
       ensureSidebarRail();
       relocateHeroForDesktopRail();
       hideDropsOnHome();
       ensureAdminChrome();
       ensureSiteFooter();
+      ensureGhostBlink();
     }, { once: true });
   }
   window.setTimeout(ensureSidebarRail, 80);
@@ -1187,6 +1248,10 @@
   window.setTimeout(ensureAdminChrome, 800);
   window.setTimeout(ensureSiteFooter, 100);
   window.setTimeout(ensureSiteFooter, 500);
+  window.setTimeout(ensureAtmosphere, 80);
+  window.setTimeout(ensureGhostBlink, 200);
+  window.setTimeout(ensureGhostBlink, 800);
+  window.setTimeout(ensureGhostBlink, 1600);
 
   /* Always scrub native Blog1 snippets (CSS leak), even when rescue skips. */
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bootSnippetClean, { once: true });

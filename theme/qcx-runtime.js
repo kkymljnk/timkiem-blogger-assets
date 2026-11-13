@@ -90,6 +90,7 @@
     }
   }
   function bootAll() { bootEnter(); bootGhostBlink(); }
+  window.qcxBootGhostBlink = bootGhostBlink;
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', bootAll);
   } else {

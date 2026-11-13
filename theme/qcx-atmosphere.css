@@ -1,0 +1,124 @@
+/* Restore prior atmosphere + Ghost blink + homepage card hover.
+   Injected by layout-rescue — does not redesign UI, only repairs missing chrome. */
+
+/* Grid backdrop + scanline (from prior theme) */
+.qcx-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(1200px 600px at 80% -10%, rgba(28, 36, 32, .08), transparent 60%),
+    radial-gradient(900px 500px at -10% 30%, rgba(180, 140, 255, .09), transparent 60%),
+    linear-gradient(var(--line, #1d2a1f) 1px, transparent 1px) 0 0 / 48px 48px,
+    linear-gradient(90deg, var(--line, #1d2a1f) 1px, transparent 1px) 0 0 / 48px 48px,
+    var(--bg, #0a0f0a);
+  mask-image: radial-gradient(ellipse at 50% 20%, black 40%, transparent 85%);
+  -webkit-mask-image: radial-gradient(ellipse at 50% 20%, black 40%, transparent 85%);
+}
+.qcx-scanline {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0 3px,
+    rgba(255, 255, 255, .012) 3px 4px
+  );
+  mix-blend-mode: overlay;
+}
+body > .content-wrapper,
+body > .main-wrapper,
+body > .page,
+body > #outer-wrapper,
+.main-wrapper,
+.centered-bottom {
+  position: relative;
+  z-index: 2;
+}
+
+/* Ghost SVG — two round eyes blink */
+.qcx-brand-svg {
+  cursor: pointer;
+  outline: none;
+  overflow: visible;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.qcx-ghost-eyes { pointer-events: none; }
+.qcx-eye {
+  transform-box: fill-box;
+  transform-origin: center;
+  will-change: transform;
+}
+@keyframes qcx-ghost-blink {
+  0%, 100% { transform: scaleY(1); }
+  40%, 60% { transform: scaleY(0.08); }
+}
+.qcx-brand-svg.is-blinking .qcx-eye {
+  animation: qcx-ghost-blink .18s ease-in-out 1;
+}
+
+/* Homepage card hover — PC + mobile (restore lift + image zoom) */
+[data-page-item='multiple'] .card,
+.all_posts .card,
+.qcx-rescue-blog .card {
+  transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease !important;
+}
+[data-page-item='multiple'] .card-header img,
+.all_posts .card-header img,
+.qcx-rescue-blog .card-header img {
+  transition: transform .22s ease !important;
+}
+[data-page-item='multiple'] .card:hover,
+[data-page-item='multiple'] .card:active,
+.all_posts .card:hover,
+.all_posts .card:active,
+.qcx-rescue-blog .card:hover,
+.qcx-rescue-blog .card:active {
+  transform: translateY(-4px) !important;
+  border-color: rgba(28, 36, 32, .5) !important;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, .45), 0 0 0 1px rgba(28, 36, 32, .08) !important;
+}
+[data-page-item='multiple'] .card:hover .card-header img,
+[data-page-item='multiple'] .card:active .card-header img,
+.all_posts .card:hover .card-header img,
+.all_posts .card:active .card-header img,
+.qcx-rescue-blog .card:hover .card-header img,
+.qcx-rescue-blog .card:active .card-header img {
+  transform: scale(1.03) !important;
+}
+
+/* Soften motion only — keep a visible hover cue */
+@media (prefers-reduced-motion: reduce) {
+  [data-page-item='multiple'] .card,
+  .all_posts .card,
+  .qcx-rescue-blog .card,
+  [data-page-item='multiple'] .card-header img,
+  .all_posts .card-header img,
+  .qcx-rescue-blog .card-header img {
+    transition: border-color .15s ease, box-shadow .15s ease !important;
+  }
+  [data-page-item='multiple'] .card:hover,
+  [data-page-item='multiple'] .card:active,
+  .all_posts .card:hover,
+  .all_posts .card:active,
+  .qcx-rescue-blog .card:hover,
+  .qcx-rescue-blog .card:active {
+    transform: none !important;
+    border-color: rgba(40, 210, 140, .35) !important;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, .28) !important;
+  }
+  [data-page-item='multiple'] .card:hover .card-header img,
+  [data-page-item='multiple'] .card:active .card-header img,
+  .all_posts .card:hover .card-header img,
+  .all_posts .card:active .card-header img,
+  .qcx-rescue-blog .card:hover .card-header img,
+  .qcx-rescue-blog .card:active .card-header img {
+    transform: none !important;
+  }
+  .qcx-brand-svg.is-blinking .qcx-eye {
+    animation: none;
+  }
+}
