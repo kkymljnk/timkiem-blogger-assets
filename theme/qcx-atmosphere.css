@@ -247,7 +247,10 @@ body > #outer-wrapper,
     display: none !important;
   }
 }
-body#layout #qcx-pc-menu-btn {
+body#layout #qcx-pc-menu-btn,
+html[data-qcx-admin='1'] #qcx-pc-menu-btn,
+html[data-qcx-admin='1'] #qcx-native-tabbar,
+html[data-qcx-admin='1'] .footer-navigation-bar {
   display: none !important;
 }
 

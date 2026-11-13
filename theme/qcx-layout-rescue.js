@@ -219,7 +219,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.30/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.31/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
 
@@ -383,7 +383,8 @@
       '#qcx-pc-menu-btn svg{display:block!important;width:22px!important;height:22px!important;fill:currentColor!important}' +
       '}' +
       '@media (max-width:860px){#qcx-pc-menu-btn{display:none!important}}' +
-      'body#layout #qcx-pc-menu-btn{display:none!important}';
+      'body#layout #qcx-pc-menu-btn,html[data-qcx-admin=\"1\"] #qcx-pc-menu-btn,' +
+      'html[data-qcx-admin=\"1\"] #qcx-native-tabbar,html[data-qcx-admin=\"1\"] .footer-navigation-bar{display:none!important}';
     var style = document.getElementById('qcx-menu-drawer');
     if (!style) {
       style = document.createElement('style');
@@ -398,6 +399,7 @@
   function setMenuOpenState(open) {
     var menu = document.getElementById('qcx-menu');
     var backdrop = document.getElementById('qcx-menu-backdrop');
+    var pcBtn = document.getElementById('qcx-pc-menu-btn');
     if (!menu) return;
     if (open) {
       menu.classList.add('open');
@@ -416,13 +418,16 @@
       }
       document.body.classList.remove('qcx-menu-open', 'qcx-panel-open');
     }
+    if (pcBtn) {
+      pcBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      pcBtn.setAttribute('aria-label', open ? 'Đóng menu' : 'Mở menu');
+    }
   }
 
   /* XML native mobile tabbar — live theme often drops #qcx-native-tabbar. */
   function ensureNativeTabbarCss() {
     var css =
-      '@media (min-width:861px){.footer-navigation-bar,#qcx-native-tabbar{display:none!important}' +
-      '.centered-top .hamburger-menu,button.hamburger-menu{display:inline-flex!important}}' +
+      '@media (min-width:861px){.footer-navigation-bar,#qcx-native-tabbar{display:none!important}}' +
       '@media (max-width:860px){' +
       '.footer-navigation-bar,#qcx-native-tabbar{display:block!important;position:fixed!important;' +
       'bottom:0!important;left:0!important;right:0!important;width:100%!important;z-index:9500!important;' +
@@ -552,6 +557,10 @@
 
   function ensureDesktopMenuButton() {
     var btn = document.getElementById('qcx-pc-menu-btn');
+    if (isAdminPath() || document.documentElement.getAttribute('data-qcx-admin') === '1') {
+      if (btn && btn.parentNode) btn.parentNode.removeChild(btn);
+      return;
+    }
     if (!btn) {
       btn = document.createElement('button');
       btn.id = 'qcx-pc-menu-btn';
@@ -575,10 +584,7 @@
         current = document.getElementById('qcx-menu');
       }
       if (!current) return;
-      var willOpen = !current.classList.contains('open');
-      setMenuOpenState(willOpen);
-      btn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
-      btn.setAttribute('aria-label', willOpen ? 'Đóng menu' : 'Mở menu');
+      setMenuOpenState(!current.classList.contains('open'));
     }, true);
   }
   window.__qcxEnsureMobileNavReady = ensureMobileNavReady;
