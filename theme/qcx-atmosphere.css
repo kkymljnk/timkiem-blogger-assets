@@ -844,6 +844,16 @@ html[data-qcx-unlocked='1'] .qcx-comments-shell > h4.postAComment {
     text-transform: uppercase !important;
     color: rgba(190, 211, 198, .85) !important;
   }
+  /* One Tutorial only — hide Layout HTML4 clone when rescue rail is inline */
+  body:has(#qcx-sidebar-rail-rescue.qcx-tutorial-inline) #HTML4.qcx-sidebar-rail,
+  body:has(#qcx-sidebar-rail-rescue.qcx-tutorial-inline) .post-body > #HTML4 {
+    display: none !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+  }
 }
 
 /* ── Post chrome P2: Follow card tidy (mobile + PC) ── */

@@ -329,7 +329,10 @@
       '@media (max-width:860px){.qcx-sidebar-rail.qcx-tutorial-inline,#qcx-sidebar-rail-rescue.qcx-tutorial-inline{' +
       'display:block!important;width:100%!important;margin:12px 0 16px!important;padding:12px!important;' +
       'box-sizing:border-box!important;border:1px solid rgba(28,36,32,.14)!important;border-radius:14px!important;' +
-      'background:rgba(4,10,7,.72)!important}}' +
+      'background:rgba(4,10,7,.72)!important}' +
+      'body:has(#qcx-sidebar-rail-rescue.qcx-tutorial-inline) #HTML4.qcx-sidebar-rail,' +
+      'body:has(#qcx-sidebar-rail-rescue.qcx-tutorial-inline) .post-body>#HTML4{' +
+      'display:none!important;height:0!important;overflow:hidden!important;margin:0!important;padding:0!important;border:0!important}}' +
       /* P2: Follow card tidy */
       '.qcx-subscribe-card,.qcx-subscribe-card[data-qcx-footer=\"1\"]{display:flex!important;flex-wrap:wrap!important;' +
       'align-items:center!important;justify-content:space-between!important;gap:16px 20px!important;' +
@@ -874,10 +877,13 @@
     /* Layout HTML4 Tutorial clone — hide when rescue rail is inline on mobile. */
     try {
       if (window.matchMedia('(max-width: 860px)').matches) {
-        document.querySelectorAll('#sidebar #HTML4.qcx-sidebar-rail, .post-body #HTML4.qcx-sidebar-rail').forEach(function(node) {
+        document.querySelectorAll('#HTML4.qcx-sidebar-rail, #sidebar #HTML4, .post-body #HTML4').forEach(function(node) {
           if (node === rail) return;
           node.style.setProperty('display', 'none', 'important');
+          node.style.setProperty('height', '0', 'important');
+          node.style.setProperty('overflow', 'hidden', 'important');
           node.setAttribute('hidden', 'hidden');
+          node.setAttribute('aria-hidden', 'true');
         });
       }
     } catch (ignoreHtml4) {}
