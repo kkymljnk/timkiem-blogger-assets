@@ -208,40 +208,47 @@ body > #outer-wrapper,
   pointer-events: auto !important;
 }
 
-/* Desktop hamburger — beat skin `body:not(#layout) .hamburger-menu{display:none!important}` */
+/* Desktop: hide tabbar; PC menu FAB (centered-top is chrome-hidden by skin) */
 @media (min-width: 861px) {
   .footer-navigation-bar,
   #qcx-native-tabbar {
     display: none !important;
   }
-  body:not(#layout) .centered-top .hamburger-menu,
-  body:not(#layout) button.hamburger-menu,
-  .centered-top .hamburger-menu,
-  button.hamburger-menu {
+  #qcx-pc-menu-btn {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    position: relative !important;
-    z-index: 40 !important;
-    width: 40px !important;
-    height: 40px !important;
-    min-width: 40px !important;
+    position: fixed !important;
+    top: 16px !important;
+    left: 16px !important;
+    z-index: 9600 !important;
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
     padding: 0 !important;
+    margin: 0 !important;
     border: 1px solid rgba(0, 240, 163, .28) !important;
     border-radius: 10px !important;
     background: #24352c !important;
     color: #e8efe9 !important;
     fill: currentColor !important;
     cursor: pointer !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .4) !important;
   }
-  body:not(#layout) .centered-top .hamburger-menu svg,
-  body:not(#layout) button.hamburger-menu svg,
-  .centered-top .hamburger-menu svg,
-  button.hamburger-menu svg {
+  #qcx-pc-menu-btn svg {
     display: block !important;
-    margin: auto !important;
+    width: 22px !important;
+    height: 22px !important;
     fill: currentColor !important;
   }
+}
+@media (max-width: 860px) {
+  #qcx-pc-menu-btn {
+    display: none !important;
+  }
+}
+body#layout #qcx-pc-menu-btn {
+  display: none !important;
 }
 
 /* Menu drawer interior — XML skin (~4161–4432); theme Lưu often drops these */

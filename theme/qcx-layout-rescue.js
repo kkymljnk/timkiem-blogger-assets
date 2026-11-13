@@ -219,7 +219,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.29/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.30/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
 
@@ -373,14 +373,17 @@
       'text-decoration:none!important}' +
       '#qcx-menu .qcx-mobile-menu-hidden{display:none!important}' +
       'body.qcx-menu-open{overflow:hidden!important}' +
-      /* Desktop hamburger beats chrome-hide */
+      /* Desktop PC menu FAB — centered-top is chrome-hidden by skin */
       '@media (min-width:861px){' +
-      'body:not(#layout) .centered-top .hamburger-menu,body:not(#layout) button.hamburger-menu{' +
-      'display:inline-flex!important;align-items:center!important;justify-content:center!important;' +
-      'position:relative!important;z-index:40!important;width:40px!important;height:40px!important;' +
-      'min-width:40px!important;padding:0!important;border:1px solid rgba(0,240,163,.28)!important;' +
-      'border-radius:10px!important;background:#24352c!important;color:#e8efe9!important;cursor:pointer!important}' +
-      '}';
+      '#qcx-pc-menu-btn{display:inline-flex!important;align-items:center!important;justify-content:center!important;' +
+      'position:fixed!important;top:16px!important;left:16px!important;z-index:9600!important;' +
+      'width:44px!important;height:44px!important;min-width:44px!important;padding:0!important;margin:0!important;' +
+      'border:1px solid rgba(0,240,163,.28)!important;border-radius:10px!important;background:#24352c!important;' +
+      'color:#e8efe9!important;cursor:pointer!important;box-shadow:0 8px 24px rgba(0,0,0,.4)!important}' +
+      '#qcx-pc-menu-btn svg{display:block!important;width:22px!important;height:22px!important;fill:currentColor!important}' +
+      '}' +
+      '@media (max-width:860px){#qcx-pc-menu-btn{display:none!important}}' +
+      'body#layout #qcx-pc-menu-btn{display:none!important}';
     var style = document.getElementById('qcx-menu-drawer');
     if (!style) {
       style = document.createElement('style');
@@ -543,28 +546,40 @@
         (document.head || document.documentElement).appendChild(script);
       }
     }
-    /* Hamburger only when native tabbar missing (desktop fallback). */
-    var ham = document.querySelector('.hamburger-menu');
-    var hasTabbar = !!document.getElementById('qcx-native-tabbar') || !!document.querySelector('.footer-navigation-bar');
-    if (ham && !hasTabbar && !ham.getAttribute('data-qcx-menu-bound')) {
-      ham.setAttribute('data-qcx-menu-bound', '1');
-      ham.setAttribute('aria-label', 'Mở menu');
-      ham.setAttribute('aria-expanded', 'false');
-      ham.addEventListener('click', function(event) {
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        var current = document.getElementById('qcx-menu');
-        if (!current) {
-          ensureMobileNavReady();
-          current = document.getElementById('qcx-menu');
-        }
-        if (!current) return;
-        var willOpen = !current.classList.contains('open');
-        setMenuOpenState(willOpen);
-        ham.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
-        ham.setAttribute('aria-label', willOpen ? 'Đóng menu' : 'Mở menu');
-      }, true);
+    /* Desktop: centered-top is skin-hidden — inject fixed PC menu FAB. */
+    ensureDesktopMenuButton();
+  }
+
+  function ensureDesktopMenuButton() {
+    var btn = document.getElementById('qcx-pc-menu-btn');
+    if (!btn) {
+      btn = document.createElement('button');
+      btn.id = 'qcx-pc-menu-btn';
+      btn.type = 'button';
+      btn.setAttribute('aria-label', 'Mở menu');
+      btn.setAttribute('aria-expanded', 'false');
+      btn.innerHTML =
+        '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
+        '<path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"/>' +
+        '</svg>';
+      document.body.appendChild(btn);
     }
+    if (btn.getAttribute('data-qcx-menu-bound')) return;
+    btn.setAttribute('data-qcx-menu-bound', '1');
+    btn.addEventListener('click', function(event) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      var current = document.getElementById('qcx-menu');
+      if (!current) {
+        ensureMobileNavReady();
+        current = document.getElementById('qcx-menu');
+      }
+      if (!current) return;
+      var willOpen = !current.classList.contains('open');
+      setMenuOpenState(willOpen);
+      btn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+      btn.setAttribute('aria-label', willOpen ? 'Đóng menu' : 'Mở menu');
+    }, true);
   }
   window.__qcxEnsureMobileNavReady = ensureMobileNavReady;
 
@@ -1584,6 +1599,7 @@
     ensureBreakdevFonts();
     ensureAtmosphere();
     ensureMenuDrawer();
+    ensureMobileNavReady();
     ensureGhostBlink();
     window.setTimeout(ensureGhostBlink, 400);
     return;
