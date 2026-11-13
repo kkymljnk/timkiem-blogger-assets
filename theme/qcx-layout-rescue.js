@@ -221,7 +221,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.59/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.60/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -911,8 +911,8 @@
     }
   }
 
-  /* Mobile: park Tutorial AFTER article body / unlock content, immediately before #comments.
-     Never insert as lock.nextSibling — that puts Tutorial above .qcx-content-unlock / .container. */
+  /* Mobile: park Tutorial BELOW #comments (after article + comments).
+     Never insert as lock.nextSibling — that puts Tutorial above unlocked body. */
   function placeTutorialBesideLock(rail, sidebar) {
     if (!rail) return;
     var lock = document.querySelector('.qcx-lock-panel:not(.is-done)');
@@ -926,12 +926,15 @@
         var postBody = (lock && lock.closest && lock.closest('.post-body')) ||
           document.querySelector('.post-body');
         if (comments && comments.parentNode) {
-          /* Prefer: …content → Tutorial → #comments (comments often live under .the-article). */
-          if (rail.parentNode !== comments.parentNode || rail.nextElementSibling !== comments) {
-            comments.parentNode.insertBefore(rail, comments);
+          /* Prefer: …content → #comments → Tutorial */
+          if (rail.previousElementSibling !== comments || rail.parentNode !== comments.parentNode) {
+            if (comments.nextSibling) {
+              comments.parentNode.insertBefore(rail, comments.nextSibling);
+            } else {
+              comments.parentNode.appendChild(rail);
+            }
           }
         } else if (postBody) {
-          /* Fallback: end of post-body (after unlock container / notes). */
           if (rail.parentNode !== postBody || postBody.lastElementChild !== rail) {
             postBody.appendChild(rail);
           }
@@ -1069,7 +1072,7 @@
       if (relatedDup) relatedDup.hidden = true;
     }
 
-    /* Mobile: Tutorial after content, before #comments. PC: keep in #sidebar.
+    /* Mobile: Tutorial below #comments. PC: keep in #sidebar.
        Reassert after unlock chrome moves #comments. */
     placeTutorialBesideLock(rail, sidebar);
     hideMobileTutorialClones();
