@@ -221,7 +221,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.37/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.38/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
 
@@ -313,7 +313,60 @@
       'box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 0 0 1px rgba(0,0,0,.45),0 16px 42px rgba(0,0,0,.55)!important;' +
       'isolation:isolate!important}' +
       'html[data-qcx-admin=\"1\"] #qcx-admin-root:has(.gate:not(.hidden))>.wrap>header,' +
-      'html[data-qcx-admin=\"1\"] #qcx-admin-root:has(.gate:not(.hidden)) #btnLogout{display:none!important}';
+      'html[data-qcx-admin=\"1\"] #qcx-admin-root:has(.gate:not(.hidden)) #btnLogout{display:none!important}' +
+      /* P1: hide “N Nhận xét” stub under lock; collapse empty unlock chrome */
+      'body:has(.qcx-lock-panel) #comments>h4.postAComment,' +
+      'body:has(.qcx-lock-panel) .qcx-comments-shell>h4.postAComment,' +
+      'html[data-qcx-unlocked=\"1\"] #comments>h4.postAComment,' +
+      'html[data-qcx-unlocked=\"1\"] .qcx-comments-shell>h4.postAComment{' +
+      'display:none!important;margin:0!important;padding:0!important;height:0!important;overflow:hidden!important}' +
+      '#comments[data-qcx-unlock-chrome=\"1\"]:not(.is-settled),' +
+      '.qcx-comments-shell[data-qcx-unlock-chrome=\"1\"]:not(.is-settled){' +
+      'border:0!important;background:transparent!important;box-shadow:none!important;padding:0!important;margin:0 0 8px!important}' +
+      '#comments[data-qcx-unlock-chrome=\"1\"]:not(.is-settled):not(:has(.comment-form,.commentForm,iframe,.comment,#comment-editor,.qcx-comment-list)),' +
+      '.qcx-comments-shell[data-qcx-unlock-chrome=\"1\"]:not(.is-settled):not(:has(.comment-form,.commentForm,iframe,.comment,#comment-editor,.qcx-comment-list)){' +
+      'display:none!important;height:0!important;max-height:0!important;overflow:hidden!important;margin:0!important}' +
+      '@media (max-width:860px){.qcx-sidebar-rail.qcx-tutorial-inline,#qcx-sidebar-rail-rescue.qcx-tutorial-inline{' +
+      'display:block!important;width:100%!important;margin:12px 0 16px!important;padding:12px!important;' +
+      'box-sizing:border-box!important;border:1px solid rgba(28,36,32,.14)!important;border-radius:14px!important;' +
+      'background:rgba(4,10,7,.72)!important}}' +
+      /* P2: Follow card tidy */
+      '.qcx-subscribe-card,.qcx-subscribe-card[data-qcx-footer=\"1\"]{display:flex!important;flex-wrap:wrap!important;' +
+      'align-items:center!important;justify-content:space-between!important;gap:16px 20px!important;' +
+      'max-width:760px!important;margin:28px auto 20px!important;padding:18px 20px!important}' +
+      '.qcx-subscribe-card .qcx-sc-text{flex:1 1 220px!important;min-width:0!important}' +
+      '.qcx-subscribe-card .qcx-sc-title{margin:0 0 6px!important;font:600 16px/1.35 var(--mono),monospace!important;' +
+      'color:#e8efe9!important;-webkit-text-fill-color:#e8efe9!important;text-wrap:balance!important;' +
+      'white-space:normal!important;word-break:normal!important;overflow-wrap:anywhere!important}' +
+      '.qcx-subscribe-card .qcx-sc-desc{margin:0!important;font:400 12px/1.45 var(--mono),monospace!important;' +
+      'color:rgba(190,211,198,.72)!important}' +
+      '.qcx-subscribe-card .qcx-sc-actions{display:flex!important;flex-wrap:wrap!important;gap:10px!important;align-items:stretch!important}' +
+      '.qcx-subscribe-card .qcx-sc-btn,a.qcx-sc-btn{display:inline-flex!important;align-items:center!important;' +
+      'justify-content:center!important;min-width:132px!important;min-height:42px!important;padding:0 16px!important;' +
+      'border-radius:10px!important;font:700 12px/1 var(--mono),monospace!important;text-decoration:none!important;' +
+      'box-sizing:border-box!important;white-space:nowrap!important}' +
+      '.qcx-subscribe-card .qcx-sc-btn:not(.qcx-sc-btn-outline),a.qcx-sc-btn:not(.qcx-sc-btn-outline){' +
+      'background:#141a16!important;border:1px solid #141a16!important;color:#e8efe9!important;' +
+      '-webkit-text-fill-color:#e8efe9!important;box-shadow:none!important}' +
+      '.qcx-subscribe-card .qcx-sc-btn.qcx-sc-btn-outline,a.qcx-sc-btn.qcx-sc-btn-outline{' +
+      'background:rgba(0,0,0,.28)!important;border:1px solid rgba(232,239,233,.28)!important;' +
+      'color:#eafff4!important;-webkit-text-fill-color:#eafff4!important;box-shadow:none!important}' +
+      '.qcx-subscribe-card .qcx-sc-btn.qcx-sc-btn-outline:hover,a.qcx-sc-btn.qcx-sc-btn-outline:hover{' +
+      'border-color:#28d28c!important;color:#28d28c!important;-webkit-text-fill-color:#28d28c!important}' +
+      '@media (max-width:860px){.qcx-subscribe-card,.qcx-subscribe-card[data-qcx-footer=\"1\"]{' +
+      'flex-direction:column!important;align-items:stretch!important;margin:20px 12px 16px!important;padding:14px!important;gap:12px!important}' +
+      '.qcx-subscribe-card .qcx-sc-actions{width:100%!important;flex-direction:column!important}' +
+      '.qcx-subscribe-card .qcx-sc-btn,a.qcx-sc-btn{width:100%!important;min-width:0!important}}' +
+      /* P3: // N phút đọc */
+      '.qcx-read-time,[data-page-type=\"post\"] .post-header .qcx-read-time,.qcx-rescue-single .post-header .qcx-read-time{' +
+      'display:block!important;margin:6px 0 0!important;padding:0!important;' +
+      'font:500 12px/1.35 var(--mono),monospace!important;letter-spacing:.02em!important;' +
+      'color:#28d28c!important;-webkit-text-fill-color:#28d28c!important;opacity:1!important}' +
+      '.qcx-read-time::before,[data-page-type=\"post\"] .post-header .qcx-read-time::before,' +
+      '.qcx-rescue-single .post-header .qcx-read-time::before,.post-item .post-header .qcx-read-time::before{' +
+      'content:\"// \"!important;color:#28d28c!important;-webkit-text-fill-color:#28d28c!important;' +
+      'opacity:1!important;font-weight:700!important}' +
+      'html[data-qcx-admin=\"1\"] .qcx-read-time{display:none!important}';
     if (style.textContent !== css) style.textContent = css;
   }
   function ensureSubscribeCardPanel() { ensureRaisedChrome(); }
@@ -740,6 +793,27 @@
     }
   }
 
+  /* Mobile: park Tutorial under .qcx-lock-panel (before #comments). PC: restore to sidebar. */
+  function placeTutorialBesideLock(rail, sidebar) {
+    if (!rail) return;
+    var lock = document.querySelector('.qcx-lock-panel:not(.is-done)');
+    if (!lock) lock = document.querySelector('.qcx-lock-panel');
+    var mobile = false;
+    try { mobile = window.matchMedia('(max-width: 860px)').matches; } catch (ignoreMq) {}
+    if (mobile && lock && lock.parentNode) {
+      rail.classList.add('qcx-tutorial-inline');
+      var next = lock.nextSibling;
+      if (next !== rail) {
+        try { lock.parentNode.insertBefore(rail, next); } catch (ignoreIns) {}
+      }
+      return;
+    }
+    rail.classList.remove('qcx-tutorial-inline');
+    if (sidebar && rail.parentNode !== sidebar) {
+      try { sidebar.appendChild(rail); } catch (ignoreBack) {}
+    }
+  }
+
   function ensureSidebarRail() {
     /* Admin: never show Tutorial rail — full-width login/composer. */
     if (isAdminPath() || !isSingleArticlePage()) {
@@ -786,6 +860,9 @@
       var relatedDup = document.querySelector('.qcx-related-smart');
       if (relatedDup) relatedDup.hidden = true;
     }
+
+    /* Mobile: Tutorial directly under lock (before #comments). PC: keep in #sidebar. */
+    placeTutorialBesideLock(rail, sidebar);
 
     var list = rail.querySelector('.qcx-latest-list');
     if (!list || list.getAttribute('data-qcx-rail-ready') === 'true') return;
