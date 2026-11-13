@@ -194,6 +194,8 @@
   }
 
   function ensureSidebarSearch() {
+    /* Mobile uses drawer search only — do not inject inline Ctrl-K field. */
+    if (window.matchMedia && window.matchMedia('(max-width: 860px)').matches) return;
     var sidebar = document.querySelector('#sidebar');
     var wrap = document.querySelector('.main-wrapper') || document.querySelector('main.main-container');
     if (!sidebar && wrap) {
@@ -219,7 +221,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.33/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.34/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
 
@@ -300,7 +302,10 @@
       'background:rgba(0,0,0,.35)!important;border:1px solid rgba(0,240,163,.25)!important;' +
       'color:#00f0a3!important;border-radius:6px!important;padding:3px 7px!important}' +
       '@media (min-width:861px){.qcx-inline-search.qcx-results-search{display:none!important}}' +
-      '@media (max-width:860px){.qcx-inline-search.qcx-results-search{display:flex!important}}' +
+      /* Mobile: hide all inline search — drawer search only */
+      '@media (max-width:860px){.qcx-inline-search,.qcx-inline-search.qcx-results-search,' +
+      '.qcx-inline-search.qcx-sidebar-search,.widget.qcx-sidebar-search,' +
+      '.widget.HTML.qcx-sidebar-search{display:none!important}}' +
       '.all_posts,[data-page-item=\"multiple\"] .all_posts{clear:both!important;margin-top:0!important}' +
       '#qcx-admin-root .gate,html[data-qcx-admin=\"1\"] #qcx-admin-root .gate{' +
       'background-color:#24352c!important;background-image:none!important;' +
