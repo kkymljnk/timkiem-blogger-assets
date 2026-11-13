@@ -221,7 +221,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.51/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.52/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -556,7 +556,7 @@
       '.footer-navigation-bar>div,#qcx-native-tabbar>div{display:flex!important;width:100%!important;align-items:stretch!important}' +
       '.footer-navigation-bar>div>ul,#qcx-native-tabbar>div>ul{display:flex!important;width:100%!important;' +
       'min-height:56px!important;margin:0!important;padding:4px 0 2px!important;list-style:none!important}' +
-      '.footer-navigation-bar>div>ul>li,#qcx-native-tabbar>div>ul>li{width:25%!important;flex:1 1 0!important;' +
+      '.footer-navigation-bar>div>ul>li,#qcx-native-tabbar>div>ul>li{width:20%!important;flex:1 1 0!important;' +
       'display:flex!important;align-items:center!important;justify-content:center!important}' +
       '.footer-navigation-bar>div>ul>li>a,#qcx-native-tabbar>div>ul>li>a{display:flex!important;flex-direction:column!important;' +
       'align-items:center!important;justify-content:center!important;width:100%!important;min-height:48px!important;' +
@@ -641,6 +641,19 @@
         setMenuOpenState(true);
       }, true);
     }
+    var openSearch = nav.querySelector('.open-search');
+    if (openSearch && !openSearch.getAttribute('data-qcx-bound')) {
+      openSearch.setAttribute('data-qcx-bound', '1');
+      openSearch.addEventListener('click', function(event) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        if (typeof window.qcxOpenSearch === 'function') window.qcxOpenSearch();
+        else if (typeof window.__qcxInitMobileNav === 'function') {
+          try { window.__qcxInitMobileNav(); } catch (ignoreInit) {}
+          if (typeof window.qcxOpenSearch === 'function') window.qcxOpenSearch();
+        }
+      }, true);
+    }
     var share = nav.querySelector('.share-post');
     if (share && !share.getAttribute('data-qcx-bound')) {
       share.setAttribute('data-qcx-bound', '1');
@@ -656,17 +669,28 @@
     }
   }
 
-  /* Tabbar: Home | Menu | Top/Share | Chat — Search lives in drawer only. */
+  /* Tabbar: Home | Menu | Search | Top/Share | Chat */
   function ensureNativeTabbar() {
     if (isAdminPath()) return;
     ensureNativeTabbarCss();
+    var searchLiHtml =
+      '<li><a aria-label=\"Tìm kiếm\" class=\"open-search\" href=\"javascript:void(0)\" role=\"button\" title=\"Tìm kiếm\">' +
+      '<div class=\"icon\"><svg height=\"22\" viewBox=\"0 0 24 24\" width=\"22\" fill=\"none\"><circle cx=\"11\" cy=\"11\" r=\"7\" stroke=\"currentColor\" stroke-width=\"1.8\"/><path d=\"M16.5 16.5L21 21\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"/></svg></div>' +
+      '<div class=\"title\">Search</div></a></li>';
     var existing = document.getElementById('qcx-native-tabbar') || document.querySelector('.footer-navigation-bar');
     if (existing) {
-      /* Drop redundant Search tab (menu drawer has search). */
-      existing.querySelectorAll('a.open-search').forEach(function(a) {
-        var li = a.closest('li');
-        if (li && li.parentNode) li.parentNode.removeChild(li);
-      });
+      /* Ensure Search tab sits between Menu and Top/Share. */
+      if (!existing.querySelector('a.open-search')) {
+        var menuLi = existing.querySelector('a.open-menu') && existing.querySelector('a.open-menu').closest('li');
+        var ul = existing.querySelector('ul');
+        if (ul) {
+          var holder = document.createElement('div');
+          holder.innerHTML = searchLiHtml;
+          var searchLi = holder.firstChild;
+          if (menuLi && menuLi.nextSibling) ul.insertBefore(searchLi, menuLi.nextSibling);
+          else ul.appendChild(searchLi);
+        }
+      }
       bindNativeTabbarActions(existing);
       return;
     }
@@ -695,6 +719,7 @@
       '<div><ul>' +
       '<li>' + homeLink + '</li>' +
       '<li><a aria-label=\"Menu\" class=\"open-menu\" href=\"javascript:void(0)\" role=\"button\" title=\"Menu\"><div class=\"icon\"><svg height=\"24\" viewBox=\"0 0 24 24\" width=\"24\"><path d=\"M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z\"/></svg></div><div class=\"title\">Menu</div></a></li>' +
+      searchLiHtml +
       thirdFourth +
       '</ul></div>';
     document.body.appendChild(nav);

@@ -544,7 +544,7 @@ body.qcx-menu-open {
   background: rgba(255, 255, 255, .06) !important;
 }
 
-/* Native mobile tabbar (Home / Menu / Top|Share / Chat) — Search is drawer-only */
+/* Native mobile tabbar (Home / Menu / Search / Top|Share / Chat) */
 @media (max-width: 860px) {
   /* Beat skin `body:not(#layout) .qcx-signal-header{display:block!important}` */
   body:not(#layout) .qcx-signal-header,
@@ -626,7 +626,7 @@ body.qcx-menu-open {
   }
   .footer-navigation-bar > div > ul > li,
   #qcx-native-tabbar > div > ul > li {
-    width: 25% !important;
+    width: 20% !important;
     flex: 1 1 0 !important;
     display: flex !important;
     align-items: center !important;
