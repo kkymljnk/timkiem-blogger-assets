@@ -1069,8 +1069,8 @@
       if (relatedDup) relatedDup.hidden = true;
     }
 
-    /* Mobile: Tutorial directly under lock (before #comments). PC: keep in #sidebar.
-       Reassert after unlock chrome moves #comments under the lock. */
+    /* Mobile: Tutorial after content, before #comments. PC: keep in #sidebar.
+       Reassert after unlock chrome moves #comments. */
     placeTutorialBesideLock(rail, sidebar);
     hideMobileTutorialClones();
     if (!rail.getAttribute('data-qcx-tutorial-reassert')) {
