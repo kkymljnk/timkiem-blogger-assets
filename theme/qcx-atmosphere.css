@@ -90,10 +90,11 @@ body > #outer-wrapper,
   transform: scale(1.03) !important;
 }
 
-/* Subscribe rail — solid card panel (not page grid) */
+/* Subscribe rail — solid card panel (distinct from page grid) */
 .qcx-subscribe-card,
 .qcx-subscribe-card[data-qcx-footer="1"] {
-  background: #121a14 !important;
+  background-color: #121a14 !important;
+  background-image: none !important;
   border: 1px solid rgba(125, 206, 160, .22) !important;
   border-radius: 16px !important;
   box-shadow:
@@ -103,16 +104,18 @@ body > #outer-wrapper,
   position: relative !important;
 }
 .qcx-subscribe-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(420px 180px at 12% -10%, rgba(0, 240, 163, .1), transparent 70%);
-  z-index: 0;
+  content: '' !important;
+  position: absolute !important;
+  inset: 0 !important;
+  pointer-events: none !important;
+  background-image: radial-gradient(420px 180px at 12% -10%, rgba(0, 240, 163, .1), transparent 70%) !important;
+  background-color: transparent !important;
+  opacity: 1 !important;
+  z-index: 0 !important;
 }
 .qcx-subscribe-card > * {
-  position: relative;
-  z-index: 1;
+  position: relative !important;
+  z-index: 1 !important;
 }
 
 /* Soften motion only — keep a visible hover cue */
