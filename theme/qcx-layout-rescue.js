@@ -221,7 +221,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.48/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.49/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -591,12 +591,16 @@
       'body:not(#layout) .qcx-hero,.qcx-hero{padding-top:8px!important;margin-top:0!important;' +
       'width:100%!important;max-width:100%!important;box-sizing:border-box!important;' +
       'grid-template-columns:64px minmax(0,1fr)!important;gap:6px 14px!important}' +
-      '.qcx-avatar{width:64px!important;height:64px!important;min-width:64px!important}' +
-      '.qcx-hero-title{font-size:20px!important;line-height:1.2!important}' +
-      '.qcx-bio{font-size:13px!important;line-height:1.4!important}' +
+      'body:not(#layout) .qcx-avatar,.qcx-avatar{width:64px!important;height:64px!important;min-width:64px!important}' +
+      'body:not(#layout) .qcx-hero-title,.qcx-hero-title{font-size:20px!important;line-height:1.2!important}' +
+      'body:not(#layout) .qcx-bio,.qcx-bio{font-size:13px!important;line-height:1.4!important}' +
       'body:not(#layout) main.main-container,main.main-container{padding-top:12px!important}' +
       '}' +
+      'body:not(#layout) .qcx-avatar,body:not(#layout) .qcx-avatar-wrap,body:not(#layout) .qcx-brand-svg,' +
       '.qcx-avatar,.qcx-avatar-wrap,.qcx-brand-svg{transition:transform .22s ease,filter .22s ease!important}' +
+      'body:not(#layout) .qcx-avatar:hover,body:not(#layout) .qcx-avatar:active,' +
+      'body:not(#layout) .qcx-avatar-wrap:hover .qcx-avatar,body:not(#layout) .qcx-avatar-wrap:active .qcx-avatar,' +
+      'body:not(#layout) .qcx-brand-svg:hover,body:not(#layout) .qcx-brand-svg:active,' +
       '.qcx-avatar:hover,.qcx-avatar:active,.qcx-avatar-wrap:hover .qcx-avatar,.qcx-avatar-wrap:active .qcx-avatar,' +
       '.qcx-brand-svg:hover,.qcx-brand-svg:active{' +
       'transform:translateY(-3px) scale(1.04)!important;' +

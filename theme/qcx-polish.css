@@ -2016,15 +2016,18 @@ html[data-page-type='homepage'] .qcx-hero {
     grid-template-columns: 64px minmax(0, 1fr) !important;
     gap: 6px 14px !important;
   }
+  body:not(#layout) .qcx-avatar,
   .qcx-avatar {
     width: 64px !important;
     height: 64px !important;
     min-width: 64px !important;
   }
+  body:not(#layout) .qcx-hero-title,
   .qcx-hero-title {
     font-size: 20px !important;
     line-height: 1.2 !important;
   }
+  body:not(#layout) .qcx-bio,
   .qcx-bio {
     font-size: 13px !important;
     line-height: 1.4 !important;

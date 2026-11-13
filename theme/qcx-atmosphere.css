@@ -65,6 +65,12 @@ body > #outer-wrapper,
   animation: qcx-ghost-blink .18s ease-in-out 1;
 }
 /* Brand avatar — lift + mint glow (PC hover, mobile active) */
+body:not(#layout) .qcx-avatar:hover,
+body:not(#layout) .qcx-avatar:active,
+body:not(#layout) .qcx-avatar-wrap:hover .qcx-avatar,
+body:not(#layout) .qcx-avatar-wrap:active .qcx-avatar,
+body:not(#layout) .qcx-brand-svg:hover,
+body:not(#layout) .qcx-brand-svg:active,
 .qcx-avatar:hover,
 .qcx-avatar:active,
 .qcx-avatar-wrap:hover .qcx-avatar,
@@ -556,15 +562,18 @@ body.qcx-menu-open {
     grid-template-columns: 64px minmax(0, 1fr) !important;
     gap: 6px 14px !important;
   }
+  body:not(#layout) .qcx-avatar,
   .qcx-avatar {
     width: 64px !important;
     height: 64px !important;
     min-width: 64px !important;
   }
+  body:not(#layout) .qcx-hero-title,
   .qcx-hero-title {
     font-size: 20px !important;
     line-height: 1.2 !important;
   }
+  body:not(#layout) .qcx-bio,
   .qcx-bio {
     font-size: 13px !important;
     line-height: 1.4 !important;
