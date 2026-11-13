@@ -208,30 +208,145 @@ body > #outer-wrapper,
   pointer-events: auto !important;
 }
 
-/* Footer nav gadget often missing — expose Contempo hamburger as drawer toggle */
-.centered-top .hamburger-menu,
-button.hamburger-menu {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  position: relative !important;
-  z-index: 40 !important;
-  width: 40px !important;
-  height: 40px !important;
-  min-width: 40px !important;
-  padding: 0 !important;
-  border: 1px solid rgba(0, 240, 163, .28) !important;
-  border-radius: 10px !important;
-  background: #24352c !important;
-  color: #e8efe9 !important;
-  fill: currentColor !important;
-  cursor: pointer !important;
+/* Desktop hamburger fallback when native tabbar is absent */
+@media (min-width: 861px) {
+  .footer-navigation-bar,
+  #qcx-native-tabbar {
+    display: none !important;
+  }
+  .centered-top .hamburger-menu,
+  button.hamburger-menu {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: relative !important;
+    z-index: 40 !important;
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    padding: 0 !important;
+    border: 1px solid rgba(0, 240, 163, .28) !important;
+    border-radius: 10px !important;
+    background: #24352c !important;
+    color: #e8efe9 !important;
+    fill: currentColor !important;
+    cursor: pointer !important;
+  }
+  .centered-top .hamburger-menu svg,
+  button.hamburger-menu svg {
+    display: block !important;
+    margin: auto !important;
+    fill: currentColor !important;
+  }
 }
-.centered-top .hamburger-menu svg,
-button.hamburger-menu svg {
-  display: block !important;
-  margin: auto !important;
-  fill: currentColor !important;
+
+/* XML native mobile tabbar (Home / Menu / Search / Top|Share / Chat) */
+@media (max-width: 860px) {
+  .footer-navigation-bar,
+  #qcx-native-tabbar {
+    display: block !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    z-index: 9500 !important;
+    background: rgba(8, 12, 9, .92) !important;
+    border-top: 1px solid rgba(28, 36, 32, .18) !important;
+    box-shadow: 0 -8px 28px rgba(0, 0, 0, .45) !important;
+    backdrop-filter: blur(18px) saturate(1.2) !important;
+    -webkit-backdrop-filter: blur(18px) saturate(1.2) !important;
+    box-sizing: border-box !important;
+    padding-bottom: env(safe-area-inset-bottom, 0px) !important;
+    transform: none !important;
+    overflow: visible !important;
+  }
+  .footer-navigation-bar > div,
+  #qcx-native-tabbar > div {
+    display: flex !important;
+    width: 100% !important;
+    align-items: stretch !important;
+  }
+  .footer-navigation-bar > div > ul,
+  #qcx-native-tabbar > div > ul {
+    display: flex !important;
+    width: 100% !important;
+    min-height: 56px !important;
+    margin: 0 !important;
+    padding: 4px 0 2px !important;
+    list-style: none !important;
+  }
+  .footer-navigation-bar > div > ul > li,
+  #qcx-native-tabbar > div > ul > li {
+    width: 20% !important;
+    flex: 1 1 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  .footer-navigation-bar > div > ul > li > a,
+  #qcx-native-tabbar > div > ul > li > a {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    min-height: 48px !important;
+    padding: 4px 2px !important;
+    font-family: var(--mono) !important;
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    gap: 2px !important;
+    color: rgba(190, 211, 198, .72) !important;
+    fill: rgba(190, 211, 198, .72) !important;
+    box-sizing: border-box !important;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  .footer-navigation-bar > div > ul > li > a > .icon,
+  #qcx-native-tabbar > div > ul > li > a > .icon {
+    width: 24px !important;
+    height: 24px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  .footer-navigation-bar > div > ul > li > a > .icon > svg,
+  #qcx-native-tabbar > div > ul > li > a > .icon > svg {
+    width: 22px !important;
+    height: 22px !important;
+    fill: currentColor !important;
+  }
+  .footer-navigation-bar > div > ul > li > a > .title,
+  #qcx-native-tabbar > div > ul > li > a > .title {
+    font-size: 10px !important;
+    line-height: 1.1 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    max-width: 100% !important;
+    text-overflow: ellipsis !important;
+  }
+  .footer-navigation-bar > div > ul > li > a:active,
+  #qcx-native-tabbar > div > ul > li > a:active,
+  .footer-navigation-bar > div > ul > li > a.qcx-nav-active,
+  #qcx-native-tabbar > div > ul > li > a.qcx-nav-active,
+  .footer-navigation-bar > div > ul > li > a[aria-current='page'],
+  #qcx-native-tabbar > div > ul > li > a[aria-current='page'] {
+    color: var(--accent, #28d28c) !important;
+    fill: var(--accent, #28d28c) !important;
+  }
+  body {
+    padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+  .centered-top .hamburger-menu,
+  button.hamburger-menu {
+    display: none !important;
+  }
+}
+body#layout .footer-navigation-bar,
+body#layout #qcx-native-tabbar {
+  display: none !important;
 }
 
 /* Results stack: heading → search → cards (no flush overlap) */
@@ -342,6 +457,13 @@ button.hamburger-menu svg {
     margin-bottom: 22px !important;
   }
   .qcx-inline-search .qcx-search-shortcut { display: none !important; }
+}
+
+/* Admin gate — strip post chrome leaks (read-time / title) */
+html[data-qcx-admin='1'] .qcx-read-time,
+html[data-qcx-admin='1'] .post-header,
+html[data-qcx-admin='1'] .post-header .post-title {
+  display: none !important;
 }
 
 /* Raised chrome — admin login gate (viewport-true H+V center, XML control sizing) */

@@ -648,8 +648,10 @@
     var readable = article.cloneNode(true);
     readable.querySelectorAll('pre, code, script, style, iframe, form').forEach(function(node) { node.remove(); });
     var words = (readable.textContent || '').trim().split(/\s+/).filter(Boolean).length;
-    /* // N phút đọc — under title (TOC stays off; no dd/mm). */
-    if (words > 0 && !document.querySelector('.qcx-read-time')) {
+    /* // N phút đọc — under title (TOC stays off; no dd/mm). Never on admin gate. */
+    var isAdminPage = document.documentElement.getAttribute('data-qcx-admin') === '1' ||
+      /\/p\/admin(?:\.html)?\/?$/i.test(location.pathname);
+    if (words > 0 && !isAdminPage && !document.querySelector('.qcx-read-time')) {
       var postHeader = article.parentNode ? article.parentNode.querySelector('.post-header') : null;
       var mins = Math.max(1, Math.ceil(words / 220));
       var readTime = document.createElement('div');

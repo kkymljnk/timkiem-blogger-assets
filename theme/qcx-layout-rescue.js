@@ -219,7 +219,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.25/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.26/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
 
@@ -325,12 +325,7 @@
       '#qcx-menu[aria-hidden=\"true\"]:not(.open){transform:translateX(-105%)!important;' +
       'visibility:hidden!important;pointer-events:none!important}' +
       '#qcx-menu.open,#qcx-menu[aria-hidden=\"false\"]{transform:translateX(0)!important;left:0!important;' +
-      'visibility:visible!important;pointer-events:auto!important}' +
-      '.centered-top .hamburger-menu,button.hamburger-menu{display:inline-flex!important;' +
-      'align-items:center!important;justify-content:center!important;position:relative!important;z-index:40!important;' +
-      'width:40px!important;height:40px!important;min-width:40px!important;padding:0!important;' +
-      'border:1px solid rgba(0,240,163,.28)!important;border-radius:10px!important;background:#24352c!important;' +
-      'color:#e8efe9!important;fill:currentColor!important;cursor:pointer!important}';
+      'visibility:visible!important;pointer-events:auto!important}';
     var style = document.getElementById('qcx-menu-drawer');
     if (!style) {
       style = document.createElement('style');
@@ -365,9 +360,118 @@
     }
   }
 
+  /* XML native mobile tabbar — live theme often drops #qcx-native-tabbar. */
+  function ensureNativeTabbarCss() {
+    var css =
+      '@media (min-width:861px){.footer-navigation-bar,#qcx-native-tabbar{display:none!important}' +
+      '.centered-top .hamburger-menu,button.hamburger-menu{display:inline-flex!important}}' +
+      '@media (max-width:860px){' +
+      '.footer-navigation-bar,#qcx-native-tabbar{display:block!important;position:fixed!important;' +
+      'bottom:0!important;left:0!important;right:0!important;width:100%!important;z-index:9500!important;' +
+      'background:rgba(8,12,9,.92)!important;border-top:1px solid rgba(28,36,32,.18)!important;' +
+      'box-shadow:0 -8px 28px rgba(0,0,0,.45)!important;backdrop-filter:blur(18px) saturate(1.2)!important;' +
+      '-webkit-backdrop-filter:blur(18px) saturate(1.2)!important;box-sizing:border-box!important;' +
+      'padding-bottom:env(safe-area-inset-bottom,0px)!important;transform:none!important;overflow:visible!important}' +
+      '.footer-navigation-bar>div,#qcx-native-tabbar>div{display:flex!important;width:100%!important;align-items:stretch!important}' +
+      '.footer-navigation-bar>div>ul,#qcx-native-tabbar>div>ul{display:flex!important;width:100%!important;' +
+      'min-height:56px!important;margin:0!important;padding:4px 0 2px!important;list-style:none!important}' +
+      '.footer-navigation-bar>div>ul>li,#qcx-native-tabbar>div>ul>li{width:20%!important;flex:1 1 0!important;' +
+      'display:flex!important;align-items:center!important;justify-content:center!important}' +
+      '.footer-navigation-bar>div>ul>li>a,#qcx-native-tabbar>div>ul>li>a{display:flex!important;flex-direction:column!important;' +
+      'align-items:center!important;justify-content:center!important;width:100%!important;min-height:48px!important;' +
+      'padding:4px 2px!important;font-family:var(--mono)!important;font-size:10px!important;font-weight:600!important;' +
+      'text-decoration:none!important;gap:2px!important;color:rgba(190,211,198,.72)!important;fill:rgba(190,211,198,.72)!important;' +
+      'box-sizing:border-box!important;-webkit-tap-highlight-color:transparent;touch-action:manipulation}' +
+      '.footer-navigation-bar>div>ul>li>a>.icon,#qcx-native-tabbar>div>ul>li>a>.icon{width:24px!important;height:24px!important;' +
+      'display:flex!important;align-items:center!important;justify-content:center!important}' +
+      '.footer-navigation-bar>div>ul>li>a>.icon>svg,#qcx-native-tabbar>div>ul>li>a>.icon>svg{width:22px!important;height:22px!important;fill:currentColor!important}' +
+      '.footer-navigation-bar>div>ul>li>a>.title,#qcx-native-tabbar>div>ul>li>a>.title{font-size:10px!important;line-height:1.1!important;' +
+      'white-space:nowrap!important;overflow:hidden!important;max-width:100%!important;text-overflow:ellipsis!important}' +
+      '.footer-navigation-bar>div>ul>li>a:active,#qcx-native-tabbar>div>ul>li>a:active,' +
+      '.footer-navigation-bar>div>ul>li>a.qcx-nav-active,#qcx-native-tabbar>div>ul>li>a.qcx-nav-active,' +
+      '.footer-navigation-bar>div>ul>li>a[aria-current=\"page\"],#qcx-native-tabbar>div>ul>li>a[aria-current=\"page\"]{' +
+      'color:var(--accent,#28d28c)!important;fill:var(--accent,#28d28c)!important}' +
+      'body{padding-bottom:calc(60px + env(safe-area-inset-bottom,0px))!important}' +
+      '.centered-top .hamburger-menu,button.hamburger-menu{display:none!important}' +
+      '}' +
+      'body#layout .footer-navigation-bar,body#layout #qcx-native-tabbar{display:none!important}';
+    var style = document.getElementById('qcx-native-tabbar-css');
+    if (!style) {
+      style = document.createElement('style');
+      style.id = 'qcx-native-tabbar-css';
+      (document.head || document.documentElement).appendChild(style);
+    }
+    if (style.textContent !== css) style.textContent = css;
+  }
+
+  function ensureNativeTabbar() {
+    if (isAdminPath()) return;
+    ensureNativeTabbarCss();
+    if (document.getElementById('qcx-native-tabbar') || document.querySelector('.footer-navigation-bar')) return;
+    var isHome = location.pathname === '/' || document.documentElement.getAttribute('data-page-type') === 'homepage';
+    var isSingle = isSingleArticlePage();
+    var homeHref = ((document.querySelector('link[rel=\"canonical\"]') || {}).href) || (location.origin + '/');
+    try {
+      var u = new URL(homeHref);
+      homeHref = u.origin + '/';
+    } catch (ignoreUrl) {
+      homeHref = location.origin + '/';
+    }
+    var homeLink = isHome
+      ? '<a aria-current=\"page\" class=\"qcx-nav-active\" aria-label=\"Trang chủ\" href=\"' + homeHref + '\" role=\"button\" title=\"Trang chủ\"><div class=\"icon\"><svg height=\"24\" viewBox=\"0 0 24 24\" width=\"24\"><path d=\"M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z\"/></svg></div><div class=\"title\">Home</div></a>'
+      : '<a aria-label=\"Trang chủ\" href=\"' + homeHref + '\" role=\"button\" title=\"Trang chủ\"><div class=\"icon\"><svg height=\"24\" viewBox=\"0 0 24 24\" width=\"24\"><path d=\"M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z\"/></svg></div><div class=\"title\">Home</div></a>';
+    var fourthFifth = isSingle
+      ? '<li><a aria-label=\"Chia sẻ\" class=\"share-post\" data-share-url=\"' + location.href + '\" href=\"javascript:void(0)\" role=\"button\" title=\"Chia sẻ\"><div class=\"icon\"><svg height=\"22\" viewBox=\"0 0 24 24\" width=\"22\"><path d=\"M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z\"/></svg></div><div class=\"title\">Share</div></a></li>' +
+        '<li><a aria-label=\"Telegram\" href=\"https://t.me/superkhung\" rel=\"noopener noreferrer\" target=\"_blank\" title=\"Telegram\"><div class=\"icon\"><svg height=\"22\" viewBox=\"0 0 24 24\" width=\"22\"><path d=\"M9.78,18.65L10.06,14.42L17.74,7.5C18.08,7.19 17.67,7.04 17.22,7.31L7.74,13.3L3.64,12C2.76,11.75 2.75,11.14 3.84,10.7L19.81,4.54C20.54,4.21 21.24,4.72 20.96,5.84L18.24,18.65C18.05,19.56 17.5,19.78 16.74,19.36L12.6,16.3L10.61,18.23C10.38,18.46 10.19,18.65 9.78,18.65Z\"/></svg></div><div class=\"title\">Chat</div></a></li>'
+      : '<li><a aria-label=\"Lên đầu trang\" class=\"scroll-top\" href=\"javascript:void(0)\" role=\"button\" title=\"Lên đầu\"><div class=\"icon\"><svg height=\"24\" viewBox=\"0 0 24 24\" width=\"24\"><path d=\"M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92,12.08L18.5,13.5L13,8V20Z\"/></svg></div><div class=\"title\">Top</div></a></li>' +
+        '<li><a aria-label=\"Telegram\" href=\"https://t.me/superkhung\" rel=\"noopener noreferrer\" target=\"_blank\" title=\"Telegram\"><div class=\"icon\"><svg height=\"22\" viewBox=\"0 0 24 24\" width=\"22\"><path d=\"M9.78,18.65L10.06,14.42L17.74,7.5C18.08,7.19 17.67,7.04 17.22,7.31L7.74,13.3L3.64,12C2.76,11.75 2.75,11.14 3.84,10.7L19.81,4.54C20.54,4.21 21.24,4.72 20.96,5.84L18.24,18.65C18.05,19.56 17.5,19.78 16.74,19.36L12.6,16.3L10.61,18.23C10.38,18.46 10.19,18.65 9.78,18.65Z\"/></svg></div><div class=\"title\">Chat</div></a></li>';
+    var nav = document.createElement('nav');
+    nav.id = 'qcx-native-tabbar';
+    nav.className = 'footer-navigation-bar qcx-native-tabbar';
+    nav.setAttribute('aria-label', 'Điều hướng mobile');
+    nav.innerHTML =
+      '<div><ul>' +
+      '<li>' + homeLink + '</li>' +
+      '<li><a aria-label=\"Menu\" class=\"open-menu\" href=\"javascript:void(0)\" role=\"button\" title=\"Menu\"><div class=\"icon\"><svg height=\"24\" viewBox=\"0 0 24 24\" width=\"24\"><path d=\"M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z\"/></svg></div><div class=\"title\">Menu</div></a></li>' +
+      '<li><a aria-label=\"Tìm kiếm\" class=\"open-search\" href=\"javascript:void(0)\" role=\"button\" title=\"Tìm kiếm\"><div class=\"icon\"><svg height=\"20\" viewBox=\"0 0 20 20\" width=\"20\"><circle cx=\"9\" cy=\"9\" fill=\"none\" r=\"7\" stroke=\"currentColor\" stroke-width=\"1.2\"/><path d=\"M14 14 L18 18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.2\"/></svg></div><div class=\"title\">Search</div></a></li>' +
+      fourthFifth +
+      '</ul></div>';
+    document.body.appendChild(nav);
+    var scrollTop = nav.querySelector('.scroll-top');
+    if (scrollTop && !scrollTop.getAttribute('data-qcx-bound')) {
+      scrollTop.setAttribute('data-qcx-bound', '1');
+      scrollTop.addEventListener('click', function(event) {
+        event.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+    var openMenu = nav.querySelector('.open-menu');
+    if (openMenu && !openMenu.getAttribute('data-qcx-bound')) {
+      openMenu.setAttribute('data-qcx-bound', '1');
+      openMenu.addEventListener('click', function(event) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        if (!document.getElementById('qcx-menu')) ensureMobileNavReady();
+        setMenuOpenState(true);
+      }, true);
+    }
+    var openSearch = nav.querySelector('.open-search');
+    if (openSearch && !openSearch.getAttribute('data-qcx-bound')) {
+      openSearch.setAttribute('data-qcx-bound', '1');
+      openSearch.addEventListener('click', function(event) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        if (typeof window.qcxOpenSearch === 'function') window.qcxOpenSearch();
+        else location.href = '/search?max-results=12';
+      }, true);
+    }
+  }
+  window.__qcxEnsureNativeTabbar = ensureNativeTabbar;
+
   /* Footer nav often missing from live theme — rebuild drawer + wire hamburger. */
   function ensureMobileNavReady() {
     ensureMenuDrawer();
+    ensureNativeTabbar();
     var menu = document.getElementById('qcx-menu');
     if (!menu) {
       if (typeof window.__qcxInitMobileNav === 'function') {
@@ -384,8 +488,10 @@
         (document.head || document.documentElement).appendChild(script);
       }
     }
+    /* Hamburger only when native tabbar missing (desktop fallback). */
     var ham = document.querySelector('.hamburger-menu');
-    if (ham && !ham.getAttribute('data-qcx-menu-bound')) {
+    var hasTabbar = !!document.getElementById('qcx-native-tabbar') || !!document.querySelector('.footer-navigation-bar');
+    if (ham && !hasTabbar && !ham.getAttribute('data-qcx-menu-bound')) {
       ham.setAttribute('data-qcx-menu-bound', '1');
       ham.setAttribute('aria-label', 'Mở menu');
       ham.setAttribute('aria-expanded', 'false');
@@ -1284,11 +1390,16 @@
     document.querySelectorAll('#qcx-sidebar-rail-rescue').forEach(function(node){
       try { node.parentNode.removeChild(node); } catch (ignoreRail) {}
     });
-    /* Strip post chrome + homepage footer so login sits centered. */
+    /* Strip post chrome + homepage footer so login sits centered.
+       Re-run every pass — smart-runtime may inject .qcx-read-time after first paint. */
     document.querySelectorAll(
-      '.post-title, .qcx-read-time, .qcx-subscribe-card, .qcx-footer-links-row, #HTML5.qcx-footer-links'
+      '.post-title, .qcx-read-time, .post-header, .qcx-subscribe-card, .qcx-footer-links-row, #HTML5.qcx-footer-links'
     ).forEach(function(node){
       try {
+        if (node.classList && node.classList.contains('qcx-read-time')) {
+          try { node.remove(); } catch (ignoreRm) { node.style.setProperty('display', 'none', 'important'); }
+          return;
+        }
         if (node.classList && node.classList.contains('qcx-subscribe-card') && node.getAttribute('data-qcx-footer') === '1') {
           node.remove();
           return;
@@ -1302,10 +1413,7 @@
     });
     var wrap = document.querySelector('.main-wrapper');
     if (wrap) wrap.style.setProperty('grid-template-columns', 'minmax(0, 1fr)', 'important');
-    if (!document.getElementById('qcx-admin-chrome-css')) {
-      var st = document.createElement('style');
-      st.id = 'qcx-admin-chrome-css';
-      st.textContent =
+    var adminCss =
         'html[data-qcx-admin=\"1\"] #sidebar,' +
         'html[data-qcx-admin=\"1\"] .qcx-sidebar-rail,' +
         'html[data-qcx-admin=\"1\"] #HTML4,' +
@@ -1354,8 +1462,13 @@
         'display:inline-flex!important;align-items:center!important;justify-content:center!important;' +
         'background:#7dcea0!important;color:#06110a!important;border:1px solid transparent!important;' +
         'font-weight:700!important;cursor:pointer!important}';
+    var st = document.getElementById('qcx-admin-chrome-css');
+    if (!st) {
+      st = document.createElement('style');
+      st.id = 'qcx-admin-chrome-css';
       (document.head || document.documentElement).appendChild(st);
     }
+    if (st.textContent !== adminCss) st.textContent = adminCss;
   }
 
   function ensureSiteFooter() {
