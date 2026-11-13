@@ -221,7 +221,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.58/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.59/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -911,25 +911,32 @@
     }
   }
 
-  /* Mobile: park Tutorial under .qcx-lock-panel (before #comments). PC: restore to sidebar.
-     Unlock chrome may re-insert #comments as lock.nextSibling — reassert lock → rail → comments. */
+  /* Mobile: park Tutorial AFTER article body / unlock content, immediately before #comments.
+     Never insert as lock.nextSibling — that puts Tutorial above .qcx-content-unlock / .container. */
   function placeTutorialBesideLock(rail, sidebar) {
     if (!rail) return;
     var lock = document.querySelector('.qcx-lock-panel:not(.is-done)');
     if (!lock) lock = document.querySelector('.qcx-lock-panel');
     var mobile = false;
     try { mobile = window.matchMedia('(max-width: 860px)').matches; } catch (ignoreMq) {}
-    if (mobile && lock && lock.parentNode) {
+    if (mobile) {
       rail.classList.add('qcx-tutorial-inline');
       try {
         var comments = document.getElementById('comments') || document.querySelector('.qcx-comments-shell');
-        /* Always: lock → Tutorial → comments → rest */
-        if (lock.nextElementSibling !== rail) {
-          lock.parentNode.insertBefore(rail, lock.nextElementSibling);
-        }
-        if (comments && comments.parentNode === lock.parentNode && rail.nextElementSibling !== comments) {
-          if (rail.nextSibling) rail.parentNode.insertBefore(comments, rail.nextSibling);
-          else rail.parentNode.appendChild(comments);
+        var postBody = (lock && lock.closest && lock.closest('.post-body')) ||
+          document.querySelector('.post-body');
+        if (comments && comments.parentNode) {
+          /* Prefer: …content → Tutorial → #comments (comments often live under .the-article). */
+          if (rail.parentNode !== comments.parentNode || rail.nextElementSibling !== comments) {
+            comments.parentNode.insertBefore(rail, comments);
+          }
+        } else if (postBody) {
+          /* Fallback: end of post-body (after unlock container / notes). */
+          if (rail.parentNode !== postBody || postBody.lastElementChild !== rail) {
+            postBody.appendChild(rail);
+          }
+        } else if (lock && lock.parentNode) {
+          lock.parentNode.appendChild(rail);
         }
       } catch (ignoreIns) {}
       return;
