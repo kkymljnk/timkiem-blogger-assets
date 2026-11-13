@@ -189,9 +189,36 @@ body > #outer-wrapper,
   padding: 3px 7px !important;
 }
 
-/* Raised chrome — admin login gate (not page-grid wash) */
+/* Raised chrome — admin login gate (true H+V center, XML control sizing) */
+html[data-qcx-admin='1'] #qcx-admin-root:has(.gate:not(.hidden)) {
+  min-height: 100svh !important;
+  min-height: 100dvh !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 24px 16px !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  width: 100% !important;
+  max-width: none !important;
+}
+html[data-qcx-admin='1'] #qcx-admin-root:has(.gate:not(.hidden)) .wrap {
+  width: 100% !important;
+  max-width: 320px !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
 #qcx-admin-root .gate,
 html[data-qcx-admin='1'] #qcx-admin-root .gate {
+  width: 100% !important;
+  max-width: 320px !important;
+  margin: 0 auto !important;
+  padding: 16px !important;
+  box-sizing: border-box !important;
   background-color: #24352c !important;
   background-image: none !important;
   border: 1px solid rgba(0, 240, 163, .28) !important;
@@ -201,6 +228,19 @@ html[data-qcx-admin='1'] #qcx-admin-root .gate {
     0 0 0 1px rgba(0, 0, 0, .45),
     0 16px 42px rgba(0, 0, 0, .55) !important;
   isolation: isolate !important;
+}
+html[data-qcx-admin='1'] #qcx-admin-root .gate input,
+html[data-qcx-admin='1'] #qcx-admin-root .gate button,
+html[data-qcx-admin='1'] #qcx-admin-root .gate .actions .primary {
+  width: 100% !important;
+  box-sizing: border-box !important;
+  min-height: 44px !important;
+  margin: 0 !important;
+  padding: 12px 14px !important;
+  border-radius: 8px !important;
+  font-family: var(--mono) !important;
+  font-size: 14px !important;
+  line-height: 1.2 !important;
 }
 html[data-qcx-admin='1'] #qcx-admin-root:has(.gate:not(.hidden)) > .wrap > header,
 html[data-qcx-admin='1'] #qcx-admin-root:has(.gate:not(.hidden)) #btnLogout {

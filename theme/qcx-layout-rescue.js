@@ -219,7 +219,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.17/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.18/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
 
@@ -1199,28 +1199,39 @@
         'html[data-qcx-admin=\"1\"] .centered-bottom,' +
         'html[data-qcx-admin=\"1\"] .post-body{max-width:100%!important;width:100%!important}' +
         'html[data-qcx-admin=\"1\"] #qcx-admin-root:has(.gate:not(.hidden)){' +
-        'min-height:calc(100vh - 72px)!important;display:flex!important;' +
+        'min-height:100svh!important;min-height:100dvh!important;display:flex!important;' +
         'align-items:center!important;justify-content:center!important;' +
-        'padding:24px 12px 48px!important;max-width:none!important;margin:0 auto!important}' +
+        'padding:24px 16px!important;box-sizing:border-box!important;' +
+        'max-width:none!important;margin:0!important;width:100%!important}' +
         'html[data-qcx-admin=\"1\"] #qcx-admin-root:has(.gate:not(.hidden)) .wrap{' +
-        'width:100%!important;max-width:320px!important;margin:-8vh auto 0!important;padding:0!important}' +
+        'width:100%!important;max-width:320px!important;margin:0 auto!important;padding:0!important;' +
+        'display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important}' +
         'html[data-qcx-admin=\"1\"] #qcx-admin-root:has(.gate:not(.hidden))>.wrap>header,' +
         'html[data-qcx-admin=\"1\"] #qcx-admin-root:has(.gate:not(.hidden)) #btnLogout{display:none!important}' +
         'html[data-qcx-admin=\"1\"] #qcx-admin-root .gate{' +
         'width:100%!important;max-width:320px!important;margin:0 auto!important;' +
-        'padding:16px 16px 14px!important;border:1px solid rgba(0,240,163,.28)!important;' +
-        'border-radius:12px!important;background-color:#24352c!important;background-image:none!important;' +
+        'padding:16px!important;box-sizing:border-box!important;' +
+        'border:1px solid rgba(0,240,163,.28)!important;border-radius:12px!important;' +
+        'background-color:#24352c!important;background-image:none!important;' +
         'box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 0 0 1px rgba(0,0,0,.45),0 16px 42px rgba(0,0,0,.55)!important;' +
         'isolation:isolate!important}' +
+        'html[data-qcx-admin=\"1\"] #qcx-admin-root .gate .field{width:100%!important;margin:0 0 12px!important}' +
+        'html[data-qcx-admin=\"1\"] #qcx-admin-root .gate .actions{width:100%!important;display:flex!important;margin:4px 0 0!important}' +
         'html[data-qcx-admin=\"1\"] #qcx-admin-root .gate input,' +
-        'html[data-qcx-admin=\"1\"] #qcx-admin-root .gate button{' +
-        'width:100%!important;box-sizing:border-box!important;' +
-        'background:#0b120c!important;color:#e6f5ec!important;' +
-        'border:1px solid rgba(0,240,163,.28)!important;border-radius:8px!important}' +
+        'html[data-qcx-admin=\"1\"] #qcx-admin-root .gate button,' +
+        'html[data-qcx-admin=\"1\"] #qcx-admin-root .gate .actions .primary{' +
+        'width:100%!important;box-sizing:border-box!important;min-height:44px!important;' +
+        'margin:0!important;padding:12px 14px!important;border-radius:8px!important;' +
+        'font-family:var(--mono)!important;font-size:14px!important;line-height:1.2!important}' +
+        'html[data-qcx-admin=\"1\"] #qcx-admin-root .gate input{' +
+        'display:block!important;background:#0b120c!important;color:#e6f5ec!important;' +
+        'border:1px solid rgba(0,240,163,.28)!important;font-weight:600!important}' +
+        'html[data-qcx-admin=\"1\"] #qcx-admin-root .gate input::placeholder{color:#8aa596!important;opacity:1!important}' +
         'html[data-qcx-admin=\"1\"] #qcx-admin-root .gate button.primary,' +
         'html[data-qcx-admin=\"1\"] #qcx-admin-root .gate .actions .primary{' +
-        'background:#7dcea0!important;color:#06110a!important;border-color:transparent!important;' +
-        'font-weight:700!important;margin-top:8px!important;padding:10px 12px!important}';
+        'display:inline-flex!important;align-items:center!important;justify-content:center!important;' +
+        'background:#7dcea0!important;color:#06110a!important;border:1px solid transparent!important;' +
+        'font-weight:700!important;cursor:pointer!important}';
       (document.head || document.documentElement).appendChild(st);
     }
   }
