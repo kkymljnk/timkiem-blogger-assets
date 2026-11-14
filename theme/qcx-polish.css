@@ -2403,9 +2403,35 @@ html[data-page-type='homepage'] .qcx-hero {
   overflow: hidden !important;
   border: 0 !important;
 }
-/* Restore header Telegram handle on desktop */
+/* Restore + center header Telegram handle on desktop */
 .qcx-signal-x {
   display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  padding: 0 14px !important;
+  box-sizing: border-box !important;
+  line-height: 1 !important;
+  overflow: hidden !important;
+}
+.qcx-signal-x-label {
+  display: inline-flex !important;
+  align-items: center !important;
+  line-height: 1 !important;
+}
+.qcx-signal-x-arrow {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 auto !important;
+  width: 12px !important;
+  height: 12px !important;
+  font-size: 12px !important;
+  line-height: 1 !important;
+  opacity: .85 !important;
+  transform: translateY(0.5px) !important;
 }
 /* Subscribe primary — xanh đen (late override vs neon .qcx-sc-btn) */
 .qcx-subscribe-card .qcx-sc-btn:not(.qcx-sc-btn-outline),
