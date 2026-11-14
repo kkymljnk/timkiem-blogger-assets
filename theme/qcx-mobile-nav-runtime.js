@@ -34,8 +34,8 @@
       '#qcx-logo-brand-backdrop{position:fixed;inset:0;z-index:2147482999;background:transparent}',
       '#qcx-logo-brand-backdrop[hidden]{display:none!important}',
       '#qcx-logo-brand-menu{position:fixed;z-index:2147483000;min-width:18.5rem;padding:.5rem;border-radius:16px;',
-      'background:#fff;color:#211d1d;',
-      'box-shadow:rgba(39,34,40,.05) 0 0 0 1px,rgba(0,0,0,.03) 0 1px 2px;',
+      'background:#121a17;color:#e8fff2;',
+      'box-shadow:0 0 0 1px rgba(0,240,163,.22),0 12px 32px rgba(0,0,0,.45);',
       'font:450 14px/1.1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;',
       'letter-spacing:.14px;user-select:none;overflow:hidden;white-space:nowrap;',
       'opacity:0;transform:scale(.97);transform-origin:25% 25%;pointer-events:none;',
@@ -44,27 +44,27 @@
       '#qcx-logo-brand-menu[hidden]{display:none!important}',
       '#qcx-logo-brand-menu .qcx-lbm-brand{display:flex;align-items:center;gap:12px;padding:8px 16px 8px 6px;',
       'border-radius:8px;text-decoration:none;color:inherit;width:100%;transition:background-color .1s;',
-      '--color-1:#BCBBBB;--color-2:#8F8E8E}',
-      '#qcx-logo-brand-menu .qcx-lbm-brand:hover{background:rgba(33,29,29,.045)}',
-      '#qcx-logo-brand-menu .qcx-lbm-brand:hover{--color-1:#bdbbff;--color-2:#9896ff}',
+      '--color-1:#7a9a8a;--color-2:#5c7a6c}',
+      '#qcx-logo-brand-menu .qcx-lbm-brand:hover{background:rgba(0,240,163,.08)}',
+      '#qcx-logo-brand-menu .qcx-lbm-brand:hover{--color-1:#28d28c;--color-2:#7dffc4}',
       '#qcx-logo-brand-menu .qcx-lbm-ghost{flex:0 0 auto;width:40px;height:40px;display:block}',
       '#qcx-logo-brand-menu .qcx-lbm-ghost path{transition:fill .15s}',
       '#qcx-logo-brand-menu .qcx-lbm-title{display:block;font-weight:450;font-size:14px;line-height:1.1;',
-      'letter-spacing:.14px;color:#211d1d;margin:0}',
+      'letter-spacing:.14px;color:#e8fff2;margin:0}',
       '#qcx-logo-brand-menu .qcx-lbm-desc{display:block;font-weight:450;font-size:14px;line-height:1.25;',
-      'color:#635f5f;margin:0}',
-      '#qcx-logo-brand-menu .qcx-lbm-sep{height:1px;background:#f1f1f0;margin:.3125rem -.5rem}',
+      'color:rgba(190,211,198,.78);margin:0}',
+      '#qcx-logo-brand-menu .qcx-lbm-sep{height:1px;background:rgba(0,240,163,.16);margin:.3125rem -.5rem}',
       '#qcx-logo-brand-menu .qcx-lbm-actions{display:flex;width:288px;height:38px}',
       '#qcx-logo-brand-menu .qcx-lbm-btn{appearance:none;border:0;background:transparent;border-radius:8px;',
       'padding:6px 12px 6px 8px;display:flex;align-items:center;gap:8px;cursor:pointer;width:100%;',
-      'color:#211d1d;font:450 14px/1.1 system-ui,-apple-system,sans-serif;letter-spacing:.14px;',
-      'transition:background-color .1s;white-space:nowrap}',
-      '#qcx-logo-brand-menu .qcx-lbm-btn:hover{background:rgba(33,29,29,.045)}',
+      'color:rgba(190,211,198,.78);font:450 14px/1.1 system-ui,-apple-system,sans-serif;letter-spacing:.14px;',
+      'transition:background-color .1s,color .1s;white-space:nowrap}',
+      '#qcx-logo-brand-menu .qcx-lbm-btn:hover{background:rgba(0,240,163,.08);color:#e8fff2}',
       '#qcx-logo-brand-menu .qcx-lbm-btn svg{flex:0 0 auto;width:24px;height:25px;display:block}',
       '#qcx-logo-brand-menu .qcx-lbm-btn span{font-size:14px;font-weight:450}',
       '#qcx-logo-brand-menu .qcx-lbm-copied{display:none;justify-content:center;align-items:center;',
       'width:288px;height:38px;font:450 14px/1.1 system-ui,-apple-system,sans-serif;',
-      'letter-spacing:.14px;color:#211d1d}',
+      'letter-spacing:.14px;color:#28d28c}',
       '#qcx-logo-brand-menu.is-copied .qcx-lbm-actions{display:none}',
       '#qcx-logo-brand-menu.is-copied .qcx-lbm-copied{display:flex}',
       '',
@@ -617,8 +617,8 @@
     menu.innerHTML =
       '<a class="qcx-lbm-brand" href="/" role="menuitem">' +
       '<svg class="qcx-lbm-ghost" width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true">' +
-      '<path d="M13.3144 23C12.7627 23 12.4869 23 12.26 22.8736C12.0755 22.7709 11.8991 22.5714 11.8198 22.3756C11.7222 22.135 11.7524 21.8913 11.8126 21.404C12.1663 18.5445 13.4632 15.8663 15.522 13.8076C17.9599 11.3696 21.2665 10 24.7144 10C28.1622 10 31.4688 11.3696 33.9067 13.8076C35.9655 15.8663 37.2624 18.5445 37.6161 21.404C37.6763 21.8913 37.7065 22.135 37.6089 22.3756C37.5296 22.5714 37.3532 22.7709 37.1687 22.8736C36.9418 23 36.666 23 36.1144 23L32.8158 23C32.2695 23 31.9963 23 31.8106 22.9221C31.6159 22.8403 31.5244 22.769 31.3977 22.6C31.2769 22.4389 31.1912 22.098 31.0199 21.4161C30.7358 20.2851 30.15 19.2412 29.3115 18.4028C28.0923 17.1836 26.4386 16.4986 24.7144 16.4986C22.9901 16.4986 21.3364 17.1836 20.1172 18.4028C19.2787 19.2412 18.693 20.2851 18.4088 21.4161C18.2375 22.098 18.1518 22.4389 18.031 22.6C17.9043 22.769 17.8128 22.8403 17.6181 22.9221C17.4324 23 17.1593 23 16.6129 23L13.3144 23Z" fill="var(--color-2, #8F8E8E)"/>' +
-      '<path d="M13.3144 38C12.7627 38 12.4869 38 12.26 37.8736C12.0755 37.7709 11.8991 37.5714 11.8198 37.3756C11.7222 37.135 11.7524 36.8913 11.8126 36.404C12.1663 33.5445 13.4632 30.8663 15.522 28.8076C17.9599 26.3696 21.2665 25 24.7144 25C28.1622 25 31.4688 26.3696 33.9067 28.8076C35.9655 30.8663 37.2624 33.5445 37.6161 36.404C37.6763 36.8913 37.7065 37.135 37.6089 37.3756C37.5296 37.5714 37.3532 37.7709 37.1687 37.8736C36.9418 38 36.666 38 36.1144 38L32.8158 38C32.2695 38 31.9963 38 31.8106 37.9221C31.6159 37.8403 31.5244 37.769 31.3977 37.6C31.2769 37.4389 31.1912 37.098 31.0199 36.4161C30.7358 35.2851 30.15 34.2412 29.3115 33.4028C28.0923 32.1836 26.4386 31.4986 24.7144 31.4986C22.9901 31.4986 21.3364 32.1836 20.1172 33.4028C19.2787 34.2412 18.693 35.2851 18.4088 36.4161C18.2375 37.098 18.1518 37.4389 18.031 37.6C17.9043 37.769 17.8128 37.8403 17.6181 37.9221C17.4324 38 17.1593 38 16.6129 38L13.3144 38Z" fill="var(--color-1, #BCBBBB)"/>' +
+      '<path d="M13.3144 23C12.7627 23 12.4869 23 12.26 22.8736C12.0755 22.7709 11.8991 22.5714 11.8198 22.3756C11.7222 22.135 11.7524 21.8913 11.8126 21.404C12.1663 18.5445 13.4632 15.8663 15.522 13.8076C17.9599 11.3696 21.2665 10 24.7144 10C28.1622 10 31.4688 11.3696 33.9067 13.8076C35.9655 15.8663 37.2624 18.5445 37.6161 21.404C37.6763 21.8913 37.7065 22.135 37.6089 22.3756C37.5296 22.5714 37.3532 22.7709 37.1687 22.8736C36.9418 23 36.666 23 36.1144 23L32.8158 23C32.2695 23 31.9963 23 31.8106 22.9221C31.6159 22.8403 31.5244 22.769 31.3977 22.6C31.2769 22.4389 31.1912 22.098 31.0199 21.4161C30.7358 20.2851 30.15 19.2412 29.3115 18.4028C28.0923 17.1836 26.4386 16.4986 24.7144 16.4986C22.9901 16.4986 21.3364 17.1836 20.1172 18.4028C19.2787 19.2412 18.693 20.2851 18.4088 21.4161C18.2375 22.098 18.1518 22.4389 18.031 22.6C17.9043 22.769 17.8128 22.8403 17.6181 22.9221C17.4324 23 17.1593 23 16.6129 23L13.3144 23Z" fill="var(--color-2, #5c7a6c)"/>' +
+      '<path d="M13.3144 38C12.7627 38 12.4869 38 12.26 37.8736C12.0755 37.7709 11.8991 37.5714 11.8198 37.3756C11.7222 37.135 11.7524 36.8913 11.8126 36.404C12.1663 33.5445 13.4632 30.8663 15.522 28.8076C17.9599 26.3696 21.2665 25 24.7144 25C28.1622 25 31.4688 26.3696 33.9067 28.8076C35.9655 30.8663 37.2624 33.5445 37.6161 36.404C37.6763 36.8913 37.7065 37.135 37.6089 37.3756C37.5296 37.5714 37.3532 37.7709 37.1687 37.8736C36.9418 38 36.666 38 36.1144 38L32.8158 38C32.2695 38 31.9963 38 31.8106 37.9221C31.6159 37.8403 31.5244 37.769 31.3977 37.6C31.2769 37.4389 31.1912 37.098 31.0199 36.4161C30.7358 35.2851 30.15 34.2412 29.3115 33.4028C28.0923 32.1836 26.4386 31.4986 24.7144 31.4986C22.9901 31.4986 21.3364 32.1836 20.1172 33.4028C19.2787 34.2412 18.693 35.2851 18.4088 36.4161C18.2375 37.098 18.1518 37.4389 18.031 37.6C17.9043 37.769 17.8128 37.8403 17.6181 37.9221C17.4324 38 17.1593 38 16.6129 38L13.3144 38Z" fill="var(--color-1, #7a9a8a)"/>' +
       '</svg>' +
       '<div><p class="qcx-lbm-title">Brand</p>' +
       '<p class="qcx-lbm-desc">Assets, examples and guides.</p></div></a>' +
@@ -626,13 +626,13 @@
       '<div class="qcx-lbm-actions">' +
       '<button type="button" class="qcx-lbm-btn" data-qcx-copy="png" role="menuitem">' +
       '<svg width="24" height="25" viewBox="0 0 24 25" fill="none" aria-hidden="true">' +
-      '<rect x="6.5" y="9.16748" width="16" height="12" rx="2.5" fill="#BCBBBB"/>' +
-      '<path fill-rule="evenodd" clip-rule="evenodd" d="M4 4.5C2.61929 4.5 1.5 5.61929 1.5 7V14C1.5 15.3807 2.61929 16.5 4 16.5H5V11.6675C5 9.45834 6.79086 7.66748 9 7.66748H17.5V7C17.5 5.61929 16.3807 4.5 15 4.5H4Z" fill="#635f5f"/></svg>' +
+      '<rect x="6.5" y="9.16748" width="16" height="12" rx="2.5" fill="#7a9a8a"/>' +
+      '<path fill-rule="evenodd" clip-rule="evenodd" d="M4 4.5C2.61929 4.5 1.5 5.61929 1.5 7V14C1.5 15.3807 2.61929 16.5 4 16.5H5V11.6675C5 9.45834 6.79086 7.66748 9 7.66748H17.5V7C17.5 5.61929 16.3807 4.5 15 4.5H4Z" fill="#5c7a6c"/></svg>' +
       '<span>Copy as PNG</span></button>' +
       '<button type="button" class="qcx-lbm-btn" data-qcx-copy="svg" role="menuitem">' +
       '<svg width="25" height="25" viewBox="0 0 25 25" fill="none" aria-hidden="true">' +
-      '<path d="M11.2985 8.79086C10.5446 7.38345 8.52658 7.38345 7.77261 8.79086L3.07724 17.5556C2.36349 18.8879 3.32873 20.5 4.8402 20.5H14.231C15.7424 20.5 16.7077 18.8879 15.9939 17.5556L11.2985 8.79086Z" fill="#BCBBBB"/>' +
-      '<path fill-rule="evenodd" clip-rule="evenodd" d="M12.46 7.81069C12.5167 7.89771 12.5704 7.98833 12.6209 8.08256L17.3163 16.8472C17.4127 17.0272 17.4917 17.2102 17.554 17.3945C20.5659 17.1321 22.9287 14.6041 22.9287 11.5242C22.9287 8.26966 20.2904 5.63135 17.0358 5.63135C15.1889 5.63135 13.5404 6.48097 12.46 7.81069Z" fill="#635f5f"/></svg>' +
+      '<path d="M11.2985 8.79086C10.5446 7.38345 8.52658 7.38345 7.77261 8.79086L3.07724 17.5556C2.36349 18.8879 3.32873 20.5 4.8402 20.5H14.231C15.7424 20.5 16.7077 18.8879 15.9939 17.5556L11.2985 8.79086Z" fill="#7a9a8a"/>' +
+      '<path fill-rule="evenodd" clip-rule="evenodd" d="M12.46 7.81069C12.5167 7.89771 12.5704 7.98833 12.6209 8.08256L17.3163 16.8472C17.4127 17.0272 17.4917 17.2102 17.554 17.3945C20.5659 17.1321 22.9287 14.6041 22.9287 11.5242C22.9287 8.26966 20.2904 5.63135 17.0358 5.63135C15.1889 5.63135 13.5404 6.48097 12.46 7.81069Z" fill="#5c7a6c"/></svg>' +
       '<span>Copy as SVG</span></button>' +
       '</div>' +
       '<div class="qcx-lbm-copied" aria-live="polite">Copied!</div>';
