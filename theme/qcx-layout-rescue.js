@@ -241,7 +241,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.78/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.79/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -539,14 +539,8 @@
       'min-height:28px!important;padding:0 10px!important;border:1px solid rgba(255,255,255,.08)!important;' +
       'border-radius:999px!important;background:rgba(255,255,255,.03)!important;color:rgba(210,230,216,.88)!important;' +
       'font-size:11px!important;font-weight:600!important;text-decoration:none!important;white-space:nowrap!important}' +
-      '#qcx-menu-footer{padding:8px 16px calc(10px + env(safe-area-inset-bottom,0px))!important;' +
-      'border-top:1px solid rgba(255,255,255,.05)!important;flex-shrink:0!important;max-width:960px!important;' +
-      'width:100%!important;margin:0 auto!important;box-sizing:border-box!important}' +
-      '#qcx-menu-footer a,.qcx-menu-footer-cta{display:flex!important;align-items:center!important;' +
-      'justify-content:center!important;width:100%!important;min-height:40px!important;border-radius:12px!important;' +
-      'background:rgba(255,255,255,.04)!important;border:1px solid rgba(255,255,255,.08)!important;color:#e8efe9!important;' +
-      'font:700 13px/1 system-ui,sans-serif!important;text-decoration:none!important}' +
-      '#qcx-menu-footer a:hover,.qcx-menu-footer-cta:hover{border-color:#28d28c!important;color:#28d28c!important}' +
+      '#qcx-menu-footer{display:none!important}' +
+      '#qcx-menu-nav{padding-bottom:calc(14px + env(safe-area-inset-bottom,0px))!important}' +
       '#qcx-menu .qcx-mobile-menu-hidden{display:none!important}' +
       'body.qcx-menu-open{overflow:hidden!important}' +
       '#qcx-pc-menu-btn{display:none!important}' +

@@ -385,18 +385,7 @@
     }
 
     var footer = document.getElementById('qcx-menu-footer');
-    if (footer) {
-      footer.innerHTML = '';
-      var cta = el('button', 'qcx-menu-footer-cta', 'Tìm kiếm');
-      cta.type = 'button';
-      cta.setAttribute('aria-label', 'Mở tìm kiếm');
-      cta.addEventListener('click', function () {
-        if (typeof window.qcxOpenSearch === 'function') window.qcxOpenSearch();
-        var closeBtn = document.getElementById('qcx-menu-close');
-        if (closeBtn) closeBtn.click();
-      });
-      footer.appendChild(cta);
-    }
+    if (footer) footer.innerHTML = '';
 
     nav.setAttribute('data-qcx-enhanced', 'mint-cards-v5-compact');
   }
