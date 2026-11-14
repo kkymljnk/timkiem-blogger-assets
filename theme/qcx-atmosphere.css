@@ -296,8 +296,8 @@ html[data-qcx-admin='1'] .footer-navigation-bar {
   text-transform: none !important;
 }
 #qcx-menu-logo .qcx-menu-logo-mark {
-  width: 22px !important;
-  height: 22px !important;
+  height: 16px !important;
+  width: auto !important;
   display: block !important;
   flex: 0 0 auto !important;
 }

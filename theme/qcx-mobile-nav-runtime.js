@@ -268,7 +268,7 @@
   function buildNavMenu() {
     var nav = document.getElementById('qcx-menu-nav');
     if (!nav) return;
-    if (nav.getAttribute('data-qcx-enhanced') === 'mint-cards-v8-labels') return;
+    if (nav.getAttribute('data-qcx-enhanced') === 'mint-cards-v8-mmo-logo') return;
     function el(tag, cls, txt) {
       var node = document.createElement(tag);
       if (cls) node.className = cls;
@@ -340,11 +340,14 @@
     nav.innerHTML = '';
     var logo = document.getElementById('qcx-menu-logo');
     if (logo) {
+      logo.setAttribute('aria-label', 'MMO.TEAM');
       logo.innerHTML =
-        '<svg class="qcx-menu-logo-mark" width="22" height="22" viewBox="0 0 40 40" fill="none" aria-hidden="true">' +
-        '<path d="M30 0H10C4.48 0 0 4.48 0 10V30C0 35.52 4.48 40 10 40H30C35.52 40 40 35.52 40 30V10C40 4.48 35.52 0 30 0Z" fill="#28d28c"/>' +
-        '<path d="M15.39 14.61C17.1 14.33 18.72 15.49 19 17.21C19.27 18.92 18.11 20.54 16.39 20.82C14.68 21.1 13.06 19.93 12.79 18.22C12.51 16.5 13.67 14.89 15.39 14.61ZM23.61 14.61C25.32 14.33 26.94 15.49 27.22 17.21C27.5 18.92 26.33 20.54 24.62 20.82C22.9 21.1 21.29 19.93 21.01 18.22C20.73 16.5 21.89 14.89 23.61 14.61ZM20 4.73C28.54 4.73 35.46 11.78 35.46 20.49H31.51C31.51 13.96 26.4 8.68 20 8.68C13.6 8.68 8.48 13.96 8.48 20.49H4.53C4.53 11.78 11.45 4.73 20 4.73Z" fill="#0a1210"/>' +
-        '</svg><span class="qcx-menu-logo-text">CÔNG CỤ.AI</span>';
+        '<svg class="qcx-menu-logo-mark" width="118" height="16" viewBox="0 0 118 16" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="MMO.TEAM">' +
+        '<path d="M11.2631 15.9989C12.9863 15.9989 14.3832 14.602 14.3832 12.8789C14.3832 11.1557 12.9863 9.75879 11.2631 9.75879C9.53997 9.75879 8.14307 11.1557 8.14307 12.8789C8.14307 14.602 9.53997 15.9989 11.2631 15.9989Z" fill="#28d28c"/>' +
+        '<path d="M19.4162 15.9989C21.1394 15.9989 22.5363 14.602 22.5363 12.8789C22.5363 11.1557 21.1394 9.75879 19.4162 9.75879C17.693 9.75879 16.2961 11.1557 16.2961 12.8789C16.2961 14.602 17.693 15.9989 19.4162 15.9989Z" fill="#28d28c"/>' +
+        '<path d="M15.3379 0C6.86622 0 -0.002217 6.99928 5.36811e-07 15.6307H3.91838C3.91838 9.16211 8.99062 3.91764 15.3379 3.91764C21.6853 3.91764 26.7575 9.16211 26.7575 15.6307H30.6759C30.6774 6.99928 23.8089 0 15.3379 0Z" fill="#28d28c"/>' +
+        '<text x="34" y="12.6" fill="#28d28c" font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \'Segoe UI\', sans-serif" font-size="12" font-weight="700" letter-spacing="0.02em">MMO.TEAM</text>' +
+        '</svg>';
     }
 
     var secExplore = el('div', 'qcx-menu-section', 'Menu');
@@ -398,7 +401,7 @@
     var footer = document.getElementById('qcx-menu-footer');
     if (footer) footer.innerHTML = '';
 
-    nav.setAttribute('data-qcx-enhanced', 'mint-cards-v8-labels');
+    nav.setAttribute('data-qcx-enhanced', 'mint-cards-v8-mmo-logo');
   }
 
   function hookMenu() {
