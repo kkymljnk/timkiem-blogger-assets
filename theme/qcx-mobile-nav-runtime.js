@@ -251,51 +251,132 @@
   }
 
   /* ==========================================================
-     2. NAVIGATION MENU ENHANCER & SMART LABEL CATEGORIZER
+     2. AAVE-STYLE CARD MENU (mint TIMKIEM icons, 40×40 sq)
      ========================================================== */
+  var MENU_SQ =
+    'M30 0H10C4.48 0 0 4.48 0 10V30C0 35.52 4.48 40 10 40H30C35.52 40 40 35.52 40 30V10C40 4.48 35.52 0 30 0Z';
+  function menuIcon(bg, glyph) {
+    return (
+      '<svg class="qcx-menu-card-icon" width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden="true">' +
+      '<path d="' + MENU_SQ + '" fill="' + bg + '"/>' + glyph + '</svg>'
+    );
+  }
+  var MENU_ICONS = (typeof window !== 'undefined' && window.QCX_MENU_ICONS) || {
+    home: menuIcon('#1a2e24', '<path d="M20 9.2L10.5 17.2V30h6.2V22.5h6.6V30H29.5V17.2L20 9.2Z" fill="#28d28c"/>'),
+    posts: menuIcon('#1a2e24', '<rect x="11" y="10" width="18" height="4" rx="1.5" fill="#28d28c"/><rect x="11" y="18" width="18" height="4" rx="1.5" fill="#7dffc4"/><rect x="11" y="26" width="12" height="4" rx="1.5" fill="#28d28c" opacity=".7"/>'),
+    skill: menuIcon('#14261e', '<path d="M22.5 8L14 21.5h6.2L17.5 32 26 18.5h-6.2L22.5 8Z" fill="#28d28c"/>'),
+    code: menuIcon('#1a2e24', '<path d="M15.5 13.5L10 20l5.5 6.5" stroke="#28d28c" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M24.5 13.5L30 20l-5.5 6.5" stroke="#7dffc4" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>'),
+    tools: menuIcon('#1a2e24', '<rect x="11" y="12" width="18" height="14" rx="2.5" stroke="#28d28c" stroke-width="2" fill="none"/><path d="M11 17h18" stroke="#28d28c" stroke-width="2"/><circle cx="14.5" cy="14.5" r="1.1" fill="#28d28c"/>'),
+    search: menuIcon('#14261e', '<circle cx="18" cy="18" r="6.5" stroke="#28d28c" stroke-width="2.2" fill="none"/><path d="M23.2 23.2L29 29" stroke="#28d28c" stroke-width="2.2" stroke-linecap="round"/>'),
+    telegram: menuIcon('#1a2e24', '<path d="M12.2 19.4L27.8 12.6c.7-.3 1.4.3 1.2 1.1l-2.7 12.6c-.2.8-1 .9-1.5.5l-3.8-2.9-2.4 2.3c-.3.3-.8.1-.9-.3l-.5-4.2 9.2-8.3-11.4 6.9-3.9-1.2c-.8-.2-.8-1.3.1-1.6Z" fill="#28d28c"/>'),
+    label: menuIcon('#1a2e24', '<path d="M12 14.5c0-1.4 1.1-2.5 2.5-2.5H22l8 8-7.5 7.5-8-8V14.5Z" stroke="#28d28c" stroke-width="2" fill="none" stroke-linejoin="round"/><circle cx="16.2" cy="16.2" r="1.4" fill="#28d28c"/>'),
+    admin: menuIcon('#14261e', '<path d="M20 10l2.2 4.5 5 .7-3.6 3.5.9 5L20 21.5 15.5 23.7l.9-5-3.6-3.5 5-.7L20 10Z" fill="#28d28c"/>')
+  };
+
   function buildNavMenu() {
     var nav = document.getElementById('qcx-menu-nav');
     if (!nav) return;
-    if (nav.getAttribute('data-qcx-enhanced') === 'true') return;
+    if (nav.getAttribute('data-qcx-enhanced') === 'aave-cards-v1') return;
     function el(tag, cls, txt) {
       var node = document.createElement(tag);
       if (cls) node.className = cls;
       if (typeof txt === 'string') node.textContent = txt;
       return node;
     }
-    nav.innerHTML = '';
-    var sec1 = el('div', 'qcx-menu-section', 'ĐIỀU HƯỚNG CHÍNH');
-    sec1.style.cssText = 'padding:14px 16px 6px;font-size:11px;font-weight:700;color:rgba(138,165,150,.85);letter-spacing:.08em;';
-    nav.appendChild(sec1);
-    var MAIN_MENUS = [
-      { title: 'Trang chủ', icon: '🏠', href: '/' },
-      { title: 'Hướng Dẫn Skill & Prompt', icon: '⚡', href: '/search/label/AI?max-results=12' },
-      { title: 'Mã Nguồn Mở', icon: '💻', href: '/search/label/Developer?max-results=12' },
-      { title: 'Thủ Thuật Windows', icon: '🪟', href: '/search/label/Tools?max-results=12' }
-    ];
-    MAIN_MENUS.forEach(function(item) {
-      var isCur = false;
-      try {
-        var u = new URL(item.href, location.href);
-        if (item.href === '/') {
-          isCur = location.pathname === '/' || location.pathname === '';
-        } else {
-          var tag = u.pathname.replace(/.*\/search\/label\//, '');
-          isCur = tag && decodeURIComponent(location.pathname).indexOf(decodeURIComponent(tag)) !== -1;
+    function addCard(grid, item) {
+      var node;
+      if (item.action === 'search') {
+        node = el('button', 'qcx-menu-card' + (item.current ? ' qcx-menu-current' : ''));
+        node.type = 'button';
+        node.setAttribute('aria-label', item.title);
+      } else {
+        node = el('a', 'qcx-menu-card' + (item.current ? ' qcx-menu-current' : ''));
+        node.href = item.href;
+        if (item.external) {
+          node.setAttribute('target', '_blank');
+          node.setAttribute('rel', 'noopener noreferrer');
         }
-      } catch (e) {}
-      var a = el('a', 'qcx-menu-link' + (isCur ? ' qcx-menu-current' : ''));
-      a.href = item.href;
-      var icon = el('span', 'qcx-menu-link-icon', item.icon);
-      icon.style.cssText = 'font-size:16px;line-height:1;margin-right:10px;';
-      var txt = el('span', 'qcx-menu-link-text', item.title);
-      a.appendChild(icon);
-      a.appendChild(txt);
-      nav.appendChild(a);
+      }
+      var iconWrap = el('span', 'qcx-menu-card-icon-wrap');
+      iconWrap.innerHTML = MENU_ICONS[item.icon] || MENU_ICONS.label;
+      var content = el('span', 'qcx-menu-card-content');
+      var titleRow = el('span', 'qcx-menu-card-title-row');
+      var title = el('span', 'qcx-menu-card-title', item.title);
+      titleRow.appendChild(title);
+      if (item.badge) {
+        var badge = el('span', 'qcx-menu-card-badge', item.badge);
+        titleRow.appendChild(badge);
+      }
+      if (item.external) {
+        var ext = el('span', 'qcx-menu-card-ext');
+        ext.innerHTML =
+          '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17L17 7M17 7H9M17 7V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        titleRow.appendChild(ext);
+      }
+      var desc = el('span', 'qcx-menu-card-desc', item.desc || '');
+      content.appendChild(titleRow);
+      content.appendChild(desc);
+      node.appendChild(iconWrap);
+      node.appendChild(content);
+      if (item.action === 'search') {
+        node.addEventListener('click', function (ev) {
+          ev.preventDefault();
+          if (typeof window.__qcxEnsureMobileNavReady === 'function') {
+            try { window.__qcxEnsureMobileNavReady(); } catch (ignoreR) {}
+          }
+          if (typeof window.qcxOpenSearch === 'function') window.qcxOpenSearch();
+          else if (typeof window.__qcxInitMobileNav === 'function') {
+            try { window.__qcxInitMobileNav(); } catch (ignoreI) {}
+            if (typeof window.qcxOpenSearch === 'function') window.qcxOpenSearch();
+          }
+          var menu = document.getElementById('qcx-menu');
+          if (menu && menu.classList.contains('open') && typeof window.__qcxEnsureMenuDrawer === 'function') {
+            /* close via close button click path */
+            var closeBtn = document.getElementById('qcx-menu-close');
+            if (closeBtn) closeBtn.click();
+          }
+        });
+      }
+      grid.appendChild(node);
+    }
+
+    nav.innerHTML = '';
+    var logo = document.getElementById('qcx-menu-logo');
+    if (logo) logo.textContent = 'CÔNG CỤ.AI';
+
+    var secExplore = el('div', 'qcx-menu-section', 'Khám phá');
+    nav.appendChild(secExplore);
+    var grid1 = el('div', 'qcx-menu-card-grid');
+    var path = location.pathname || '/';
+    var cardsPrimary = [
+      { title: 'Trang chủ', desc: 'Về trang chủ TIMKIEM', href: '/', icon: 'home', current: path === '/' || path === '' },
+      { title: 'Tất cả bài', desc: 'Danh sách bài viết mới', href: '/search', icon: 'posts' },
+      { title: 'Skill & Prompt', desc: 'Hướng dẫn AI / Skill', href: '/search/label/AI?max-results=12', icon: 'skill' },
+      { title: 'Mã nguồn mở', desc: 'Developer & API', href: '/search/label/Developer?max-results=12', icon: 'code' },
+      { title: 'Tools & Windows', desc: 'Thủ thuật và công cụ', href: '/search/label/Tools?max-results=12', icon: 'tools' },
+      { title: 'Tìm kiếm', desc: 'Mở tìm kiếm nhanh', icon: 'search', action: 'search' }
+    ];
+    cardsPrimary.forEach(function (item) { addCard(grid1, item); });
+    nav.appendChild(grid1);
+
+    var secConnect = el('div', 'qcx-menu-section', 'Kết nối');
+    nav.appendChild(secConnect);
+    var grid2 = el('div', 'qcx-menu-card-grid');
+    addCard(grid2, {
+      title: 'Telegram',
+      desc: 'Hỗ trợ & cập nhật nhanh',
+      href: 'https://t.me/superkhung',
+      icon: 'telegram',
+      external: true
     });
-    var rawLinks = document.querySelectorAll('#Label1 a[href*="/search/label/"], .widget.Label a[href*="/search/label/"], a[href*="/search/label/"]');
+    if (/\/p\/admin\.html/i.test(path) || document.documentElement.getAttribute('data-qcx-admin') === '1') {
+      addCard(grid2, { title: 'Admin', desc: 'Soạn bài & vault', href: '/p/admin.html', icon: 'admin' });
+    }
+    nav.appendChild(grid2);
+
+    var rawLinks = document.querySelectorAll('#Label1 a[href*="/search/label/"], .widget.Label a[href*="/search/label/"]');
     var allLabels = {};
-    Array.prototype.forEach.call(rawLinks, function(a) {
+    Array.prototype.forEach.call(rawLinks, function (a) {
       var rawName = (a.textContent || '').trim();
       var href = a.getAttribute('href') || ('/search/label/' + encodeURIComponent(rawName));
       if (!rawName) return;
@@ -306,62 +387,35 @@
       if (/^luyenthimienphi$/i.test(rawName)) cleanName = 'Luyện thi miễn phí';
       if (/^hoconline$/i.test(rawName)) cleanName = 'Học online';
       var k = cleanName.toLowerCase();
-      if (!allLabels[k]) {
-        allLabels[k] = { name: cleanName, href: href };
-      }
+      if (!allLabels[k]) allLabels[k] = { name: cleanName, href: href };
     });
-    var CATEGORIES = [
-      {
-        name: 'SKILL & AI PROMPT',
-        icon: '⚡',
-        match: /^(AI|Prompt|Skill|ChatGPT|Grok|HeyGen|Make|Canva|Design|Audio|Tutorial|OpenAI)$/i,
-        items: []
-      },
-      {
-        name: 'MÃ NGUỒN MỞ & API',
-        icon: '💻',
-        match: /^(Developer|API|Google Cloud|Gemini|Exa|Exa\.ai|Open-Source|GitHub|Cloud)$/i,
-        items: []
-      },
-      {
-        name: 'THỦ THUẬT WINDOWS & TOOLS',
-        icon: '🪟',
-        match: /^(Windows|Tools|CapCut|Editing|Video|Automation)$/i,
-        items: []
-      },
-      {
-        name: 'HỌC TẬP & KHÁC',
-        icon: '📚',
-        match: /^(EdTech|Giáo dục|Ôn thi THPT|Học online|Học sinh|Luyện thi miễn phí|IOS|Jailbreak|MOBILE|Figma)$/i,
-        items: []
-      }
-    ];
-    Object.keys(allLabels).forEach(function(k) {
-      var item = allLabels[k];
-      for (var i = 0; i < CATEGORIES.length; i++) {
-        if (CATEGORIES[i].match.test(item.name)) {
-          CATEGORIES[i].items.push(item);
-          break;
-        }
-      }
-    });
-    CATEGORIES.forEach(function(cat) {
-      if (!cat.items.length) return;
-      var sec = el('div', 'qcx-menu-section', cat.icon + ' ' + cat.name);
-      sec.style.cssText = 'padding:14px 16px 6px;font-size:11px;font-weight:700;color:#00e599;letter-spacing:.06em;';
-      nav.appendChild(sec);
+    var labelKeys = Object.keys(allLabels);
+    if (labelKeys.length) {
+      var secLab = el('div', 'qcx-menu-section', 'Nhãn');
+      nav.appendChild(secLab);
       var cloud = el('div', 'qcx-menu-labels-cloud');
-      cloud.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px;padding:4px 16px 12px;';
-      cat.items.forEach(function(item) {
+      labelKeys.slice(0, 24).forEach(function (k) {
+        var item = allLabels[k];
         var chip = el('a', 'qcx-menu-chip', item.name);
         chip.href = item.href;
         chip.title = 'Nhãn ' + item.name;
-        chip.style.cssText = 'padding:4px 10px;border-radius:6px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#d0ded5;font-size:12px;text-decoration:none;transition:background .15s;';
         cloud.appendChild(chip);
       });
       nav.appendChild(cloud);
-    });
-    nav.setAttribute('data-qcx-enhanced', 'true');
+    }
+
+    var footer = document.getElementById('qcx-menu-footer');
+    if (footer) {
+      footer.innerHTML = '';
+      var cta = el('a', 'qcx-menu-footer-cta', 'Mở Telegram');
+      cta.href = 'https://t.me/superkhung';
+      cta.setAttribute('rel', 'noopener noreferrer');
+      cta.setAttribute('target', '_blank');
+      cta.setAttribute('aria-label', 'Mở Telegram hỗ trợ');
+      footer.appendChild(cta);
+    }
+
+    nav.setAttribute('data-qcx-enhanced', 'aave-cards-v1');
   }
 
   function hookMenu() {

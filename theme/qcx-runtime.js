@@ -224,7 +224,7 @@
 
     var menuHeader = createElement('div');
     menuHeader.id = 'qcx-menu-header';
-    var menuLogo = createElement('div', '', 'AI HUB');
+    var menuLogo = createElement('div', '', 'CÔNG CỤ.AI');
     menuLogo.id = 'qcx-menu-logo';
     var menuClose = createElement('button', '', '\u00d7');
     menuClose.id = 'qcx-menu-close';
@@ -310,7 +310,7 @@
     }
 
     var menuFooter = createElement('div');
-    var menuFooterLink = createElement('a', 'qcx-menu-footer-cta', 'Hỗ trợ Telegram');
+    var menuFooterLink = createElement('a', 'qcx-menu-footer-cta', 'Mở Telegram');
     menuFooter.id = 'qcx-menu-footer';
     menuFooterLink.href = 'https://t.me/superkhung';
     menuFooterLink.setAttribute('aria-label', 'Hỗ trợ qua Telegram');
