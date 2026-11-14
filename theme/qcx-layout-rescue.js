@@ -129,18 +129,84 @@
   function upgradeThumb(url, opts) {
     if (!url) return '';
     var anim = !!(opts && opts.anim) || isLikelyAnimatedUrl(url);
-    var crop = anim ? 'w400-h225-c' : 'w800-h450-c';
-    var bare = anim ? 's400' : 's800';
-    return String(url)
+    var u = String(url);
+    /* External featured images via Blogger proxy default to ~512px — force full res. */
+    if (/blogger_img_proxy/i.test(u)) {
+      u = u
+        .replace(/=s\d+(?:-[^?&#]*)?(?=$|[?#])/i, '')
+        .replace(/=w\d+-h\d+(?:-[^?&#]*)?(?=$|[?#])/i, '');
+      return u + (anim ? '=w800-h450-c' : '=s0');
+    }
+    /* Retina card targets: ~390–700 CSS px × 2–3 DPR needs ≥1200–1600 source. */
+    var crop = anim ? 'w640-h360-c' : 'w1600-h900-c';
+    var bare = anim ? 's640' : 's1600';
+    return u
       .replace(/\/s\d+-c\//i, '/' + crop + '/')
       .replace(/=s\d+-c(?=$|[/?#])/i, '=' + crop)
       .replace(/\/w\d+-h\d+-c\//i, '/' + crop + '/')
       .replace(/=w\d+-h\d+-c(?=$|[/?#])/i, '=' + crop)
-      .replace(/\/s72\//i, '/' + bare + '/')
-      .replace(/=s72(?=$|[/?#])/i, '=' + bare);
+      .replace(/\/s\d+\//i, '/' + bare + '/')
+      .replace(/=s\d+(?=$|[/?#])/i, '=' + bare);
+  }
+
+  function sharpenCardImages(root) {
+    var scope = root || document;
+    var imgs = scope.querySelectorAll(
+      'img.qcx-card-media, .card-header img, .item-thumbnail img, .qcx-related-card img, .post-body img'
+    );
+    imgs.forEach(function(img) {
+      var dataSrc = img.getAttribute('data-src') || '';
+      var srcAttr = img.getAttribute('src') || '';
+      var raw = dataSrc && dataSrc.indexOf('data:') !== 0 ? dataSrc
+        : (srcAttr && srcAttr.indexOf('data:') !== 0 ? srcAttr : '');
+      if (!raw) return;
+      var anim = img.getAttribute('data-qcx-anim') === '1' || isLikelyAnimatedUrl(raw);
+      var next = upgradeThumb(raw, { anim: anim });
+      if (!next) return;
+      if (dataSrc && dataSrc.indexOf('data:') !== 0 && dataSrc !== next) {
+        img.setAttribute('data-src', next);
+      }
+      try {
+        var live = img.currentSrc || img.src || '';
+        var soft = /blogger_img_proxy/i.test(live) && img.naturalWidth > 0 && img.naturalWidth < 900;
+        if (soft || (live && live.indexOf('data:') !== 0 && live !== next && /blogger_img_proxy|=s\d+|\/s\d+/i.test(live))) {
+          img.src = next;
+        } else if ((!srcAttr || srcAttr.indexOf('data:') === 0) && dataSrc) {
+          /* lazysizes pending — data-src already upgraded */
+        } else if (srcAttr && srcAttr.indexOf('data:') !== 0 && srcAttr !== next) {
+          img.src = next;
+        }
+      } catch (ignore) {}
+      img.setAttribute('data-qcx-sharp', '1');
+    });
   }
 
   function entryThumbMeta(entry) {
+    var html = (entry.content && entry.content.$t) || '';
+    var bodyUrl = '';
+    var bodyAnim = false;
+    try {
+      var re = /<img[^>]+src=["']([^"']+)["']/gi;
+      var match;
+      while ((match = re.exec(html))) {
+        var src = match[1];
+        if (isLikelyAnimatedUrl(src)) continue;
+        if (/blogger_img_proxy/i.test(src)) continue;
+        bodyUrl = src;
+        break;
+      }
+      if (!bodyUrl) {
+        var gifMatch = String(html).match(/<img[^>]+src=["']([^"']+\.gif[^"']*)["']/i);
+        if (gifMatch) {
+          bodyUrl = gifMatch[1];
+          bodyAnim = true;
+        }
+      }
+    } catch (ignore) {}
+    /* Prefer direct body assets (catbox/etc) over soft feed proxy thumbs. */
+    if (bodyUrl && !bodyAnim) {
+      return { url: upgradeThumb(bodyUrl), anim: false, source: 'body' };
+    }
     try {
       if (entry.media$thumbnail && entry.media$thumbnail.url) {
         var feedUrl = entry.media$thumbnail.url;
@@ -151,18 +217,8 @@
         };
       }
     } catch (ignore) {}
-    var html = (entry.content && entry.content.$t) || '';
-    var re = /<img[^>]+src=["']([^"']+)["']/gi;
-    var match;
-    while ((match = re.exec(html))) {
-      var src = match[1];
-      if (isLikelyAnimatedUrl(src)) continue;
-      return { url: upgradeThumb(src), anim: false, source: 'body' };
-    }
-    /* Last resort: allow GIF body thumb but smaller */
-    var gifMatch = String(html).match(/<img[^>]+src=["']([^"']+\.gif[^"']*)["']/i);
-    if (gifMatch) {
-      return { url: upgradeThumb(gifMatch[1], { anim: true }), anim: true, source: 'body-gif' };
+    if (bodyUrl) {
+      return { url: upgradeThumb(bodyUrl, { anim: bodyAnim }), anim: bodyAnim, source: bodyAnim ? 'body-gif' : 'body' };
     }
     return { url: '', anim: false, source: '' };
   }
@@ -241,7 +297,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.87/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.88/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -2211,7 +2267,10 @@
     ensureMenuDrawer();
     ensureMobileNavReady();
     ensureGhostBlink();
+    sharpenCardImages();
     window.setTimeout(ensureGhostBlink, 400);
+    window.setTimeout(sharpenCardImages, 200);
+    window.setTimeout(sharpenCardImages, 900);
     return;
   }
 
@@ -2226,6 +2285,7 @@
   ensureAdminChrome();
   ensureSiteFooter();
   ensureGhostBlink();
+  sharpenCardImages();
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function(){
       ensureBreakdevFonts();
@@ -2238,6 +2298,7 @@
       ensureAdminChrome();
       ensureSiteFooter();
       ensureGhostBlink();
+      sharpenCardImages();
     }, { once: true });
   }
   window.setTimeout(ensureSidebarRail, 80);
@@ -2259,6 +2320,9 @@
   window.setTimeout(ensureGhostBlink, 200);
   window.setTimeout(ensureGhostBlink, 800);
   window.setTimeout(ensureGhostBlink, 1600);
+  window.setTimeout(sharpenCardImages, 120);
+  window.setTimeout(sharpenCardImages, 500);
+  window.setTimeout(sharpenCardImages, 1200);
 
   /* Always scrub native Blog1 snippets (CSS leak), even when rescue skips. */
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bootSnippetClean, { once: true });

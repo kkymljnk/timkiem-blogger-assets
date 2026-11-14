@@ -42,11 +42,18 @@
 
   function highResolutionUrl(url) {
     if (!url || url.indexOf('data:') === 0) return url;
+    if (/blogger_img_proxy/i.test(url)) {
+      return String(url)
+        .replace(/=s\d+(?:-[^?&#]*)?(?=$|[?#])/i, '')
+        .replace(/=w\d+-h\d+(?:-[^?&#]*)?(?=$|[?#])/i, '')
+        + '=s0';
+    }
     if (!/(?:blogger\.googleusercontent\.com|bp\.blogspot\.com|googleusercontent\.com)/i.test(url)) return url;
     return url
       .replace(/\/w\d+-h\d+(?:-[^/]+)?\//i, '/s1600/')
       .replace(/\/s\d+(?:-[^/]+)?\//i, '/s1600/')
-      .replace(/=s\d+(?:-[^?&]+)?(?=$|[?&])/i, '=s1600');
+      .replace(/=s\d+(?:-[^?&]+)?(?=$|[?&])/i, '=s1600')
+      .replace(/=w\d+-h\d+(?:-[^?&]+)?(?=$|[?&])/i, '=s1600');
   }
 
   function slugify(text) {
@@ -794,9 +801,9 @@
       function relatedImage(entry) {
         var media = entry['media$thumbnail'];
         if (!media || !media.url) return '';
-        return media.url
-          .replace(/\/s72-c\//i, '/w640-h360-c/')
-          .replace(/=s72-c/i, '=w640-h360-c');
+        return highResolutionUrl(media.url
+          .replace(/\/s72-c\//i, '/w1600-h900-c/')
+          .replace(/=s72-c/i, '=w1600-h900-c'));
       }
       function renderRelated(entries) {
         var rendered = 0;

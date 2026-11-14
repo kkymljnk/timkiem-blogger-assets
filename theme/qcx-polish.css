@@ -105,8 +105,8 @@ body {
   object-position: center center !important;
   border-radius: 0 !important;
   image-rendering: auto !important;
+  -ms-interpolation-mode: bicubic;
   backface-visibility: hidden;
-  transform: translateZ(0);
   transition: transform .35s ease !important;
 }
 [data-page-item='multiple'] .card-header.is-video::after {
