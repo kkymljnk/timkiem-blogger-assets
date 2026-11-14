@@ -378,7 +378,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.118/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.119/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -948,8 +948,8 @@
       'margin:0!important;padding:0!important;overflow:hidden!important;visibility:hidden!important;border:0!important}' +
       'body:not(#layout) .qcx-hero,.qcx-hero{padding-top:8px!important;margin-top:0!important;' +
       'width:100%!important;max-width:100%!important;box-sizing:border-box!important;' +
-      'grid-template-columns:64px minmax(0,1fr)!important;gap:6px 14px!important}' +
-      'body:not(#layout) .qcx-avatar,.qcx-avatar{width:64px!important;height:64px!important;min-width:64px!important}' +
+      'grid-template-columns:80px minmax(0,1fr)!important;gap:6px 16px!important}' +
+      'body:not(#layout) .qcx-avatar,.qcx-avatar{width:80px!important;height:80px!important;min-width:80px!important}' +
       'body:not(#layout) .qcx-hero-title,.qcx-hero-title{font-size:20px!important;line-height:1.2!important}' +
       'body:not(#layout) .qcx-bio,.qcx-bio{font-size:13px!important;line-height:1.4!important}' +
       'body:not(#layout) main.main-container,main.main-container{padding-top:12px!important}' +
