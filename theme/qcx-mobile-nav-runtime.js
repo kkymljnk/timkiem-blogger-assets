@@ -383,9 +383,9 @@
             try { window.__qcxInitMobileNav(); } catch (ignoreI) {}
             if (typeof window.qcxOpenSearch === 'function') window.qcxOpenSearch();
           }
-          var menu = document.getElementById('qcx-menu');
-          if (menu && menu.classList.contains('open') && typeof window.__qcxEnsureMenuDrawer === 'function') {
-            /* close via close button click path */
+          if (typeof window.__qcxCloseMenu === 'function') window.__qcxCloseMenu();
+          else if (typeof window.__qcxSetMenuOpen === 'function') window.__qcxSetMenuOpen(false);
+          else {
             var closeBtn = document.getElementById('qcx-menu-close');
             if (closeBtn) closeBtn.click();
           }

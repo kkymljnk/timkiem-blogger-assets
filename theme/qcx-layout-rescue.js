@@ -324,7 +324,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.104/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.105/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -719,6 +719,7 @@
         backdrop.setAttribute('aria-hidden', 'false');
       }
       document.body.classList.add('qcx-menu-open', 'qcx-panel-open');
+      bindMenuCloseControls();
     } else {
       menu.classList.remove('open');
       menu.setAttribute('aria-hidden', 'true');
@@ -732,6 +733,60 @@
       pcBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
       pcBtn.setAttribute('aria-label', open ? 'Đóng menu' : 'Mở menu');
     }
+  }
+
+  function closeMenuDrawer(ev) {
+    if (ev && typeof ev.preventDefault === 'function') ev.preventDefault();
+    setMenuOpenState(false);
+  }
+  window.__qcxCloseMenu = closeMenuDrawer;
+  window.__qcxSetMenuOpen = setMenuOpenState;
+
+  function bindMenuCloseControls() {
+    var close = document.getElementById('qcx-menu-close');
+    var backdrop = document.getElementById('qcx-menu-backdrop');
+    if (close && close.getAttribute('data-qcx-close-bound') !== '2') {
+      close.setAttribute('data-qcx-close-bound', '2');
+      close.addEventListener('click', closeMenuDrawer);
+      close.addEventListener('pointerup', closeMenuDrawer);
+    }
+    if (backdrop && backdrop.getAttribute('data-qcx-close-bound') !== '2') {
+      backdrop.setAttribute('data-qcx-close-bound', '2');
+      backdrop.addEventListener('click', closeMenuDrawer);
+    }
+  }
+
+  /* Capture-phase: survives menu rebuilds that drop runtime listeners. */
+  if (!window.__qcxMenuCloseDelegated) {
+    window.__qcxMenuCloseDelegated = true;
+    document.addEventListener(
+      'click',
+      function (e) {
+        var t = e.target;
+        if (!t || !t.closest) return;
+        if (t.closest('#qcx-menu-close')) {
+          e.preventDefault();
+          e.stopPropagation();
+          setMenuOpenState(false);
+          return;
+        }
+        if (t.id === 'qcx-menu-backdrop' || (t.closest && t.closest('#qcx-menu-backdrop') === t)) {
+          setMenuOpenState(false);
+        }
+      },
+      true
+    );
+    document.addEventListener(
+      'keydown',
+      function (e) {
+        if (e.key !== 'Escape') return;
+        var menu = document.getElementById('qcx-menu');
+        if (menu && (menu.classList.contains('open') || menu.getAttribute('aria-hidden') === 'false')) {
+          setMenuOpenState(false);
+        }
+      },
+      true
+    );
   }
 
   /* XML native mobile tabbar — live theme often drops #qcx-native-tabbar. */
