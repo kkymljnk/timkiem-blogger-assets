@@ -492,8 +492,8 @@
     '<path d="M108.37 15.37H106.459V4.135H108.37L111.991 13.08L115.618 4.135H117.555V15.37H115.644V11.909Q115.644 11.06 115.647 10.486Q115.649 9.912 115.662 9.51Q115.675 9.108 115.696 8.804Q115.717 8.5 115.754 8.191L112.898 15.37H111.084L108.239 8.205Q108.324 8.715 108.347 9.501Q108.37 10.287 108.37 11.349Z" fill="black"/>' +
     '</svg>';
 
-  /* Menu logo eyes: realtime cursor tracking only (no Aave look/blink sequence). */
-  var __qcxEyesTrack = { x: 0, y: 0, tx: 0, ty: 0, raf: 0, hovering: false };
+  /* Menu logo eyes: follow pointer anywhere while drawer is open. */
+  var __qcxEyesTrack = { x: 0, y: 0, tx: 0, ty: 0, raf: 0, active: false };
 
   function qcxLiveLogoParts() {
     var host = document.getElementById('qcx-menu-logo');
@@ -509,6 +509,11 @@
       left: mark.querySelector('.logo-eye-left'),
       right: mark.querySelector('.logo-eye-right')
     };
+  }
+
+  function qcxMenuIsOpen() {
+    var menu = document.getElementById('qcx-menu');
+    return !!(menu && (menu.classList.contains('open') || menu.getAttribute('aria-hidden') === 'false'));
   }
 
   function qcxResetEyesTransform(p) {
@@ -533,10 +538,9 @@
       var r = mark.getBoundingClientRect();
       if (r && r.width) w = r.width;
     } catch (e) {}
-    /* Visible follow at 16px logo height; stay inside ghost. */
     return {
-      x: Math.max(2.2, Math.min(3.6, w * 0.028)),
-      y: Math.max(1.1, Math.min(1.8, w * 0.014))
+      x: Math.max(2.4, Math.min(4, w * 0.032)),
+      y: Math.max(1.2, Math.min(2, w * 0.016))
     };
   }
 
@@ -545,12 +549,11 @@
     var host = document.getElementById('qcx-menu-logo');
     if (host && svg.isConnected) host.__qcxLogoSvg = svg;
     qcxResetEyesTransform(qcxLiveLogoParts());
-    if (host && host.getAttribute('data-qcx-aave-eyes-bound') === '10') return;
-    if (host) host.setAttribute('data-qcx-aave-eyes-bound', '10');
-    if (!host) return;
+    if (host && host.getAttribute('data-qcx-aave-eyes-bound') === '11') return;
+    if (host) host.setAttribute('data-qcx-aave-eyes-bound', '11');
 
     var applyTrack = function () {
-      if (!__qcxEyesTrack.hovering) {
+      if (!__qcxEyesTrack.active || !qcxMenuIsOpen()) {
         __qcxEyesTrack.raf = 0;
         return;
       }
@@ -559,8 +562,8 @@
         __qcxEyesTrack.raf = 0;
         return;
       }
-      __qcxEyesTrack.tx += (__qcxEyesTrack.x - __qcxEyesTrack.tx) * 0.32;
-      __qcxEyesTrack.ty += (__qcxEyesTrack.y - __qcxEyesTrack.ty) * 0.32;
+      __qcxEyesTrack.tx += (__qcxEyesTrack.x - __qcxEyesTrack.tx) * 0.28;
+      __qcxEyesTrack.ty += (__qcxEyesTrack.y - __qcxEyesTrack.ty) * 0.28;
       p.eyes.style.transform =
         'translate(' + __qcxEyesTrack.tx.toFixed(2) + 'px,' + __qcxEyesTrack.ty.toFixed(2) + 'px)';
       if (Math.abs(__qcxEyesTrack.x - __qcxEyesTrack.tx) > 0.04 ||
@@ -572,23 +575,28 @@
     };
 
     var trackEyes = function (clientX, clientY) {
+      if (!qcxMenuIsOpen()) return;
       var p = qcxLiveLogoParts();
       if (!p || !p.mark) return;
       var rect = p.mark.getBoundingClientRect();
       if (!rect.width || !rect.height) return;
-      var nx = ((clientX - rect.left) / rect.width) * 2 - 1;
-      var ny = ((clientY - rect.top) / rect.height) * 2 - 1;
+      /* Direction from logo center → pointer anywhere on screen. */
+      var cx = rect.left + rect.width * 0.5;
+      var cy = rect.top + rect.height * 0.5;
+      var reach = Math.max(140, Math.min(window.innerWidth, window.innerHeight) * 0.35);
+      var nx = Math.max(-1, Math.min(1, (clientX - cx) / reach));
+      var ny = Math.max(-1, Math.min(1, (clientY - cy) / reach));
       var max = qcxEyesTrackMax(p.mark);
-      __qcxEyesTrack.hovering = true;
-      __qcxEyesTrack.x = Math.max(-max.x, Math.min(max.x, nx * max.x));
-      __qcxEyesTrack.y = Math.max(-max.y, Math.min(max.y, ny * max.y));
+      __qcxEyesTrack.active = true;
+      __qcxEyesTrack.x = nx * max.x;
+      __qcxEyesTrack.y = ny * max.y;
       if (!__qcxEyesTrack.raf) {
         __qcxEyesTrack.raf = window.requestAnimationFrame(applyTrack);
       }
     };
 
     var resetEyes = function () {
-      __qcxEyesTrack.hovering = false;
+      __qcxEyesTrack.active = false;
       __qcxEyesTrack.x = 0;
       __qcxEyesTrack.y = 0;
       __qcxEyesTrack.tx = 0;
@@ -600,11 +608,30 @@
       qcxResetEyesTransform(qcxLiveLogoParts());
     };
 
-    host.addEventListener('pointermove', function (ev) { trackEyes(ev.clientX, ev.clientY); });
-    host.addEventListener('mousemove', function (ev) { trackEyes(ev.clientX, ev.clientY); });
-    host.addEventListener('pointerenter', function (ev) { trackEyes(ev.clientX, ev.clientY); });
-    host.addEventListener('pointerleave', resetEyes);
-    host.addEventListener('mouseleave', resetEyes);
+    /* Global pointer — not limited to logo hover. */
+    document.addEventListener(
+      'pointermove',
+      function (ev) {
+        trackEyes(ev.clientX, ev.clientY);
+      },
+      { passive: true }
+    );
+    document.addEventListener(
+      'mousemove',
+      function (ev) {
+        trackEyes(ev.clientX, ev.clientY);
+      },
+      { passive: true }
+    );
+
+    /* Reset when drawer closes. */
+    var menu = document.getElementById('qcx-menu');
+    if (menu && !menu.__qcxEyesCloseWatch) {
+      menu.__qcxEyesCloseWatch = true;
+      new MutationObserver(function () {
+        if (!qcxMenuIsOpen()) resetEyes();
+      }).observe(menu, { attributes: true, attributeFilter: ['class', 'aria-hidden'] });
+    }
   }
 
   function closeLogoBrandMenu() {
