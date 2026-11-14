@@ -2068,14 +2068,14 @@ html[data-page-type='homepage'] .qcx-hero {
     align-content: start !important;
     width: 100% !important;
     max-width: 100% !important;
-    grid-template-columns: 64px minmax(0, 1fr) !important;
-    gap: 6px 14px !important;
+    grid-template-columns: 80px minmax(0, 1fr) !important;
+    gap: 6px 16px !important;
   }
   body:not(#layout) .qcx-avatar,
   .qcx-avatar {
-    width: 64px !important;
-    height: 64px !important;
-    min-width: 64px !important;
+    width: 80px !important;
+    height: 80px !important;
+    min-width: 80px !important;
   }
   body:not(#layout) .qcx-hero-title,
   .qcx-hero-title {
