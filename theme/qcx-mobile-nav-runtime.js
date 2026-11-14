@@ -22,34 +22,51 @@
       '  backface-visibility: hidden !important;',
       '}',
       '',
-      '/* Aave-style menu logo: white mark + eye motion + brand context menu */',
+      '/* Aave-accurate menu logo + Brand context menu */',
       '#qcx-menu-logo{color:#fff!important;-webkit-text-fill-color:#fff!important;cursor:pointer!important;position:relative!important}',
       '#qcx-menu-logo .qcx-menu-logo-mark{overflow:visible;color:#fff}',
       '#qcx-menu-logo .qcx-menu-logo-mark path{fill:#fff!important}',
       '#qcx-menu-logo .qcx-menu-logo-mark .logo-eyes,',
       '#qcx-menu-logo .qcx-menu-logo-mark .logo-eye-left,',
       '#qcx-menu-logo .qcx-menu-logo-mark .logo-eye-right{',
-      '  transform-box:fill-box;transform-origin:50% 50%;',
+      '  transform-box:fill-box;transform-origin:50% 50%;will-change:transform;',
       '}',
-      '#qcx-logo-brand-menu{position:fixed;z-index:2147483000;min-width:240px;padding:8px;border-radius:16px;',
-      'background:#fff;color:#111;box-shadow:0 12px 40px rgba(0,0,0,.22),0 2px 8px rgba(0,0,0,.08);',
-      'font:500 13px/1.3 system-ui,-apple-system,sans-serif;user-select:none}',
+      '#qcx-logo-brand-backdrop{position:fixed;inset:0;z-index:2147482999;background:transparent}',
+      '#qcx-logo-brand-backdrop[hidden]{display:none!important}',
+      '#qcx-logo-brand-menu{position:fixed;z-index:2147483000;min-width:18.5rem;padding:.5rem;border-radius:16px;',
+      'background:#fff;color:#211d1d;',
+      'box-shadow:rgba(39,34,40,.05) 0 0 0 1px,rgba(0,0,0,.03) 0 1px 2px;',
+      'font:450 14px/1.1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;',
+      'letter-spacing:.14px;user-select:none;overflow:hidden;white-space:nowrap;',
+      'opacity:0;transform:scale(.97);transform-origin:25% 25%;pointer-events:none;',
+      'transition:opacity .2s cubic-bezier(.19,1,.22,1),transform .2s cubic-bezier(.19,1,.22,1)}',
+      '#qcx-logo-brand-menu.is-open{opacity:1;transform:scale(1);pointer-events:auto}',
       '#qcx-logo-brand-menu[hidden]{display:none!important}',
-      '#qcx-logo-brand-menu .qcx-lbm-brand{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;',
-      'text-decoration:none;color:inherit}',
-      '#qcx-logo-brand-menu .qcx-lbm-brand:hover{background:rgba(0,0,0,.04)}',
-      '#qcx-logo-brand-menu .qcx-lbm-ghost{flex:0 0 auto;width:28px;height:16px;display:block}',
-      '#qcx-logo-brand-menu .qcx-lbm-ghost path{fill:#8b8b8b}',
-      '#qcx-logo-brand-menu .qcx-lbm-title{display:block;font-weight:700;font-size:14px;color:#1a1a1a}',
-      '#qcx-logo-brand-menu .qcx-lbm-desc{display:block;font-weight:500;font-size:12px;color:#8a8a8a;margin-top:2px}',
-      '#qcx-logo-brand-menu .qcx-lbm-sep{height:1px;background:rgba(0,0,0,.08);margin:6px 4px}',
-      '#qcx-logo-brand-menu .qcx-lbm-actions{display:grid;grid-template-columns:1fr 1fr;gap:4px}',
-      '#qcx-logo-brand-menu .qcx-lbm-btn{appearance:none;border:0;background:transparent;border-radius:12px;',
-      'padding:12px 10px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;color:#333}',
-      '#qcx-logo-brand-menu .qcx-lbm-btn:hover{background:rgba(0,0,0,.04)}',
-      '#qcx-logo-brand-menu .qcx-lbm-btn svg{width:20px;height:20px;display:block}',
-      '#qcx-logo-brand-menu .qcx-lbm-btn span{font-size:12px;font-weight:600}',
-      '#qcx-logo-brand-menu .qcx-lbm-btn.is-copied span{color:#28d28c}',
+      '#qcx-logo-brand-menu .qcx-lbm-brand{display:flex;align-items:center;gap:12px;padding:8px 16px 8px 6px;',
+      'border-radius:8px;text-decoration:none;color:inherit;width:100%;transition:background-color .1s;',
+      '--color-1:#BCBBBB;--color-2:#8F8E8E}',
+      '#qcx-logo-brand-menu .qcx-lbm-brand:hover{background:rgba(33,29,29,.045)}',
+      '#qcx-logo-brand-menu .qcx-lbm-brand:hover{--color-1:#bdbbff;--color-2:#9896ff}',
+      '#qcx-logo-brand-menu .qcx-lbm-ghost{flex:0 0 auto;width:40px;height:40px;display:block}',
+      '#qcx-logo-brand-menu .qcx-lbm-ghost path{transition:fill .15s}',
+      '#qcx-logo-brand-menu .qcx-lbm-title{display:block;font-weight:450;font-size:14px;line-height:1.1;',
+      'letter-spacing:.14px;color:#211d1d;margin:0}',
+      '#qcx-logo-brand-menu .qcx-lbm-desc{display:block;font-weight:450;font-size:14px;line-height:1.25;',
+      'color:#635f5f;margin:0}',
+      '#qcx-logo-brand-menu .qcx-lbm-sep{height:1px;background:#f1f1f0;margin:.3125rem -.5rem}',
+      '#qcx-logo-brand-menu .qcx-lbm-actions{display:flex;width:288px;height:38px}',
+      '#qcx-logo-brand-menu .qcx-lbm-btn{appearance:none;border:0;background:transparent;border-radius:8px;',
+      'padding:6px 12px 6px 8px;display:flex;align-items:center;gap:8px;cursor:pointer;width:100%;',
+      'color:#211d1d;font:450 14px/1.1 system-ui,-apple-system,sans-serif;letter-spacing:.14px;',
+      'transition:background-color .1s;white-space:nowrap}',
+      '#qcx-logo-brand-menu .qcx-lbm-btn:hover{background:rgba(33,29,29,.045)}',
+      '#qcx-logo-brand-menu .qcx-lbm-btn svg{flex:0 0 auto;width:24px;height:25px;display:block}',
+      '#qcx-logo-brand-menu .qcx-lbm-btn span{font-size:14px;font-weight:450}',
+      '#qcx-logo-brand-menu .qcx-lbm-copied{display:none;justify-content:center;align-items:center;',
+      'width:288px;height:38px;font:450 14px/1.1 system-ui,-apple-system,sans-serif;',
+      'letter-spacing:.14px;color:#211d1d}',
+      '#qcx-logo-brand-menu.is-copied .qcx-lbm-actions{display:none}',
+      '#qcx-logo-brand-menu.is-copied .qcx-lbm-copied{display:flex}',
       '',
       '/* Remove empty/excessive gaps above Tutorial rail and below article */',
       '#comments, .comments, .qcx-comments-shell {',
@@ -452,7 +469,7 @@
     var footer = document.getElementById('qcx-menu-footer');
     if (footer) footer.innerHTML = '';
 
-    nav.setAttribute('data-qcx-enhanced', 'mint-cards-v10-logo-brand');
+    nav.setAttribute('data-qcx-enhanced', 'mint-cards-v11-aave-logo');
   }
 
   var QCX_MENU_LOGO_SVG_EXPORT =
@@ -471,6 +488,7 @@
     '</svg>';
 
   /* Aave header logo motion: look L/R then double blink — every 10s + scroll + hover. */
+  var __qcxEyesBusy = false;
   function playMenuLogoEyes(svg) {
     if (!svg || typeof svg.animate !== 'function') return;
     if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -478,12 +496,17 @@
     var left = svg.querySelector('.logo-eye-left');
     var right = svg.querySelector('.logo-eye-right');
     if (!eyes || !left || !right) return;
+    __qcxEyesBusy = true;
     try {
       eyes.getAnimations().forEach(function (a) { a.cancel(); });
       left.getAnimations().forEach(function (a) { a.cancel(); });
       right.getAnimations().forEach(function (a) { a.cancel(); });
     } catch (e) {}
+    eyes.style.transform = '';
+    left.style.transform = '';
+    right.style.transform = '';
     var ease = 'ease-in-out';
+    /* Motion sequence: 0→2% (.15) @0; 2→-2% (.3) @.35; -2→0 (.25) @.70; blink @1.20 + .05 */
     eyes.animate(
       [{ transform: 'translateX(0%)' }, { transform: 'translateX(2%)' }],
       { duration: 150, easing: ease, fill: 'forwards' }
@@ -505,6 +528,7 @@
     right.animate(blink, { duration: 150, delay: 1200, easing: ease });
     left.animate(blink, { duration: 150, delay: 1250, easing: ease });
     right.animate(blink, { duration: 150, delay: 1250, easing: ease });
+    window.setTimeout(function () { __qcxEyesBusy = false; }, 1450);
   }
 
   function bindMenuLogoEyes(svg) {
@@ -525,52 +549,98 @@
     };
     window.addEventListener('scroll', arm, { passive: true });
     if (host) {
+      /* Hover: eyes track pointer (Aave-feel) + play look/blink on enter */
       host.addEventListener('pointerenter', function () {
         playMenuLogoEyes(host.__qcxLogoSvg || svg);
+      });
+      host.addEventListener('pointermove', function (ev) {
+        if (__qcxEyesBusy) return;
+        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        var mark = host.__qcxLogoSvg || host.querySelector('.qcx-menu-logo-mark');
+        if (!mark) return;
+        var eyes = mark.querySelector('.logo-eyes');
+        if (!eyes) return;
+        var rect = mark.getBoundingClientRect();
+        if (!rect.width) return;
+        var nx = ((ev.clientX - rect.left) / rect.width) * 2 - 1; /* -1..1 */
+        var ny = ((ev.clientY - rect.top) / rect.height) * 2 - 1;
+        var tx = Math.max(-3, Math.min(3, nx * 3));
+        var sy = Math.max(0.82, Math.min(1, 1 - Math.max(0, -ny) * 0.12));
+        eyes.style.transform = 'translateX(' + tx.toFixed(2) + '%)';
+        var left = mark.querySelector('.logo-eye-left');
+        var right = mark.querySelector('.logo-eye-right');
+        if (left) left.style.transform = 'scaleY(' + sy.toFixed(3) + ')';
+        if (right) right.style.transform = 'scaleY(' + sy.toFixed(3) + ')';
+      });
+      host.addEventListener('pointerleave', function () {
+        if (__qcxEyesBusy) return;
+        var mark = host.__qcxLogoSvg || host.querySelector('.qcx-menu-logo-mark');
+        if (!mark) return;
+        var eyes = mark.querySelector('.logo-eyes');
+        var left = mark.querySelector('.logo-eye-left');
+        var right = mark.querySelector('.logo-eye-right');
+        if (eyes) eyes.style.transform = '';
+        if (left) left.style.transform = '';
+        if (right) right.style.transform = '';
       });
     }
     arm();
   }
 
+  function closeLogoBrandMenu() {
+    var menu = document.getElementById('qcx-logo-brand-menu');
+    var backdrop = document.getElementById('qcx-logo-brand-backdrop');
+    if (menu) {
+      menu.classList.remove('is-open', 'is-copied');
+      menu.hidden = true;
+    }
+    if (backdrop) backdrop.hidden = true;
+  }
+
   function ensureLogoBrandMenu() {
     var menu = document.getElementById('qcx-logo-brand-menu');
     if (menu) return menu;
+
+    var backdrop = document.createElement('div');
+    backdrop.id = 'qcx-logo-brand-backdrop';
+    backdrop.hidden = true;
+    document.body.appendChild(backdrop);
+
     menu = document.createElement('div');
     menu.id = 'qcx-logo-brand-menu';
     menu.hidden = true;
     menu.setAttribute('role', 'menu');
     menu.innerHTML =
       '<a class="qcx-lbm-brand" href="/" role="menuitem">' +
-      '<svg class="qcx-lbm-ghost" viewBox="0 0 30 16" aria-hidden="true">' +
-      '<path d="M14.985 0C6.70823 0 -0.00216598 6.80197 5.24457e-07 15.19H3.82821C3.82821 8.90381 8.78373 3.8072 14.985 3.8072C21.1862 3.8072 26.1418 8.90381 26.1418 15.19H29.9699C29.9715 6.80197 23.261 0 14.985 0Z"/>' +
-      '<path d="M11.007 15.5481C12.6893 15.5481 14.053 14.1915 14.053 12.5182C14.053 10.8448 12.6893 9.48828 11.007 9.48828C9.32471 9.48828 7.96094 10.8448 7.96094 12.5182C7.96094 14.1915 9.32471 15.5481 11.007 15.5481Z"/>' +
-      '<path d="M18.9679 15.5481C20.6502 15.5481 22.014 14.1915 22.014 12.5182C22.014 10.8448 20.6502 9.48828 18.9679 9.48828C17.2856 9.48828 15.9219 10.8448 15.9219 12.5182C15.9219 14.1915 17.2856 15.5481 18.9679 15.5481Z"/>' +
+      '<svg class="qcx-lbm-ghost" width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true">' +
+      '<path d="M13.3144 23C12.7627 23 12.4869 23 12.26 22.8736C12.0755 22.7709 11.8991 22.5714 11.8198 22.3756C11.7222 22.135 11.7524 21.8913 11.8126 21.404C12.1663 18.5445 13.4632 15.8663 15.522 13.8076C17.9599 11.3696 21.2665 10 24.7144 10C28.1622 10 31.4688 11.3696 33.9067 13.8076C35.9655 15.8663 37.2624 18.5445 37.6161 21.404C37.6763 21.8913 37.7065 22.135 37.6089 22.3756C37.5296 22.5714 37.3532 22.7709 37.1687 22.8736C36.9418 23 36.666 23 36.1144 23L32.8158 23C32.2695 23 31.9963 23 31.8106 22.9221C31.6159 22.8403 31.5244 22.769 31.3977 22.6C31.2769 22.4389 31.1912 22.098 31.0199 21.4161C30.7358 20.2851 30.15 19.2412 29.3115 18.4028C28.0923 17.1836 26.4386 16.4986 24.7144 16.4986C22.9901 16.4986 21.3364 17.1836 20.1172 18.4028C19.2787 19.2412 18.693 20.2851 18.4088 21.4161C18.2375 22.098 18.1518 22.4389 18.031 22.6C17.9043 22.769 17.8128 22.8403 17.6181 22.9221C17.4324 23 17.1593 23 16.6129 23L13.3144 23Z" fill="var(--color-2, #8F8E8E)"/>' +
+      '<path d="M13.3144 38C12.7627 38 12.4869 38 12.26 37.8736C12.0755 37.7709 11.8991 37.5714 11.8198 37.3756C11.7222 37.135 11.7524 36.8913 11.8126 36.404C12.1663 33.5445 13.4632 30.8663 15.522 28.8076C17.9599 26.3696 21.2665 25 24.7144 25C28.1622 25 31.4688 26.3696 33.9067 28.8076C35.9655 30.8663 37.2624 33.5445 37.6161 36.404C37.6763 36.8913 37.7065 37.135 37.6089 37.3756C37.5296 37.5714 37.3532 37.7709 37.1687 37.8736C36.9418 38 36.666 38 36.1144 38L32.8158 38C32.2695 38 31.9963 38 31.8106 37.9221C31.6159 37.8403 31.5244 37.769 31.3977 37.6C31.2769 37.4389 31.1912 37.098 31.0199 36.4161C30.7358 35.2851 30.15 34.2412 29.3115 33.4028C28.0923 32.1836 26.4386 31.4986 24.7144 31.4986C22.9901 31.4986 21.3364 32.1836 20.1172 33.4028C19.2787 34.2412 18.693 35.2851 18.4088 36.4161C18.2375 37.098 18.1518 37.4389 18.031 37.6C17.9043 37.769 17.8128 37.8403 17.6181 37.9221C17.4324 38 17.1593 38 16.6129 38L13.3144 38Z" fill="var(--color-1, #BCBBBB)"/>' +
       '</svg>' +
-      '<span><span class="qcx-lbm-title">Brand</span>' +
-      '<span class="qcx-lbm-desc">Assets, examples and guides.</span></span></a>' +
+      '<div><p class="qcx-lbm-title">Brand</p>' +
+      '<p class="qcx-lbm-desc">Assets, examples and guides.</p></div></a>' +
       '<div class="qcx-lbm-sep"></div>' +
       '<div class="qcx-lbm-actions">' +
       '<button type="button" class="qcx-lbm-btn" data-qcx-copy="png" role="menuitem">' +
-      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">' +
-      '<rect x="3" y="5" width="12" height="12" rx="2"/><rect x="9" y="7" width="12" height="12" rx="2"/></svg>' +
+      '<svg width="24" height="25" viewBox="0 0 24 25" fill="none" aria-hidden="true">' +
+      '<rect x="6.5" y="9.16748" width="16" height="12" rx="2.5" fill="#BCBBBB"/>' +
+      '<path fill-rule="evenodd" clip-rule="evenodd" d="M4 4.5C2.61929 4.5 1.5 5.61929 1.5 7V14C1.5 15.3807 2.61929 16.5 4 16.5H5V11.6675C5 9.45834 6.79086 7.66748 9 7.66748H17.5V7C17.5 5.61929 16.3807 4.5 15 4.5H4Z" fill="#635f5f"/></svg>' +
       '<span>Copy as PNG</span></button>' +
       '<button type="button" class="qcx-lbm-btn" data-qcx-copy="svg" role="menuitem">' +
-      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">' +
-      '<circle cx="8" cy="10" r="3"/><path d="M14 7l5 5-5 5"/><path d="M12 17h7"/></svg>' +
+      '<svg width="25" height="25" viewBox="0 0 25 25" fill="none" aria-hidden="true">' +
+      '<path d="M11.2985 8.79086C10.5446 7.38345 8.52658 7.38345 7.77261 8.79086L3.07724 17.5556C2.36349 18.8879 3.32873 20.5 4.8402 20.5H14.231C15.7424 20.5 16.7077 18.8879 15.9939 17.5556L11.2985 8.79086Z" fill="#BCBBBB"/>' +
+      '<path fill-rule="evenodd" clip-rule="evenodd" d="M12.46 7.81069C12.5167 7.89771 12.5704 7.98833 12.6209 8.08256L17.3163 16.8472C17.4127 17.0272 17.4917 17.2102 17.554 17.3945C20.5659 17.1321 22.9287 14.6041 22.9287 11.5242C22.9287 8.26966 20.2904 5.63135 17.0358 5.63135C15.1889 5.63135 13.5404 6.48097 12.46 7.81069Z" fill="#635f5f"/></svg>' +
       '<span>Copy as SVG</span></button>' +
-      '</div>';
+      '</div>' +
+      '<div class="qcx-lbm-copied" aria-live="polite">Copied!</div>';
     document.body.appendChild(menu);
 
-    function flashCopied(btn) {
-      var label = btn.querySelector('span');
-      if (!label) return;
-      var prev = label.textContent;
-      btn.classList.add('is-copied');
-      label.textContent = 'Copied!';
+    var copying = false;
+    function flashCopied() {
+      menu.classList.add('is-copied');
       window.setTimeout(function () {
-        btn.classList.remove('is-copied');
-        label.textContent = prev;
-      }, 1400);
+        menu.classList.remove('is-copied');
+        copying = false;
+      }, 1200);
     }
 
     function copySvg() {
@@ -618,30 +688,60 @@
       if (!btn) return;
       ev.preventDefault();
       ev.stopPropagation();
+      if (copying) return;
+      copying = true;
       var kind = btn.getAttribute('data-qcx-copy');
       var job = kind === 'png' ? copyPng() : copySvg();
       Promise.resolve(job).then(function () {
-        flashCopied(btn);
+        flashCopied();
       }).catch(function () {
-        /* Fallback: still copy SVG text if PNG clipboard fails */
         if (kind === 'png') {
-          copySvg().then(function () { flashCopied(btn); }).catch(function () {});
+          copySvg().then(function () { flashCopied(); }).catch(function () { copying = false; });
+        } else {
+          copying = false;
         }
       });
     });
 
+    backdrop.addEventListener('pointerdown', function () { closeLogoBrandMenu(); });
     document.addEventListener('pointerdown', function (ev) {
       if (menu.hidden) return;
       if (menu.contains(ev.target)) return;
       var host = document.getElementById('qcx-menu-logo');
       if (host && host.contains(ev.target)) return;
-      menu.hidden = true;
+      closeLogoBrandMenu();
     }, true);
     window.addEventListener('keydown', function (ev) {
-      if (ev.key === 'Escape') menu.hidden = true;
+      if (ev.key === 'Escape') closeLogoBrandMenu();
     });
-    window.addEventListener('scroll', function () { menu.hidden = true; }, true);
+    window.addEventListener('scroll', function () { closeLogoBrandMenu(); }, true);
+    window.addEventListener('resize', function () { closeLogoBrandMenu(); });
     return menu;
+  }
+
+  function openLogoBrandMenu(host) {
+    var menu = ensureLogoBrandMenu();
+    var backdrop = document.getElementById('qcx-logo-brand-backdrop');
+    menu.classList.remove('is-open', 'is-copied');
+    menu.hidden = false;
+    if (backdrop) backdrop.hidden = false;
+
+    var anchor = host.getBoundingClientRect();
+    menu.style.left = '0px';
+    menu.style.top = '0px';
+    /* Force layout then place under logo like Aave (left-aligned, top: logo bottom + 2px) */
+    var mw = menu.offsetWidth || 296;
+    var mh = menu.offsetHeight || 120;
+    var left = Math.max(8, Math.min(anchor.left - 4, window.innerWidth - mw - 12));
+    var top = Math.max(8, Math.min(anchor.bottom + 2, window.innerHeight - mh - 12));
+    menu.style.left = left + 'px';
+    menu.style.top = top + 'px';
+
+    /* Spring-open next frame */
+    window.requestAnimationFrame(function () {
+      menu.classList.add('is-open');
+    });
+    playMenuLogoEyes(host.__qcxLogoSvg || host.querySelector('.qcx-menu-logo-mark'));
   }
 
   function bindMenuLogoBrandMenu(host) {
@@ -650,18 +750,7 @@
     host.addEventListener('contextmenu', function (ev) {
       ev.preventDefault();
       ev.stopPropagation();
-      var menu = ensureLogoBrandMenu();
-      menu.hidden = false;
-      var x = ev.clientX;
-      var y = ev.clientY;
-      menu.style.left = '0px';
-      menu.style.top = '0px';
-      var rect = menu.getBoundingClientRect();
-      var left = Math.min(x, window.innerWidth - rect.width - 12);
-      var top = Math.min(y, window.innerHeight - rect.height - 12);
-      menu.style.left = Math.max(8, left) + 'px';
-      menu.style.top = Math.max(8, top) + 'px';
-      playMenuLogoEyes(host.__qcxLogoSvg || host.querySelector('.qcx-menu-logo-mark'));
+      openLogoBrandMenu(host);
     });
   }
 
