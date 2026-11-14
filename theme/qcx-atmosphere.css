@@ -1308,7 +1308,7 @@ html body .qcx-hero-cta.qcx-hero-cta--pro {
   gap: 10px !important;
   margin-top: 14px !important;
   width: 100% !important;
-  max-width: 420px !important;
+  max-width: none !important;
 }
 html body:not(#layout) .qcx-hero-cta.qcx-hero-cta--pro > a.qcx-cta-btn,
 html body .qcx-hero-cta.qcx-hero-cta--pro > a.qcx-cta-btn {
@@ -1426,10 +1426,21 @@ html body:not(#layout) .qcx-cta-label,
   transform: translateY(0.5px) !important;
 }
 @media (max-width: 860px) {
+  html body:not(#layout) .qcx-hero,
+  html body .qcx-hero {
+    width: 100% !important;
+    max-width: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box !important;
+  }
   html body:not(#layout) .qcx-hero-cta.qcx-hero-cta--pro,
   html body .qcx-hero-cta.qcx-hero-cta--pro {
     gap: 8px !important;
     margin-top: 10px !important;
+    width: 100% !important;
     max-width: none !important;
   }
   html body:not(#layout) .qcx-hero-cta.qcx-hero-cta--pro > a.qcx-cta-btn,
