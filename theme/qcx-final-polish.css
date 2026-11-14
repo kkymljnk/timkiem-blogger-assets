@@ -200,20 +200,39 @@ aside.qcx-top-download,
 }
 
 /* Keep the subscribe rail focused on one clear action. */
-.qcx-subscribe-card {
+.qcx-subscribe-card,
+.qcx-subscribe-card[data-qcx-footer='1'] {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  justify-content: space-between !important;
   max-width: 760px !important;
   min-height: 0 !important;
-  margin: 36px auto 24px !important;
-  padding: 21px 25px !important;
-  gap: 26px !important;
+  margin: 28px auto 20px !important;
+  padding: 18px 20px !important;
+  gap: 16px 20px !important;
   border-radius: 14px !important;
+  box-sizing: border-box !important;
+}
+.qcx-subscribe-card .qcx-sc-text {
+  flex: 1 1 220px !important;
+  min-width: 0 !important;
 }
 .qcx-subscribe-card .qcx-sc-title {
-  margin-bottom: 7px !important;
+  margin: 0 0 6px !important;
   font-size: 17px !important;
 }
 .qcx-subscribe-card .qcx-sc-desc {
+  margin: 0 !important;
   font-size: 11px !important;
+}
+.qcx-subscribe-card .qcx-sc-actions {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: stretch !important;
+  gap: 10px !important;
+  flex: 0 1 auto !important;
 }
 .qcx-subscribe-card .qcx-sc-input-wrap {
   display: none !important;
@@ -221,18 +240,46 @@ aside.qcx-top-download,
 .qcx-subscribe-card .qcx-sc-form {
   gap: 0 !important;
 }
-.qcx-subscribe-card .qcx-sc-btn {
+.qcx-subscribe-card .qcx-sc-btn,
+a.qcx-sc-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   min-width: 142px !important;
   min-height: 42px !important;
   padding: 10px 18px !important;
   border-radius: 10px !important;
   letter-spacing: .05em !important;
   white-space: nowrap !important;
+  text-decoration: none !important;
+  box-sizing: border-box !important;
+}
+@media (max-width: 860px) {
+  .qcx-subscribe-card,
+  .qcx-subscribe-card[data-qcx-footer='1'] {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    margin: 16px 12px 14px !important;
+    padding: 12px !important;
+    gap: 8px !important;
+  }
+  .qcx-subscribe-card .qcx-sc-actions {
+    width: 100% !important;
+    flex-direction: column !important;
+  }
+  .qcx-subscribe-card .qcx-sc-btn,
+  a.qcx-sc-btn {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
 }
 
-/* Desktop: keep article + sidebar as a tight centered pair. */
+/* Desktop: keep article + sidebar as a tight centered pair.
+   data-page-item / data-page-type live on <html>, never under body. */
 @media (min-width: 861px) {
-  html body [data-page-item='single'] .main-wrapper {
+  html[data-page-item='single'] .main-wrapper,
+  html[data-page-type='post'] .main-wrapper,
+  html[data-page-type='page'] .main-wrapper {
     display: grid !important;
     grid-template-columns: minmax(0, 640px) minmax(220px, 260px) !important;
     gap: 12px !important;
