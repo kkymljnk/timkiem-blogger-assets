@@ -255,7 +255,7 @@
       '<a class="qcx-cta-btn qcx-cta-outline" href="https://t.me/superkhung" rel="noopener noreferrer" target="_blank">Hỗ trợ Telegram</a>' +
       '</div>' +
       '</div>' +
-      '<div class="qcx-avatar-wrap" data-enter="avatar"><div class="qcx-avatar" aria-label="CÔNG CỤ.AI"><svg xmlns="http://www.w3.org/2000/svg" class="qcx-brand-mark qcx-brand-svg" viewBox="0 0 512 512" width="300" height="300" role="img" aria-label="CÔNG CỤ.AI" tabindex="0"><g class="qcx-ghost-art"><image href="' + QCX_CDN + 'qcx-brand-mark.png" x="0" y="0" width="512" height="512" preserveAspectRatio="xMidYMid meet"/></g><g class="qcx-ghost-eyes"><circle class="qcx-eye-socket" cx="230.6" cy="189.9" r="16.5" fill="#f2f2f2"/><circle class="qcx-eye qcx-eye-l" cx="230.6" cy="189.9" r="13.2" fill="#0a0a0a"/><circle class="qcx-eye-socket" cx="294.1" cy="183.5" r="16" fill="#f2f2f2"/><circle class="qcx-eye qcx-eye-r" cx="294.1" cy="183.5" r="12.8" fill="#0a0a0a"/></g></svg></div></div>';
+      '<div class="qcx-avatar-wrap" data-enter="avatar">' + brandAvatarHtml() + '</div>';
     /* Place hero ABOVE .main-wrapper so PC sidebar/find: sits with the feed, not beside hero. */
     placeHero(hero, main);
     ensureSidebarSearch();
@@ -297,10 +297,44 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.88/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.89/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
+
+  function brandAvatarHtml() {
+    var src1 = QCX_CDN + 'qcx-brand-mark.png';
+    var src2 = QCX_CDN + 'qcx-brand-mark-1024.png';
+    return '<div class="qcx-avatar" aria-label="CÔNG CỤ.AI">' +
+      '<img class="qcx-brand-raster" src="' + src1 + '" srcset="' + src1 + ' 512w, ' + src2 + ' 1024w" ' +
+      'sizes="(max-width:860px) 64px, 300px" width="64" height="64" decoding="async" alt="CÔNG CỤ.AI"/>' +
+      '<svg xmlns="http://www.w3.org/2000/svg" class="qcx-brand-mark qcx-brand-svg qcx-brand-eyes-only" ' +
+      'viewBox="0 0 512 512" width="300" height="300" role="img" aria-hidden="true" tabindex="0">' +
+      '<g class="qcx-ghost-eyes">' +
+      '<circle class="qcx-eye-socket" cx="230.6" cy="189.9" r="16.5" fill="#f2f2f2"/>' +
+      '<circle class="qcx-eye qcx-eye-l" cx="230.6" cy="189.9" r="13.2" fill="#0a0a0a"/>' +
+      '<circle class="qcx-eye-socket" cx="294.1" cy="183.5" r="16" fill="#f2f2f2"/>' +
+      '<circle class="qcx-eye qcx-eye-r" cx="294.1" cy="183.5" r="12.8" fill="#0a0a0a"/>' +
+      '</g></svg></div>';
+  }
+
+  function ensureSharpBrandAvatar() {
+    var avatars = document.querySelectorAll('.qcx-avatar');
+    Array.prototype.forEach.call(avatars, function (avatar) {
+      if (avatar.querySelector('img.qcx-brand-raster')) return;
+      var legacy = avatar.querySelector('.qcx-ghost-art image, image[href*="qcx-brand-mark"], image[href*="qcx-brand-mark"]');
+      var hasEmbedded = !!avatar.querySelector('.qcx-ghost-art image, .qcx-brand-svg image');
+      if (!hasEmbedded && !legacy) return;
+      var wrap = avatar.parentNode;
+      var html = brandAvatarHtml();
+      var box = document.createElement('div');
+      box.innerHTML = html;
+      var next = box.firstChild;
+      if (!next) return;
+      if (wrap) wrap.replaceChild(next, avatar);
+      else avatar.parentNode && avatar.parentNode.replaceChild(next, avatar);
+    });
+  }
 
   function ensureStylesheet(id, href) {
     var link = document.getElementById(id);
@@ -539,6 +573,12 @@
       '#qcx-menu-logo .qcx-menu-logo-mark{width:22px!important;height:22px!important;display:block!important;flex:0 0 auto!important}' +
       '#qcx-menu-logo .qcx-menu-logo-text{color:#28d28c!important;-webkit-text-fill-color:#28d28c!important;font-weight:800!important}' +
       '.qcx-brand-svg .qcx-ghost-art image,.qcx-brand-mark .qcx-ghost-art image{filter:none!important}' +
+      '.qcx-avatar{position:relative!important;overflow:visible!important}' +
+      '.qcx-avatar .qcx-brand-raster{width:100%!important;height:100%!important;display:block!important;' +
+      'object-fit:contain!important;object-position:center!important;image-rendering:-webkit-optimize-contrast;' +
+      'image-rendering:auto!important;filter:none!important;-webkit-backface-visibility:hidden}' +
+      '.qcx-avatar .qcx-brand-svg.qcx-brand-eyes-only{position:absolute!important;inset:0!important;' +
+      'width:100%!important;height:100%!important;pointer-events:auto!important;z-index:2!important}' +
       '.qcx-brand-svg .qcx-eye-socket{fill:#f2f2f2!important}' +
       '.qcx-brand-svg .qcx-eye{fill:#0a0a0a!important}' +
       '#qcx-menu-close{width:34px!important;height:34px!important;display:grid!important;place-items:center!important;' +
@@ -2266,9 +2306,11 @@
     ensureAtmosphere();
     ensureMenuDrawer();
     ensureMobileNavReady();
+    ensureSharpBrandAvatar();
     ensureGhostBlink();
     sharpenCardImages();
     window.setTimeout(ensureGhostBlink, 400);
+    window.setTimeout(ensureSharpBrandAvatar, 200);
     window.setTimeout(sharpenCardImages, 200);
     window.setTimeout(sharpenCardImages, 900);
     return;
@@ -2284,6 +2326,7 @@
   hideDropsOnHome();
   ensureAdminChrome();
   ensureSiteFooter();
+  ensureSharpBrandAvatar();
   ensureGhostBlink();
   sharpenCardImages();
   if (document.readyState === 'loading') {
@@ -2297,6 +2340,7 @@
       hideDropsOnHome();
       ensureAdminChrome();
       ensureSiteFooter();
+      ensureSharpBrandAvatar();
       ensureGhostBlink();
       sharpenCardImages();
     }, { once: true });
@@ -2320,6 +2364,8 @@
   window.setTimeout(ensureGhostBlink, 200);
   window.setTimeout(ensureGhostBlink, 800);
   window.setTimeout(ensureGhostBlink, 1600);
+  window.setTimeout(ensureSharpBrandAvatar, 80);
+  window.setTimeout(ensureSharpBrandAvatar, 400);
   window.setTimeout(sharpenCardImages, 120);
   window.setTimeout(sharpenCardImages, 500);
   window.setTimeout(sharpenCardImages, 1200);

@@ -47,6 +47,29 @@ body > #outer-wrapper,
   -webkit-tap-highlight-color: transparent;
   transition: transform .22s ease, filter .22s ease !important;
 }
+.qcx-avatar {
+  position: relative !important;
+  overflow: visible !important;
+}
+.qcx-avatar .qcx-brand-raster {
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: auto !important;
+  filter: none !important;
+  -webkit-backface-visibility: hidden;
+}
+.qcx-avatar .qcx-brand-svg.qcx-brand-eyes-only {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  pointer-events: auto !important;
+  z-index: 2 !important;
+}
 .qcx-avatar,
 .qcx-avatar-wrap {
   transition: transform .22s ease, filter .22s ease !important;
