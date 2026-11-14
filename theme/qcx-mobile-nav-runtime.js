@@ -268,7 +268,7 @@
   function buildNavMenu() {
     var nav = document.getElementById('qcx-menu-nav');
     if (!nav) return;
-    if (nav.getAttribute('data-qcx-enhanced') === 'mint-cards-v8-aave-anim') return;
+    if (nav.getAttribute('data-qcx-enhanced') === 'mint-cards-v8-labels') return;
     function el(tag, cls, txt) {
       var node = document.createElement(tag);
       if (cls) node.className = cls;
@@ -354,9 +354,9 @@
     var cardsPrimary = [
       { title: 'Trang chủ', desc: 'Home', href: '/', icon: 'home', current: path === '/' || path === '' },
       { title: 'Bài viết', desc: 'Mới nhất', href: '/search', icon: 'posts' },
-      { title: 'Skill', desc: 'AI / Prompt', href: '/search/label/AI?max-results=12', icon: 'skill' },
+      { title: 'Skill & Prompt', desc: 'AI', href: '/search/label/AI?max-results=12', icon: 'skill' },
       { title: 'Mã nguồn', desc: 'Dev & API', href: '/search/label/Developer?max-results=12', icon: 'code' },
-      { title: 'Tools', desc: 'Windows & tip', href: '/search/label/Tools?max-results=12', icon: 'tools' },
+      { title: 'Tools', desc: 'Tool & App', href: '/search/label/Tools?max-results=12', icon: 'tools' },
       { title: 'Telegram', desc: 'Hỗ trợ', href: 'https://t.me/superkhung', icon: 'telegram', external: true }
     ];
     cardsPrimary.forEach(function (item) { addCard(grid1, item); });
@@ -398,7 +398,7 @@
     var footer = document.getElementById('qcx-menu-footer');
     if (footer) footer.innerHTML = '';
 
-    nav.setAttribute('data-qcx-enhanced', 'mint-cards-v8-aave-anim');
+    nav.setAttribute('data-qcx-enhanced', 'mint-cards-v8-labels');
   }
 
   function hookMenu() {
