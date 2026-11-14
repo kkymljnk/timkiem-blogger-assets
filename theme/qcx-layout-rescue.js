@@ -316,13 +316,14 @@
       var st = document.createElement('style');
       st.id = 'qcx-cta-pro-live';
       st.textContent =
-        'html body:not(#layout) .qcx-hero-cta.qcx-hero-cta--pro,html body .qcx-hero-cta.qcx-hero-cta--pro{display:flex!important;flex-direction:column!important;gap:10px!important;margin-top:14px!important;max-width:420px!important;width:100%!important}' +
-        'html body:not(#layout) .qcx-hero-cta.qcx-hero-cta--pro>a.qcx-cta-btn,html body .qcx-hero-cta.qcx-hero-cta--pro>a.qcx-cta-btn{display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:10px!important;width:100%!important;min-height:48px!important;padding:0 18px!important;border-radius:12px!important;font:700 14px/1.25 system-ui,sans-serif!important;letter-spacing:-.01em!important;text-decoration:none!important;white-space:nowrap!important;overflow:visible!important}' +
+        'html body:not(#layout) .qcx-hero-cta.qcx-hero-cta--pro,html body .qcx-hero-cta.qcx-hero-cta--pro{display:flex!important;flex-direction:column!important;gap:8px!important;margin-top:10px!important;max-width:420px!important;width:100%!important}' +
+        'html body:not(#layout) .qcx-hero-cta.qcx-hero-cta--pro>a.qcx-cta-btn,html body .qcx-hero-cta.qcx-hero-cta--pro>a.qcx-cta-btn{box-sizing:border-box!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:8px!important;width:100%!important;height:48px!important;min-height:48px!important;max-height:48px!important;padding:0 16px!important;border-radius:12px!important;font:700 14px/1 system-ui,sans-serif!important;letter-spacing:-.01em!important;text-decoration:none!important;white-space:nowrap!important;overflow:hidden!important}' +
         'html body:not(#layout) .qcx-hero-cta.qcx-hero-cta--pro>a.qcx-cta-btn:not(.qcx-cta-outline),html body .qcx-hero-cta.qcx-hero-cta--pro>a.qcx-cta-btn:not(.qcx-cta-outline){background:linear-gradient(180deg,#34e6a0 0%,#1fd68a 100%)!important;border:1px solid rgba(0,0,0,.18)!important;color:#06140e!important;-webkit-text-fill-color:#06140e!important;box-shadow:0 1px 0 rgba(255,255,255,.28) inset,0 10px 28px rgba(0,240,163,.22)!important}' +
-        'html body:not(#layout) .qcx-hero-cta.qcx-hero-cta--pro>a.qcx-cta-outline,html body .qcx-hero-cta.qcx-hero-cta--pro>a.qcx-cta-outline{background:rgba(255,255,255,.03)!important;border:1px solid rgba(0,240,163,.28)!important;color:#e8fff2!important;-webkit-text-fill-color:#e8fff2!important;box-shadow:none!important;font-weight:650!important}' +
-        'html body:not(#layout) .qcx-cta-ico,.qcx-cta-ico{display:inline-flex!important;width:16px!important;height:16px!important;flex:0 0 auto!important}' +
+        'html body:not(#layout) .qcx-hero-cta.qcx-hero-cta--pro>a.qcx-cta-outline,html body .qcx-hero-cta.qcx-hero-cta--pro>a.qcx-cta-outline{background:rgba(255,255,255,.03)!important;border:1px solid rgba(0,240,163,.28)!important;color:#e8fff2!important;-webkit-text-fill-color:#e8fff2!important;box-shadow:none!important;font-weight:650!important;height:48px!important;min-height:48px!important;max-height:48px!important}' +
+        'html body:not(#layout) .qcx-cta-ico,.qcx-cta-ico{display:inline-flex!important;align-items:center!important;justify-content:center!important;align-self:center!important;width:16px!important;height:16px!important;flex:0 0 16px!important;line-height:0!important}' +
         'html body:not(#layout) .qcx-cta-ico svg,.qcx-cta-ico svg{display:block!important;width:16px!important;height:16px!important}' +
-        '@media (min-width:861px){html body:not(#layout) .qcx-hero-cta.qcx-hero-cta--pro,html body .qcx-hero-cta.qcx-hero-cta--pro{flex-direction:row!important;max-width:none!important;gap:12px!important}html body:not(#layout) .qcx-hero-cta.qcx-hero-cta--pro>a.qcx-cta-btn,html body .qcx-hero-cta.qcx-hero-cta--pro>a.qcx-cta-btn{width:auto!important;min-width:168px!important}}';
+        'html body:not(#layout) .qcx-cta-label,.qcx-cta-label{display:inline-flex!important;align-items:center!important;line-height:1!important;transform:translateY(.5px)!important}' +
+        '@media (min-width:861px){html body:not(#layout) .qcx-hero-cta.qcx-hero-cta--pro,html body .qcx-hero-cta.qcx-hero-cta--pro{flex-direction:row!important;max-width:none!important;gap:12px!important}html body:not(#layout) .qcx-hero-cta.qcx-hero-cta--pro>a.qcx-cta-btn,html body .qcx-hero-cta.qcx-hero-cta--pro>a.qcx-cta-btn{width:auto!important;min-width:168px!important;padding:0 20px!important}}';
       (document.head || document.documentElement).appendChild(st);
     }
 
@@ -377,7 +378,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.115/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.116/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
