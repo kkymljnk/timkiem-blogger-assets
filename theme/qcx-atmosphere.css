@@ -300,6 +300,13 @@ html[data-qcx-admin='1'] .footer-navigation-bar {
   width: auto !important;
   display: block !important;
   flex: 0 0 auto !important;
+  overflow: visible !important;
+}
+#qcx-menu-logo .qcx-menu-logo-mark .logo-eyes,
+#qcx-menu-logo .qcx-menu-logo-mark .logo-eye-left,
+#qcx-menu-logo .qcx-menu-logo-mark .logo-eye-right {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
 }
 #qcx-menu-logo .qcx-menu-logo-text {
   color: #28d28c !important;

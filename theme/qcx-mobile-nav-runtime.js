@@ -22,6 +22,14 @@
       '  backface-visibility: hidden !important;',
       '}',
       '',
+      '/* Aave-style menu logo eyes */',
+      '#qcx-menu-logo .qcx-menu-logo-mark .logo-eyes,',
+      '#qcx-menu-logo .qcx-menu-logo-mark .logo-eye-left,',
+      '#qcx-menu-logo .qcx-menu-logo-mark .logo-eye-right{',
+      '  transform-box:fill-box;transform-origin:50% 50%;',
+      '}',
+      '#qcx-menu-logo .qcx-menu-logo-mark{overflow:visible}',
+      '',
       '/* Remove empty/excessive gaps above Tutorial rail and below article */',
       '#comments, .comments, .qcx-comments-shell {',
       '  margin-top: 0 !important;',
@@ -341,13 +349,24 @@
     var logo = document.getElementById('qcx-menu-logo');
     if (logo) {
       logo.setAttribute('aria-label', 'MMO.TEAM');
+      /* Official Aave ghost/eyes geometry + path wordmark (no system <text>). */
       logo.innerHTML =
-        '<svg class="qcx-menu-logo-mark" width="118" height="16" viewBox="0 0 118 16" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="MMO.TEAM">' +
-        '<path d="M11.2631 15.9989C12.9863 15.9989 14.3832 14.602 14.3832 12.8789C14.3832 11.1557 12.9863 9.75879 11.2631 9.75879C9.53997 9.75879 8.14307 11.1557 8.14307 12.8789C8.14307 14.602 9.53997 15.9989 11.2631 15.9989Z" fill="#28d28c"/>' +
-        '<path d="M19.4162 15.9989C21.1394 15.9989 22.5363 14.602 22.5363 12.8789C22.5363 11.1557 21.1394 9.75879 19.4162 9.75879C17.693 9.75879 16.2961 11.1557 16.2961 12.8789C16.2961 14.602 17.693 15.9989 19.4162 15.9989Z" fill="#28d28c"/>' +
-        '<path d="M15.3379 0C6.86622 0 -0.002217 6.99928 5.36811e-07 15.6307H3.91838C3.91838 9.16211 8.99062 3.91764 15.3379 3.91764C21.6853 3.91764 26.7575 9.16211 26.7575 15.6307H30.6759C30.6774 6.99928 23.8089 0 15.3379 0Z" fill="#28d28c"/>' +
-        '<text x="34" y="12.6" fill="#28d28c" font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \'Segoe UI\', sans-serif" font-size="12" font-weight="700" letter-spacing="0.02em">MMO.TEAM</text>' +
+        '<svg class="qcx-menu-logo-mark" width="116.9" height="16" viewBox="0 0 116.9 16" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="MMO.TEAM">' +
+        '<path d="M14.985 0C6.70823 0 -0.00216598 6.80197 5.24457e-07 15.19H3.82821C3.82821 8.90381 8.78373 3.8072 14.985 3.8072C21.1862 3.8072 26.1418 8.90381 26.1418 15.19H29.9699C29.9715 6.80197 23.261 0 14.985 0Z" fill="#28d28c"/>' +
+        '<g class="logo-eyes">' +
+        '<path class="logo-eye-left qcx-eye" d="M11.007 15.5481C12.6893 15.5481 14.053 14.1915 14.053 12.5182C14.053 10.8448 12.6893 9.48828 11.007 9.48828C9.32471 9.48828 7.96094 10.8448 7.96094 12.5182C7.96094 14.1915 9.32471 15.5481 11.007 15.5481Z" fill="#28d28c"/>' +
+        '<path class="logo-eye-right qcx-eye" d="M18.9679 15.5481C20.6502 15.5481 22.014 14.1915 22.014 12.5182C22.014 10.8448 20.6502 9.48828 18.9679 9.48828C17.2856 9.48828 15.9219 10.8448 15.9219 12.5182C15.9219 14.1915 17.2856 15.5481 18.9679 15.5481Z" fill="#28d28c"/>' +
+        '</g>' +
+        '<path d="M34.014 15.37V4.611H37.78L39.64 13.987H39.916L41.776 4.611H45.542V15.37H43.575V6.102H43.298L41.453 15.37H38.103L36.258 6.102H35.982V15.37Z" fill="#28d28c"/>' +
+        '<path d="M47.571 15.37V4.611H51.336L53.196 13.987H53.473L55.333 4.611H59.098V15.37H57.131V6.102H56.854L55.01 15.37H51.659L49.815 6.102H49.538V15.37Z" fill="#28d28c"/>' +
+        '<path d="M65.308 15.585Q63.279 15.585 62.08 14.471Q60.881 13.357 60.881 11.282V8.699Q60.881 6.624 62.08 5.51Q63.279 4.396 65.308 4.396Q67.337 4.396 68.535 5.51Q69.734 6.624 69.734 8.699V11.282Q69.734 13.357 68.535 14.471Q67.337 15.585 65.308 15.585ZM65.308 13.772Q66.445 13.772 67.075 13.111Q67.705 12.45 67.705 11.343V8.638Q67.705 7.531 67.075 6.87Q66.445 6.209 65.308 6.209Q64.186 6.209 63.548 6.87Q62.91 7.531 62.91 8.638V11.343Q62.91 12.45 63.548 13.111Q64.186 13.772 65.308 13.772Z" fill="#28d28c"/>' +
+        '<path d="M72.801 15.585Q72.178 15.585 71.755 15.174Q71.333 14.763 71.333 14.121Q71.333 13.479 71.755 13.072Q72.178 12.665 72.801 12.665Q73.423 12.665 73.838 13.076Q74.253 13.487 74.253 14.129Q74.253 14.771 73.838 15.178Q73.423 15.585 72.801 15.585Z" fill="#28d28c"/>' +
+        '<path d="M78.587 15.37V6.455H75.452V4.611H83.752V6.455H80.616V15.37Z" fill="#28d28c"/>' +
+        '<path d="M85.135 15.37V4.611H92.052V6.455H87.164V9.022H91.621V10.867H87.164V13.526H92.144V15.37Z" fill="#28d28c"/>' +
+        '<path d="M92.912 15.37 95.74 4.611H99.275L102.104 15.37H100.013L99.429 13.003H95.587L95.003 15.37ZM96.063 11.128H98.953L97.646 5.887H97.37Z" fill="#28d28c"/>' +
+        '<path d="M103.395 15.37V4.611H107.16L109.02 13.987H109.297L111.156 4.611H114.922V15.37H112.955V6.102H112.678L110.834 15.37H107.483L105.639 6.102H105.362V15.37Z" fill="#28d28c"/>' +
         '</svg>';
+      bindMenuLogoEyes(logo.querySelector('.qcx-menu-logo-mark'));
     }
 
     var secExplore = el('div', 'qcx-menu-section', 'Menu');
@@ -401,7 +420,64 @@
     var footer = document.getElementById('qcx-menu-footer');
     if (footer) footer.innerHTML = '';
 
-    nav.setAttribute('data-qcx-enhanced', 'mint-cards-v8-mmo-logo');
+    nav.setAttribute('data-qcx-enhanced', 'mint-cards-v9-mmo-path');
+  }
+
+  /* Aave header logo motion: look L/R then double blink — every 10s + on scroll. */
+  function playMenuLogoEyes(svg) {
+    if (!svg || typeof svg.animate !== 'function') return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var eyes = svg.querySelector('.logo-eyes');
+    var left = svg.querySelector('.logo-eye-left');
+    var right = svg.querySelector('.logo-eye-right');
+    if (!eyes || !left || !right) return;
+    try {
+      eyes.getAnimations().forEach(function (a) { a.cancel(); });
+      left.getAnimations().forEach(function (a) { a.cancel(); });
+      right.getAnimations().forEach(function (a) { a.cancel(); });
+    } catch (e) {}
+    var ease = 'ease-in-out';
+    eyes.animate(
+      [{ transform: 'translateX(0%)' }, { transform: 'translateX(2%)' }],
+      { duration: 150, easing: ease, fill: 'forwards' }
+    );
+    eyes.animate(
+      [{ transform: 'translateX(2%)' }, { transform: 'translateX(-2%)' }],
+      { duration: 300, delay: 350, easing: ease, fill: 'forwards' }
+    );
+    eyes.animate(
+      [{ transform: 'translateX(-2%)' }, { transform: 'translateX(0%)' }],
+      { duration: 250, delay: 700, easing: ease, fill: 'forwards' }
+    );
+    var blink = [
+      { transform: 'scaleY(1)' },
+      { transform: 'scaleY(0)' },
+      { transform: 'scaleY(1)' }
+    ];
+    left.animate(blink, { duration: 150, delay: 1200, easing: ease });
+    right.animate(blink, { duration: 150, delay: 1200, easing: ease });
+    left.animate(blink, { duration: 150, delay: 1250, easing: ease });
+    right.animate(blink, { duration: 150, delay: 1250, easing: ease });
+  }
+
+  function bindMenuLogoEyes(svg) {
+    if (!svg) return;
+    var host = document.getElementById('qcx-menu-logo');
+    if (host) host.__qcxLogoSvg = svg;
+    playMenuLogoEyes(svg);
+    if (host && host.getAttribute('data-qcx-aave-eyes-bound') === '1') return;
+    if (host) host.setAttribute('data-qcx-aave-eyes-bound', '1');
+    var timer = null;
+    var arm = function () {
+      var target = (host && host.__qcxLogoSvg) || svg;
+      if (timer) clearInterval(timer);
+      timer = setInterval(function () {
+        playMenuLogoEyes((host && host.__qcxLogoSvg) || target);
+      }, 10000);
+      playMenuLogoEyes(target);
+    };
+    window.addEventListener('scroll', arm, { passive: true });
+    arm();
   }
 
   function hookMenu() {
