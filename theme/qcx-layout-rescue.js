@@ -241,7 +241,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.71/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.72/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -349,7 +349,7 @@
       'background-color:#24352c!important;background-image:none!important;' +
       'border:1px solid rgba(0,240,163,.22)!important;border-radius:12px!important;' +
       'box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 8px 24px rgba(0,0,0,.4)!important;isolation:isolate!important}' +
-      /* Hide sidebar/results inline search everywhere — Menu + Cmd/Ctrl+Space|/K */' +
+      /* Hide sidebar/results inline search everywhere — Menu + Cmd/Ctrl+Space|/K */
       '.qcx-inline-search.qcx-results-search,.qcx-inline-search.qcx-sidebar-search,' +
       '.widget.qcx-sidebar-search,.widget.HTML.qcx-sidebar-search{display:none!important}' +
       '.qcx-inline-search:hover,.qcx-inline-search:focus-visible{border-color:rgba(0,240,163,.4)!important}' +
