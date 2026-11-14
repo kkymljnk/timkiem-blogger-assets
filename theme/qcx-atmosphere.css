@@ -309,8 +309,8 @@ html[data-qcx-admin='1'] .footer-navigation-bar {
 #qcx-menu-logo .qcx-menu-logo-mark .logo-eyes,
 #qcx-menu-logo .qcx-menu-logo-mark .logo-eye-left,
 #qcx-menu-logo .qcx-menu-logo-mark .logo-eye-right {
-  transform-box: fill-box;
-  transform-origin: 50% 50%;
+  transform-box: view-box;
+  transform-origin: center;
 }
 #qcx-menu-logo .qcx-menu-logo-text {
   color: #fff !important;

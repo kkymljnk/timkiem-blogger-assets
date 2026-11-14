@@ -29,7 +29,8 @@
       '#qcx-menu-logo .qcx-menu-logo-mark .logo-eyes,',
       '#qcx-menu-logo .qcx-menu-logo-mark .logo-eye-left,',
       '#qcx-menu-logo .qcx-menu-logo-mark .logo-eye-right{',
-      '  transform-box:fill-box;transform-origin:center;will-change:transform;',
+      '  /* view-box so 2% look matches Aave Motion x:2% */',
+      '  transform-box:view-box;transform-origin:center;will-change:transform;',
       '}',
       '#qcx-logo-brand-backdrop{position:fixed;inset:0;z-index:2147482999;background:transparent}',
       '#qcx-logo-brand-backdrop[hidden]{display:none!important}',
@@ -489,7 +490,7 @@
     '<path d="M108.37 15.37H106.459V4.135H108.37L111.991 13.08L115.618 4.135H117.555V15.37H115.644V11.909Q115.644 11.06 115.647 10.486Q115.649 9.912 115.662 9.51Q115.675 9.108 115.696 8.804Q115.717 8.5 115.754 8.191L112.898 15.37H111.084L108.239 8.205Q108.324 8.715 108.347 9.501Q108.37 10.287 108.37 11.349Z" fill="black"/>' +
     '</svg>';
 
-  /* Aave logo motion via style.transform rAF — WAAPI on SVG <g> does not paint. */
+  /* Aave logo motion (Motion timeline) via style.transform rAF — no SVG attr (avoids double). */
   var __qcxEyesBusy = false;
   var __qcxEyesBusyTimer = null;
   var __qcxEyesSeqRaf = 0;
@@ -498,7 +499,6 @@
   function qcxLiveLogoParts() {
     var host = document.getElementById('qcx-menu-logo');
     if (!host) return null;
-    /* Always prefer connected DOM — __qcxLogoSvg goes stale after innerHTML rebuilds. */
     var mark = host.querySelector('.qcx-menu-logo-mark');
     if (!mark && host.__qcxLogoSvg && host.__qcxLogoSvg.isConnected) mark = host.__qcxLogoSvg;
     if (!mark) return null;
@@ -512,20 +512,14 @@
     };
   }
 
-  function qcxEyesLookPx(eyes) {
-    var w = 14;
+  function qcxEyesLookPx(mark) {
+    /* Aave Motion: x 2% of logo (view-box). Our mark ~120px → ~2.4px. */
+    var w = 120;
     try {
-      if (eyes.getBBox) {
-        var bb = eyes.getBBox();
-        if (bb && bb.width) w = bb.width;
-      }
+      var r = mark.getBoundingClientRect();
+      if (r && r.width) w = r.width;
     } catch (e) {}
-    try {
-      var r = eyes.getBoundingClientRect();
-      if (r && r.width) w = Math.max(w, r.width);
-    } catch (e2) {}
-    /* Visible at 16px logo: ~2.5–5px look */
-    return Math.max(2.5, Math.min(5, w * 0.22));
+    return Math.max(1.5, Math.min(2.8, w * 0.02));
   }
 
   function qcxEaseInOut(t) {
@@ -539,12 +533,28 @@
         __qcxEyesSeqRaf = window.requestAnimationFrame(frame);
         return;
       }
-      var t = Math.min(1, (now - startAt) / dur);
+      var t = Math.min(1, (now - startAt) / Math.max(1, dur));
       onUpdate(from + (to - from) * qcxEaseInOut(t));
       if (t < 1) __qcxEyesSeqRaf = window.requestAnimationFrame(frame);
       else if (onDone) onDone();
     }
     __qcxEyesSeqRaf = window.requestAnimationFrame(frame);
+  }
+
+  function qcxResetEyesTransform(p) {
+    if (!p) return;
+    if (p.eyes) {
+      p.eyes.style.transform = '';
+      p.eyes.removeAttribute('transform');
+    }
+    if (p.left) {
+      p.left.style.transform = '';
+      p.left.removeAttribute('transform');
+    }
+    if (p.right) {
+      p.right.style.transform = '';
+      p.right.removeAttribute('transform');
+    }
   }
 
   var __qcxEyesPlayGen = 0;
@@ -555,7 +565,7 @@
     opts = opts || {};
     var force = !!opts.force;
     var reduce = qcxReduceMotion();
-    /* Auto/interval skipped when reduce; hover still gets a short blink. */
+    /* Auto/interval skipped when reduce; hover still gets Aave blink. */
     if (reduce && opts.auto && !force) return;
     if (svg && svg.isConnected) {
       var host0 = document.getElementById('qcx-menu-logo');
@@ -570,14 +580,14 @@
       window.cancelAnimationFrame(__qcxEyesSeqRaf);
       __qcxEyesSeqRaf = 0;
     }
-    var look = reduce ? 0 : qcxEyesLookPx(parts.eyes);
+    /* Clear any leftover SVG attr that used to double with CSS. */
+    qcxResetEyesTransform(parts);
+    var look = reduce ? 0 : qcxEyesLookPx(parts.mark);
     var setX = function (x) {
       if (gen !== __qcxEyesPlayGen) return;
       var p = qcxLiveLogoParts();
       if (!p || !p.eyes) return;
-      var t = 'translate(' + x.toFixed(2) + 'px,0px)';
-      p.eyes.style.transform = t;
-      p.eyes.setAttribute('transform', 'translate(' + x.toFixed(2) + ' 0)');
+      p.eyes.style.transform = 'translate(' + x.toFixed(2) + 'px,0px)';
     };
     var setBlink = function (sy) {
       if (gen !== __qcxEyesPlayGen) return;
@@ -589,56 +599,51 @@
     };
     var finish = function () {
       if (gen !== __qcxEyesPlayGen) return;
-      var p = qcxLiveLogoParts();
-      if (p) {
-        if (p.left) p.left.style.transform = '';
-        if (p.right) p.right.style.transform = '';
-        if (p.eyes) {
-          p.eyes.style.transform = 'translate(0px,0px)';
-          p.eyes.setAttribute('transform', 'translate(0 0)');
-        }
-      }
+      qcxResetEyesTransform(qcxLiveLogoParts());
       __qcxEyesBusy = false;
+    };
+    /* Aave blink: scaleY [1,0,1] in 150ms */
+    var blinkOnce = function (delay, done) {
+      qcxTween(1, 0, 75, delay || 0, setBlink, function () {
+        if (gen !== __qcxEyesPlayGen) return;
+        qcxTween(0, 1, 75, 0, setBlink, done);
+      });
+    };
+    var doubleBlink = function (delay, done) {
+      blinkOnce(delay, function () {
+        if (gen !== __qcxEyesPlayGen) return;
+        blinkOnce(50, done);
+      });
     };
     setX(0);
     setBlink(1);
     if (reduce || look < 0.5) {
-      /* Short double blink only */
-      qcxTween(1, 0.05, 80, 0, setBlink, function () {
-        qcxTween(0.05, 1, 80, 0, setBlink, function () {
-          qcxTween(1, 0.05, 80, 40, setBlink, function () {
-            qcxTween(0.05, 1, 80, 0, setBlink, finish);
-          });
-        });
-      });
+      doubleBlink(0, finish);
       __qcxEyesBusyTimer = window.setTimeout(function () {
         if (gen === __qcxEyesPlayGen) __qcxEyesBusy = false;
-      }, 600);
+      }, 500);
       return;
     }
-    /* Aave: 0→+look 150; +→− 300; −→0 250; double blink */
+    /*
+     * Aave Motion timeline (absolute):
+     * 0.00 eyes 0→+2% 150ms
+     * 0.35 eyes +2%→−2% 300ms
+     * 0.70 eyes −2%→0 250ms
+     * 1.20 blink1 150ms; 1.25 blink2 150ms
+     */
     qcxTween(0, look, 150, 0, setX, function () {
       if (gen !== __qcxEyesPlayGen) return;
       qcxTween(look, -look, 300, 200, setX, function () {
         if (gen !== __qcxEyesPlayGen) return;
-        qcxTween(-look, 0, 250, 0, setX, function () {
+        qcxTween(-look, 0, 250, 50, setX, function () {
           if (gen !== __qcxEyesPlayGen) return;
-          qcxTween(1, 0.05, 75, 250, setBlink, function () {
-            if (gen !== __qcxEyesPlayGen) return;
-            qcxTween(0.05, 1, 75, 0, setBlink, function () {
-              if (gen !== __qcxEyesPlayGen) return;
-              qcxTween(1, 0.05, 75, 50, setBlink, function () {
-                if (gen !== __qcxEyesPlayGen) return;
-                qcxTween(0.05, 1, 75, 0, setBlink, finish);
-              });
-            });
-          });
+          doubleBlink(250, finish);
         });
       });
     });
     __qcxEyesBusyTimer = window.setTimeout(function () {
       if (gen === __qcxEyesPlayGen) __qcxEyesBusy = false;
-    }, 1800);
+    }, 1600);
   }
   window.__qcxPlayMenuLogoEyes = playMenuLogoEyes;
 
@@ -646,10 +651,10 @@
     if (!svg) return;
     var host = document.getElementById('qcx-menu-logo');
     if (host && svg.isConnected) host.__qcxLogoSvg = svg;
-    /* Debounce: avoid rebuild storms cancelling the visible sequence. */
+    qcxResetEyesTransform(qcxLiveLogoParts());
     if (!__qcxEyesBusy) playMenuLogoEyes(svg, { auto: true });
-    if (host && host.getAttribute('data-qcx-aave-eyes-bound') === '7') return;
-    if (host) host.setAttribute('data-qcx-aave-eyes-bound', '7');
+    if (host && host.getAttribute('data-qcx-aave-eyes-bound') === '8') return;
+    if (host) host.setAttribute('data-qcx-aave-eyes-bound', '8');
     var timer = null;
     var arm = function () {
       if (timer) clearInterval(timer);
@@ -670,19 +675,12 @@
           __qcxEyesTrack.raf = 0;
           return;
         }
-        __qcxEyesTrack.tx += (__qcxEyesTrack.x - __qcxEyesTrack.tx) * 0.28;
-        __qcxEyesTrack.ty += (__qcxEyesTrack.y - __qcxEyesTrack.ty) * 0.28;
-        var t =
+        __qcxEyesTrack.tx += (__qcxEyesTrack.x - __qcxEyesTrack.tx) * 0.22;
+        __qcxEyesTrack.ty += (__qcxEyesTrack.y - __qcxEyesTrack.ty) * 0.22;
+        p.eyes.style.transform =
           'translate(' + __qcxEyesTrack.tx.toFixed(2) + 'px,' + __qcxEyesTrack.ty.toFixed(2) + 'px)';
-        p.eyes.style.transform = t;
-        p.eyes.setAttribute(
-          'transform',
-          'translate(' + __qcxEyesTrack.tx.toFixed(2) + ' ' + __qcxEyesTrack.ty.toFixed(2) + ')'
-        );
-        if (p.left) p.left.style.transform = '';
-        if (p.right) p.right.style.transform = '';
-        if (Math.abs(__qcxEyesTrack.x - __qcxEyesTrack.tx) > 0.05 ||
-            Math.abs(__qcxEyesTrack.y - __qcxEyesTrack.ty) > 0.05) {
+        if (Math.abs(__qcxEyesTrack.x - __qcxEyesTrack.tx) > 0.04 ||
+            Math.abs(__qcxEyesTrack.y - __qcxEyesTrack.ty) > 0.04) {
           __qcxEyesTrack.raf = window.requestAnimationFrame(applyTrack);
         } else {
           __qcxEyesTrack.raf = 0;
@@ -696,8 +694,9 @@
         if (!rect.width || !rect.height) return;
         var nx = ((clientX - rect.left) / rect.width) * 2 - 1;
         var ny = ((clientY - rect.top) / rect.height) * 2 - 1;
-        var maxX = 4.5;
-        var maxY = 2;
+        /* Keep track within Aave 2% look range so pupils stay in the ghost. */
+        var maxX = qcxEyesLookPx(p.mark);
+        var maxY = Math.max(0.8, maxX * 0.45);
         __qcxEyesTrack.hovering = true;
         __qcxEyesTrack.x = Math.max(-maxX, Math.min(maxX, nx * maxX));
         __qcxEyesTrack.y = Math.max(-maxY, Math.min(maxY, ny * maxY));
@@ -716,14 +715,7 @@
           __qcxEyesTrack.raf = 0;
         }
         if (__qcxEyesBusy) return;
-        var p = qcxLiveLogoParts();
-        if (!p) return;
-        if (p.eyes) {
-          p.eyes.style.transform = '';
-          p.eyes.removeAttribute('transform');
-        }
-        if (p.left) p.left.style.transform = '';
-        if (p.right) p.right.style.transform = '';
+        qcxResetEyesTransform(qcxLiveLogoParts());
       };
       host.addEventListener('pointerenter', function () {
         playMenuLogoEyes(null, { force: true });
