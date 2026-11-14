@@ -379,7 +379,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.121/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.122/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -1724,8 +1724,71 @@
     }
   }
 
+  var QCX_HOME_PAGE_SIZE = 9;
+  var QCX_HOME_FEED_BATCH = 27;
+
+  function isStrictHomepage() {
+    var pageType = document.documentElement.getAttribute('data-page-type') || '';
+    if (pageType === 'homepage' || pageType === 'index') return true;
+    var path = location.pathname || '/';
+    return path === '/' || path === '';
+  }
+
+  function polishHomepageCards(row) {
+    cleanCardSnippets(row);
+    stripDomPostTitles(row);
+    window.setTimeout(function(){
+      cleanCardSnippets(row);
+      stripDomPostTitles(row);
+      try {
+        var cards = row.querySelectorAll('.card');
+        cards.forEach(function(card){ card.style.minHeight = ''; card.style.height = ''; });
+      } catch (err) {}
+    }, 40);
+  }
+
+  function fetchHomepageFeedPage(startIndex, maxResults) {
+    var start = Math.max(1, startIndex | 0);
+    var max = Math.max(1, maxResults | 0);
+    return fetchJson('/feeds/posts/summary?alt=json&max-results=' + max + '&start-index=' + start).then(function(payload){
+      var feed = payload && payload.feed;
+      return {
+        entries: (feed && feed.entry) || [],
+        total: parseInt((feed && feed['openSearch$totalResults'] && feed['openSearch$totalResults'].$t) || '0', 10) || 0
+      };
+    });
+  }
+
+  function mountHomeLoadMore(pager, pagerInner, opts) {
+    var loading = false;
+    function paintButton() {
+      pagerInner.innerHTML = '';
+      if (!opts.hasMore()) {
+        pager.style.display = 'none';
+        return;
+      }
+      pager.style.display = '';
+      var more = el('button', 'older-link theme-button qcx-load-more', 'Xem thêm');
+      more.type = 'button';
+      more.disabled = loading;
+      more.addEventListener('click', function(){
+        if (loading) return;
+        loading = true;
+        more.disabled = true;
+        more.textContent = 'Đang tải…';
+        Promise.resolve(opts.loadMore()).catch(function(){ return false; }).then(function(){
+          loading = false;
+          paintButton();
+        });
+      });
+      pagerInner.appendChild(more);
+    }
+    paintButton();
+    return { refresh: paintButton };
+  }
+
   function renderHomepage(main, entries) {
-    var PAGE_SIZE = 6;
+    var PAGE_SIZE = QCX_HOME_PAGE_SIZE;
     ensureHero(main);
     var shell = el('div', 'widget Blog qcx-rescue-blog qcx-feed-in');
     shell.id = 'Blog1';
@@ -1744,55 +1807,142 @@
       return;
     }
 
-    var page = 1;
-    var totalPages = Math.max(1, Math.ceil(entries.length / PAGE_SIZE));
+    var pool = entries.slice();
+    var shown = 0;
+    var totalResults = Math.max(pool.length, 0);
+    var exhausted = false;
 
-    function paint() {
-      var start = (page - 1) * PAGE_SIZE;
-      var slice = entries.slice(start, start + PAGE_SIZE);
-      row.innerHTML = '';
-      slice.forEach(function(entry, i){ row.appendChild(cardFromEntry(entry, i)); });
-      cleanCardSnippets(row);
-      stripDomPostTitles(row);
-      window.setTimeout(function(){
-        cleanCardSnippets(row);
-        stripDomPostTitles(row);
-        try {
-          var cards = row.querySelectorAll('.card');
-          cards.forEach(function(card){ card.style.minHeight = ''; card.style.height = ''; });
-        } catch (err) {}
-      }, 40);
-      pagerInner.innerHTML = '';
-      if (totalPages <= 1) {
-        pager.style.display = 'none';
-        return;
-      }
-      pager.style.display = '';
-      var prev = el('button', 'newer-link theme-button', '← Mới hơn');
-      prev.type = 'button';
-      prev.disabled = page <= 1;
-      prev.addEventListener('click', function(){
-        if (page <= 1) return;
-        page -= 1;
-        paint();
-        row.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-      var info = el('span', 'qcx-pager-info', 'Trang ' + page + ' / ' + totalPages);
-      var next = el('button', 'older-link theme-button', 'Cũ hơn →');
-      next.type = 'button';
-      next.disabled = page >= totalPages;
-      next.addEventListener('click', function(){
-        if (page >= totalPages) return;
-        page += 1;
-        paint();
-        row.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-      pagerInner.appendChild(prev);
-      pagerInner.appendChild(info);
-      pagerInner.appendChild(next);
+    function appendNext() {
+      var slice = pool.slice(shown, shown + PAGE_SIZE);
+      slice.forEach(function(entry, i){ row.appendChild(cardFromEntry(entry, shown + i)); });
+      shown += slice.length;
+      polishHomepageCards(row);
+      return slice.length;
     }
 
-    paint();
+    function hasMore() {
+      if (shown < pool.length) return true;
+      if (exhausted) return false;
+      if (totalResults > 0) return shown < totalResults;
+      return pool.length >= PAGE_SIZE;
+    }
+
+    function loadMore() {
+      if (shown < pool.length) {
+        appendNext();
+        return Promise.resolve(true);
+      }
+      return fetchHomepageFeedPage(shown + 1, PAGE_SIZE).then(function(page){
+        totalResults = Math.max(totalResults, page.total || 0);
+        if (!page.entries.length) {
+          exhausted = true;
+          return false;
+        }
+        var known = {};
+        pool.forEach(function(entry){ known[(entry && entry.id && entry.id.$t) || ''] = true; });
+        page.entries.forEach(function(entry){
+          var id = (entry && entry.id && entry.id.$t) || '';
+          if (id && known[id]) return;
+          known[id] = true;
+          pool.push(entry);
+        });
+        if (!appendNext()) exhausted = true;
+        if (page.entries.length < PAGE_SIZE) exhausted = true;
+        return true;
+      }).catch(function(){
+        exhausted = true;
+        return false;
+      });
+    }
+
+    appendNext();
+    mountHomeLoadMore(pager, pagerInner, { hasMore: hasMore, loadMore: loadMore });
+  }
+
+  function enhanceNativeHomepageFeed() {
+    if (!isStrictHomepage()) return;
+    var native = document.querySelector('.widget.Blog:not(.qcx-rescue-blog):not(.qcx-rescue-skel)');
+    if (!native || native.getAttribute('data-qcx-home-more') === '1') return;
+    var row = native.querySelector('.all_posts > .row');
+    if (!row) return;
+    var cols = Array.prototype.slice.call(row.children).filter(function(node){
+      return node && node.nodeType === 1 && (
+        (node.classList && node.classList.contains('col-md-4')) ||
+        (node.querySelector && node.querySelector('.card, .title'))
+      );
+    });
+    if (!cols.length) return;
+    native.setAttribute('data-qcx-home-more', '1');
+
+    var PAGE_SIZE = QCX_HOME_PAGE_SIZE;
+    var hidden = [];
+    cols.forEach(function(col, index){
+      if (index < PAGE_SIZE) return;
+      hidden.push(col);
+      try { col.remove(); } catch (err) { col.style.display = 'none'; }
+    });
+
+    var oldPager = native.querySelector('.nav-pagination, .blog-pager');
+    if (oldPager) {
+      try { oldPager.style.display = 'none'; } catch (ignorePager) {}
+    }
+
+    var pager = el('div', 'nav-pagination qcx-pager qcx-home-pager');
+    var pagerInner = el('div', 'blog-pager');
+    pager.appendChild(pagerInner);
+    (native.querySelector('.all_posts') || native).appendChild(pager);
+
+    var shown = Math.min(cols.length, PAGE_SIZE);
+    var exhausted = false;
+    var totalResults = 0;
+
+    function hasMore() {
+      if (hidden.length) return true;
+      if (exhausted) return false;
+      if (totalResults > 0) return shown < totalResults;
+      return cols.length >= PAGE_SIZE;
+    }
+
+    function revealHidden() {
+      var n = 0;
+      while (n < PAGE_SIZE && hidden.length) {
+        row.appendChild(hidden.shift());
+        n += 1;
+        shown += 1;
+      }
+      polishHomepageCards(row);
+      return n;
+    }
+
+    function loadMore() {
+      if (hidden.length) {
+        revealHidden();
+        return Promise.resolve(true);
+      }
+      return fetchHomepageFeedPage(shown + 1, PAGE_SIZE).then(function(page){
+        totalResults = Math.max(totalResults, page.total || 0);
+        if (!page.entries.length) {
+          exhausted = true;
+          return false;
+        }
+        page.entries.forEach(function(entry, i){
+          row.appendChild(cardFromEntry(entry, shown + i));
+        });
+        shown += page.entries.length;
+        polishHomepageCards(row);
+        if (page.entries.length < PAGE_SIZE) exhausted = true;
+        return true;
+      }).catch(function(){
+        exhausted = true;
+        return false;
+      });
+    }
+
+    if (!hasMore()) {
+      pager.style.display = 'none';
+      return;
+    }
+    mountHomeLoadMore(pager, pagerInner, { hasMore: hasMore, loadMore: loadMore });
   }
 
   function postIdOf(entry) {
@@ -1838,10 +1988,10 @@
   }
 
   function loadHomepageEntries() {
-    var cacheKey = 'qcx:feed:summary:12';
+    var cacheKey = 'qcx:feed:summary:' + QCX_HOME_FEED_BATCH;
     var cached = readFeedCache(cacheKey);
     if (cached) return Promise.resolve(cached);
-    return fetchJson('/feeds/posts/summary?alt=json&max-results=12').then(function(payload){
+    return fetchJson('/feeds/posts/summary?alt=json&max-results=' + QCX_HOME_FEED_BATCH).then(function(payload){
       var entries = (payload.feed && payload.feed.entry) || [];
       writeFeedCache(cacheKey, entries);
       return entries;
@@ -2005,7 +2155,7 @@
     } else {
       var allPosts = el('div', 'all_posts');
       var row = el('div', 'row');
-      for (var i = 0; i < 6; i++) row.appendChild(skelCard());
+      for (var i = 0; i < QCX_HOME_PAGE_SIZE; i++) row.appendChild(skelCard());
       allPosts.appendChild(row);
       shell.appendChild(allPosts);
     }
@@ -2089,7 +2239,10 @@
       return;
     }
 
-    if (hasUsableNativeBlog()) return;
+    if (hasUsableNativeBlog()) {
+      enhanceNativeHomepageFeed();
+      return;
+    }
 
     ensureHeaderSearch();
     main.classList.remove('no-items');
@@ -2097,7 +2250,7 @@
     /* Pages use qcx:page:; posts use qcx:post: — must match loadSingleEntry. */
     var cacheKey = isSingle
       ? ((isStaticPage ? 'qcx:page:' : 'qcx:post:') + currentPath)
-      : 'qcx:feed:summary:12';
+      : 'qcx:feed:summary:' + QCX_HOME_FEED_BATCH;
     /* Reload: skip sessionStorage instant paint (F5 stale flash). Keep for navigate. */
     var skipInstantCache = isSingle && isReloadNavigation();
     if (skipInstantCache) {
@@ -2191,11 +2344,15 @@
     /* Chờ Blog native ~120ms nếu widget đã có nhưng chưa kịp render card. */
     if (!hasUsableNativeBlog()) {
       window.setTimeout(function(){
-        if (hasUsableNativeBlog()) return;
+        if (hasUsableNativeBlog()) {
+          enhanceNativeHomepageFeed();
+          return;
+        }
         rescuePosts();
       }, 120);
       return;
     }
+    enhanceNativeHomepageFeed();
     rescuePosts();
   }
 
