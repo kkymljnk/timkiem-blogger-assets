@@ -199,7 +199,7 @@
       '<a class="qcx-cta-btn qcx-cta-outline" href="https://t.me/superkhung" rel="noopener noreferrer" target="_blank">Hỗ trợ Telegram</a>' +
       '</div>' +
       '</div>' +
-      '<div class="qcx-avatar-wrap" data-enter="avatar"><div class="qcx-avatar" aria-label="CÔNG CỤ.AI"><svg xmlns="http://www.w3.org/2000/svg" class="qcx-brand-mark qcx-brand-svg" viewBox="0 0 512 512" width="300" height="300" role="img" aria-label="CÔNG CỤ.AI" tabindex="0"><g class="qcx-ghost-art"><image href="' + QCX_CDN + 'qcx-brand-mark.png" x="0" y="0" width="512" height="512" preserveAspectRatio="xMidYMid meet"/></g><g class="qcx-ghost-eyes"><circle class="qcx-eye-socket" cx="230.6" cy="189.9" r="16.5" fill="#eafff4"/><circle class="qcx-eye qcx-eye-l" cx="230.6" cy="189.9" r="13.2" fill="#0a1210"/><circle class="qcx-eye-socket" cx="294.1" cy="183.5" r="16" fill="#eafff4"/><circle class="qcx-eye qcx-eye-r" cx="294.1" cy="183.5" r="12.8" fill="#0a1210"/></g></svg></div></div>';
+      '<div class="qcx-avatar-wrap" data-enter="avatar"><div class="qcx-avatar" aria-label="CÔNG CỤ.AI"><svg xmlns="http://www.w3.org/2000/svg" class="qcx-brand-mark qcx-brand-svg" viewBox="0 0 512 512" width="300" height="300" role="img" aria-label="CÔNG CỤ.AI" tabindex="0"><g class="qcx-ghost-art"><image href="' + QCX_CDN + 'qcx-brand-mark.png" x="0" y="0" width="512" height="512" preserveAspectRatio="xMidYMid meet"/></g><g class="qcx-ghost-eyes"><circle class="qcx-eye-socket" cx="230.6" cy="189.9" r="16.5" fill="#f2f2f2"/><circle class="qcx-eye qcx-eye-l" cx="230.6" cy="189.9" r="13.2" fill="#0a0a0a"/><circle class="qcx-eye-socket" cx="294.1" cy="183.5" r="16" fill="#f2f2f2"/><circle class="qcx-eye qcx-eye-r" cx="294.1" cy="183.5" r="12.8" fill="#0a0a0a"/></g></svg></div></div>';
     /* Place hero ABOVE .main-wrapper so PC sidebar/find: sits with the feed, not beside hero. */
     placeHero(hero, main);
     ensureSidebarSearch();
@@ -241,7 +241,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.82/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.83/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -482,10 +482,9 @@
       'letter-spacing:.02em!important;text-transform:none!important;-webkit-text-fill-color:#28d28c!important}' +
       '#qcx-menu-logo .qcx-menu-logo-mark{width:22px!important;height:22px!important;display:block!important;flex:0 0 auto!important}' +
       '#qcx-menu-logo .qcx-menu-logo-text{color:#28d28c!important;-webkit-text-fill-color:#28d28c!important;font-weight:800!important}' +
-      '.qcx-brand-svg .qcx-ghost-art image,.qcx-brand-mark .qcx-ghost-art image{' +
-      'filter:contrast(1.12) saturate(1.18)!important}' +
-      '.qcx-brand-svg .qcx-eye-socket{fill:#eafff4!important}' +
-      '.qcx-brand-svg .qcx-eye{fill:#0a1210!important}' +
+      '.qcx-brand-svg .qcx-ghost-art image,.qcx-brand-mark .qcx-ghost-art image{filter:none!important}' +
+      '.qcx-brand-svg .qcx-eye-socket{fill:#f2f2f2!important}' +
+      '.qcx-brand-svg .qcx-eye{fill:#0a0a0a!important}' +
       '#qcx-menu-close{width:34px!important;height:34px!important;display:grid!important;place-items:center!important;' +
       'background:transparent!important;border:0!important;border-radius:10px!important;cursor:pointer!important;' +
       'flex-shrink:0!important;line-height:1!important;color:rgba(190,211,198,.72)!important;font-size:18px!important;' +
