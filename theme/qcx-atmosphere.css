@@ -1296,8 +1296,11 @@ html[data-qcx-admin='1'] #qcx-admin-root:has(.gate:not(.hidden)) #btnLogout {
 
 /* ==================================================
    Hero CTA — pro primary / secondary
-   html body prefix beats theme-inline .qcx-hero-cta rules
+   Must beat page-skin `body:not(#layout) .qcx-hero-cta .qcx-cta-btn`
+   (ID specificity from :not(#layout)) or mint bg loses and
+   -webkit-text-fill-color:#06140e renders invisible on #141a16.
 ================================================== */
+html body:not(#layout) .qcx-hero-cta.qcx-hero-cta--pro,
 html body .qcx-hero-cta.qcx-hero-cta--pro {
   display: flex !important;
   flex-direction: column !important;
@@ -1307,6 +1310,7 @@ html body .qcx-hero-cta.qcx-hero-cta--pro {
   width: 100% !important;
   max-width: 420px !important;
 }
+html body:not(#layout) .qcx-hero-cta.qcx-hero-cta--pro > a.qcx-cta-btn,
 html body .qcx-hero-cta.qcx-hero-cta--pro > a.qcx-cta-btn {
   position: relative !important;
   display: inline-flex !important;
@@ -1322,11 +1326,11 @@ html body .qcx-hero-cta.qcx-hero-cta--pro > a.qcx-cta-btn {
   font-size: 14px !important;
   font-weight: 700 !important;
   letter-spacing: -.01em !important;
-  line-height: 1 !important;
+  line-height: 1.25 !important;
   text-decoration: none !important;
   text-transform: none !important;
   white-space: nowrap !important;
-  overflow: hidden !important;
+  overflow: visible !important;
   transition:
     background-color .18s ease,
     border-color .18s ease,
@@ -1334,6 +1338,7 @@ html body .qcx-hero-cta.qcx-hero-cta--pro > a.qcx-cta-btn {
     box-shadow .18s ease,
     transform .18s ease !important;
 }
+html body:not(#layout) .qcx-hero-cta.qcx-hero-cta--pro > a.qcx-cta-btn:not(.qcx-cta-outline),
 html body .qcx-hero-cta.qcx-hero-cta--pro > a.qcx-cta-btn:not(.qcx-cta-outline) {
   background: linear-gradient(180deg, #34e6a0 0%, #1fd68a 100%) !important;
   border-color: rgba(0, 0, 0, .18) !important;
@@ -1343,6 +1348,8 @@ html body .qcx-hero-cta.qcx-hero-cta--pro > a.qcx-cta-btn:not(.qcx-cta-outline) 
     0 1px 0 rgba(255, 255, 255, .28) inset,
     0 10px 28px rgba(0, 240, 163, .22) !important;
 }
+html body:not(#layout) .qcx-hero-cta.qcx-hero-cta--pro > a.qcx-cta-btn:not(.qcx-cta-outline):hover,
+html body:not(#layout) .qcx-hero-cta.qcx-hero-cta--pro > a.qcx-cta-btn:not(.qcx-cta-outline):focus-visible,
 html body .qcx-hero-cta.qcx-hero-cta--pro > a.qcx-cta-btn:not(.qcx-cta-outline):hover,
 html body .qcx-hero-cta.qcx-hero-cta--pro > a.qcx-cta-btn:not(.qcx-cta-outline):focus-visible {
   background: linear-gradient(180deg, #4af0b0 0%, #28d28c 100%) !important;
@@ -1354,12 +1361,14 @@ html body .qcx-hero-cta.qcx-hero-cta--pro > a.qcx-cta-btn:not(.qcx-cta-outline):
     0 14px 34px rgba(0, 240, 163, .3) !important;
   outline: 0 !important;
 }
+html body:not(#layout) .qcx-hero-cta.qcx-hero-cta--pro > a.qcx-cta-btn:not(.qcx-cta-outline):active,
 html body .qcx-hero-cta.qcx-hero-cta--pro > a.qcx-cta-btn:not(.qcx-cta-outline):active {
   transform: translateY(0) !important;
   box-shadow:
     0 1px 0 rgba(255, 255, 255, .18) inset,
     0 6px 16px rgba(0, 240, 163, .18) !important;
 }
+html body:not(#layout) .qcx-hero-cta.qcx-hero-cta--pro > a.qcx-cta-outline,
 html body .qcx-hero-cta.qcx-hero-cta--pro > a.qcx-cta-outline {
   background: rgba(255, 255, 255, .03) !important;
   border: 1px solid rgba(0, 240, 163, .28) !important;
@@ -1369,6 +1378,8 @@ html body .qcx-hero-cta.qcx-hero-cta--pro > a.qcx-cta-outline {
   box-shadow: none !important;
   min-height: 48px !important;
 }
+html body:not(#layout) .qcx-hero-cta.qcx-hero-cta--pro > a.qcx-cta-outline:hover,
+html body:not(#layout) .qcx-hero-cta.qcx-hero-cta--pro > a.qcx-cta-outline:focus-visible,
 html body .qcx-hero-cta.qcx-hero-cta--pro > a.qcx-cta-outline:hover,
 html body .qcx-hero-cta.qcx-hero-cta--pro > a.qcx-cta-outline:focus-visible {
   background: rgba(0, 240, 163, .08) !important;
@@ -1379,6 +1390,7 @@ html body .qcx-hero-cta.qcx-hero-cta--pro > a.qcx-cta-outline:focus-visible {
   box-shadow: 0 10px 24px rgba(0, 0, 0, .28) !important;
   outline: 0 !important;
 }
+html body:not(#layout) .qcx-cta-ico,
 .qcx-cta-ico {
   display: inline-flex !important;
   width: 16px !important;
@@ -1386,6 +1398,7 @@ html body .qcx-hero-cta.qcx-hero-cta--pro > a.qcx-cta-outline:focus-visible {
   flex: 0 0 auto !important;
   opacity: .92 !important;
 }
+html body:not(#layout) .qcx-cta-ico svg,
 .qcx-cta-ico svg {
   display: block !important;
   width: 16px !important;
@@ -1393,8 +1406,11 @@ html body .qcx-hero-cta.qcx-hero-cta--pro > a.qcx-cta-outline:focus-visible {
 }
 .qcx-cta-label {
   min-width: 0 !important;
+  line-height: 1.25 !important;
+  overflow: visible !important;
 }
 @media (min-width: 861px) {
+  html body:not(#layout) .qcx-hero-cta.qcx-hero-cta--pro,
   html body .qcx-hero-cta.qcx-hero-cta--pro {
     flex-direction: row !important;
     flex-wrap: wrap !important;
@@ -1402,6 +1418,7 @@ html body .qcx-hero-cta.qcx-hero-cta--pro > a.qcx-cta-outline:focus-visible {
     max-width: none !important;
     gap: 12px !important;
   }
+  html body:not(#layout) .qcx-hero-cta.qcx-hero-cta--pro > a.qcx-cta-btn,
   html body .qcx-hero-cta.qcx-hero-cta--pro > a.qcx-cta-btn {
     width: auto !important;
     min-width: 168px !important;
@@ -1409,9 +1426,13 @@ html body .qcx-hero-cta.qcx-hero-cta--pro > a.qcx-cta-outline:focus-visible {
   }
 }
 @media (prefers-reduced-motion: reduce) {
+  html body:not(#layout) .qcx-hero-cta.qcx-hero-cta--pro > a.qcx-cta-btn,
   html body .qcx-hero-cta.qcx-hero-cta--pro > a.qcx-cta-btn {
     transition: none !important;
   }
+  html body:not(#layout) .qcx-hero-cta.qcx-hero-cta--pro > a.qcx-cta-btn:hover,
+  html body:not(#layout) .qcx-hero-cta.qcx-hero-cta--pro > a.qcx-cta-btn:focus-visible,
+  html body:not(#layout) .qcx-hero-cta.qcx-hero-cta--pro > a.qcx-cta-btn:active,
   html body .qcx-hero-cta.qcx-hero-cta--pro > a.qcx-cta-btn:hover,
   html body .qcx-hero-cta.qcx-hero-cta--pro > a.qcx-cta-btn:focus-visible,
   html body .qcx-hero-cta.qcx-hero-cta--pro > a.qcx-cta-btn:active {
