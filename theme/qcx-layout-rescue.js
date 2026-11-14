@@ -297,7 +297,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.89/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.90/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -306,8 +306,8 @@
     var src1 = QCX_CDN + 'qcx-brand-mark.png';
     var src2 = QCX_CDN + 'qcx-brand-mark-1024.png';
     return '<div class="qcx-avatar" aria-label="CÔNG CỤ.AI">' +
-      '<img class="qcx-brand-raster" src="' + src1 + '" srcset="' + src1 + ' 512w, ' + src2 + ' 1024w" ' +
-      'sizes="(max-width:860px) 64px, 300px" width="64" height="64" decoding="async" alt="CÔNG CỤ.AI"/>' +
+      '<img class="qcx-brand-raster" src="' + src2 + '" srcset="' + src1 + ' 1x, ' + src2 + ' 2x" ' +
+      'width="64" height="64" decoding="async" alt="CÔNG CỤ.AI"/>' +
       '<svg xmlns="http://www.w3.org/2000/svg" class="qcx-brand-mark qcx-brand-svg qcx-brand-eyes-only" ' +
       'viewBox="0 0 512 512" width="300" height="300" role="img" aria-hidden="true" tabindex="0">' +
       '<g class="qcx-ghost-eyes">' +
