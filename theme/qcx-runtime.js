@@ -350,7 +350,7 @@
     searchInput.name = 'q';
     searchInput.autocomplete = 'off';
     searchInput.spellcheck = false;
-    searchInput.placeholder = 'Tiêu đề, nhãn, nội dung...';
+    searchInput.placeholder = 'Tìm bài, nhãn…';
     searchInput.setAttribute('aria-label', 'Từ khóa tìm kiếm');
     var searchClose = createElement('button', 'qcx-mobile-search-close', '\u00d7');
     searchClose.type = 'button';
@@ -363,8 +363,14 @@
     searchResults.setAttribute('aria-live', 'polite');
     searchInput.setAttribute('aria-controls', searchResults.id);
     searchInput.setAttribute('aria-autocomplete', 'list');
+    var searchFooter = createElement('div', 'qcx-mobile-search-footer');
+    var isMacFoot = /Mac|iPhone|iPad|iPod/i.test(navigator.platform || '') || /Mac OS/i.test(navigator.userAgent || '');
+    searchFooter.innerHTML =
+      '<kbd>' + (isMacFoot ? '\u2318 Space' : 'Ctrl Space') + '</kbd>' +
+      '<span>·</span><kbd>\u2191\u2193</kbd><span>·</span><kbd>Enter</kbd><span>·</span><kbd>Esc</kbd>';
     searchWindow.appendChild(searchForm);
     searchWindow.appendChild(searchResults);
+    searchWindow.appendChild(searchFooter);
     searchOverlay.appendChild(searchWindow);
     document.body.appendChild(searchOverlay);
 
@@ -374,8 +380,10 @@
     var searchFeedPromise = null;
     var activeSearchIndex = -1;
     var searchRenderTimer = 0;
-    var SEARCH_CACHE_KEY = 'qcx-smart-search-v4';
+    var SEARCH_CACHE_KEY = 'qcx-smart-search-v5';
     var SEARCH_CACHE_TTL = 10 * 60 * 1000;
+    var SEARCH_RECENT_KEY = 'qcx-search-recent';
+    var SEARCH_RECENT_MAX = 5;
 
     function cleanSearchText(value) {
       var holder = document.createElement('div');
@@ -511,7 +519,7 @@
             return;
           }
         } catch (ignore) {}
-        fetch('/feeds/posts/default?alt=json&max-results=24&orderby=updated', { credentials: 'same-origin' })
+        fetch('/feeds/posts/default?alt=json&max-results=50&orderby=updated', { credentials: 'same-origin' })
           .then(function(response) {
             if (!response.ok) throw new Error('SEARCH_FEED_' + response.status);
             return response.json();
@@ -556,7 +564,73 @@
       menuClose.focus();
     }
 
-    function searchScore(entry, query) {
+    function readRecentSearches() {
+      try {
+        var raw = JSON.parse(sessionStorage.getItem(SEARCH_RECENT_KEY) || '[]');
+        return Array.isArray(raw) ? raw.filter(function(item) { return typeof item === 'string' && item.trim(); }).slice(0, SEARCH_RECENT_MAX) : [];
+      } catch (ignore) {
+        return [];
+      }
+    }
+
+    function pushRecentSearch(query) {
+      var cleaned = String(query || '').trim();
+      if (!cleaned || cleaned.length < 2) return;
+      var next = [cleaned].concat(readRecentSearches().filter(function(item) {
+        return normalizeText(item) !== normalizeText(cleaned);
+      })).slice(0, SEARCH_RECENT_MAX);
+      try { sessionStorage.setItem(SEARCH_RECENT_KEY, JSON.stringify(next)); } catch (ignore) {}
+    }
+
+    function collectTopLabels(limit) {
+      var counts = {};
+      searchEntries.forEach(function(entry) {
+        (entry.labels || []).forEach(function(label) {
+          var name = String(label || '').trim();
+          if (!name) return;
+          counts[name] = (counts[name] || 0) + 1;
+        });
+      });
+      if (!Object.keys(counts).length) {
+        Array.prototype.slice.call(document.querySelectorAll('#Label1 a[href*="/search/label/"], .widget.Label a[href*="/search/label/"]')).forEach(function(anchor) {
+          var name = (anchor.textContent || '').trim();
+          if (name) counts[name] = (counts[name] || 0) + 1;
+        });
+      }
+      return Object.keys(counts).sort(function(a, b) {
+        return counts[b] - counts[a] || a.localeCompare(b, 'vi');
+      }).slice(0, limit || 8);
+    }
+
+    function escapeHtml(value) {
+      return String(value || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function highlightTitle(title, rawQuery) {
+      var q = String(rawQuery || '').replace(/^#/, '').trim();
+      if (!q || q.length < 1) return escapeHtml(title);
+      var source = String(title || '');
+      var lower = source.toLowerCase();
+      var needle = q.toLowerCase();
+      var at = lower.indexOf(needle);
+      if (at < 0) {
+        var normTitle = normalizeText(source);
+        var normQ = normalizeText(q);
+        var normAt = normTitle.indexOf(normQ);
+        if (normAt < 0) return escapeHtml(source);
+        /* Best-effort: fall back to plain title when diacritic map diverges. */
+        return escapeHtml(source);
+      }
+      return escapeHtml(source.slice(0, at)) +
+        '<mark class="qcx-search-hit">' + escapeHtml(source.slice(at, at + q.length)) + '</mark>' +
+        escapeHtml(source.slice(at + q.length));
+    }
+
+    function searchScore(entry, query, labelMode) {
       if (!query) return 0;
       var title = entry.normalizedTitle;
       var labelsText = entry.normalizedLabels;
@@ -564,14 +638,22 @@
       var titleWords = title.split(/\s+/);
       var labelWords = labelsText.split(/\s+/);
       var score = 0;
-      if (title === query) score += 360;
-      else if (title.indexOf(query) === 0) score += 280;
-      if (titleWords.some(function(word) { return word.indexOf(query) === 0; })) score += 220;
-      if (title.indexOf(query) !== -1) score += 170;
-      if (labelsText === query) score += 150;
-      if (labelWords.some(function(word) { return word.indexOf(query) === 0; })) score += 125;
-      if (labelsText.indexOf(query) !== -1) score += 95;
-      if (query.length > 1 && summary.indexOf(query) !== -1) score += 45;
+      if (labelMode) {
+        if (labelsText === query) score += 420;
+        if (labelWords.some(function(word) { return word === query; })) score += 360;
+        if (labelWords.some(function(word) { return word.indexOf(query) === 0; })) score += 280;
+        if (labelsText.indexOf(query) !== -1) score += 200;
+        if (title.indexOf(query) !== -1) score += 60;
+      } else {
+        if (title === query) score += 360;
+        else if (title.indexOf(query) === 0) score += 280;
+        if (titleWords.some(function(word) { return word.indexOf(query) === 0; })) score += 220;
+        if (title.indexOf(query) !== -1) score += 170;
+        if (labelsText === query) score += 150;
+        if (labelWords.some(function(word) { return word.indexOf(query) === 0; })) score += 125;
+        if (labelsText.indexOf(query) !== -1) score += 95;
+        if (query.length > 1 && summary.indexOf(query) !== -1) score += 45;
+      }
       if (!score) return 0;
       return score + Math.max(0, 20 - entry.order);
     }
@@ -582,8 +664,22 @@
       searchResults.appendChild(status);
     }
 
+    function appendSearchSection(label) {
+      var section = createElement('div', 'qcx-search-section');
+      section.setAttribute('role', 'presentation');
+      section.appendChild(createElement('div', 'qcx-search-section-label', label));
+      searchResults.appendChild(section);
+      return section;
+    }
+
+    function searchOptionNodes() {
+      return Array.prototype.slice.call(
+        searchResults.querySelectorAll('.qcx-mobile-search-result, .qcx-search-recent')
+      );
+    }
+
     function setActiveSearchIndex(index) {
-      var links = Array.prototype.slice.call(searchResults.querySelectorAll('.qcx-mobile-search-result'));
+      var links = searchOptionNodes();
       if (!links.length) {
         activeSearchIndex = -1;
         searchInput.removeAttribute('aria-activedescendant');
@@ -599,20 +695,129 @@
       links[activeSearchIndex].scrollIntoView({ block: 'nearest' });
     }
 
-    function renderSearchResults(value) {
-      var query = normalizeText(value);
+    function appendResultLink(entry, resultIndex, rawQuery) {
+      var link = createElement('a', 'qcx-mobile-search-result');
+      link.id = 'qcx-search-option-' + resultIndex;
+      link.href = entry.href;
+      link.setAttribute('role', 'option');
+      link.setAttribute('aria-selected', 'false');
+      var media = createElement('span', 'qcx-search-result-media');
+      if (entry.thumbnail) {
+        var image = document.createElement('img');
+        image.src = entry.thumbnail;
+        image.alt = '';
+        image.loading = 'lazy';
+        image.decoding = 'async';
+        image.addEventListener('load', function() {
+          if (this.naturalWidth > 2 && this.naturalHeight > 2) return;
+          this.remove();
+        });
+        image.addEventListener('error', function() { this.remove(); });
+        media.appendChild(image);
+      }
+      var copy = createElement('span', 'qcx-search-result-copy');
+      var titleEl = createElement('span', 'qcx-search-result-title');
+      titleEl.innerHTML = highlightTitle(entry.title, rawQuery);
+      copy.appendChild(titleEl);
+      var metaText = entry.labels.slice(0, 2).join(' · ');
+      if (entry.date) metaText += (metaText ? ' · ' : '') + entry.date;
+      copy.appendChild(createElement('span', 'qcx-search-result-meta', metaText || 'Bài viết TIMKIEM'));
+      link.appendChild(media);
+      link.appendChild(copy);
+      searchResults.appendChild(link);
+      return link;
+    }
+
+    function renderEmptyPalette() {
       searchResults.textContent = '';
       activeSearchIndex = -1;
       searchInput.removeAttribute('aria-activedescendant');
-      if (!query) return;
+      var optionIndex = 0;
+
+      var recent = readRecentSearches();
+      if (recent.length) {
+        appendSearchSection('Gần đây');
+        recent.forEach(function(term) {
+          var row = createElement('button', 'qcx-search-recent');
+          row.type = 'button';
+          row.setAttribute('role', 'option');
+          row.id = 'qcx-search-option-' + optionIndex;
+          row.setAttribute('aria-selected', 'false');
+          row.innerHTML =
+            '<span class="qcx-search-recent-icon" aria-hidden="true">↻</span>' +
+            '<span class="qcx-search-recent-text"></span>';
+          row.querySelector('.qcx-search-recent-text').textContent = term;
+          row.addEventListener('click', function() {
+            searchInput.value = term;
+            scheduleSearchRender();
+            searchInput.focus();
+          });
+          searchResults.appendChild(row);
+          optionIndex += 1;
+        });
+      }
+
+      var labels = collectTopLabels(8);
+      if (labels.length) {
+        appendSearchSection('Nhãn');
+        var cloud = createElement('div', 'qcx-search-label-cloud');
+        labels.forEach(function(name) {
+          var chip = createElement('button', 'qcx-search-label-chip', '#' + name);
+          chip.type = 'button';
+          chip.addEventListener('click', function() {
+            searchInput.value = '#' + name;
+            scheduleSearchRender();
+            searchInput.focus();
+          });
+          cloud.appendChild(chip);
+        });
+        searchResults.appendChild(cloud);
+      }
+
+      var newest = searchEntries.slice().sort(function(a, b) {
+        return a.order - b.order;
+      }).slice(0, 6);
+      if (newest.length) {
+        appendSearchSection('Bài mới');
+        newest.forEach(function(entry) {
+          appendResultLink(entry, optionIndex, '');
+          optionIndex += 1;
+        });
+      }
+      if (optionIndex > 0) {
+        setActiveSearchIndex(0);
+      } else if (searchFeedState === 'loading') {
+        renderSearchStatus('// đang đọc danh sách bài viết...', true);
+      } else {
+        renderSearchStatus('// gõ để tìm · #nhãn để lọc theo nhãn', false);
+      }
+    }
+
+    function renderSearchResults(value) {
+      var raw = String(value || '');
+      var trimmed = raw.trim();
+      if (!trimmed) {
+        renderEmptyPalette();
+        return;
+      }
+
+      var labelMode = trimmed.charAt(0) === '#';
+      var query = normalizeText(labelMode ? trimmed.slice(1) : trimmed);
+      searchResults.textContent = '';
+      activeSearchIndex = -1;
+      searchInput.removeAttribute('aria-activedescendant');
+      if (!query) {
+        renderEmptyPalette();
+        return;
+      }
 
       var matches = searchEntries.map(function(entry) {
-        return { entry: entry, score: searchScore(entry, query) };
+        return { entry: entry, score: searchScore(entry, query, labelMode) };
       }).filter(function(result) {
         return result.score > 0;
       }).sort(function(left, right) {
         return right.score - left.score || left.entry.order - right.entry.order;
-      }).slice(0, 7);
+      }).slice(0, 8);
 
       if (!matches.length) {
         renderSearchStatus(
@@ -624,36 +829,11 @@
         return;
       }
 
+      appendSearchSection(labelMode ? 'Nhãn khớp' : 'Kết quả');
       matches.forEach(function(result, resultIndex) {
-        var entry = result.entry;
-        var link = createElement('a', 'qcx-mobile-search-result');
-        link.id = 'qcx-search-option-' + resultIndex;
-        link.href = entry.href;
-        link.setAttribute('role', 'option');
-        link.setAttribute('aria-selected', 'false');
-        var media = createElement('span', 'qcx-search-result-media');
-        if (entry.thumbnail) {
-          var image = document.createElement('img');
-          image.src = entry.thumbnail;
-          image.alt = '';
-          image.loading = 'lazy';
-          image.decoding = 'async';
-          image.addEventListener('load', function() {
-            if (this.naturalWidth > 2 && this.naturalHeight > 2) return;
-            this.remove();
-          });
-          image.addEventListener('error', function() { this.remove(); });
-          media.appendChild(image);
-        }
-        var copy = createElement('span', 'qcx-search-result-copy');
-        copy.appendChild(createElement('span', 'qcx-search-result-title', entry.title));
-        var metaText = entry.labels.slice(0, 2).join(' · ');
-        if (entry.date) metaText += (metaText ? ' · ' : '') + entry.date;
-        copy.appendChild(createElement('span', 'qcx-search-result-meta', metaText || 'Bài viết TIMKIEM'));
-        link.appendChild(media);
-        link.appendChild(copy);
-        searchResults.appendChild(link);
+        appendResultLink(result.entry, resultIndex, labelMode ? trimmed.slice(1) : trimmed);
       });
+      setActiveSearchIndex(0);
     }
 
     function scheduleSearchRender() {
@@ -685,8 +865,9 @@
         searchButton.classList.add('qcx-nav-active');
         searchButton.setAttribute('aria-expanded', 'true');
       }
+      renderSearchResults(searchInput.value);
       loadSearchFeed().then(function() {
-        if (searchInput.value.trim()) renderSearchResults(searchInput.value);
+        if (searchOverlay.classList.contains('open')) renderSearchResults(searchInput.value);
       });
       window.setTimeout(function() { searchInput.focus(); }, 30);
     }
@@ -763,7 +944,7 @@
     });
     searchInput.addEventListener('input', scheduleSearchRender);
     searchInput.addEventListener('keydown', function(event) {
-      var links = searchResults.querySelectorAll('.qcx-mobile-search-result');
+      var links = searchOptionNodes();
       if (event.key === 'ArrowDown' && links.length) {
         event.preventDefault();
         setActiveSearchIndex(activeSearchIndex + 1);
@@ -771,22 +952,40 @@
         event.preventDefault();
         setActiveSearchIndex(activeSearchIndex <= 0 ? links.length - 1 : activeSearchIndex - 1);
       } else if (event.key === 'Enter' && activeSearchIndex >= 0 && links[activeSearchIndex]) {
-        event.preventDefault();
-        location.href = links[activeSearchIndex].href;
+        var active = links[activeSearchIndex];
+        if (active.classList.contains('qcx-search-recent')) {
+          event.preventDefault();
+          active.click();
+          return;
+        }
+        if (active.href) {
+          event.preventDefault();
+          pushRecentSearch(searchInput.value);
+          location.href = active.href;
+        }
       }
     });
     searchForm.addEventListener('submit', function(event) {
       var activeResult = searchResults.querySelector('.qcx-mobile-search-result.is-active');
       if (activeResult) {
         event.preventDefault();
+        pushRecentSearch(searchInput.value);
         location.href = activeResult.href;
+        return;
+      }
+      var activeRecent = searchResults.querySelector('.qcx-search-recent.is-active');
+      if (activeRecent) {
+        event.preventDefault();
+        activeRecent.click();
         return;
       }
       if (!searchInput.value.trim()) {
         event.preventDefault();
         showToast('// hãy nhập từ khóa');
         searchInput.focus();
+        return;
       }
+      pushRecentSearch(searchInput.value);
     });
     document.addEventListener('keydown', function(event) {
       if (event.key === 'Escape') {

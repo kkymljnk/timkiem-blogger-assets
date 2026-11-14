@@ -265,24 +265,24 @@
   justify-content: center;
   padding: max(14vh, 96px) 20px 80px;
   box-sizing: border-box;
-  background: rgba(0, 3, 2, .72);
-  backdrop-filter: blur(12px) saturate(1.1);
-  -webkit-backdrop-filter: blur(12px) saturate(1.1);
+  background: rgba(0, 3, 2, .78);
+  backdrop-filter: blur(16px) saturate(1.15);
+  -webkit-backdrop-filter: blur(16px) saturate(1.15);
 }
 #qcx-mobile-search.open { display: flex; }
 
 .qcx-mobile-search-window {
-  width: min(540px, 100%);
+  width: min(560px, 100%);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  border: 1px solid rgba(28,36,32,.2);
+  border: 1px solid rgba(0,240,163,.14);
   border-radius: 14px;
   background: linear-gradient(180deg, #0e1612 0%, #0a100d 100%);
   box-shadow:
     0 0 0 1px rgba(0,0,0,.5),
-    0 24px 80px rgba(0,0,0,.65),
-    0 0 40px rgba(28,36,32,.05);
+    0 28px 90px rgba(0,0,0,.7),
+    0 0 48px rgba(0,240,163,.04);
   animation: qcxCmdIn .18s ease-out;
 }
 @keyframes qcxCmdIn {
@@ -373,8 +373,8 @@
 .qcx-mobile-search-results {
   display: grid;
   gap: 2px;
-  flex: none;
-  max-height: min(48vh, 380px);
+  flex: 1 1 auto;
+  max-height: min(52vh, 420px);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   padding: 6px;
@@ -384,7 +384,7 @@
   padding: 0;
 }
 .qcx-mobile-search-results:empty::before {
-  content: '// nhập 1 ký tự để xem gợi ý thông minh';
+  content: '// đang mở palette…';
   display: block;
   padding: 12px 16px 16px;
   color: rgba(138,165,150,.45);
@@ -392,6 +392,82 @@
   font-size: 11px;
   letter-spacing: .01em;
   text-align: left;
+}
+
+.qcx-search-section {
+  padding: 8px 10px 4px;
+}
+.qcx-search-section-label {
+  color: rgba(138,165,150,.55);
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.qcx-search-label-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 4px 8px 10px;
+}
+.qcx-search-label-chip {
+  margin: 0;
+  padding: 5px 10px;
+  border: 1px solid rgba(0,240,163,.18);
+  border-radius: 999px;
+  background: rgba(0,240,163,.06);
+  color: #9fe8c8;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  transition: background .12s, border-color .12s, color .12s;
+}
+.qcx-search-label-chip:hover,
+.qcx-search-label-chip:focus-visible {
+  border-color: rgba(0,240,163,.4);
+  background: rgba(0,240,163,.12);
+  color: #20d99a;
+  outline: 0;
+}
+
+.qcx-search-recent {
+  display: grid;
+  grid-template-columns: 18px minmax(0,1fr);
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 40px;
+  margin: 0;
+  padding: 8px 10px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  color: #cfe6da;
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 12px;
+  text-align: left;
+  cursor: pointer;
+}
+.qcx-search-recent-icon {
+  color: rgba(138,165,150,.55);
+  font-size: 12px;
+}
+.qcx-search-recent-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.qcx-search-recent:hover,
+.qcx-search-recent:focus-visible,
+.qcx-search-recent.is-active {
+  border-color: rgba(0,240,163,.16);
+  background: rgba(0,240,163,.08);
+  color: #20d99a;
+  outline: 0;
 }
 
 .qcx-mobile-search-result {
@@ -413,9 +489,16 @@
 .qcx-mobile-search-result:hover,
 .qcx-mobile-search-result:focus-visible,
 .qcx-mobile-search-result.is-active {
-  border-color: rgba(28,36,32,.18);
-  background: rgba(28,36,32,.08);
+  border-color: rgba(0,240,163,.18);
+  background: rgba(0,240,163,.08);
   color: #20d99a !important;
+}
+.qcx-search-hit {
+  padding: 0 1px;
+  border-radius: 3px;
+  background: rgba(0,240,163,.18);
+  color: inherit;
+  font-weight: 750;
 }
 .qcx-search-result-media {
   width: 56px;
@@ -472,22 +555,39 @@
 }
 .qcx-mobile-search-status.is-loading { color: #20d99a; }
 
+.qcx-mobile-search-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px 10px;
+  border-top: 1px solid rgba(255,255,255,.06);
+  color: rgba(138,165,150,.42);
+  font-family: var(--mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  letter-spacing: .02em;
+  user-select: none;
+}
+.qcx-mobile-search-footer kbd {
+  display: inline-flex;
+  align-items: center;
+  min-height: 18px;
+  padding: 0 6px;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 5px;
+  background: rgba(255,255,255,.03);
+  color: rgba(190,211,198,.7);
+  font: 600 10px/1 var(--mono, 'JetBrains Mono', monospace);
+}
+
 /* Desktop polish */
 @media (min-width: 861px) {
   #qcx-mobile-search {
-    padding-top: max(18vh, 120px);
+    padding-top: max(16vh, 110px);
   }
-  .qcx-mobile-search-window { width: min(520px, calc(100vw - 48px)); }
+  .qcx-mobile-search-window { width: min(560px, calc(100vw - 48px)); }
   .qcx-mobile-search-form { min-height: 54px; }
   .qcx-mobile-search-input { height: 54px; font-size: 15px !important; }
-  .qcx-mobile-search-results:empty::after {
-    content: 'Ctrl+K mở nhanh · Esc đóng · Enter tìm';
-    display: block;
-    padding: 0 16px 14px;
-    color: rgba(138,165,150,.32);
-    font: 10px/1 var(--mono, monospace);
-    letter-spacing: .04em;
-  }
 }
 
 /* Mobile — same Command Space chrome, denser */
