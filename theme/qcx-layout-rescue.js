@@ -241,7 +241,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.84/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.85/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -519,7 +519,6 @@
       '.qcx-menu-card-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;' +
       'gap:8px!important;margin:0 0 4px!important;padding:0!important}' +
       '@media (min-width:861px){.qcx-menu-card-grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))!important;gap:10px!important}}' +
-      /* Aave navigationLink card: dark surface + subtle border hover */ +
       '.qcx-menu-card{display:flex!important;align-items:center!important;gap:12px!important;' +
       'min-height:0!important;padding:12px!important;margin:0!important;border-radius:16px!important;' +
       'background:rgba(255,255,255,.04)!important;border:1px solid rgba(255,255,255,.08)!important;' +
@@ -531,7 +530,6 @@
       '.qcx-menu-card:hover,.qcx-menu-card:focus-visible{' +
       'background:rgba(255,255,255,.05)!important;border-color:rgba(255,255,255,.12)!important;' +
       'box-shadow:0 1px 2px rgba(0,0,0,.03)!important;outline:none!important}' +
-      /* Aave icon hover: swap CSS vars grey → active mint */ +
       '.qcx-menu-card:hover .qcx-menu-card-icon,.qcx-menu-card:focus-visible .qcx-menu-card-icon{' +
       '--color-1:var(--active-color-1)!important;--color-2:var(--active-color-2)!important;' +
       '--color-3:var(--active-color-3)!important;--color-4:var(--active-color-4)!important}' +
@@ -544,11 +542,10 @@
       '--color-1:var(--active-color-1)!important;--color-2:var(--active-color-2)!important;' +
       '--color-3:var(--active-color-3)!important;--color-4:var(--active-color-4)!important}' +
       '.qcx-menu-card-icon-wrap{flex:0 0 auto!important;width:40px!important;height:40px!important;display:block!important}' +
-      /* Aave defaults: muted grey icon; actives set inline per SVG */ +
       '.qcx-menu-card-icon{display:block!important;width:40px!important;height:40px!important;' +
       '--color-1:#bcbbbb;--color-2:#a9a8a8;--color-3:#9c9b9b;--color-4:#8f8e8e;' +
       '--active-color-1:#28d28c;--active-color-2:#3ee09a;--active-color-3:#7dffc4;--active-color-4:#7dffc4}' +
-      '.qcx-menu-card-icon *{transition-property:fill,stroke!important;transition-duration:.2s!important}' +
+      '.qcx-menu-card-icon *{transition-property:fill,stroke!important;transition-duration:0.2s!important}' +
       '.qcx-menu-card-content{flex:1 1 auto!important;min-width:0!important;display:flex!important;flex-direction:column!important;gap:2px!important}' +
       '.qcx-menu-card-title-row{display:flex!important;align-items:center!important;gap:5px!important;min-width:0!important}' +
       '.qcx-menu-card-title{font:700 13px/1.2 system-ui,-apple-system,sans-serif!important;color:#eaf7f0!important;' +
