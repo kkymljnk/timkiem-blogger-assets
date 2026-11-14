@@ -1,0 +1,30 @@
+---
+description: Forbid create-and-wait browser/CDP loops that hang 2–8s per check
+alwaysApply: true
+---
+
+# No create-and-wait CDP loops
+
+Agents verifying this Blogger/theme project must not hang on create → wait cycles.
+
+## Hard rules
+
+1. **Reuse tabs** — `browser_tabs` list first; reuse `viewId`. Do not open a new tab or `start_remote_daemon` when one already works.
+2. **No long CDP polls** — Never `Runtime.evaluate` with `setTimeout` / `Promise` waits >300ms (no toast polling). Use one sync evaluate (`awaitPromise: false`) returning all fields needed.
+3. **One shot** — Batch pin/version/DOM reads in a single evaluate. Ban chains: create → wait → create → wait.
+4. **Click/snapshot first** — Prefer `browser_click` / `browser_mouse_click_xy` / `browser_snapshot`. CDP only when snapshot cannot answer.
+5. **Blogger Save** — After 1–2 failed Save automations, stop polling; ask user to click Lưu once; then one fast sync check.
+6. **CDN bumps** — Do not invent a new `_bump_cdn_*.py` + wait-for-jsDelivr loop every turn when one bump + one verify is enough.
+
+## Bad vs good
+
+```js
+// BAD — hangs 1.5–8s inside MCP→CDP every call
+(() => new Promise(r => setTimeout(() => r({saved:/Đã lưu/.test(document.body.innerText)}), 1500)))()
+
+// GOOD — sync, one round-trip
+(() => {
+  const v = document.querySelector('.CodeMirror')?.CodeMirror?.getValue() || '';
+  return { n: (v.match(/v2026\.11\.13\.\d+/g)||[]).length, clean: !!document.querySelector('.CodeMirror')?.CodeMirror?.isClean?.() };
+})()
+```
