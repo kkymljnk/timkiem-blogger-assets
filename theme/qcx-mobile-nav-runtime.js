@@ -268,7 +268,7 @@
   function buildNavMenu() {
     var nav = document.getElementById('qcx-menu-nav');
     if (!nav) return;
-    if (nav.getAttribute('data-qcx-enhanced') === 'mint-cards-v3-project') return;
+    if (nav.getAttribute('data-qcx-enhanced') === 'mint-cards-v4-current') return;
     function el(tag, cls, txt) {
       var node = document.createElement(tag);
       if (cls) node.className = cls;
@@ -407,7 +407,7 @@
       footer.appendChild(cta);
     }
 
-    nav.setAttribute('data-qcx-enhanced', 'mint-cards-v3-project');
+    nav.setAttribute('data-qcx-enhanced', 'mint-cards-v4-current');
   }
 
   function hookMenu() {
