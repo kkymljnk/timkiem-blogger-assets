@@ -268,7 +268,7 @@
   function buildNavMenu() {
     var nav = document.getElementById('qcx-menu-nav');
     if (!nav) return;
-    if (nav.getAttribute('data-qcx-enhanced') === 'mint-cards-v7-aave-hover') return;
+    if (nav.getAttribute('data-qcx-enhanced') === 'mint-cards-v8-aave-anim') return;
     function el(tag, cls, txt) {
       var node = document.createElement(tag);
       if (cls) node.className = cls;
@@ -310,6 +310,11 @@
       content.appendChild(desc);
       node.appendChild(iconWrap);
       node.appendChild(content);
+      /* Aave-like SVG hover: class toggle so fill/stroke 0.2s works on touch + pointer */
+      node.addEventListener('pointerenter', function () { node.classList.add('is-hover'); });
+      node.addEventListener('pointerleave', function () { node.classList.remove('is-hover'); });
+      node.addEventListener('pointercancel', function () { node.classList.remove('is-hover'); });
+      node.addEventListener('blur', function () { node.classList.remove('is-hover'); });
       if (item.action === 'search') {
         node.addEventListener('click', function (ev) {
           ev.preventDefault();
@@ -393,7 +398,7 @@
     var footer = document.getElementById('qcx-menu-footer');
     if (footer) footer.innerHTML = '';
 
-    nav.setAttribute('data-qcx-enhanced', 'mint-cards-v7-aave-hover');
+    nav.setAttribute('data-qcx-enhanced', 'mint-cards-v8-aave-anim');
   }
 
   function hookMenu() {

@@ -241,7 +241,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.85/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.86/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -525,27 +525,25 @@
       'box-shadow:0 1px 2px rgba(0,0,0,0)!important;text-decoration:none!important;color:inherit!important;' +
       'cursor:pointer!important;box-sizing:border-box!important;font:inherit!important;text-align:left!important;' +
       'width:100%!important;-webkit-tap-highlight-color:transparent;' +
-      'transition:border-color .15s ease,box-shadow .15s ease,background .15s ease!important}' +
-      '@media (hover:hover){' +
-      '.qcx-menu-card:hover,.qcx-menu-card:focus-visible{' +
+      'transition:border-color 0.15s,box-shadow 0.15s!important}' +
+      '.qcx-menu-card:hover,.qcx-menu-card:focus-visible,.qcx-menu-card:active,.qcx-menu-card.is-hover{' +
       'background:rgba(255,255,255,.05)!important;border-color:rgba(255,255,255,.12)!important;' +
       'box-shadow:0 1px 2px rgba(0,0,0,.03)!important;outline:none!important}' +
-      '.qcx-menu-card:hover .qcx-menu-card-icon,.qcx-menu-card:focus-visible .qcx-menu-card-icon{' +
-      '--color-1:var(--active-color-1)!important;--color-2:var(--active-color-2)!important;' +
-      '--color-3:var(--active-color-3)!important;--color-4:var(--active-color-4)!important}' +
-      '.qcx-menu-card:hover .qcx-menu-card-ext,.qcx-menu-card:focus-visible .qcx-menu-card-ext{' +
-      'transform:translate(1px,-1px)!important;color:rgba(175,175,175,.95)!important}' +
-      '}' +
-      '.qcx-menu-card.qcx-menu-current{' +
-      'background:rgba(40,210,140,.08)!important;border-color:rgba(40,210,140,.28)!important;outline:none!important}' +
+      '.qcx-menu-card:hover .qcx-menu-card-icon,.qcx-menu-card:focus-visible .qcx-menu-card-icon,' +
+      '.qcx-menu-card:active .qcx-menu-card-icon,.qcx-menu-card.is-hover .qcx-menu-card-icon,' +
       '.qcx-menu-card.qcx-menu-current .qcx-menu-card-icon{' +
       '--color-1:var(--active-color-1)!important;--color-2:var(--active-color-2)!important;' +
       '--color-3:var(--active-color-3)!important;--color-4:var(--active-color-4)!important}' +
+      '.qcx-menu-card:hover .qcx-menu-card-ext,.qcx-menu-card:focus-visible .qcx-menu-card-ext,' +
+      '.qcx-menu-card:active .qcx-menu-card-ext,.qcx-menu-card.is-hover .qcx-menu-card-ext{' +
+      'transform:translate(1px,-1px)!important;color:rgb(175,175,175)!important}' +
+      '.qcx-menu-card.qcx-menu-current{' +
+      'background:rgba(40,210,140,.08)!important;border-color:rgba(40,210,140,.28)!important;outline:none!important}' +
       '.qcx-menu-card-icon-wrap{flex:0 0 auto!important;width:40px!important;height:40px!important;display:block!important}' +
       '.qcx-menu-card-icon{display:block!important;width:40px!important;height:40px!important;' +
       '--color-1:#bcbbbb;--color-2:#a9a8a8;--color-3:#9c9b9b;--color-4:#8f8e8e;' +
       '--active-color-1:#28d28c;--active-color-2:#3ee09a;--active-color-3:#7dffc4;--active-color-4:#7dffc4}' +
-      '.qcx-menu-card-icon *{transition-property:fill,stroke!important;transition-duration:0.2s!important}' +
+      '.qcx-menu-card-icon *{transition:fill 0.2s,stroke 0.2s!important}' +
       '.qcx-menu-card-content{flex:1 1 auto!important;min-width:0!important;display:flex!important;flex-direction:column!important;gap:2px!important}' +
       '.qcx-menu-card-title-row{display:flex!important;align-items:center!important;gap:5px!important;min-width:0!important}' +
       '.qcx-menu-card-title{font:700 13px/1.2 system-ui,-apple-system,sans-serif!important;color:#eaf7f0!important;' +
@@ -558,7 +556,7 @@
       'border-radius:999px!important;background:rgba(40,210,140,.18)!important;color:#28d28c!important;' +
       'font:700 9px/1.2 system-ui,sans-serif!important}' +
       '.qcx-menu-card-ext{margin-left:auto!important;color:rgba(190,211,198,.5)!important;display:inline-flex!important;' +
-      'flex-shrink:0!important;transition:transform .15s ease,color .15s ease!important}' +
+      'flex-shrink:0!important;transition:transform 0.15s,color 0.15s!important}' +
       '.qcx-menu-link{display:none!important}' +
       '.qcx-menu-labels-cloud{display:flex!important;flex-wrap:wrap!important;gap:6px!important;padding:2px 0 8px!important}' +
       '.qcx-menu-chip{display:inline-flex!important;align-items:center!important;max-width:100%!important;' +
