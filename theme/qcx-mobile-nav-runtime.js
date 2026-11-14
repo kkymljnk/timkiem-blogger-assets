@@ -487,9 +487,10 @@
     '<path d="M108.37 15.37H106.459V4.135H108.37L111.991 13.08L115.618 4.135H117.555V15.37H115.644V11.909Q115.644 11.06 115.647 10.486Q115.649 9.912 115.662 9.51Q115.675 9.108 115.696 8.804Q115.717 8.5 115.754 8.191L112.898 15.37H111.084L108.239 8.205Q108.324 8.715 108.347 9.501Q108.37 10.287 108.37 11.349Z" fill="black"/>' +
     '</svg>';
 
-  /* Aave header logo motion: look L/R then double blink — px offsets (not % SVG). */
+  /* Aave logo motion via style.transform rAF — WAAPI on SVG <g> does not paint. */
   var __qcxEyesBusy = false;
   var __qcxEyesBusyTimer = null;
+  var __qcxEyesSeqRaf = 0;
   var __qcxEyesTrack = { x: 0, y: 0, tx: 0, ty: 0, raf: 0, hovering: false };
 
   function qcxEyesLookPx(eyes) {
@@ -504,19 +505,30 @@
       var r = eyes.getBoundingClientRect();
       if (r && r.width) w = Math.max(w, r.width);
     } catch (e2) {}
-    var look = Math.max(1.6, Math.min(4, w * 0.12));
-    return look;
+    return Math.max(1.6, Math.min(4, w * 0.12));
   }
 
-  function qcxCancelEyeAnims(el) {
-    if (!el) return;
-    try {
-      el.getAnimations().forEach(function (a) { a.cancel(); });
-    } catch (e) {}
+  function qcxEaseInOut(t) {
+    return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+  }
+
+  function qcxTween(from, to, dur, delay, onUpdate, onDone) {
+    var startAt = performance.now() + (delay || 0);
+    function frame(now) {
+      if (now < startAt) {
+        __qcxEyesSeqRaf = window.requestAnimationFrame(frame);
+        return;
+      }
+      var t = Math.min(1, (now - startAt) / dur);
+      onUpdate(from + (to - from) * qcxEaseInOut(t));
+      if (t < 1) __qcxEyesSeqRaf = window.requestAnimationFrame(frame);
+      else if (onDone) onDone();
+    }
+    __qcxEyesSeqRaf = window.requestAnimationFrame(frame);
   }
 
   function playMenuLogoEyes(svg) {
-    if (!svg || typeof svg.animate !== 'function') return;
+    if (!svg) return;
     if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     var eyes = svg.querySelector('.logo-eyes');
     var left = svg.querySelector('.logo-eye-left');
@@ -524,44 +536,43 @@
     if (!eyes || !left || !right) return;
     __qcxEyesBusy = true;
     if (__qcxEyesBusyTimer) clearTimeout(__qcxEyesBusyTimer);
-    qcxCancelEyeAnims(eyes);
-    qcxCancelEyeAnims(left);
-    qcxCancelEyeAnims(right);
-    eyes.style.transform = '';
-    left.style.transform = '';
-    right.style.transform = '';
+    if (__qcxEyesSeqRaf) {
+      window.cancelAnimationFrame(__qcxEyesSeqRaf);
+      __qcxEyesSeqRaf = 0;
+    }
+    eyes.style.transform = 'translate(0px,0px)';
+    left.style.transform = 'scaleY(1)';
+    right.style.transform = 'scaleY(1)';
     var look = qcxEyesLookPx(eyes);
-    var ease = 'ease-in-out';
-    var tR = 'translate(' + look.toFixed(2) + 'px,0px)';
-    var tL = 'translate(' + (-look).toFixed(2) + 'px,0px)';
-    var t0 = 'translate(0px,0px)';
-    /* Aave Motion: 0→+look .15 @0; +→− .3 @.35; −→0 .25 @.70; blink @1.20 + .05 */
-    eyes.animate(
-      [{ transform: t0 }, { transform: tR }],
-      { duration: 150, easing: ease, fill: 'forwards' }
-    );
-    eyes.animate(
-      [{ transform: tR }, { transform: tL }],
-      { duration: 300, delay: 350, easing: ease, fill: 'forwards' }
-    );
-    eyes.animate(
-      [{ transform: tL }, { transform: t0 }],
-      { duration: 250, delay: 700, easing: ease, fill: 'forwards' }
-    );
-    var blink = [
-      { transform: 'scaleY(1)' },
-      { transform: 'scaleY(0.05)' },
-      { transform: 'scaleY(1)' }
-    ];
-    left.animate(blink, { duration: 150, delay: 1200, easing: ease });
-    right.animate(blink, { duration: 150, delay: 1200, easing: ease });
-    left.animate(blink, { duration: 150, delay: 1350, easing: ease });
-    right.animate(blink, { duration: 150, delay: 1350, easing: ease });
+    var setX = function (x) {
+      eyes.style.transform = 'translate(' + x.toFixed(2) + 'px,0px)';
+    };
+    var setBlink = function (sy) {
+      left.style.transform = 'scaleY(' + sy.toFixed(3) + ')';
+      right.style.transform = 'scaleY(' + sy.toFixed(3) + ')';
+    };
+    /* Aave: 0→+look 150@0; +→− 300@350; −→0 250@700; blink@1200 +150 */
+    qcxTween(0, look, 150, 0, setX, function () {
+      qcxTween(look, -look, 300, 200, setX, function () {
+        qcxTween(-look, 0, 250, 0, setX, function () {
+          qcxTween(1, 0.05, 75, 250, setBlink, function () {
+            qcxTween(0.05, 1, 75, 0, setBlink, function () {
+              qcxTween(1, 0.05, 75, 50, setBlink, function () {
+                qcxTween(0.05, 1, 75, 0, setBlink, function () {
+                  left.style.transform = '';
+                  right.style.transform = '';
+                  eyes.style.transform = 'translate(0px,0px)';
+                  __qcxEyesBusy = false;
+                });
+              });
+            });
+          });
+        });
+      });
+    });
     __qcxEyesBusyTimer = window.setTimeout(function () {
       __qcxEyesBusy = false;
-      qcxCancelEyeAnims(eyes);
-      eyes.style.transform = 'translate(0px,0px)';
-    }, 1550);
+    }, 1800);
   }
 
   function bindMenuLogoEyes(svg) {
@@ -569,8 +580,8 @@
     var host = document.getElementById('qcx-menu-logo');
     if (host) host.__qcxLogoSvg = svg;
     playMenuLogoEyes(svg);
-    if (host && host.getAttribute('data-qcx-aave-eyes-bound') === '3') return;
-    if (host) host.setAttribute('data-qcx-aave-eyes-bound', '3');
+    if (host && host.getAttribute('data-qcx-aave-eyes-bound') === '4') return;
+    if (host) host.setAttribute('data-qcx-aave-eyes-bound', '4');
     var timer = null;
     var arm = function () {
       var target = (host && host.__qcxLogoSvg) || svg;
@@ -648,9 +659,6 @@
         var eyes = mark.querySelector('.logo-eyes');
         var left = mark.querySelector('.logo-eye-left');
         var right = mark.querySelector('.logo-eye-right');
-        qcxCancelEyeAnims(eyes);
-        qcxCancelEyeAnims(left);
-        qcxCancelEyeAnims(right);
         if (eyes) eyes.style.transform = '';
         if (left) left.style.transform = '';
         if (right) right.style.transform = '';
