@@ -228,34 +228,20 @@
   }
 
   function ensureSidebarSearch() {
-    /* Mobile uses drawer search only — do not inject inline Ctrl-K field. */
-    if (window.matchMedia && window.matchMedia('(max-width: 860px)').matches) return;
-    var sidebar = document.querySelector('#sidebar');
-    var wrap = document.querySelector('.main-wrapper') || document.querySelector('main.main-container');
-    if (!sidebar && wrap) {
-      sidebar = el('aside', 'sidebar qcx-addon-zone qcx-rescue-sidebar');
-      sidebar.id = 'sidebar';
-      wrap.appendChild(sidebar);
-    }
-    if (!sidebar) return;
-    var existing = sidebar.querySelector('.qcx-inline-search .qcx-search-text');
-    if (existing) {
-      existing.textContent = 'search…';
-      return;
-    }
-    if (sidebar.querySelector('.qcx-inline-search')) return;
-    var widget = el('div', 'widget HTML qcx-sidebar-search');
-    widget.innerHTML =
-      '<div class="widget-content">' +
-      '<div aria-label="Mở tìm kiếm bài viết" class="qcx-inline-search qcx-sidebar-search" role="button" tabindex="0">' +
-      '<span class="qcx-search-text">search…</span>' +
-      '<span class="qcx-search-shortcut">Ctrl K</span>' +
-      '</div></div>';
-    sidebar.insertBefore(widget, sidebar.firstChild);
+    /* Search lives in Menu + Cmd/Ctrl+Space (and Cmd/Ctrl+K) — no duplicate rail field. */
+    var nodes = document.querySelectorAll(
+      '#sidebar .widget.qcx-sidebar-search, #sidebar .qcx-inline-search.qcx-sidebar-search, .widget.HTML.qcx-sidebar-search'
+    );
+    Array.prototype.forEach.call(nodes, function(node) {
+      try { node.remove(); } catch (ignoreRm) {
+        node.style.setProperty('display', 'none', 'important');
+        node.setAttribute('hidden', 'hidden');
+      }
+    });
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.69/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.70/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -363,7 +349,9 @@
       'background-color:#24352c!important;background-image:none!important;' +
       'border:1px solid rgba(0,240,163,.22)!important;border-radius:12px!important;' +
       'box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 8px 24px rgba(0,0,0,.4)!important;isolation:isolate!important}' +
-      '.qcx-inline-search.qcx-sidebar-search{max-width:none!important;margin:0!important}' +
+      /* Hide sidebar/results inline search everywhere — Menu + Cmd/Ctrl+Space|/K */' +
+      '.qcx-inline-search.qcx-results-search,.qcx-inline-search.qcx-sidebar-search,' +
+      '.widget.qcx-sidebar-search,.widget.HTML.qcx-sidebar-search{display:none!important}' +
       '.qcx-inline-search:hover,.qcx-inline-search:focus-visible{border-color:rgba(0,240,163,.4)!important}' +
       '.qcx-inline-search .qcx-search-icon{display:block!important;flex:0 0 auto!important;width:18px!important;height:18px!important;' +
       'color:rgba(138,165,150,.85)!important}' +
@@ -373,11 +361,7 @@
       '.qcx-inline-search .qcx-search-shortcut{display:inline-flex!important;align-items:center!important;flex:0 0 auto!important;' +
       'background:rgba(0,0,0,.35)!important;border:1px solid rgba(0,240,163,.25)!important;' +
       'color:#00f0a3!important;border-radius:6px!important;padding:3px 7px!important}' +
-      '@media (min-width:861px){.qcx-inline-search.qcx-results-search{display:none!important}}' +
-      /* Mobile: hide all inline search — drawer search only */
-      '@media (max-width:860px){.qcx-inline-search,.qcx-inline-search.qcx-results-search,' +
-      '.qcx-inline-search.qcx-sidebar-search,.widget.qcx-sidebar-search,' +
-      '.widget.HTML.qcx-sidebar-search{display:none!important}}' +
+      '@media (max-width:860px){.qcx-inline-search,.qcx-inline-search.qcx-results-search{display:none!important}}' +
       '.all_posts,[data-page-item=\"multiple\"] .all_posts{clear:both!important;margin-top:0!important}' +
       '#qcx-admin-root .gate,html[data-qcx-admin=\"1\"] #qcx-admin-root .gate{' +
       'background-color:#24352c!important;background-image:none!important;' +

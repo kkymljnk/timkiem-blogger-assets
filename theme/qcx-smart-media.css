@@ -862,12 +862,13 @@ body.qcx-panel-open { overflow: hidden !important; }
   .qcx-related-card span { align-self: center; min-height: 0; }
 }
 
-/* Final responsive search visibility: no sidebar find:; mobile uses bottom-nav. */
-@media (min-width: 861px) {
-  .qcx-inline-search:not(.qcx-sidebar-search) { display: flex !important; }
-  #sidebar .qcx-inline-search,
-  #sidebar .widget.qcx-sidebar-search,
-  .qcx-inline-search.qcx-sidebar-search { display: none !important; }
+/* Search via Menu + Cmd/Ctrl+Space|/K — never show sidebar/results inline field. */
+.qcx-inline-search.qcx-results-search,
+.qcx-inline-search.qcx-sidebar-search,
+#sidebar .qcx-inline-search,
+#sidebar .widget.qcx-sidebar-search,
+.widget.HTML.qcx-sidebar-search {
+  display: none !important;
 }
 @media (max-width: 860px) {
   .qcx-inline-search { display: none !important; }

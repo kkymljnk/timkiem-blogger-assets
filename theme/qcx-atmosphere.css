@@ -826,19 +826,15 @@ body#layout #qcx-native-tabbar {
   clear: both !important;
   margin-top: 0 !important;
 }
-/* Desktop: hide results-page search (Ctrl K palette still works). Sidebar search OK on PC rail. */
-@media (min-width: 861px) {
-  .qcx-inline-search.qcx-results-search {
-    display: none !important;
-  }
+/* Search via Menu + Cmd/Ctrl+Space|/K only — no duplicate rail/results field. */
+.qcx-inline-search.qcx-results-search,
+.qcx-inline-search.qcx-sidebar-search,
+.widget.qcx-sidebar-search,
+.widget.HTML.qcx-sidebar-search {
+  display: none !important;
 }
-/* Mobile: no inline search — Menu drawer already has search. */
 @media (max-width: 860px) {
-  .qcx-inline-search,
-  .qcx-inline-search.qcx-results-search,
-  .qcx-inline-search.qcx-sidebar-search,
-  .widget.qcx-sidebar-search,
-  .widget.HTML.qcx-sidebar-search {
+  .qcx-inline-search {
     display: none !important;
   }
 }
