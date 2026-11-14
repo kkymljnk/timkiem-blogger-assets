@@ -241,7 +241,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.70/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.71/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -370,12 +370,24 @@
       'isolation:isolate!important}' +
       'html[data-qcx-admin=\"1\"] #qcx-admin-root:has(.gate:not(.hidden))>.wrap>header,' +
       'html[data-qcx-admin=\"1\"] #qcx-admin-root:has(.gate:not(.hidden)) #btnLogout{display:none!important}' +
-      /* P1: hide “N Nhận xét” stub under lock; collapse empty unlock chrome */
-      'body:has(.qcx-lock-panel) #comments>h4.postAComment,' +
-      'body:has(.qcx-lock-panel) .qcx-comments-shell>h4.postAComment,' +
-      'html[data-qcx-unlocked=\"1\"] #comments>h4.postAComment,' +
-      'html[data-qcx-unlocked=\"1\"] .qcx-comments-shell>h4.postAComment{' +
-      'display:none!important;margin:0!important;padding:0!important;height:0!important;overflow:hidden!important}' +
+      /* Always hide “N Nhận xét” stub — unlock chrome owns comments UI */
+      'html[data-page-type=\"post\"] #comments>h4.postAComment,' +
+      'html[data-page-type=\"page\"] #comments>h4.postAComment,' +
+      'html[data-page-item=\"single\"] #comments>h4.postAComment,' +
+      'html[data-page-type=\"post\"] .qcx-comments-shell>h4.postAComment,' +
+      'html[data-page-type=\"page\"] .qcx-comments-shell>h4.postAComment,' +
+      'html[data-page-item=\"single\"] .qcx-comments-shell>h4.postAComment{' +
+      'display:none!important;margin:0!important;padding:0!important;height:0!important;overflow:hidden!important;' +
+      'border:0!important;background:transparent!important;box-shadow:none!important}' +
+      /* Collapse comments shell when it is only the stub (no form/list yet) */
+      'html[data-page-type=\"post\"] #comments:not(:has(.comment-form,.commentForm,iframe,.comment,#comment-editor,.qcx-comment-list)),' +
+      'html[data-page-type=\"page\"] #comments:not(:has(.comment-form,.commentForm,iframe,.comment,#comment-editor,.qcx-comment-list)),' +
+      'html[data-page-item=\"single\"] #comments:not(:has(.comment-form,.commentForm,iframe,.comment,#comment-editor,.qcx-comment-list)),' +
+      'html[data-page-type=\"post\"] .qcx-comments-shell:not(:has(.comment-form,.commentForm,iframe,.comment,#comment-editor,.qcx-comment-list)),' +
+      'html[data-page-type=\"page\"] .qcx-comments-shell:not(:has(.comment-form,.commentForm,iframe,.comment,#comment-editor,.qcx-comment-list)),' +
+      'html[data-page-item=\"single\"] .qcx-comments-shell:not(:has(.comment-form,.commentForm,iframe,.comment,#comment-editor,.qcx-comment-list)){' +
+      'display:none!important;height:0!important;max-height:0!important;overflow:hidden!important;margin:0!important;' +
+      'padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important}' +
       '#comments[data-qcx-unlock-chrome=\"1\"]:not(.is-settled),' +
       '.qcx-comments-shell[data-qcx-unlock-chrome=\"1\"]:not(.is-settled){' +
       'border:0!important;background:transparent!important;box-shadow:none!important;padding:0!important;margin:0 0 8px!important}' +
@@ -932,7 +944,7 @@
     }
   }
 
-  /* Mobile: park Tutorial BELOW #comments (after article + comments).
+  /* Mobile: park Tutorial ABOVE #comments (replaces stub “N Nhận xét” slot).
      Settle-once — skip DOM moves when already correct to avoid layout thrash. */
   function placeTutorialBesideLock(rail, sidebar) {
     if (!rail) return;
@@ -947,18 +959,14 @@
         var postBody = (lock && lock.closest && lock.closest('.post-body')) ||
           document.querySelector('.post-body');
         if (comments && comments.parentNode) {
-          /* Prefer: …content → #comments → Tutorial */
-          var alreadyBelow = rail.previousElementSibling === comments &&
+          /* Prefer: …content/lock → Tutorial → #comments */
+          var alreadyAbove = rail.nextElementSibling === comments &&
             rail.parentNode === comments.parentNode;
-          if (alreadyBelow) {
+          if (alreadyAbove) {
             rail.setAttribute('data-qcx-layout-settled', '1');
             return;
           }
-          if (comments.nextSibling) {
-            comments.parentNode.insertBefore(rail, comments.nextSibling);
-          } else {
-            comments.parentNode.appendChild(rail);
-          }
+          comments.parentNode.insertBefore(rail, comments);
           rail.setAttribute('data-qcx-layout-settled', '1');
         } else if (postBody) {
           if (rail.parentNode === postBody && postBody.lastElementChild === rail) {
@@ -1103,7 +1111,7 @@
       if (relatedDup) relatedDup.hidden = true;
     }
 
-    /* Mobile: Tutorial below #comments. PC: keep in #sidebar.
+    /* Mobile: Tutorial above #comments (stub slot). PC: keep in #sidebar.
        Settle-once — short boot reassert only; no MutationObserver thrash. */
     function settleTutorialLayout() {
       showSidebarBesideArticle();

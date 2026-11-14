@@ -839,16 +839,38 @@ body#layout #qcx-native-tabbar {
   }
 }
 
-/* ── Post chrome P1: hide redundant “N Nhận xét” under lock (unlock owns comments) ── */
-body:has(.qcx-lock-panel) #comments > h4.postAComment,
-body:has(.qcx-lock-panel) .qcx-comments-shell > h4.postAComment,
-html[data-qcx-unlocked='1'] #comments > h4.postAComment,
-html[data-qcx-unlocked='1'] .qcx-comments-shell > h4.postAComment {
+/* Always hide “N Nhận xét” stub — unlock chrome owns comments UI */
+html[data-page-type='post'] #comments > h4.postAComment,
+html[data-page-type='page'] #comments > h4.postAComment,
+html[data-page-item='single'] #comments > h4.postAComment,
+html[data-page-type='post'] .qcx-comments-shell > h4.postAComment,
+html[data-page-type='page'] .qcx-comments-shell > h4.postAComment,
+html[data-page-item='single'] .qcx-comments-shell > h4.postAComment {
   display: none !important;
   margin: 0 !important;
   padding: 0 !important;
   height: 0 !important;
   overflow: hidden !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+/* Collapse comments shell when only the stub remains (no form/list yet) */
+html[data-page-type='post'] #comments:not(:has(.comment-form, .commentForm, iframe, .comment, #comment-editor, .qcx-comment-list)),
+html[data-page-type='page'] #comments:not(:has(.comment-form, .commentForm, iframe, .comment, #comment-editor, .qcx-comment-list)),
+html[data-page-item='single'] #comments:not(:has(.comment-form, .commentForm, iframe, .comment, #comment-editor, .qcx-comment-list)),
+html[data-page-type='post'] .qcx-comments-shell:not(:has(.comment-form, .commentForm, iframe, .comment, #comment-editor, .qcx-comment-list)),
+html[data-page-type='page'] .qcx-comments-shell:not(:has(.comment-form, .commentForm, iframe, .comment, #comment-editor, .qcx-comment-list)),
+html[data-page-item='single'] .qcx-comments-shell:not(:has(.comment-form, .commentForm, iframe, .comment, #comment-editor, .qcx-comment-list)) {
+  display: none !important;
+  height: 0 !important;
+  max-height: 0 !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
 }
 /* Unlock chrome: strip empty count-card chrome; keep form/list when present */
 #comments[data-qcx-unlock-chrome='1']:not(.is-settled),
