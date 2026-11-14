@@ -255,7 +255,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.68/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.69/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -931,10 +931,13 @@
   function showSidebarBesideArticle() {
     var sidebar = document.querySelector('#sidebar');
     var wrap = document.querySelector('.main-wrapper');
-    if (wrap && window.matchMedia('(min-width: 861px)').matches) {
+    var desktop = false;
+    try { desktop = window.matchMedia('(min-width: 861px)').matches; } catch (ignoreMq) {}
+    if (wrap) {
+      /* Always set both ways — leftover inline 2-col from desktop resize crushes mobile. */
       wrap.style.setProperty(
         'grid-template-columns',
-        'minmax(0, 1fr) minmax(220px, 280px)',
+        desktop ? 'minmax(0, 1fr) minmax(220px, 280px)' : 'minmax(0, 1fr)',
         'important'
       );
     }
@@ -1119,6 +1122,7 @@
     /* Mobile: Tutorial below #comments. PC: keep in #sidebar.
        Settle-once — short boot reassert only; no MutationObserver thrash. */
     function settleTutorialLayout() {
+      showSidebarBesideArticle();
       placeTutorialBesideLock(rail, sidebar);
       hideMobileTutorialClones();
     }
