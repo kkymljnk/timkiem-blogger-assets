@@ -273,21 +273,30 @@ html[data-qcx-admin='1'] .footer-navigation-bar {
   height: 36px !important;
   display: grid !important;
   place-items: center !important;
-  background: rgba(255, 255, 255, .04) !important;
-  border: 1px solid rgba(255, 255, 255, .08) !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
   color: var(--fg-dim, rgba(190, 211, 198, .72)) !important;
   font-size: 20px !important;
   padding: 0 !important;
   border-radius: 10px !important;
   cursor: pointer !important;
   font-family: var(--mono, 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace) !important;
-  transition: color .15s, background .15s !important;
+  transition: color .15s ease !important;
   flex-shrink: 0 !important;
   line-height: 1 !important;
 }
-#qcx-menu-close:hover {
-  color: var(--fg, #e8efe9) !important;
-  background: rgba(255, 255, 255, .08) !important;
+#qcx-menu-close:hover,
+#qcx-menu-close:focus-visible {
+  color: #4a5f54 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+#qcx-menu-close:active {
+  color: #2f3f38 !important;
+  background: transparent !important;
 }
 #qcx-menu-search.qcx-menu-search-row,
 .qcx-menu-search-row {

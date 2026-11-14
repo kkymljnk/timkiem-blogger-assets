@@ -241,7 +241,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.79/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.80/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -480,9 +480,12 @@
       '#qcx-menu-logo{font:700 14px/1.2 system-ui,-apple-system,sans-serif!important;color:#e8fff2!important;' +
       'letter-spacing:.03em!important;text-transform:none!important}' +
       '#qcx-menu-close{width:34px!important;height:34px!important;display:grid!important;place-items:center!important;' +
-      'background:rgba(255,255,255,.04)!important;border:1px solid rgba(255,255,255,.08)!important;' +
-      'border-radius:10px!important;cursor:pointer!important;flex-shrink:0!important;line-height:1!important;' +
-      'color:rgba(190,211,198,.8)!important;font-size:18px!important;padding:0!important}' +
+      'background:transparent!important;border:0!important;border-radius:10px!important;cursor:pointer!important;' +
+      'flex-shrink:0!important;line-height:1!important;color:rgba(190,211,198,.72)!important;font-size:18px!important;' +
+      'padding:0!important;box-shadow:none!important;transition:color .15s ease!important}' +
+      '#qcx-menu-close:hover,#qcx-menu-close:focus-visible{background:transparent!important;border:0!important;' +
+      'box-shadow:none!important;color:#4a5f54!important;outline:none!important}' +
+      '#qcx-menu-close:active{color:#2f3f38!important;background:transparent!important}' +
       '#qcx-menu-search.qcx-menu-search-row,.qcx-menu-search-row{display:flex!important;align-items:center!important;' +
       'gap:8px!important;width:calc(100% - 32px)!important;max-width:928px!important;margin:0 auto 10px!important;' +
       'min-height:40px!important;padding:0 12px!important;border:1px solid rgba(0,240,163,.3)!important;' +
