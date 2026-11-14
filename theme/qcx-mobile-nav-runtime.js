@@ -397,23 +397,25 @@
     var logo = document.getElementById('qcx-menu-logo');
     if (logo) {
       logo.setAttribute('aria-label', 'MMO.TEAM');
-      /* Official Aave ghost/eyes + Satoshi Bold path wordmark — white on dark menu. */
-      logo.innerHTML =
-        '<svg class="qcx-menu-logo-mark" width="119.8" height="16" viewBox="0 0 119.8 16" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="MMO.TEAM">' +
-        '<path d="M14.985 0C6.70823 0 -0.00216598 6.80197 5.24457e-07 15.19H3.82821C3.82821 8.90381 8.78373 3.8072 14.985 3.8072C21.1862 3.8072 26.1418 8.90381 26.1418 15.19H29.9699C29.9715 6.80197 23.261 0 14.985 0Z" fill="#fff"/>' +
-        '<g class="logo-eyes">' +
-        '<path class="logo-eye-left qcx-eye" d="M11.007 15.5481C12.6893 15.5481 14.053 14.1915 14.053 12.5182C14.053 10.8448 12.6893 9.48828 11.007 9.48828C9.32471 9.48828 7.96094 10.8448 7.96094 12.5182C7.96094 14.1915 9.32471 15.5481 11.007 15.5481Z" fill="#fff"/>' +
-        '<path class="logo-eye-right qcx-eye" d="M18.9679 15.5481C20.6502 15.5481 22.014 14.1915 22.014 12.5182C22.014 10.8448 20.6502 9.48828 18.9679 9.48828C17.2856 9.48828 15.9219 10.8448 15.9219 12.5182C15.9219 14.1915 17.2856 15.5481 18.9679 15.5481Z" fill="#fff"/>' +
-        '</g>' +
-        '<path d="M36.154 15.37H34.243V4.135H36.154L39.775 13.08L43.402 4.135H45.339V15.37H43.429V11.909Q43.429 11.06 43.431 10.486Q43.433 9.912 43.446 9.51Q43.459 9.108 43.48 8.804Q43.501 8.5 43.538 8.191L40.682 15.37H38.868L36.023 8.205Q36.108 8.715 36.131 9.501Q36.154 10.287 36.154 11.349Z" fill="#fff"/>' +
-        '<path d="M49.718 15.37H47.807V4.135H49.718L53.339 13.08L56.966 4.135H58.903V15.37H56.993V11.909Q56.993 11.06 56.995 10.486Q56.997 9.912 57.01 9.51Q57.023 9.108 57.044 8.804Q57.065 8.5 57.102 8.191L54.246 15.37H52.432L49.587 8.205Q49.672 8.715 49.695 9.501Q49.718 10.287 49.718 11.349Z" fill="#fff"/>' +
-        '<path d="M71.617 9.742Q71.617 11.455 70.924 12.766Q70.231 14.077 69 14.816Q67.77 15.554 66.152 15.554Q64.548 15.554 63.321 14.816Q62.094 14.077 61.408 12.772Q60.723 11.466 60.723 9.752Q60.723 8.039 61.416 6.727Q62.109 5.416 63.334 4.678Q64.559 3.939 66.162 3.939Q67.781 3.939 69.006 4.678Q70.231 5.416 70.924 6.722Q71.617 8.028 71.617 9.742ZM69.551 9.742Q69.551 8.54 69.136 7.664Q68.72 6.789 67.965 6.309Q67.211 5.83 66.173 5.83Q65.14 5.83 64.38 6.309Q63.62 6.789 63.204 7.664Q62.789 8.54 62.789 9.742Q62.789 10.939 63.204 11.822Q63.62 12.705 64.38 13.184Q65.14 13.664 66.173 13.664Q67.211 13.664 67.965 13.179Q68.72 12.694 69.136 11.811Q69.551 10.928 69.551 9.742Z" fill="#fff"/>' +
-        '<path d="M74.419 15.561Q73.909 15.561 73.542 15.202Q73.176 14.843 73.176 14.343Q73.176 13.828 73.542 13.469Q73.909 13.111 74.419 13.111Q74.923 13.111 75.293 13.469Q75.663 13.828 75.663 14.343Q75.663 14.843 75.293 15.202Q74.923 15.561 74.419 15.561Z" fill="#fff"/>' +
-        '<path d="M82.149 5.066V15.37H80.184V5.066ZM76.897 5.951V4.135H85.436V5.951Z" fill="#fff"/>' +
-        '<path d="M93.908 15.37H86.924V4.135H93.904V5.951H88.197L88.888 5.324V8.839H93.375V10.57H88.888V14.185L88.197 13.553H93.908Z" fill="#fff"/>' +
-        '<path d="M96.978 15.37H94.938L98.991 4.135H101.018L105.075 15.37H102.998L102.093 12.774H97.889ZM99.749 7.49 98.469 11.108H101.524L100.235 7.49Q100.165 7.262 100.092 7.026Q100.018 6.79 99.992 6.632Q99.966 6.786 99.899 7.021Q99.833 7.256 99.749 7.49Z" fill="#fff"/>' +
-        '<path d="M108.37 15.37H106.459V4.135H108.37L111.991 13.08L115.618 4.135H117.555V15.37H115.644V11.909Q115.644 11.06 115.647 10.486Q115.649 9.912 115.662 9.51Q115.675 9.108 115.696 8.804Q115.717 8.5 115.754 8.191L112.898 15.37H111.084L108.239 8.205Q108.324 8.715 108.347 9.501Q108.37 10.287 108.37 11.349Z" fill="#fff"/>' +
-        '</svg>';
+      /* Keep existing SVG so eye animation is not torn down on every rebuild. */
+      if (!logo.querySelector('.qcx-menu-logo-mark .logo-eyes')) {
+        logo.innerHTML =
+          '<svg class="qcx-menu-logo-mark" width="119.8" height="16" viewBox="0 0 119.8 16" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="MMO.TEAM">' +
+          '<path d="M14.985 0C6.70823 0 -0.00216598 6.80197 5.24457e-07 15.19H3.82821C3.82821 8.90381 8.78373 3.8072 14.985 3.8072C21.1862 3.8072 26.1418 8.90381 26.1418 15.19H29.9699C29.9715 6.80197 23.261 0 14.985 0Z" fill="#fff"/>' +
+          '<g class="logo-eyes">' +
+          '<path class="logo-eye-left qcx-eye" d="M11.007 15.5481C12.6893 15.5481 14.053 14.1915 14.053 12.5182C14.053 10.8448 12.6893 9.48828 11.007 9.48828C9.32471 9.48828 7.96094 10.8448 7.96094 12.5182C7.96094 14.1915 9.32471 15.5481 11.007 15.5481Z" fill="#fff"/>' +
+          '<path class="logo-eye-right qcx-eye" d="M18.9679 15.5481C20.6502 15.5481 22.014 14.1915 22.014 12.5182C22.014 10.8448 20.6502 9.48828 18.9679 9.48828C17.2856 9.48828 15.9219 10.8448 15.9219 12.5182C15.9219 14.1915 17.2856 15.5481 18.9679 15.5481Z" fill="#fff"/>' +
+          '</g>' +
+          '<path d="M36.154 15.37H34.243V4.135H36.154L39.775 13.08L43.402 4.135H45.339V15.37H43.429V11.909Q43.429 11.06 43.431 10.486Q43.433 9.912 43.446 9.51Q43.459 9.108 43.48 8.804Q43.501 8.5 43.538 8.191L40.682 15.37H38.868L36.023 8.205Q36.108 8.715 36.131 9.501Q36.154 10.287 36.154 11.349Z" fill="#fff"/>' +
+          '<path d="M49.718 15.37H47.807V4.135H49.718L53.339 13.08L56.966 4.135H58.903V15.37H56.993V11.909Q56.993 11.06 56.995 10.486Q56.997 9.912 57.01 9.51Q57.023 9.108 57.044 8.804Q57.065 8.5 57.102 8.191L54.246 15.37H52.432L49.587 8.205Q49.672 8.715 49.695 9.501Q49.718 10.287 49.718 11.349Z" fill="#fff"/>' +
+          '<path d="M71.617 9.742Q71.617 11.455 70.924 12.766Q70.231 14.077 69 14.816Q67.77 15.554 66.152 15.554Q64.548 15.554 63.321 14.816Q62.094 14.077 61.408 12.772Q60.723 11.466 60.723 9.752Q60.723 8.039 61.416 6.727Q62.109 5.416 63.334 4.678Q64.559 3.939 66.162 3.939Q67.781 3.939 69.006 4.678Q70.231 5.416 70.924 6.722Q71.617 8.028 71.617 9.742ZM69.551 9.742Q69.551 8.54 69.136 7.664Q68.72 6.789 67.965 6.309Q67.211 5.83 66.173 5.83Q65.14 5.83 64.38 6.309Q63.62 6.789 63.204 7.664Q62.789 8.54 62.789 9.742Q62.789 10.939 63.204 11.822Q63.62 12.705 64.38 13.184Q65.14 13.664 66.173 13.664Q67.211 13.664 67.965 13.179Q68.72 12.694 69.136 11.811Q69.551 10.928 69.551 9.742Z" fill="#fff"/>' +
+          '<path d="M74.419 15.561Q73.909 15.561 73.542 15.202Q73.176 14.843 73.176 14.343Q73.176 13.828 73.542 13.469Q73.909 13.111 74.419 13.111Q74.923 13.111 75.293 13.469Q75.663 13.828 75.663 14.343Q75.663 14.843 75.293 15.202Q74.923 15.561 74.419 15.561Z" fill="#fff"/>' +
+          '<path d="M82.149 5.066V15.37H80.184V5.066ZM76.897 5.951V4.135H85.436V5.951Z" fill="#fff"/>' +
+          '<path d="M93.908 15.37H86.924V4.135H93.904V5.951H88.197L88.888 5.324V8.839H93.375V10.57H88.888V14.185L88.197 13.553H93.908Z" fill="#fff"/>' +
+          '<path d="M96.978 15.37H94.938L98.991 4.135H101.018L105.075 15.37H102.998L102.093 12.774H97.889ZM99.749 7.49 98.469 11.108H101.524L100.235 7.49Q100.165 7.262 100.092 7.026Q100.018 6.79 99.992 6.632Q99.966 6.786 99.899 7.021Q99.833 7.256 99.749 7.49Z" fill="#fff"/>' +
+          '<path d="M108.37 15.37H106.459V4.135H108.37L111.991 13.08L115.618 4.135H117.555V15.37H115.644V11.909Q115.644 11.06 115.647 10.486Q115.649 9.912 115.662 9.51Q115.675 9.108 115.696 8.804Q115.717 8.5 115.754 8.191L112.898 15.37H111.084L108.239 8.205Q108.324 8.715 108.347 9.501Q108.37 10.287 108.37 11.349Z" fill="#fff"/>' +
+          '</svg>';
+      }
       bindMenuLogoEyes(logo.querySelector('.qcx-menu-logo-mark'));
       bindMenuLogoBrandMenu(logo);
     }
@@ -469,7 +471,7 @@
     var footer = document.getElementById('qcx-menu-footer');
     if (footer) footer.innerHTML = '';
 
-    nav.setAttribute('data-qcx-enhanced', 'mint-cards-v11-aave-logo');
+    nav.setAttribute('data-qcx-enhanced', 'mint-cards-v12-eyes-live');
   }
 
   var QCX_MENU_LOGO_SVG_EXPORT =
@@ -495,8 +497,12 @@
 
   function qcxLiveLogoParts() {
     var host = document.getElementById('qcx-menu-logo');
-    var mark = (host && host.__qcxLogoSvg) || (host && host.querySelector('.qcx-menu-logo-mark'));
+    if (!host) return null;
+    /* Always prefer connected DOM — __qcxLogoSvg goes stale after innerHTML rebuilds. */
+    var mark = host.querySelector('.qcx-menu-logo-mark');
+    if (!mark && host.__qcxLogoSvg && host.__qcxLogoSvg.isConnected) mark = host.__qcxLogoSvg;
     if (!mark) return null;
+    host.__qcxLogoSvg = mark;
     return {
       host: host,
       mark: mark,
@@ -541,14 +547,16 @@
     __qcxEyesSeqRaf = window.requestAnimationFrame(frame);
   }
 
+  var __qcxEyesPlayGen = 0;
   function playMenuLogoEyes(svg) {
     if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    if (svg) {
+    if (svg && svg.isConnected) {
       var host0 = document.getElementById('qcx-menu-logo');
       if (host0) host0.__qcxLogoSvg = svg;
     }
     var parts = qcxLiveLogoParts();
     if (!parts || !parts.eyes || !parts.left || !parts.right) return;
+    var gen = ++__qcxEyesPlayGen;
     __qcxEyesBusy = true;
     if (__qcxEyesBusyTimer) clearTimeout(__qcxEyesBusyTimer);
     if (__qcxEyesSeqRaf) {
@@ -557,31 +565,46 @@
     }
     var look = qcxEyesLookPx(parts.eyes);
     var setX = function (x) {
+      if (gen !== __qcxEyesPlayGen) return;
       var p = qcxLiveLogoParts();
       if (!p || !p.eyes) return;
-      p.eyes.style.transform = 'translate(' + x.toFixed(2) + 'px,0px)';
+      var t = 'translate(' + x.toFixed(2) + 'px,0px)';
+      p.eyes.style.transform = t;
+      p.eyes.setAttribute('transform', 'translate(' + x.toFixed(2) + ' 0)');
     };
     var setBlink = function (sy) {
+      if (gen !== __qcxEyesPlayGen) return;
       var p = qcxLiveLogoParts();
       if (!p || !p.left || !p.right) return;
-      p.left.style.transform = 'scaleY(' + sy.toFixed(3) + ')';
-      p.right.style.transform = 'scaleY(' + sy.toFixed(3) + ')';
+      var s = 'scaleY(' + sy.toFixed(3) + ')';
+      p.left.style.transform = s;
+      p.right.style.transform = s;
     };
     setX(0);
     setBlink(1);
     /* Aave: 0→+look 150; +→− 300; −→0 250; double blink */
     qcxTween(0, look, 150, 0, setX, function () {
+      if (gen !== __qcxEyesPlayGen) return;
       qcxTween(look, -look, 300, 200, setX, function () {
+        if (gen !== __qcxEyesPlayGen) return;
         qcxTween(-look, 0, 250, 0, setX, function () {
+          if (gen !== __qcxEyesPlayGen) return;
           qcxTween(1, 0.05, 75, 250, setBlink, function () {
+            if (gen !== __qcxEyesPlayGen) return;
             qcxTween(0.05, 1, 75, 0, setBlink, function () {
+              if (gen !== __qcxEyesPlayGen) return;
               qcxTween(1, 0.05, 75, 50, setBlink, function () {
+                if (gen !== __qcxEyesPlayGen) return;
                 qcxTween(0.05, 1, 75, 0, setBlink, function () {
+                  if (gen !== __qcxEyesPlayGen) return;
                   var p = qcxLiveLogoParts();
                   if (p) {
                     if (p.left) p.left.style.transform = '';
                     if (p.right) p.right.style.transform = '';
-                    if (p.eyes) p.eyes.style.transform = 'translate(0px,0px)';
+                    if (p.eyes) {
+                      p.eyes.style.transform = 'translate(0px,0px)';
+                      p.eyes.setAttribute('transform', 'translate(0 0)');
+                    }
                   }
                   __qcxEyesBusy = false;
                 });
@@ -592,25 +615,26 @@
       });
     });
     __qcxEyesBusyTimer = window.setTimeout(function () {
-      __qcxEyesBusy = false;
+      if (gen === __qcxEyesPlayGen) __qcxEyesBusy = false;
     }, 1800);
   }
+  window.__qcxPlayMenuLogoEyes = playMenuLogoEyes;
 
   function bindMenuLogoEyes(svg) {
     if (!svg) return;
     var host = document.getElementById('qcx-menu-logo');
-    if (host) host.__qcxLogoSvg = svg;
-    playMenuLogoEyes(svg);
-    if (host && host.getAttribute('data-qcx-aave-eyes-bound') === '5') return;
-    if (host) host.setAttribute('data-qcx-aave-eyes-bound', '5');
+    if (host && svg.isConnected) host.__qcxLogoSvg = svg;
+    /* Debounce: avoid rebuild storms cancelling the visible sequence. */
+    if (!__qcxEyesBusy) playMenuLogoEyes(svg);
+    if (host && host.getAttribute('data-qcx-aave-eyes-bound') === '6') return;
+    if (host) host.setAttribute('data-qcx-aave-eyes-bound', '6');
     var timer = null;
     var arm = function () {
-      var target = (host && host.__qcxLogoSvg) || svg;
       if (timer) clearInterval(timer);
       timer = setInterval(function () {
-        playMenuLogoEyes((host && host.__qcxLogoSvg) || target);
+        playMenuLogoEyes(null);
       }, 10000);
-      playMenuLogoEyes(target);
+      playMenuLogoEyes(null);
     };
     window.addEventListener('scroll', arm, { passive: true });
     if (host) {
@@ -626,8 +650,13 @@
         }
         __qcxEyesTrack.tx += (__qcxEyesTrack.x - __qcxEyesTrack.tx) * 0.28;
         __qcxEyesTrack.ty += (__qcxEyesTrack.y - __qcxEyesTrack.ty) * 0.28;
-        p.eyes.style.transform =
+        var t =
           'translate(' + __qcxEyesTrack.tx.toFixed(2) + 'px,' + __qcxEyesTrack.ty.toFixed(2) + 'px)';
+        p.eyes.style.transform = t;
+        p.eyes.setAttribute(
+          'transform',
+          'translate(' + __qcxEyesTrack.tx.toFixed(2) + ' ' + __qcxEyesTrack.ty.toFixed(2) + ')'
+        );
         if (p.left) p.left.style.transform = '';
         if (p.right) p.right.style.transform = '';
         if (Math.abs(__qcxEyesTrack.x - __qcxEyesTrack.tx) > 0.05 ||
@@ -666,17 +695,17 @@
           __qcxEyesTrack.raf = 0;
         }
         if (__qcxEyesBusy) return;
-        var mark = host.__qcxLogoSvg || host.querySelector('.qcx-menu-logo-mark');
-        if (!mark) return;
-        var eyes = mark.querySelector('.logo-eyes');
-        var left = mark.querySelector('.logo-eye-left');
-        var right = mark.querySelector('.logo-eye-right');
-        if (eyes) eyes.style.transform = '';
-        if (left) left.style.transform = '';
-        if (right) right.style.transform = '';
+        var p = qcxLiveLogoParts();
+        if (!p) return;
+        if (p.eyes) {
+          p.eyes.style.transform = '';
+          p.eyes.removeAttribute('transform');
+        }
+        if (p.left) p.left.style.transform = '';
+        if (p.right) p.right.style.transform = '';
       };
       host.addEventListener('pointerenter', function () {
-        playMenuLogoEyes(host.__qcxLogoSvg || svg);
+        playMenuLogoEyes(null);
       });
       host.addEventListener('pointermove', function (ev) { trackEyes(ev.clientX, ev.clientY); });
       host.addEventListener('mousemove', function (ev) { trackEyes(ev.clientX, ev.clientY); });
