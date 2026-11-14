@@ -268,7 +268,7 @@
   function buildNavMenu() {
     var nav = document.getElementById('qcx-menu-nav');
     if (!nav) return;
-    if (nav.getAttribute('data-qcx-enhanced') === 'mint-cards-v4-current') return;
+    if (nav.getAttribute('data-qcx-enhanced') === 'mint-cards-v5-compact') return;
     function el(tag, cls, txt) {
       var node = document.createElement(tag);
       if (cls) node.className = cls;
@@ -336,35 +336,23 @@
     var logo = document.getElementById('qcx-menu-logo');
     if (logo) logo.textContent = 'CÔNG CỤ.AI';
 
-    var secExplore = el('div', 'qcx-menu-section', 'Khám phá');
+    var secExplore = el('div', 'qcx-menu-section', 'Menu');
     nav.appendChild(secExplore);
     var grid1 = el('div', 'qcx-menu-card-grid');
     var path = location.pathname || '/';
     var cardsPrimary = [
-      { title: 'Trang chủ', desc: 'Về trang chủ TIMKIEM', href: '/', icon: 'home', current: path === '/' || path === '' },
-      { title: 'Tất cả bài', desc: 'Danh sách bài viết mới', href: '/search', icon: 'posts' },
-      { title: 'Skill & Prompt', desc: 'Hướng dẫn AI / Skill', href: '/search/label/AI?max-results=12', icon: 'skill' },
-      { title: 'Mã nguồn mở', desc: 'Developer & API', href: '/search/label/Developer?max-results=12', icon: 'code' },
-      { title: 'Tools & Windows', desc: 'Thủ thuật và công cụ', href: '/search/label/Tools?max-results=12', icon: 'tools' },
-      { title: 'Tìm kiếm', desc: 'Mở tìm kiếm nhanh', icon: 'search', action: 'search' }
+      { title: 'Trang chủ', desc: 'Home', href: '/', icon: 'home', current: path === '/' || path === '' },
+      { title: 'Bài viết', desc: 'Mới nhất', href: '/search', icon: 'posts' },
+      { title: 'Skill', desc: 'AI / Prompt', href: '/search/label/AI?max-results=12', icon: 'skill' },
+      { title: 'Mã nguồn', desc: 'Dev & API', href: '/search/label/Developer?max-results=12', icon: 'code' },
+      { title: 'Tools', desc: 'Windows & tip', href: '/search/label/Tools?max-results=12', icon: 'tools' },
+      { title: 'Telegram', desc: 'Hỗ trợ', href: 'https://t.me/superkhung', icon: 'telegram', external: true }
     ];
     cardsPrimary.forEach(function (item) { addCard(grid1, item); });
-    nav.appendChild(grid1);
-
-    var secConnect = el('div', 'qcx-menu-section', 'Kết nối');
-    nav.appendChild(secConnect);
-    var grid2 = el('div', 'qcx-menu-card-grid');
-    addCard(grid2, {
-      title: 'Telegram',
-      desc: 'Hỗ trợ & cập nhật nhanh',
-      href: 'https://t.me/superkhung',
-      icon: 'telegram',
-      external: true
-    });
     if (/\/p\/admin\.html/i.test(path) || document.documentElement.getAttribute('data-qcx-admin') === '1') {
-      addCard(grid2, { title: 'Admin', desc: 'Soạn bài & vault', href: '/p/admin.html', icon: 'admin' });
+      addCard(grid1, { title: 'Admin', desc: 'Soạn bài', href: '/p/admin.html', icon: 'admin' });
     }
-    nav.appendChild(grid2);
+    nav.appendChild(grid1);
 
     var rawLinks = document.querySelectorAll('#Label1 a[href*="/search/label/"], .widget.Label a[href*="/search/label/"]');
     var allLabels = {};
@@ -386,7 +374,7 @@
       var secLab = el('div', 'qcx-menu-section', 'Nhãn');
       nav.appendChild(secLab);
       var cloud = el('div', 'qcx-menu-labels-cloud');
-      labelKeys.slice(0, 24).forEach(function (k) {
+      labelKeys.slice(0, 12).forEach(function (k) {
         var item = allLabels[k];
         var chip = el('a', 'qcx-menu-chip', item.name);
         chip.href = item.href;
@@ -399,15 +387,18 @@
     var footer = document.getElementById('qcx-menu-footer');
     if (footer) {
       footer.innerHTML = '';
-      var cta = el('a', 'qcx-menu-footer-cta', 'Mở Telegram');
-      cta.href = 'https://t.me/superkhung';
-      cta.setAttribute('rel', 'noopener noreferrer');
-      cta.setAttribute('target', '_blank');
-      cta.setAttribute('aria-label', 'Mở Telegram hỗ trợ');
+      var cta = el('button', 'qcx-menu-footer-cta', 'Tìm kiếm');
+      cta.type = 'button';
+      cta.setAttribute('aria-label', 'Mở tìm kiếm');
+      cta.addEventListener('click', function () {
+        if (typeof window.qcxOpenSearch === 'function') window.qcxOpenSearch();
+        var closeBtn = document.getElementById('qcx-menu-close');
+        if (closeBtn) closeBtn.click();
+      });
       footer.appendChild(cta);
     }
 
-    nav.setAttribute('data-qcx-enhanced', 'mint-cards-v4-current');
+    nav.setAttribute('data-qcx-enhanced', 'mint-cards-v5-compact');
   }
 
   function hookMenu() {
