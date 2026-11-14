@@ -241,7 +241,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.80/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.81/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -477,8 +477,15 @@
       '#qcx-menu-header{display:flex!important;align-items:center!important;justify-content:space-between!important;' +
       'padding:10px 16px 6px!important;flex-shrink:0!important;gap:10px!important;max-width:960px!important;' +
       'width:100%!important;margin:0 auto!important;box-sizing:border-box!important}' +
-      '#qcx-menu-logo{font:700 14px/1.2 system-ui,-apple-system,sans-serif!important;color:#e8fff2!important;' +
-      'letter-spacing:.03em!important;text-transform:none!important}' +
+      '#qcx-menu-logo{display:inline-flex!important;align-items:center!important;gap:8px!important;' +
+      'font:800 14px/1.2 system-ui,-apple-system,sans-serif!important;color:#28d28c!important;' +
+      'letter-spacing:.02em!important;text-transform:none!important;-webkit-text-fill-color:#28d28c!important}' +
+      '#qcx-menu-logo .qcx-menu-logo-mark{width:22px!important;height:22px!important;display:block!important;flex:0 0 auto!important}' +
+      '#qcx-menu-logo .qcx-menu-logo-text{color:#28d28c!important;-webkit-text-fill-color:#28d28c!important;font-weight:800!important}' +
+      '.qcx-brand-svg .qcx-ghost-art image,.qcx-brand-mark .qcx-ghost-art image{' +
+      'filter:contrast(1.12) saturate(1.18)!important}' +
+      '.qcx-brand-svg .qcx-eye-socket{fill:#eafff4!important}' +
+      '.qcx-brand-svg .qcx-eye{fill:#0a1210!important}' +
       '#qcx-menu-close{width:34px!important;height:34px!important;display:grid!important;place-items:center!important;' +
       'background:transparent!important;border:0!important;border-radius:10px!important;cursor:pointer!important;' +
       'flex-shrink:0!important;line-height:1!important;color:rgba(190,211,198,.72)!important;font-size:18px!important;' +
@@ -606,12 +613,13 @@
       'display:flex!important;align-items:center!important;justify-content:center!important}' +
       '.footer-navigation-bar>div>ul>li>a,#qcx-native-tabbar>div>ul>li>a{display:flex!important;flex-direction:column!important;' +
       'align-items:center!important;justify-content:center!important;width:100%!important;min-height:48px!important;' +
-      'padding:4px 2px!important;font-family:var(--mono)!important;font-size:10px!important;font-weight:600!important;' +
-      'text-decoration:none!important;gap:2px!important;color:rgba(190,211,198,.72)!important;fill:rgba(190,211,198,.72)!important;' +
+      'padding:4px 2px!important;font-family:var(--mono)!important;font-size:10px!important;font-weight:700!important;' +
+      'text-decoration:none!important;gap:2px!important;color:#9ecbb8!important;fill:#9ecbb8!important;' +
       'box-sizing:border-box!important;-webkit-tap-highlight-color:transparent;touch-action:manipulation}' +
       '.footer-navigation-bar>div>ul>li>a>.icon,#qcx-native-tabbar>div>ul>li>a>.icon{width:24px!important;height:24px!important;' +
       'display:flex!important;align-items:center!important;justify-content:center!important}' +
-      '.footer-navigation-bar>div>ul>li>a>.icon>svg,#qcx-native-tabbar>div>ul>li>a>.icon>svg{width:22px!important;height:22px!important;fill:currentColor!important}' +
+      '.footer-navigation-bar>div>ul>li>a>.icon>svg,#qcx-native-tabbar>div>ul>li>a>.icon>svg{width:22px!important;height:22px!important;fill:currentColor!important;stroke:currentColor!important}' +
+      '.footer-navigation-bar>div>ul>li>a>.icon>svg [stroke],#qcx-native-tabbar>div>ul>li>a>.icon>svg [stroke]{stroke-width:2.4!important}' +
       '.footer-navigation-bar>div>ul>li>a>.title,#qcx-native-tabbar>div>ul>li>a>.title{font-size:10px!important;line-height:1.1!important;' +
       'white-space:nowrap!important;overflow:hidden!important;max-width:100%!important;text-overflow:ellipsis!important}' +
       '.footer-navigation-bar>div>ul>li>a:hover,#qcx-native-tabbar>div>ul>li>a:hover,' +
@@ -725,7 +733,7 @@
     ensureNativeTabbarCss();
     var searchLiHtml =
       '<li><a aria-label=\"Tìm kiếm\" class=\"open-search\" href=\"javascript:void(0)\" role=\"button\" title=\"Tìm kiếm\">' +
-      '<div class=\"icon\"><svg height=\"22\" viewBox=\"0 0 24 24\" width=\"22\" fill=\"none\"><circle cx=\"11\" cy=\"11\" r=\"7\" stroke=\"currentColor\" stroke-width=\"1.8\"/><path d=\"M16.5 16.5L21 21\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"/></svg></div>' +
+      '<div class=\"icon\"><svg height=\"22\" viewBox=\"0 0 24 24\" width=\"22\" fill=\"none\"><circle cx=\"11\" cy=\"11\" r=\"7\" stroke=\"currentColor\" stroke-width=\"2.4\"/><path d=\"M16.5 16.5L21 21\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\"/></svg></div>' +
       '<div class=\"title\">Search</div></a></li>';
     var existing = document.getElementById('qcx-native-tabbar') || document.querySelector('.footer-navigation-bar');
     if (existing) {

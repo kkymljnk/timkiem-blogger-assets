@@ -268,7 +268,7 @@
   function buildNavMenu() {
     var nav = document.getElementById('qcx-menu-nav');
     if (!nav) return;
-    if (nav.getAttribute('data-qcx-enhanced') === 'mint-cards-v5-compact') return;
+    if (nav.getAttribute('data-qcx-enhanced') === 'mint-cards-v6-logo') return;
     function el(tag, cls, txt) {
       var node = document.createElement(tag);
       if (cls) node.className = cls;
@@ -334,7 +334,13 @@
 
     nav.innerHTML = '';
     var logo = document.getElementById('qcx-menu-logo');
-    if (logo) logo.textContent = 'CÔNG CỤ.AI';
+    if (logo) {
+      logo.innerHTML =
+        '<svg class="qcx-menu-logo-mark" width="22" height="22" viewBox="0 0 40 40" fill="none" aria-hidden="true">' +
+        '<path d="M30 0H10C4.48 0 0 4.48 0 10V30C0 35.52 4.48 40 10 40H30C35.52 40 40 35.52 40 30V10C40 4.48 35.52 0 30 0Z" fill="#28d28c"/>' +
+        '<path d="M15.39 14.61C17.1 14.33 18.72 15.49 19 17.21C19.27 18.92 18.11 20.54 16.39 20.82C14.68 21.1 13.06 19.93 12.79 18.22C12.51 16.5 13.67 14.89 15.39 14.61ZM23.61 14.61C25.32 14.33 26.94 15.49 27.22 17.21C27.5 18.92 26.33 20.54 24.62 20.82C22.9 21.1 21.29 19.93 21.01 18.22C20.73 16.5 21.89 14.89 23.61 14.61ZM20 4.73C28.54 4.73 35.46 11.78 35.46 20.49H31.51C31.51 13.96 26.4 8.68 20 8.68C13.6 8.68 8.48 13.96 8.48 20.49H4.53C4.53 11.78 11.45 4.73 20 4.73Z" fill="#0a1210"/>' +
+        '</svg><span class="qcx-menu-logo-text">CÔNG CỤ.AI</span>';
+    }
 
     var secExplore = el('div', 'qcx-menu-section', 'Menu');
     nav.appendChild(secExplore);
@@ -387,7 +393,7 @@
     var footer = document.getElementById('qcx-menu-footer');
     if (footer) footer.innerHTML = '';
 
-    nav.setAttribute('data-qcx-enhanced', 'mint-cards-v5-compact');
+    nav.setAttribute('data-qcx-enhanced', 'mint-cards-v6-logo');
   }
 
   function hookMenu() {

@@ -261,12 +261,27 @@ html[data-qcx-admin='1'] .footer-navigation-bar {
   gap: 10px !important;
 }
 #qcx-menu-logo {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
   font-family: 'Space Grotesk', var(--mono, 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace) !important;
-  font-size: 15px !important;
-  font-weight: 700 !important;
-  color: #e8fff2 !important;
-  letter-spacing: .12em !important;
-  text-transform: uppercase !important;
+  font-size: 14px !important;
+  font-weight: 800 !important;
+  color: #28d28c !important;
+  -webkit-text-fill-color: #28d28c !important;
+  letter-spacing: .02em !important;
+  text-transform: none !important;
+}
+#qcx-menu-logo .qcx-menu-logo-mark {
+  width: 22px !important;
+  height: 22px !important;
+  display: block !important;
+  flex: 0 0 auto !important;
+}
+#qcx-menu-logo .qcx-menu-logo-text {
+  color: #28d28c !important;
+  -webkit-text-fill-color: #28d28c !important;
+  font-weight: 800 !important;
 }
 #qcx-menu-close {
   width: 36px !important;
@@ -662,11 +677,12 @@ body.qcx-menu-open {
     font-weight: 600 !important;
     text-decoration: none !important;
     gap: 2px !important;
-    color: rgba(190, 211, 198, .72) !important;
-    fill: rgba(190, 211, 198, .72) !important;
+    color: #9ecbb8 !important;
+    fill: #9ecbb8 !important;
     box-sizing: border-box !important;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
+    font-weight: 700 !important;
   }
   .footer-navigation-bar > div > ul > li > a > .icon,
   #qcx-native-tabbar > div > ul > li > a > .icon {
@@ -681,6 +697,11 @@ body.qcx-menu-open {
     width: 22px !important;
     height: 22px !important;
     fill: currentColor !important;
+    stroke: currentColor !important;
+  }
+  .footer-navigation-bar > div > ul > li > a > .icon > svg [stroke],
+  #qcx-native-tabbar > div > ul > li > a > .icon > svg [stroke] {
+    stroke-width: 2.4 !important;
   }
   .footer-navigation-bar > div > ul > li > a > .title,
   #qcx-native-tabbar > div > ul > li > a > .title {
