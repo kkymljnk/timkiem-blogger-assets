@@ -493,6 +493,19 @@
   var __qcxEyesSeqRaf = 0;
   var __qcxEyesTrack = { x: 0, y: 0, tx: 0, ty: 0, raf: 0, hovering: false };
 
+  function qcxLiveLogoParts() {
+    var host = document.getElementById('qcx-menu-logo');
+    var mark = (host && host.__qcxLogoSvg) || (host && host.querySelector('.qcx-menu-logo-mark'));
+    if (!mark) return null;
+    return {
+      host: host,
+      mark: mark,
+      eyes: mark.querySelector('.logo-eyes'),
+      left: mark.querySelector('.logo-eye-left'),
+      right: mark.querySelector('.logo-eye-right')
+    };
+  }
+
   function qcxEyesLookPx(eyes) {
     var w = 14;
     try {
@@ -505,7 +518,8 @@
       var r = eyes.getBoundingClientRect();
       if (r && r.width) w = Math.max(w, r.width);
     } catch (e2) {}
-    return Math.max(1.6, Math.min(4, w * 0.12));
+    /* Visible at 16px logo: ~2.5–5px look */
+    return Math.max(2.5, Math.min(5, w * 0.22));
   }
 
   function qcxEaseInOut(t) {
@@ -528,30 +542,34 @@
   }
 
   function playMenuLogoEyes(svg) {
-    if (!svg) return;
     if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    var eyes = svg.querySelector('.logo-eyes');
-    var left = svg.querySelector('.logo-eye-left');
-    var right = svg.querySelector('.logo-eye-right');
-    if (!eyes || !left || !right) return;
+    if (svg) {
+      var host0 = document.getElementById('qcx-menu-logo');
+      if (host0) host0.__qcxLogoSvg = svg;
+    }
+    var parts = qcxLiveLogoParts();
+    if (!parts || !parts.eyes || !parts.left || !parts.right) return;
     __qcxEyesBusy = true;
     if (__qcxEyesBusyTimer) clearTimeout(__qcxEyesBusyTimer);
     if (__qcxEyesSeqRaf) {
       window.cancelAnimationFrame(__qcxEyesSeqRaf);
       __qcxEyesSeqRaf = 0;
     }
-    eyes.style.transform = 'translate(0px,0px)';
-    left.style.transform = 'scaleY(1)';
-    right.style.transform = 'scaleY(1)';
-    var look = qcxEyesLookPx(eyes);
+    var look = qcxEyesLookPx(parts.eyes);
     var setX = function (x) {
-      eyes.style.transform = 'translate(' + x.toFixed(2) + 'px,0px)';
+      var p = qcxLiveLogoParts();
+      if (!p || !p.eyes) return;
+      p.eyes.style.transform = 'translate(' + x.toFixed(2) + 'px,0px)';
     };
     var setBlink = function (sy) {
-      left.style.transform = 'scaleY(' + sy.toFixed(3) + ')';
-      right.style.transform = 'scaleY(' + sy.toFixed(3) + ')';
+      var p = qcxLiveLogoParts();
+      if (!p || !p.left || !p.right) return;
+      p.left.style.transform = 'scaleY(' + sy.toFixed(3) + ')';
+      p.right.style.transform = 'scaleY(' + sy.toFixed(3) + ')';
     };
-    /* Aave: 0→+look 150@0; +→− 300@350; −→0 250@700; blink@1200 +150 */
+    setX(0);
+    setBlink(1);
+    /* Aave: 0→+look 150; +→− 300; −→0 250; double blink */
     qcxTween(0, look, 150, 0, setX, function () {
       qcxTween(look, -look, 300, 200, setX, function () {
         qcxTween(-look, 0, 250, 0, setX, function () {
@@ -559,9 +577,12 @@
             qcxTween(0.05, 1, 75, 0, setBlink, function () {
               qcxTween(1, 0.05, 75, 50, setBlink, function () {
                 qcxTween(0.05, 1, 75, 0, setBlink, function () {
-                  left.style.transform = '';
-                  right.style.transform = '';
-                  eyes.style.transform = 'translate(0px,0px)';
+                  var p = qcxLiveLogoParts();
+                  if (p) {
+                    if (p.left) p.left.style.transform = '';
+                    if (p.right) p.right.style.transform = '';
+                    if (p.eyes) p.eyes.style.transform = 'translate(0px,0px)';
+                  }
                   __qcxEyesBusy = false;
                 });
               });
@@ -580,8 +601,8 @@
     var host = document.getElementById('qcx-menu-logo');
     if (host) host.__qcxLogoSvg = svg;
     playMenuLogoEyes(svg);
-    if (host && host.getAttribute('data-qcx-aave-eyes-bound') === '4') return;
-    if (host) host.setAttribute('data-qcx-aave-eyes-bound', '4');
+    if (host && host.getAttribute('data-qcx-aave-eyes-bound') === '5') return;
+    if (host) host.setAttribute('data-qcx-aave-eyes-bound', '5');
     var timer = null;
     var arm = function () {
       var target = (host && host.__qcxLogoSvg) || svg;
@@ -598,24 +619,17 @@
           __qcxEyesTrack.raf = 0;
           return;
         }
-        var mark = host.__qcxLogoSvg || host.querySelector('.qcx-menu-logo-mark');
-        if (!mark) {
-          __qcxEyesTrack.raf = 0;
-          return;
-        }
-        var eyes = mark.querySelector('.logo-eyes');
-        if (!eyes) {
+        var p = qcxLiveLogoParts();
+        if (!p || !p.eyes) {
           __qcxEyesTrack.raf = 0;
           return;
         }
         __qcxEyesTrack.tx += (__qcxEyesTrack.x - __qcxEyesTrack.tx) * 0.28;
         __qcxEyesTrack.ty += (__qcxEyesTrack.y - __qcxEyesTrack.ty) * 0.28;
-        eyes.style.transform =
+        p.eyes.style.transform =
           'translate(' + __qcxEyesTrack.tx.toFixed(2) + 'px,' + __qcxEyesTrack.ty.toFixed(2) + 'px)';
-        var left = mark.querySelector('.logo-eye-left');
-        var right = mark.querySelector('.logo-eye-right');
-        if (left) left.style.transform = '';
-        if (right) right.style.transform = '';
+        if (p.left) p.left.style.transform = '';
+        if (p.right) p.right.style.transform = '';
         if (Math.abs(__qcxEyesTrack.x - __qcxEyesTrack.tx) > 0.05 ||
             Math.abs(__qcxEyesTrack.y - __qcxEyesTrack.ty) > 0.05) {
           __qcxEyesTrack.raf = window.requestAnimationFrame(applyTrack);
@@ -626,16 +640,14 @@
       var trackEyes = function (clientX, clientY) {
         if (__qcxEyesBusy) return;
         if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-        var mark = host.__qcxLogoSvg || host.querySelector('.qcx-menu-logo-mark');
-        if (!mark) return;
-        var eyes = mark.querySelector('.logo-eyes');
-        if (!eyes) return;
-        var rect = mark.getBoundingClientRect();
+        var p = qcxLiveLogoParts();
+        if (!p || !p.mark) return;
+        var rect = p.mark.getBoundingClientRect();
         if (!rect.width || !rect.height) return;
         var nx = ((clientX - rect.left) / rect.width) * 2 - 1;
         var ny = ((clientY - rect.top) / rect.height) * 2 - 1;
-        var maxX = 3.5;
-        var maxY = 1.5;
+        var maxX = 4.5;
+        var maxY = 2;
         __qcxEyesTrack.hovering = true;
         __qcxEyesTrack.x = Math.max(-maxX, Math.min(maxX, nx * maxX));
         __qcxEyesTrack.y = Math.max(-maxY, Math.min(maxY, ny * maxY));
