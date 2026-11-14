@@ -26,11 +26,13 @@
       '#qcx-menu-logo{color:#fff!important;-webkit-text-fill-color:#fff!important;cursor:pointer!important;position:relative!important}',
       '#qcx-menu-logo .qcx-menu-logo-mark{overflow:visible!important;color:#fff}',
       '#qcx-menu-logo .qcx-menu-logo-mark path{fill:#fff!important}',
-      '#qcx-menu-logo .qcx-menu-logo-mark .logo-eyes,',
+      '/* Aave live: fill-box + translateX(%) look + scaleY blink */',
+      '#qcx-menu-logo .qcx-menu-logo-mark .logo-eyes{',
+      '  transform-box:fill-box;transform-origin:center;will-change:transform;',
+      '}',
       '#qcx-menu-logo .qcx-menu-logo-mark .logo-eye-left,',
       '#qcx-menu-logo .qcx-menu-logo-mark .logo-eye-right{',
-      '  /* view-box so 2% look matches Aave Motion x:2% */',
-      '  transform-box:view-box;transform-origin:center;will-change:transform;',
+      '  transform-box:fill-box;transform-origin:center;will-change:transform;',
       '}',
       '#qcx-logo-brand-backdrop{position:fixed;inset:0;z-index:2147482999;background:transparent}',
       '#qcx-logo-brand-backdrop[hidden]{display:none!important}',
@@ -490,11 +492,21 @@
     '<path d="M108.37 15.37H106.459V4.135H108.37L111.991 13.08L115.618 4.135H117.555V15.37H115.644V11.909Q115.644 11.06 115.647 10.486Q115.649 9.912 115.662 9.51Q115.675 9.108 115.696 8.804Q115.717 8.5 115.754 8.191L112.898 15.37H111.084L108.239 8.205Q108.324 8.715 108.347 9.501Q108.37 10.287 108.37 11.349Z" fill="black"/>' +
     '</svg>';
 
-  /* Aave logo motion (Motion timeline) via style.transform rAF — no SVG attr (avoids double). */
+  /*
+   * Aave.com logo eyes — measured live from Motion timeline on aave.com:
+   *   style: translateX(%) on .logo-eyes (fill-box), scaleY on each eye path (fill-box)
+   *   Sequence (at:"+N" = N seconds AFTER previous segment ends):
+   *     0.00  eyes 0%→+2%   150ms
+   *     0.50  eyes +2%→−2%  300ms   (gap 350ms)
+   *     1.15  eyes −2%→0%   250ms   (gap 350ms)
+   *     1.90  both blink [1,0,1] 150ms  (gap 500ms)
+   *     2.10  both blink [1,0,1] 150ms  (gap 50ms)
+   *   Triggers: every 10s + scroll (same as Aave). Hover also replays.
+   */
   var __qcxEyesBusy = false;
   var __qcxEyesBusyTimer = null;
   var __qcxEyesSeqRaf = 0;
-  var __qcxEyesTrack = { x: 0, y: 0, tx: 0, ty: 0, raf: 0, hovering: false };
+  var __qcxEyesPlayGen = 0;
 
   function qcxLiveLogoParts() {
     var host = document.getElementById('qcx-menu-logo');
@@ -512,33 +524,13 @@
     };
   }
 
-  function qcxEyesLookPx(mark) {
-    /* Aave Motion: x 2% of logo (view-box). Our mark ~120px → ~2.4px. */
-    var w = 120;
-    try {
-      var r = mark.getBoundingClientRect();
-      if (r && r.width) w = r.width;
-    } catch (e) {}
-    return Math.max(1.5, Math.min(2.8, w * 0.02));
-  }
-
-  function qcxEaseInOut(t) {
+  function qcxEase(t) {
+    /* Motion default-ish ease-in-out */
     return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
   }
 
-  function qcxTween(from, to, dur, delay, onUpdate, onDone) {
-    var startAt = performance.now() + (delay || 0);
-    function frame(now) {
-      if (now < startAt) {
-        __qcxEyesSeqRaf = window.requestAnimationFrame(frame);
-        return;
-      }
-      var t = Math.min(1, (now - startAt) / Math.max(1, dur));
-      onUpdate(from + (to - from) * qcxEaseInOut(t));
-      if (t < 1) __qcxEyesSeqRaf = window.requestAnimationFrame(frame);
-      else if (onDone) onDone();
-    }
-    __qcxEyesSeqRaf = window.requestAnimationFrame(frame);
+  function qcxLerp(a, b, t) {
+    return a + (b - a) * t;
   }
 
   function qcxResetEyesTransform(p) {
@@ -557,15 +549,42 @@
     }
   }
 
-  var __qcxEyesPlayGen = 0;
   function qcxReduceMotion() {
     return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
   }
+
+  /* Sample Aave look % at time t (seconds from sequence start). */
+  function qcxAaveLookPct(t) {
+    if (t < 0) return 0;
+    if (t < 0.15) return qcxLerp(0, 2, qcxEase(t / 0.15));
+    if (t < 0.5) return 2;
+    if (t < 0.8) return qcxLerp(2, -2, qcxEase((t - 0.5) / 0.3));
+    if (t < 1.15) return -2;
+    if (t < 1.4) return qcxLerp(-2, 0, qcxEase((t - 1.15) / 0.25));
+    return 0;
+  }
+
+  /* Sample Aave blink scaleY [1,0,1] keyframes (equal offsets). */
+  function qcxAaveBlinkSy(u) {
+    if (u < 0 || u > 0.15) return null;
+    if (u < 0.075) return qcxLerp(1, 0, qcxEase(u / 0.075));
+    return qcxLerp(0, 1, qcxEase((u - 0.075) / 0.075));
+  }
+
+  function qcxAaveBlinkAt(t) {
+    /* Later blink wins when both active (Motion replaces). */
+    var a = qcxAaveBlinkSy(t - 1.9);
+    var b = qcxAaveBlinkSy(t - 2.1);
+    if (b != null) return b;
+    if (a != null) return a;
+    return 1;
+  }
+
   function playMenuLogoEyes(svg, opts) {
     opts = opts || {};
     var force = !!opts.force;
     var reduce = qcxReduceMotion();
-    /* Auto/interval skipped when reduce; hover still gets Aave blink. */
+    /* Aave still plays look+blink even with OS reduce in practice; we only skip auto spam. */
     if (reduce && opts.auto && !force) return;
     if (svg && svg.isConnected) {
       var host0 = document.getElementById('qcx-menu-logo');
@@ -580,70 +599,61 @@
       window.cancelAnimationFrame(__qcxEyesSeqRaf);
       __qcxEyesSeqRaf = 0;
     }
-    /* Clear any leftover SVG attr that used to double with CSS. */
     qcxResetEyesTransform(parts);
-    var look = reduce ? 0 : qcxEyesLookPx(parts.mark);
-    var setX = function (x) {
-      if (gen !== __qcxEyesPlayGen) return;
+    var t0 = performance.now();
+    var TOTAL = 2.25; /* last blink ends ~2.25s */
+
+    function paint(tSec) {
       var p = qcxLiveLogoParts();
-      if (!p || !p.eyes) return;
-      p.eyes.style.transform = 'translate(' + x.toFixed(2) + 'px,0px)';
-    };
-    var setBlink = function (sy) {
-      if (gen !== __qcxEyesPlayGen) return;
-      var p = qcxLiveLogoParts();
-      if (!p || !p.left || !p.right) return;
-      var s = 'scaleY(' + sy.toFixed(3) + ')';
-      p.left.style.transform = s;
-      p.right.style.transform = s;
-    };
-    var finish = function () {
-      if (gen !== __qcxEyesPlayGen) return;
-      qcxResetEyesTransform(qcxLiveLogoParts());
-      __qcxEyesBusy = false;
-    };
-    /* Aave blink: scaleY [1,0,1] in 150ms */
-    var blinkOnce = function (delay, done) {
-      qcxTween(1, 0, 75, delay || 0, setBlink, function () {
-        if (gen !== __qcxEyesPlayGen) return;
-        qcxTween(0, 1, 75, 0, setBlink, done);
-      });
-    };
-    var doubleBlink = function (delay, done) {
-      blinkOnce(delay, function () {
-        if (gen !== __qcxEyesPlayGen) return;
-        blinkOnce(50, done);
-      });
-    };
-    setX(0);
-    setBlink(1);
-    if (reduce || look < 0.5) {
-      doubleBlink(0, finish);
-      __qcxEyesBusyTimer = window.setTimeout(function () {
-        if (gen === __qcxEyesPlayGen) __qcxEyesBusy = false;
-      }, 500);
-      return;
+      if (!p || !p.eyes || !p.left || !p.right) return;
+      if (reduce) {
+        /* Soft path: blink only, compressed */
+        var syR = 1;
+        var u1 = tSec - 0;
+        var u2 = tSec - 0.2;
+        var b1 = qcxAaveBlinkSy(u1);
+        var b2 = qcxAaveBlinkSy(u2);
+        if (b2 != null) syR = b2;
+        else if (b1 != null) syR = b1;
+        p.eyes.style.transform = '';
+        p.left.style.transform = syR === 1 ? '' : 'scaleY(' + syR.toFixed(5) + ')';
+        p.right.style.transform = p.left.style.transform;
+        return;
+      }
+      var pct = qcxAaveLookPct(tSec);
+      var sy = qcxAaveBlinkAt(tSec);
+      if (Math.abs(pct) < 0.001) p.eyes.style.transform = '';
+      else p.eyes.style.transform = 'translateX(' + pct.toFixed(5) + '%)';
+      if (sy >= 0.999) {
+        p.left.style.transform = '';
+        p.right.style.transform = '';
+      } else {
+        var s = 'scaleY(' + sy.toFixed(5) + ')';
+        p.left.style.transform = s;
+        p.right.style.transform = s;
+      }
     }
-    /*
-     * Aave Motion timeline (absolute):
-     * 0.00 eyes 0→+2% 150ms
-     * 0.35 eyes +2%→−2% 300ms
-     * 0.70 eyes −2%→0 250ms
-     * 1.20 blink1 150ms; 1.25 blink2 150ms
-     */
-    qcxTween(0, look, 150, 0, setX, function () {
+
+    function frame(now) {
       if (gen !== __qcxEyesPlayGen) return;
-      qcxTween(look, -look, 300, 200, setX, function () {
-        if (gen !== __qcxEyesPlayGen) return;
-        qcxTween(-look, 0, 250, 50, setX, function () {
-          if (gen !== __qcxEyesPlayGen) return;
-          doubleBlink(250, finish);
-        });
-      });
-    });
+      var tSec = (now - t0) / 1000;
+      var end = reduce ? 0.4 : TOTAL;
+      paint(Math.min(tSec, end));
+      if (tSec < end) {
+        __qcxEyesSeqRaf = window.requestAnimationFrame(frame);
+      } else {
+        qcxResetEyesTransform(qcxLiveLogoParts());
+        __qcxEyesBusy = false;
+        __qcxEyesSeqRaf = 0;
+      }
+    }
+    __qcxEyesSeqRaf = window.requestAnimationFrame(frame);
     __qcxEyesBusyTimer = window.setTimeout(function () {
-      if (gen === __qcxEyesPlayGen) __qcxEyesBusy = false;
-    }, 1600);
+      if (gen === __qcxEyesPlayGen) {
+        qcxResetEyesTransform(qcxLiveLogoParts());
+        __qcxEyesBusy = false;
+      }
+    }, reduce ? 500 : 2400);
   }
   window.__qcxPlayMenuLogoEyes = playMenuLogoEyes;
 
@@ -653,8 +663,8 @@
     if (host && svg.isConnected) host.__qcxLogoSvg = svg;
     qcxResetEyesTransform(qcxLiveLogoParts());
     if (!__qcxEyesBusy) playMenuLogoEyes(svg, { auto: true });
-    if (host && host.getAttribute('data-qcx-aave-eyes-bound') === '8') return;
-    if (host) host.setAttribute('data-qcx-aave-eyes-bound', '8');
+    if (host && host.getAttribute('data-qcx-aave-eyes-bound') === '9') return;
+    if (host) host.setAttribute('data-qcx-aave-eyes-bound', '9');
     var timer = null;
     var arm = function () {
       if (timer) clearInterval(timer);
@@ -665,65 +675,10 @@
     };
     window.addEventListener('scroll', arm, { passive: true });
     if (host) {
-      var applyTrack = function () {
-        if (__qcxEyesBusy || !__qcxEyesTrack.hovering || qcxReduceMotion()) {
-          __qcxEyesTrack.raf = 0;
-          return;
-        }
-        var p = qcxLiveLogoParts();
-        if (!p || !p.eyes) {
-          __qcxEyesTrack.raf = 0;
-          return;
-        }
-        __qcxEyesTrack.tx += (__qcxEyesTrack.x - __qcxEyesTrack.tx) * 0.22;
-        __qcxEyesTrack.ty += (__qcxEyesTrack.y - __qcxEyesTrack.ty) * 0.22;
-        p.eyes.style.transform =
-          'translate(' + __qcxEyesTrack.tx.toFixed(2) + 'px,' + __qcxEyesTrack.ty.toFixed(2) + 'px)';
-        if (Math.abs(__qcxEyesTrack.x - __qcxEyesTrack.tx) > 0.04 ||
-            Math.abs(__qcxEyesTrack.y - __qcxEyesTrack.ty) > 0.04) {
-          __qcxEyesTrack.raf = window.requestAnimationFrame(applyTrack);
-        } else {
-          __qcxEyesTrack.raf = 0;
-        }
-      };
-      var trackEyes = function (clientX, clientY) {
-        if (__qcxEyesBusy || qcxReduceMotion()) return;
-        var p = qcxLiveLogoParts();
-        if (!p || !p.mark) return;
-        var rect = p.mark.getBoundingClientRect();
-        if (!rect.width || !rect.height) return;
-        var nx = ((clientX - rect.left) / rect.width) * 2 - 1;
-        var ny = ((clientY - rect.top) / rect.height) * 2 - 1;
-        /* Keep track within Aave 2% look range so pupils stay in the ghost. */
-        var maxX = qcxEyesLookPx(p.mark);
-        var maxY = Math.max(0.8, maxX * 0.45);
-        __qcxEyesTrack.hovering = true;
-        __qcxEyesTrack.x = Math.max(-maxX, Math.min(maxX, nx * maxX));
-        __qcxEyesTrack.y = Math.max(-maxY, Math.min(maxY, ny * maxY));
-        if (!__qcxEyesTrack.raf) {
-          __qcxEyesTrack.raf = window.requestAnimationFrame(applyTrack);
-        }
-      };
-      var resetEyes = function () {
-        __qcxEyesTrack.hovering = false;
-        __qcxEyesTrack.x = 0;
-        __qcxEyesTrack.y = 0;
-        __qcxEyesTrack.tx = 0;
-        __qcxEyesTrack.ty = 0;
-        if (__qcxEyesTrack.raf) {
-          window.cancelAnimationFrame(__qcxEyesTrack.raf);
-          __qcxEyesTrack.raf = 0;
-        }
-        if (__qcxEyesBusy) return;
-        qcxResetEyesTransform(qcxLiveLogoParts());
-      };
+      /* Aave has no pointer-track — only replay the sequence on enter. */
       host.addEventListener('pointerenter', function () {
         playMenuLogoEyes(null, { force: true });
       });
-      host.addEventListener('pointermove', function (ev) { trackEyes(ev.clientX, ev.clientY); });
-      host.addEventListener('mousemove', function (ev) { trackEyes(ev.clientX, ev.clientY); });
-      host.addEventListener('pointerleave', resetEyes);
-      host.addEventListener('mouseleave', resetEyes);
     }
     arm();
   }

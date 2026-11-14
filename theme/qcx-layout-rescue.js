@@ -324,7 +324,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.105/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.106/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -599,7 +599,7 @@
       'letter-spacing:.02em!important;text-transform:none!important;-webkit-text-fill-color:#fff!important}' +
       '#qcx-menu-logo .qcx-menu-logo-mark{height:16px!important;width:auto!important;display:block!important;flex:0 0 auto!important;overflow:visible!important}' +
       '#qcx-menu-logo .qcx-menu-logo-mark path{fill:#fff!important}' +
-      '#qcx-menu-logo .qcx-menu-logo-mark .logo-eyes,#qcx-menu-logo .qcx-menu-logo-mark .logo-eye-left,#qcx-menu-logo .qcx-menu-logo-mark .logo-eye-right{transform-box:view-box;transform-origin:center}' +
+      '#qcx-menu-logo .qcx-menu-logo-mark .logo-eyes,#qcx-menu-logo .qcx-menu-logo-mark .logo-eye-left,#qcx-menu-logo .qcx-menu-logo-mark .logo-eye-right{transform-box:fill-box;transform-origin:center}' +
       '#qcx-menu-logo .qcx-menu-logo-text{color:#fff!important;-webkit-text-fill-color:#fff!important;font-weight:800!important}' +
       '.qcx-brand-svg .qcx-ghost-art image,.qcx-brand-mark .qcx-ghost-art image{filter:none!important}' +
       '.qcx-avatar{position:relative!important;overflow:visible!important}' +
@@ -1019,6 +1019,7 @@
     }
     /* Desktop: no PC menu FAB — strip leftover button if present. */
     ensureDesktopMenuButton();
+    bindMenuCloseControls();
   }
 
   function ensureDesktopMenuButton() {
