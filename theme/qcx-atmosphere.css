@@ -1293,3 +1293,133 @@ html[data-qcx-admin='1'] #qcx-admin-root:has(.gate:not(.hidden)) #btnLogout {
   }
   /* Click blink still runs under reduced-motion (auto-blink is skipped in JS). */
 }
+
+/* ==================================================
+   Hero CTA — pro primary / secondary
+================================================== */
+.qcx-hero-cta,
+.qcx-hero-cta.qcx-hero-cta--pro {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  gap: 10px !important;
+  margin-top: 14px !important;
+  width: 100% !important;
+  max-width: 420px !important;
+}
+.qcx-hero-cta .qcx-cta-btn,
+.qcx-hero-cta--pro .qcx-cta-btn {
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  width: 100% !important;
+  min-height: 48px !important;
+  padding: 0 18px !important;
+  border-radius: 12px !important;
+  border: 1px solid transparent !important;
+  font-family: var(--sans, 'Space Grotesk', system-ui, sans-serif) !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  letter-spacing: -.01em !important;
+  line-height: 1 !important;
+  text-decoration: none !important;
+  text-transform: none !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  transition:
+    background-color .18s ease,
+    border-color .18s ease,
+    color .18s ease,
+    box-shadow .18s ease,
+    transform .18s ease !important;
+}
+.qcx-hero-cta .qcx-cta-btn:not(.qcx-cta-outline),
+.qcx-hero-cta--pro .qcx-cta-btn:not(.qcx-cta-outline) {
+  background: linear-gradient(180deg, #34e6a0 0%, #1fd68a 100%) !important;
+  border-color: rgba(0, 0, 0, .18) !important;
+  color: #06140e !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, .28) inset,
+    0 10px 28px rgba(0, 240, 163, .22) !important;
+}
+.qcx-hero-cta .qcx-cta-btn:not(.qcx-cta-outline):hover,
+.qcx-hero-cta .qcx-cta-btn:not(.qcx-cta-outline):focus-visible,
+.qcx-hero-cta--pro .qcx-cta-btn:not(.qcx-cta-outline):hover,
+.qcx-hero-cta--pro .qcx-cta-btn:not(.qcx-cta-outline):focus-visible {
+  background: linear-gradient(180deg, #4af0b0 0%, #28d28c 100%) !important;
+  color: #04100b !important;
+  transform: translateY(-1px) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, .34) inset,
+    0 14px 34px rgba(0, 240, 163, .3) !important;
+  outline: 0 !important;
+}
+.qcx-hero-cta .qcx-cta-btn:not(.qcx-cta-outline):active,
+.qcx-hero-cta--pro .qcx-cta-btn:not(.qcx-cta-outline):active {
+  transform: translateY(0) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, .18) inset,
+    0 6px 16px rgba(0, 240, 163, .18) !important;
+}
+.qcx-hero-cta .qcx-cta-outline,
+.qcx-hero-cta--pro .qcx-cta-outline {
+  background: rgba(255, 255, 255, .03) !important;
+  border: 1px solid rgba(0, 240, 163, .28) !important;
+  color: #e8fff2 !important;
+  font-weight: 650 !important;
+  box-shadow: none !important;
+}
+.qcx-hero-cta .qcx-cta-outline:hover,
+.qcx-hero-cta .qcx-cta-outline:focus-visible,
+.qcx-hero-cta--pro .qcx-cta-outline:hover,
+.qcx-hero-cta--pro .qcx-cta-outline:focus-visible {
+  background: rgba(0, 240, 163, .08) !important;
+  border-color: rgba(0, 240, 163, .5) !important;
+  color: #fff !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, .28) !important;
+  outline: 0 !important;
+}
+.qcx-cta-ico {
+  display: inline-flex !important;
+  width: 16px !important;
+  height: 16px !important;
+  flex: 0 0 auto !important;
+  opacity: .92 !important;
+}
+.qcx-cta-ico svg {
+  display: block !important;
+  width: 16px !important;
+  height: 16px !important;
+}
+.qcx-cta-label {
+  min-width: 0 !important;
+}
+@media (min-width: 861px) {
+  .qcx-hero-cta,
+  .qcx-hero-cta.qcx-hero-cta--pro {
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    max-width: none !important;
+    gap: 12px !important;
+  }
+  .qcx-hero-cta .qcx-cta-btn,
+  .qcx-hero-cta--pro .qcx-cta-btn {
+    width: auto !important;
+    min-width: 168px !important;
+    padding: 0 20px !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .qcx-hero-cta .qcx-cta-btn {
+    transition: none !important;
+  }
+  .qcx-hero-cta .qcx-cta-btn:hover,
+  .qcx-hero-cta .qcx-cta-btn:focus-visible,
+  .qcx-hero-cta .qcx-cta-btn:active {
+    transform: none !important;
+  }
+}

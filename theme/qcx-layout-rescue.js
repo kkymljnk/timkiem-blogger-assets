@@ -277,9 +277,12 @@
       '<h1 class="qcx-hero-title" data-enter="title">' + escapeHtml(title) + '</h1>' +
       '<div class="qcx-hero-divider"></div>' +
       '<p class="qcx-bio" data-enter="bio">Công cụ AI, tài nguyên và mã nguồn thực chiến. Hỗ trợ qua Telegram.</p>' +
-      '<div class="qcx-hero-cta" data-enter="cta">' +
-      '<a class="qcx-cta-btn" href="/search">Khám phá bài viết</a>' +
-      '<a class="qcx-cta-btn qcx-cta-outline" href="https://t.me/superkhung" rel="noopener noreferrer" target="_blank">Hỗ trợ Telegram</a>' +
+      '<div class="qcx-hero-cta qcx-hero-cta--pro" data-enter="cta" data-qcx-cta-pro="1">' +
+      '<a class="qcx-cta-btn" href="/search/label/AI"><span class="qcx-cta-label">Khám phá AI</span>' +
+      '<span class="qcx-cta-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h12M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>' +
+      '<a class="qcx-cta-btn qcx-cta-outline" href="https://t.me/superkhung" rel="noopener noreferrer" target="_blank">' +
+      '<span class="qcx-cta-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.8 4.2 2.9 11.5c-.9.35-.9 1.62.05 1.9l4.7 1.45 1.8 5.55c.28.87 1.4 1.1 2.02.42l2.55-2.8 4.85 3.55c.78.57 1.88.17 2.12-.78L22.9 5.3c.25-1-.75-1.8-1.7-1.4z"/></svg></span>' +
+      '<span class="qcx-cta-label">Hỗ trợ Telegram</span></a>' +
       '</div>' +
       '</div>' +
       '<div class="qcx-avatar-wrap" data-enter="avatar">' + brandAvatarHtml() + '</div>';
@@ -304,6 +307,40 @@
     if (container) container.insertBefore(hero, container.firstChild);
   }
 
+  function polishHeroCta() {
+    var cta = document.querySelector('.qcx-hero-cta');
+    if (!cta || cta.getAttribute('data-qcx-cta-pro') === '1') return;
+    cta.setAttribute('data-qcx-cta-pro', '1');
+    cta.classList.add('qcx-hero-cta--pro');
+
+    var primary = cta.querySelector('a.qcx-cta-btn:not(.qcx-cta-outline)');
+    var secondary = cta.querySelector('a.qcx-cta-outline');
+    var arrow =
+      '<span class="qcx-cta-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none">' +
+      '<path d="M5 12h12M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
+    var tg =
+      '<span class="qcx-cta-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor">' +
+      '<path d="M21.8 4.2 2.9 11.5c-.9.35-.9 1.62.05 1.9l4.7 1.45 1.8 5.55c.28.87 1.4 1.1 2.02.42l2.55-2.8 4.85 3.55c.78.57 1.88.17 2.12-.78L22.9 5.3c.25-1-.75-1.8-1.7-1.4z"/></svg></span>';
+
+    if (primary && !primary.querySelector('.qcx-cta-ico')) {
+      var pText = (primary.textContent || 'Khám phá AI').replace(/\s+/g, ' ').trim() || 'Khám phá AI';
+      if (/khám phá bài/i.test(pText)) pText = 'Khám phá AI';
+      primary.innerHTML = '<span class="qcx-cta-label"></span>' + arrow;
+      primary.querySelector('.qcx-cta-label').textContent = pText;
+      if (!primary.getAttribute('href') || primary.getAttribute('href') === '/search') {
+        primary.setAttribute('href', '/search/label/AI');
+      }
+    }
+    if (secondary && !secondary.querySelector('.qcx-cta-ico')) {
+      var sText = (secondary.textContent || 'Hỗ trợ Telegram').replace(/\s+/g, ' ').trim() || 'Hỗ trợ Telegram';
+      secondary.innerHTML = tg + '<span class="qcx-cta-label"></span>';
+      secondary.querySelector('.qcx-cta-label').textContent = sText;
+      secondary.setAttribute('rel', 'noopener noreferrer');
+      secondary.setAttribute('target', '_blank');
+    }
+  }
+  window.__qcxPolishHeroCta = polishHeroCta;
+
   function relocateHeroForDesktopRail() {
     var hero = document.querySelector('.qcx-hero');
     if (!hero) return;
@@ -324,7 +361,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.112/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.113/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -1109,6 +1146,7 @@
     ensureRaisedChrome();
     ensureMenuDrawer();
     ensureMobileNavReady();
+    polishHeroCta();
     syncEmptyCommentsShell();
     if (!document.querySelector('.qcx-backdrop')) {
       var backdrop = document.createElement('div');
