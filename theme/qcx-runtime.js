@@ -374,6 +374,28 @@
     searchOverlay.appendChild(searchWindow);
     document.body.appendChild(searchOverlay);
 
+    /* Early stub — if init throws later, menu search still opens the overlay. */
+    window.qcxOpenSearch = function () {
+      try {
+        menu.classList.remove('open');
+        menu.setAttribute('aria-hidden', 'true');
+        backdrop.classList.remove('open');
+        backdrop.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('qcx-menu-open', 'qcx-panel-open');
+      } catch (ignoreClose) {}
+      searchOverlay.classList.add('open');
+      searchOverlay.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('qcx-panel-open');
+      try { searchInput.focus(); } catch (ignoreFocus) {}
+    };
+    menuSearch.onclick = function (event) {
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      if (typeof window.qcxOpenSearch === 'function') window.qcxOpenSearch();
+    };
+
     var searchEntries = [];
     var seenUrls = {};
     var searchFeedState = 'idle';
@@ -874,9 +896,16 @@
       window.setTimeout(function() { searchInput.focus(); }, 30);
     }
 
-    /* Public entry point — set before other binds so rescue/tabbar never see undefined. */
+    /* Replace early stub with full palette opener. */
     window.qcxOpenSearch = openSearch;
     window.qcxCloseSearch = closeSearch;
+    menuSearch.onclick = function (event) {
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      openSearch();
+    };
 
     /* Capture delegate: survives DOM swaps that drop bubble listeners on the row. */
     if (!window.__qcxMenuSearchDelegated) {

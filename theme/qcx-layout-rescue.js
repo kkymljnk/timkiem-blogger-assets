@@ -324,7 +324,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.111/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.112/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -1044,6 +1044,14 @@
       }
       menuSearch.setAttribute('aria-label', 'Mở tìm kiếm');
       menuSearch.setAttribute('type', 'button');
+      menuSearch.onclick = function (event) {
+        if (event) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        if (typeof window.qcxOpenSearch !== 'function') repairQcxOpenSearch();
+        openSearchFallback();
+      };
     }
     if (typeof window.qcxOpenSearch !== 'function') repairQcxOpenSearch();
     /* Stale drawer without Search row — tear down and rebuild. */

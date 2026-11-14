@@ -474,7 +474,52 @@
     var footer = document.getElementById('qcx-menu-footer');
     if (footer) footer.innerHTML = '';
 
+    bindMenuSearchButton();
     nav.setAttribute('data-qcx-enhanced', 'mint-cards-v12-eyes-live');
+  }
+
+  function openMenuSearchPalette(event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    if (typeof window.qcxOpenSearch === 'function') {
+      window.qcxOpenSearch();
+      return;
+    }
+    if (typeof window.__qcxOpenSearchFallback === 'function') {
+      window.__qcxOpenSearchFallback();
+      return;
+    }
+    var overlay = document.getElementById('qcx-mobile-search');
+    var input = overlay && overlay.querySelector('.qcx-mobile-search-input');
+    var menu = document.getElementById('qcx-menu');
+    var backdrop = document.getElementById('qcx-menu-backdrop');
+    if (menu) {
+      menu.classList.remove('open');
+      menu.setAttribute('aria-hidden', 'true');
+    }
+    if (backdrop) {
+      backdrop.classList.remove('open');
+      backdrop.setAttribute('aria-hidden', 'true');
+    }
+    document.body.classList.remove('qcx-menu-open');
+    if (!overlay) return;
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('qcx-panel-open');
+    if (input) {
+      try { input.focus(); } catch (ignoreFocus) {}
+    }
+  }
+
+  function bindMenuSearchButton() {
+    var btn = document.getElementById('qcx-menu-search');
+    if (!btn) return;
+    btn.setAttribute('type', 'button');
+    btn.setAttribute('aria-label', 'Mở tìm kiếm');
+    /* Property handler survives listener-stripping rebuilds better than addEventListener alone. */
+    btn.onclick = openMenuSearchPalette;
   }
 
   var QCX_MENU_LOGO_SVG_EXPORT =
@@ -825,6 +870,7 @@
     injectStyles();
     fixResponsiveArticleWidth();
     hookMenu();
+    bindMenuSearchButton();
     hookTutorialObserver();
     window.addEventListener('resize', fixResponsiveArticleWidth, { passive: true });
   }
