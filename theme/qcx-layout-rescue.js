@@ -241,7 +241,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.72/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.73/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -379,21 +379,21 @@
       'html[data-page-item=\"single\"] .qcx-comments-shell>h4.postAComment{' +
       'display:none!important;margin:0!important;padding:0!important;height:0!important;overflow:hidden!important;' +
       'border:0!important;background:transparent!important;box-shadow:none!important}' +
-      /* Collapse comments shell when it is only the stub (no form/list yet) */
-      'html[data-page-type=\"post\"] #comments:not(:has(.comment-form,.commentForm,iframe,.comment,#comment-editor,.qcx-comment-list)),' +
-      'html[data-page-type=\"page\"] #comments:not(:has(.comment-form,.commentForm,iframe,.comment,#comment-editor,.qcx-comment-list)),' +
-      'html[data-page-item=\"single\"] #comments:not(:has(.comment-form,.commentForm,iframe,.comment,#comment-editor,.qcx-comment-list)),' +
-      'html[data-page-type=\"post\"] .qcx-comments-shell:not(:has(.comment-form,.commentForm,iframe,.comment,#comment-editor,.qcx-comment-list)),' +
-      'html[data-page-type=\"page\"] .qcx-comments-shell:not(:has(.comment-form,.commentForm,iframe,.comment,#comment-editor,.qcx-comment-list)),' +
-      'html[data-page-item=\"single\"] .qcx-comments-shell:not(:has(.comment-form,.commentForm,iframe,.comment,#comment-editor,.qcx-comment-list)){' +
-      'display:none!important;height:0!important;max-height:0!important;overflow:hidden!important;margin:0!important;' +
-      'padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important}' +
+      /* Collapse empty comments shell — bare .comment-form wrappers do NOT count as content */
+      'html[data-page-type=\"post\"] #comments:not(:has(iframe,textarea,.comment,#comment-editor,.qcx-comment-list,.qcx-comment-item,.comment-body)),' +
+      'html[data-page-type=\"page\"] #comments:not(:has(iframe,textarea,.comment,#comment-editor,.qcx-comment-list,.qcx-comment-item,.comment-body)),' +
+      'html[data-page-item=\"single\"] #comments:not(:has(iframe,textarea,.comment,#comment-editor,.qcx-comment-list,.qcx-comment-item,.comment-body)),' +
+      'html[data-page-type=\"post\"] .qcx-comments-shell:not(:has(iframe,textarea,.comment,#comment-editor,.qcx-comment-list,.qcx-comment-item,.comment-body)),' +
+      'html[data-page-type=\"page\"] .qcx-comments-shell:not(:has(iframe,textarea,.comment,#comment-editor,.qcx-comment-list,.qcx-comment-item,.comment-body)),' +
+      'html[data-page-item=\"single\"] .qcx-comments-shell:not(:has(iframe,textarea,.comment,#comment-editor,.qcx-comment-list,.qcx-comment-item,.comment-body)),' +
+      '#comments[data-qcx-comments-empty=\"1\"],.qcx-comments-shell[data-qcx-comments-empty=\"1\"],' +
+      '#comments[data-qcx-unlock-chrome=\"1\"]:not(.is-settled):not(:has(iframe,textarea,.comment,#comment-editor,.qcx-comment-list,.qcx-comment-item,.comment-body)),' +
+      '.qcx-comments-shell[data-qcx-unlock-chrome=\"1\"]:not(.is-settled):not(:has(iframe,textarea,.comment,#comment-editor,.qcx-comment-list,.qcx-comment-item,.comment-body)){' +
+      'display:none!important;height:0!important;max-height:0!important;min-height:0!important;overflow:hidden!important;' +
+      'margin:0!important;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important}' +
       '#comments[data-qcx-unlock-chrome=\"1\"]:not(.is-settled),' +
       '.qcx-comments-shell[data-qcx-unlock-chrome=\"1\"]:not(.is-settled){' +
-      'border:0!important;background:transparent!important;box-shadow:none!important;padding:0!important;margin:0 0 8px!important}' +
-      '#comments[data-qcx-unlock-chrome=\"1\"]:not(.is-settled):not(:has(.comment-form,.commentForm,iframe,.comment,#comment-editor,.qcx-comment-list)),' +
-      '.qcx-comments-shell[data-qcx-unlock-chrome=\"1\"]:not(.is-settled):not(:has(.comment-form,.commentForm,iframe,.comment,#comment-editor,.qcx-comment-list)){' +
-      'display:none!important;height:0!important;max-height:0!important;overflow:hidden!important;margin:0!important}' +
+      'border:0!important;background:transparent!important;box-shadow:none!important;padding:0!important;margin:0!important}' +
       '@media (max-width:860px){.qcx-sidebar-rail.qcx-tutorial-inline,#qcx-sidebar-rail-rescue.qcx-tutorial-inline{' +
       'display:block!important;width:100%!important;margin:12px 0 16px!important;padding:12px!important;' +
       'box-sizing:border-box!important;border:1px solid rgba(28,36,32,.14)!important;border-radius:14px!important;' +
@@ -811,12 +811,25 @@
   }
   window.__qcxEnsureMobileNavReady = ensureMobileNavReady;
 
+  /* Mark empty #comments shells so CSS can collapse the leftover pill card. */
+  function syncEmptyCommentsShell() {
+    var box = document.getElementById('comments') || document.querySelector('.qcx-comments-shell');
+    if (!box) return;
+    var hasReal = !!box.querySelector(
+      'iframe, textarea, .comment, #comment-editor, .qcx-comment-list, .qcx-comment-item, .comment-body'
+    );
+    if (hasReal) box.removeAttribute('data-qcx-comments-empty');
+    else box.setAttribute('data-qcx-comments-empty', '1');
+  }
+  window.__qcxSyncEmptyCommentsShell = syncEmptyCommentsShell;
+
   /* Theme often drops .qcx-backdrop / scanline / ghost-blink CSS — restore. */
   function ensureAtmosphere() {
     ensureStylesheet('qcx-atmosphere', QCX_ATMOSPHERE_CSS);
     ensureRaisedChrome();
     ensureMenuDrawer();
     ensureMobileNavReady();
+    syncEmptyCommentsShell();
     if (!document.querySelector('.qcx-backdrop')) {
       var backdrop = document.createElement('div');
       backdrop.className = 'qcx-backdrop';
@@ -2203,6 +2216,8 @@
   window.setTimeout(ensureSiteFooter, 100);
   window.setTimeout(ensureSiteFooter, 500);
   window.setTimeout(ensureAtmosphere, 80);
+  window.setTimeout(syncEmptyCommentsShell, 120);
+  window.setTimeout(syncEmptyCommentsShell, 600);
   window.setTimeout(ensureMobileNavReady, 120);
   window.setTimeout(ensureMobileNavReady, 500);
   window.setTimeout(ensureGhostBlink, 200);

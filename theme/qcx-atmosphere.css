@@ -855,16 +855,21 @@ html[data-page-item='single'] .qcx-comments-shell > h4.postAComment {
   background: transparent !important;
   box-shadow: none !important;
 }
-/* Collapse comments shell when only the stub remains (no form/list yet) */
-html[data-page-type='post'] #comments:not(:has(.comment-form, .commentForm, iframe, .comment, #comment-editor, .qcx-comment-list)),
-html[data-page-type='page'] #comments:not(:has(.comment-form, .commentForm, iframe, .comment, #comment-editor, .qcx-comment-list)),
-html[data-page-item='single'] #comments:not(:has(.comment-form, .commentForm, iframe, .comment, #comment-editor, .qcx-comment-list)),
-html[data-page-type='post'] .qcx-comments-shell:not(:has(.comment-form, .commentForm, iframe, .comment, #comment-editor, .qcx-comment-list)),
-html[data-page-type='page'] .qcx-comments-shell:not(:has(.comment-form, .commentForm, iframe, .comment, #comment-editor, .qcx-comment-list)),
-html[data-page-item='single'] .qcx-comments-shell:not(:has(.comment-form, .commentForm, iframe, .comment, #comment-editor, .qcx-comment-list)) {
+/* Collapse empty comments shell — bare .comment-form wrappers do NOT count */
+html[data-page-type='post'] #comments:not(:has(iframe, textarea, .comment, #comment-editor, .qcx-comment-list, .qcx-comment-item, .comment-body)),
+html[data-page-type='page'] #comments:not(:has(iframe, textarea, .comment, #comment-editor, .qcx-comment-list, .qcx-comment-item, .comment-body)),
+html[data-page-item='single'] #comments:not(:has(iframe, textarea, .comment, #comment-editor, .qcx-comment-list, .qcx-comment-item, .comment-body)),
+html[data-page-type='post'] .qcx-comments-shell:not(:has(iframe, textarea, .comment, #comment-editor, .qcx-comment-list, .qcx-comment-item, .comment-body)),
+html[data-page-type='page'] .qcx-comments-shell:not(:has(iframe, textarea, .comment, #comment-editor, .qcx-comment-list, .qcx-comment-item, .comment-body)),
+html[data-page-item='single'] .qcx-comments-shell:not(:has(iframe, textarea, .comment, #comment-editor, .qcx-comment-list, .qcx-comment-item, .comment-body)),
+#comments[data-qcx-comments-empty='1'],
+.qcx-comments-shell[data-qcx-comments-empty='1'],
+#comments[data-qcx-unlock-chrome='1']:not(.is-settled):not(:has(iframe, textarea, .comment, #comment-editor, .qcx-comment-list, .qcx-comment-item, .comment-body)),
+.qcx-comments-shell[data-qcx-unlock-chrome='1']:not(.is-settled):not(:has(iframe, textarea, .comment, #comment-editor, .qcx-comment-list, .qcx-comment-item, .comment-body)) {
   display: none !important;
   height: 0 !important;
   max-height: 0 !important;
+  min-height: 0 !important;
   overflow: hidden !important;
   margin: 0 !important;
   padding: 0 !important;
@@ -879,14 +884,6 @@ html[data-page-item='single'] .qcx-comments-shell:not(:has(.comment-form, .comme
   background: transparent !important;
   box-shadow: none !important;
   padding: 0 !important;
-  margin: 0 0 8px !important;
-}
-#comments[data-qcx-unlock-chrome='1']:not(.is-settled):not(:has(.comment-form, .commentForm, iframe, .comment, #comment-editor, .qcx-comment-list)),
-.qcx-comments-shell[data-qcx-unlock-chrome='1']:not(.is-settled):not(:has(.comment-form, .commentForm, iframe, .comment, #comment-editor, .qcx-comment-list)) {
-  display: none !important;
-  height: 0 !important;
-  max-height: 0 !important;
-  overflow: hidden !important;
   margin: 0 !important;
 }
 
