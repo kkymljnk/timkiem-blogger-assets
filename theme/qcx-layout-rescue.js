@@ -324,7 +324,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.94/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.95/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -595,11 +595,12 @@
       'padding:10px 16px 6px!important;flex-shrink:0!important;gap:10px!important;max-width:960px!important;' +
       'width:100%!important;margin:0 auto!important;box-sizing:border-box!important}' +
       '#qcx-menu-logo{display:inline-flex!important;align-items:center!important;gap:8px!important;' +
-      'font:800 14px/1.2 system-ui,-apple-system,sans-serif!important;color:#28d28c!important;' +
-      'letter-spacing:.02em!important;text-transform:none!important;-webkit-text-fill-color:#28d28c!important}' +
+      'font:800 14px/1.2 system-ui,-apple-system,sans-serif!important;color:#fff!important;cursor:pointer!important;' +
+      'letter-spacing:.02em!important;text-transform:none!important;-webkit-text-fill-color:#fff!important}' +
       '#qcx-menu-logo .qcx-menu-logo-mark{height:16px!important;width:auto!important;display:block!important;flex:0 0 auto!important;overflow:visible!important}' +
+      '#qcx-menu-logo .qcx-menu-logo-mark path{fill:#fff!important}' +
       '#qcx-menu-logo .qcx-menu-logo-mark .logo-eyes,#qcx-menu-logo .qcx-menu-logo-mark .logo-eye-left,#qcx-menu-logo .qcx-menu-logo-mark .logo-eye-right{transform-box:fill-box;transform-origin:50% 50%}' +
-      '#qcx-menu-logo .qcx-menu-logo-text{color:#28d28c!important;-webkit-text-fill-color:#28d28c!important;font-weight:800!important}' +
+      '#qcx-menu-logo .qcx-menu-logo-text{color:#fff!important;-webkit-text-fill-color:#fff!important;font-weight:800!important}' +
       '.qcx-brand-svg .qcx-ghost-art image,.qcx-brand-mark .qcx-ghost-art image{filter:none!important}' +
       '.qcx-avatar{position:relative!important;overflow:visible!important}' +
       '.qcx-avatar .qcx-brand-raster{width:100%!important;height:100%!important;display:block!important;' +
