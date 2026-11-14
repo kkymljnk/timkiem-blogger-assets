@@ -492,8 +492,11 @@
     '<path d="M108.37 15.37H106.459V4.135H108.37L111.991 13.08L115.618 4.135H117.555V15.37H115.644V11.909Q115.644 11.06 115.647 10.486Q115.649 9.912 115.662 9.51Q115.675 9.108 115.696 8.804Q115.717 8.5 115.754 8.191L112.898 15.37H111.084L108.239 8.205Q108.324 8.715 108.347 9.501Q108.37 10.287 108.37 11.349Z" fill="black"/>' +
     '</svg>';
 
-  /* Menu logo eyes: follow pointer anywhere while drawer is open. */
-  var __qcxEyesTrack = { x: 0, y: 0, tx: 0, ty: 0, raf: 0, active: false };
+  /* Menu logo eyes: one global pointermove, cached origin, no stacked listeners. */
+  var __qcxEyesTrack = {
+    x: 0, y: 0, tx: 0, ty: 0, raf: 0, active: false,
+    cx: 0, cy: 0, maxX: 3, maxY: 1.5, reach: 160, originOk: false, eyesEl: null
+  };
 
   function qcxLiveLogoParts() {
     var host = document.getElementById('qcx-menu-logo');
@@ -532,104 +535,98 @@
     }
   }
 
-  function qcxEyesTrackMax(mark) {
-    var w = 120;
-    try {
-      var r = mark.getBoundingClientRect();
-      if (r && r.width) w = r.width;
-    } catch (e) {}
-    return {
-      x: Math.max(2.4, Math.min(4, w * 0.032)),
-      y: Math.max(1.2, Math.min(2, w * 0.016))
-    };
+  function qcxEyesRefreshOrigin() {
+    var p = qcxLiveLogoParts();
+    if (!p || !p.mark || !p.eyes) {
+      __qcxEyesTrack.originOk = false;
+      __qcxEyesTrack.eyesEl = null;
+      return false;
+    }
+    var rect = p.mark.getBoundingClientRect();
+    if (!rect.width || !rect.height) {
+      __qcxEyesTrack.originOk = false;
+      return false;
+    }
+    var w = rect.width;
+    __qcxEyesTrack.cx = rect.left + w * 0.5;
+    __qcxEyesTrack.cy = rect.top + rect.height * 0.5;
+    __qcxEyesTrack.maxX = Math.max(2.4, Math.min(4, w * 0.032));
+    __qcxEyesTrack.maxY = Math.max(1.2, Math.min(2, w * 0.016));
+    __qcxEyesTrack.reach = Math.max(140, Math.min(window.innerWidth, window.innerHeight) * 0.35);
+    __qcxEyesTrack.eyesEl = p.eyes;
+    __qcxEyesTrack.originOk = true;
+    return true;
+  }
+
+  function qcxEyesReset() {
+    __qcxEyesTrack.active = false;
+    __qcxEyesTrack.originOk = false;
+    __qcxEyesTrack.x = 0;
+    __qcxEyesTrack.y = 0;
+    __qcxEyesTrack.tx = 0;
+    __qcxEyesTrack.ty = 0;
+    __qcxEyesTrack.eyesEl = null;
+    if (__qcxEyesTrack.raf) {
+      window.cancelAnimationFrame(__qcxEyesTrack.raf);
+      __qcxEyesTrack.raf = 0;
+    }
+    qcxResetEyesTransform(qcxLiveLogoParts());
+  }
+
+  function qcxEyesApplyFrame() {
+    __qcxEyesTrack.raf = 0;
+    if (!__qcxEyesTrack.active || !qcxMenuIsOpen()) return;
+    var eyes = __qcxEyesTrack.eyesEl;
+    if (!eyes || !eyes.isConnected) {
+      if (!qcxEyesRefreshOrigin()) return;
+      eyes = __qcxEyesTrack.eyesEl;
+    }
+    __qcxEyesTrack.tx += (__qcxEyesTrack.x - __qcxEyesTrack.tx) * 0.28;
+    __qcxEyesTrack.ty += (__qcxEyesTrack.y - __qcxEyesTrack.ty) * 0.28;
+    eyes.style.transform =
+      'translate(' + __qcxEyesTrack.tx.toFixed(2) + 'px,' + __qcxEyesTrack.ty.toFixed(2) + 'px)';
+    if (Math.abs(__qcxEyesTrack.x - __qcxEyesTrack.tx) > 0.04 ||
+        Math.abs(__qcxEyesTrack.y - __qcxEyesTrack.ty) > 0.04) {
+      __qcxEyesTrack.raf = window.requestAnimationFrame(qcxEyesApplyFrame);
+    }
+  }
+
+  function qcxEyesOnPointerMove(ev) {
+    if (!qcxMenuIsOpen()) return;
+    if (!__qcxEyesTrack.originOk && !qcxEyesRefreshOrigin()) return;
+    var nx = Math.max(-1, Math.min(1, (ev.clientX - __qcxEyesTrack.cx) / __qcxEyesTrack.reach));
+    var ny = Math.max(-1, Math.min(1, (ev.clientY - __qcxEyesTrack.cy) / __qcxEyesTrack.reach));
+    __qcxEyesTrack.active = true;
+    __qcxEyesTrack.x = nx * __qcxEyesTrack.maxX;
+    __qcxEyesTrack.y = ny * __qcxEyesTrack.maxY;
+    if (!__qcxEyesTrack.raf) {
+      __qcxEyesTrack.raf = window.requestAnimationFrame(qcxEyesApplyFrame);
+    }
   }
 
   function bindMenuLogoEyes(svg) {
     if (!svg) return;
     var host = document.getElementById('qcx-menu-logo');
     if (host && svg.isConnected) host.__qcxLogoSvg = svg;
-    qcxResetEyesTransform(qcxLiveLogoParts());
-    if (host && host.getAttribute('data-qcx-aave-eyes-bound') === '11') return;
-    if (host) host.setAttribute('data-qcx-aave-eyes-bound', '11');
+    if (host) host.setAttribute('data-qcx-aave-eyes-bound', '12');
+    __qcxEyesTrack.originOk = false;
 
-    var applyTrack = function () {
-      if (!__qcxEyesTrack.active || !qcxMenuIsOpen()) {
-        __qcxEyesTrack.raf = 0;
-        return;
-      }
-      var p = qcxLiveLogoParts();
-      if (!p || !p.eyes) {
-        __qcxEyesTrack.raf = 0;
-        return;
-      }
-      __qcxEyesTrack.tx += (__qcxEyesTrack.x - __qcxEyesTrack.tx) * 0.28;
-      __qcxEyesTrack.ty += (__qcxEyesTrack.y - __qcxEyesTrack.ty) * 0.28;
-      p.eyes.style.transform =
-        'translate(' + __qcxEyesTrack.tx.toFixed(2) + 'px,' + __qcxEyesTrack.ty.toFixed(2) + 'px)';
-      if (Math.abs(__qcxEyesTrack.x - __qcxEyesTrack.tx) > 0.04 ||
-          Math.abs(__qcxEyesTrack.y - __qcxEyesTrack.ty) > 0.04) {
-        __qcxEyesTrack.raf = window.requestAnimationFrame(applyTrack);
-      } else {
-        __qcxEyesTrack.raf = 0;
-      }
-    };
+    /* Singleton: never stack document listeners across rebuilds/hot-injects. */
+    if (window.__qcxEyesGlobalBound) return;
+    window.__qcxEyesGlobalBound = 12;
 
-    var trackEyes = function (clientX, clientY) {
-      if (!qcxMenuIsOpen()) return;
-      var p = qcxLiveLogoParts();
-      if (!p || !p.mark) return;
-      var rect = p.mark.getBoundingClientRect();
-      if (!rect.width || !rect.height) return;
-      /* Direction from logo center → pointer anywhere on screen. */
-      var cx = rect.left + rect.width * 0.5;
-      var cy = rect.top + rect.height * 0.5;
-      var reach = Math.max(140, Math.min(window.innerWidth, window.innerHeight) * 0.35);
-      var nx = Math.max(-1, Math.min(1, (clientX - cx) / reach));
-      var ny = Math.max(-1, Math.min(1, (clientY - cy) / reach));
-      var max = qcxEyesTrackMax(p.mark);
-      __qcxEyesTrack.active = true;
-      __qcxEyesTrack.x = nx * max.x;
-      __qcxEyesTrack.y = ny * max.y;
-      if (!__qcxEyesTrack.raf) {
-        __qcxEyesTrack.raf = window.requestAnimationFrame(applyTrack);
-      }
-    };
+    document.addEventListener('pointermove', qcxEyesOnPointerMove, { passive: true });
+    window.addEventListener('resize', function () { __qcxEyesTrack.originOk = false; }, { passive: true });
 
-    var resetEyes = function () {
-      __qcxEyesTrack.active = false;
-      __qcxEyesTrack.x = 0;
-      __qcxEyesTrack.y = 0;
-      __qcxEyesTrack.tx = 0;
-      __qcxEyesTrack.ty = 0;
-      if (__qcxEyesTrack.raf) {
-        window.cancelAnimationFrame(__qcxEyesTrack.raf);
-        __qcxEyesTrack.raf = 0;
-      }
-      qcxResetEyesTransform(qcxLiveLogoParts());
-    };
-
-    /* Global pointer — not limited to logo hover. */
-    document.addEventListener(
-      'pointermove',
-      function (ev) {
-        trackEyes(ev.clientX, ev.clientY);
-      },
-      { passive: true }
-    );
-    document.addEventListener(
-      'mousemove',
-      function (ev) {
-        trackEyes(ev.clientX, ev.clientY);
-      },
-      { passive: true }
-    );
-
-    /* Reset when drawer closes. */
     var menu = document.getElementById('qcx-menu');
     if (menu && !menu.__qcxEyesCloseWatch) {
       menu.__qcxEyesCloseWatch = true;
       new MutationObserver(function () {
-        if (!qcxMenuIsOpen()) resetEyes();
+        if (qcxMenuIsOpen()) {
+          __qcxEyesTrack.originOk = false;
+        } else {
+          qcxEyesReset();
+        }
       }).observe(menu, { attributes: true, attributeFilter: ['class', 'aria-hidden'] });
     }
   }
