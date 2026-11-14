@@ -599,9 +599,9 @@ body.qcx-menu-open {
   color: #e8efe9 !important;
 }
 #qcx-menu .qcx-menu-search-row:hover {
-  border-color: rgba(255, 255, 255, .16) !important;
-  color: rgba(232, 239, 233, .9) !important;
-  background: rgba(255, 255, 255, .06) !important;
+  border-color: rgba(0, 240, 163, .65) !important;
+  color: #fff !important;
+  background: rgba(0, 240, 163, .14) !important;
 }
 #qcx-menu .qcx-menu-chip:hover {
   border-color: rgba(255, 255, 255, .18) !important;

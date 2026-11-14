@@ -324,7 +324,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.110/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.111/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -618,23 +618,26 @@
       'box-shadow:none!important;color:#4a5f54!important;outline:none!important}' +
       '#qcx-menu-close:active{color:#2f3f38!important;background:transparent!important}' +
       '#qcx-menu-search.qcx-menu-search-row,.qcx-menu-search-row{display:flex!important;align-items:center!important;' +
-      'gap:8px!important;width:calc(100% - 32px)!important;max-width:928px!important;margin:0 auto 10px!important;' +
-      'min-height:40px!important;padding:0 12px!important;border:1px solid rgba(0,240,163,.3)!important;' +
-      'border-radius:12px!important;background:rgba(0,240,163,.06)!important;color:#e8fff2!important;' +
-      'font:600 13px/1.2 system-ui,sans-serif!important;text-align:left!important;cursor:pointer!important;' +
-      'flex-shrink:0!important;box-sizing:border-box!important;box-shadow:none!important}' +
-      '#qcx-menu-search.qcx-menu-search-row>span{flex:1 1 auto!important;min-width:0!important}' +
-      '#qcx-menu-search svg{color:#00f0a3!important;width:16px!important;height:16px!important}' +
+      'gap:10px!important;width:calc(100% - 32px)!important;max-width:none!important;margin:0 16px 14px!important;' +
+      'min-height:48px!important;padding:0 14px!important;border:1px solid rgba(0,240,163,.42)!important;' +
+      'border-radius:12px!important;background:rgba(0,240,163,.08)!important;color:#e8fff2!important;' +
+      'font:600 14px/1.2 var(--mono,ui-monospace,Menlo,Consolas,monospace)!important;text-align:left!important;' +
+      'cursor:pointer!important;flex-shrink:0!important;box-sizing:border-box!important;' +
+      'box-shadow:0 0 0 1px rgba(0,240,163,.12),0 8px 22px rgba(0,0,0,.35)!important}' +
+      '#qcx-menu-search.qcx-menu-search-row>span{flex:1 1 auto!important;min-width:0!important;' +
+      'overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}' +
+      '#qcx-menu-search svg{color:#00f0a3!important;width:18px!important;height:18px!important;flex-shrink:0!important}' +
       '#qcx-menu-search .qcx-menu-search-hint,.qcx-menu-search-row .qcx-menu-search-hint{display:inline-flex!important;' +
-      'align-items:center!important;margin-left:auto!important;padding:2px 6px!important;' +
-      'border:1px solid rgba(255,255,255,.12)!important;border-radius:5px!important;background:rgba(0,0,0,.28)!important;' +
+      'align-items:center!important;margin-left:auto!important;padding:3px 8px!important;' +
+      'border:1px solid rgba(255,255,255,.12)!important;border-radius:6px!important;background:rgba(0,0,0,.28)!important;' +
       'color:rgba(190,211,198,.78)!important;font:600 10px/1.2 var(--mono,ui-monospace,monospace)!important;' +
       'letter-spacing:.02em!important;white-space:nowrap!important;flex-shrink:0!important}' +
       '@media (max-width:860px),(pointer:coarse){' +
       '#qcx-menu-search .qcx-menu-search-hint,.qcx-menu-search-row .qcx-menu-search-hint{display:none!important}}' +
       '#qcx-menu-search.qcx-menu-search-row:hover,.qcx-menu-search-row:hover,' +
-      '#qcx-menu-search.qcx-menu-search-row:active,.qcx-menu-search-row:active{' +
-      'border-color:rgba(0,240,163,.65)!important;color:#fff!important;background:rgba(0,240,163,.12)!important}' +
+      '#qcx-menu-search.qcx-menu-search-row:active,.qcx-menu-search-row:active,' +
+      '#qcx-menu .qcx-menu-search-row:hover{' +
+      'border-color:rgba(0,240,163,.65)!important;color:#fff!important;background:rgba(0,240,163,.14)!important}' +
       '#qcx-menu-nav{flex:1!important;padding:0 16px 10px!important;overflow-y:auto!important;' +
       'overscroll-behavior:contain!important;-webkit-overflow-scrolling:touch!important;' +
       'max-width:960px!important;width:100%!important;margin:0 auto!important;box-sizing:border-box!important}' +
@@ -756,6 +759,39 @@
     }
   }
 
+  /* Open search even when runtime lost window.qcxOpenSearch after boot. */
+  function openSearchFallback() {
+    if (typeof window.qcxOpenSearch === 'function') {
+      window.qcxOpenSearch();
+      return;
+    }
+    var overlay = document.getElementById('qcx-mobile-search');
+    var input = overlay && overlay.querySelector('.qcx-mobile-search-input');
+    setMenuOpenState(false);
+    if (!overlay) return;
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('qcx-panel-open');
+    if (input) {
+      try { input.focus(); } catch (ignoreFocus) {}
+    }
+  }
+  window.__qcxOpenSearchFallback = openSearchFallback;
+
+  function repairQcxOpenSearch() {
+    if (typeof window.qcxOpenSearch === 'function') return true;
+    if (typeof window.__qcxInitMobileNav !== 'function') return false;
+    try {
+      ['qcx-menu', 'qcx-menu-backdrop', 'qcx-mobile-search', 'qcx-mobile-toast'].forEach(function (id) {
+        var node = document.getElementById(id);
+        if (node && node.parentNode) node.parentNode.removeChild(node);
+      });
+      document.documentElement.removeAttribute('data-qcx-nav-ready');
+      window.__qcxInitMobileNav();
+    } catch (ignoreRepair) {}
+    return typeof window.qcxOpenSearch === 'function';
+  }
+
   /* Capture-phase: survives menu rebuilds that drop runtime listeners. */
   if (!window.__qcxMenuCloseDelegated) {
     window.__qcxMenuCloseDelegated = true;
@@ -764,6 +800,13 @@
       function (e) {
         var t = e.target;
         if (!t || !t.closest) return;
+        if (t.closest('#qcx-menu-search')) {
+          e.preventDefault();
+          e.stopPropagation();
+          if (typeof window.qcxOpenSearch !== 'function') repairQcxOpenSearch();
+          openSearchFallback();
+          return;
+        }
         if (t.closest('#qcx-menu-close')) {
           e.preventDefault();
           e.stopPropagation();
@@ -781,6 +824,13 @@
       function (e) {
         if (e.key !== 'Escape') return;
         var menu = document.getElementById('qcx-menu');
+        var search = document.getElementById('qcx-mobile-search');
+        if (search && search.classList.contains('open')) {
+          search.classList.remove('open');
+          search.setAttribute('aria-hidden', 'true');
+          document.body.classList.remove('qcx-panel-open');
+          return;
+        }
         if (menu && (menu.classList.contains('open') || menu.getAttribute('aria-hidden') === 'false')) {
           setMenuOpenState(false);
         }
@@ -987,10 +1037,15 @@
     var menuSearch = document.getElementById('qcx-menu-search');
     /* Refresh search label in-place so users see the mint Search row without full rebuild. */
     if (menuSearch) {
-      var searchLabel = menuSearch.querySelector('span');
-      if (searchLabel) searchLabel.textContent = 'Tìm kiếm bài viết…';
+      var searchLabel = menuSearch.querySelector('span:not(.qcx-menu-search-hint)');
+      if (!searchLabel) searchLabel = menuSearch.querySelector('span');
+      if (searchLabel && !searchLabel.classList.contains('qcx-menu-search-hint')) {
+        searchLabel.textContent = 'Tìm kiếm bài viết…';
+      }
       menuSearch.setAttribute('aria-label', 'Mở tìm kiếm');
+      menuSearch.setAttribute('type', 'button');
     }
+    if (typeof window.qcxOpenSearch !== 'function') repairQcxOpenSearch();
     /* Stale drawer without Search row — tear down and rebuild. */
     if (menu && !menuSearch) {
       try {

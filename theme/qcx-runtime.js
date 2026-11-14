@@ -468,16 +468,18 @@
       });
     }
 
-    Array.prototype.slice.call(document.querySelectorAll('.card-content .title a, .item-title a, h1.post-title')).forEach(function(node) {
-      var container = node.closest ? node.closest('.card, li, article') : null;
-      var thumbnail = container ? container.querySelector('img') : null;
-      addSearchEntry({
-        title: node.textContent,
-        href: node.href || location.href,
-        summary: container ? container.textContent : '',
-        thumbnail: thumbnail ? thumbnail.src : ''
+    try {
+      Array.prototype.slice.call(document.querySelectorAll('.card-content .title a, .item-title a, h1.post-title')).forEach(function(node) {
+        var container = node.closest ? node.closest('.card, li, article') : null;
+        var thumbnail = container ? container.querySelector('img') : null;
+        addSearchEntry({
+          title: node.textContent,
+          href: node.href || location.href,
+          summary: container ? container.textContent : '',
+          thumbnail: thumbnail ? thumbnail.src : ''
+        });
       });
-    });
+    } catch (ignoreIndex) {}
 
     function parseSearchFeed(payload) {
       var entries = payload && payload.feed && payload.feed.entry ? payload.feed.entry : [];
@@ -872,8 +874,26 @@
       window.setTimeout(function() { searchInput.focus(); }, 30);
     }
 
-    /* Public entry point used by home, desktop and mobile search controls. */
+    /* Public entry point — set before other binds so rescue/tabbar never see undefined. */
     window.qcxOpenSearch = openSearch;
+    window.qcxCloseSearch = closeSearch;
+
+    /* Capture delegate: survives DOM swaps that drop bubble listeners on the row. */
+    if (!window.__qcxMenuSearchDelegated) {
+      window.__qcxMenuSearchDelegated = true;
+      document.addEventListener(
+        'click',
+        function (event) {
+          var hit = event.target && event.target.closest && event.target.closest('#qcx-menu-search');
+          if (!hit) return;
+          event.preventDefault();
+          event.stopPropagation();
+          if (typeof window.qcxOpenSearch === 'function') window.qcxOpenSearch();
+        },
+        true
+      );
+    }
+
     Array.prototype.slice.call(inlineSearches).forEach(function(control) {
       control.addEventListener('click', function(event) {
         event.preventDefault();
@@ -937,7 +957,7 @@
 
     backdrop.addEventListener('click', closeMenu);
     menuClose.addEventListener('click', closeMenu);
-    menuSearch.addEventListener('click', openSearch);
+    menuSearch.addEventListener('click', openSearch, true);
     searchClose.addEventListener('click', closeSearch);
     searchOverlay.addEventListener('click', function(event) {
       if (event.target === searchOverlay) closeSearch();
