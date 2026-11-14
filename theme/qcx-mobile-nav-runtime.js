@@ -24,12 +24,12 @@
       '',
       '/* Aave-accurate menu logo + Brand context menu */',
       '#qcx-menu-logo{color:#fff!important;-webkit-text-fill-color:#fff!important;cursor:pointer!important;position:relative!important}',
-      '#qcx-menu-logo .qcx-menu-logo-mark{overflow:visible;color:#fff}',
+      '#qcx-menu-logo .qcx-menu-logo-mark{overflow:visible!important;color:#fff}',
       '#qcx-menu-logo .qcx-menu-logo-mark path{fill:#fff!important}',
       '#qcx-menu-logo .qcx-menu-logo-mark .logo-eyes,',
       '#qcx-menu-logo .qcx-menu-logo-mark .logo-eye-left,',
       '#qcx-menu-logo .qcx-menu-logo-mark .logo-eye-right{',
-      '  transform-box:fill-box;transform-origin:50% 50%;will-change:transform;',
+      '  transform-box:fill-box;transform-origin:center;will-change:transform;',
       '}',
       '#qcx-logo-brand-backdrop{position:fixed;inset:0;z-index:2147482999;background:transparent}',
       '#qcx-logo-brand-backdrop[hidden]{display:none!important}',
@@ -487,8 +487,34 @@
     '<path d="M108.37 15.37H106.459V4.135H108.37L111.991 13.08L115.618 4.135H117.555V15.37H115.644V11.909Q115.644 11.06 115.647 10.486Q115.649 9.912 115.662 9.51Q115.675 9.108 115.696 8.804Q115.717 8.5 115.754 8.191L112.898 15.37H111.084L108.239 8.205Q108.324 8.715 108.347 9.501Q108.37 10.287 108.37 11.349Z" fill="black"/>' +
     '</svg>';
 
-  /* Aave header logo motion: look L/R then double blink — every 10s + scroll + hover. */
+  /* Aave header logo motion: look L/R then double blink — px offsets (not % SVG). */
   var __qcxEyesBusy = false;
+  var __qcxEyesBusyTimer = null;
+  var __qcxEyesTrack = { x: 0, y: 0, tx: 0, ty: 0, raf: 0, hovering: false };
+
+  function qcxEyesLookPx(eyes) {
+    var w = 14;
+    try {
+      if (eyes.getBBox) {
+        var bb = eyes.getBBox();
+        if (bb && bb.width) w = bb.width;
+      }
+    } catch (e) {}
+    try {
+      var r = eyes.getBoundingClientRect();
+      if (r && r.width) w = Math.max(w, r.width);
+    } catch (e2) {}
+    var look = Math.max(1.6, Math.min(4, w * 0.12));
+    return look;
+  }
+
+  function qcxCancelEyeAnims(el) {
+    if (!el) return;
+    try {
+      el.getAnimations().forEach(function (a) { a.cancel(); });
+    } catch (e) {}
+  }
+
   function playMenuLogoEyes(svg) {
     if (!svg || typeof svg.animate !== 'function') return;
     if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -497,38 +523,45 @@
     var right = svg.querySelector('.logo-eye-right');
     if (!eyes || !left || !right) return;
     __qcxEyesBusy = true;
-    try {
-      eyes.getAnimations().forEach(function (a) { a.cancel(); });
-      left.getAnimations().forEach(function (a) { a.cancel(); });
-      right.getAnimations().forEach(function (a) { a.cancel(); });
-    } catch (e) {}
+    if (__qcxEyesBusyTimer) clearTimeout(__qcxEyesBusyTimer);
+    qcxCancelEyeAnims(eyes);
+    qcxCancelEyeAnims(left);
+    qcxCancelEyeAnims(right);
     eyes.style.transform = '';
     left.style.transform = '';
     right.style.transform = '';
+    var look = qcxEyesLookPx(eyes);
     var ease = 'ease-in-out';
-    /* Motion sequence: 0→2% (.15) @0; 2→-2% (.3) @.35; -2→0 (.25) @.70; blink @1.20 + .05 */
+    var tR = 'translate(' + look.toFixed(2) + 'px,0px)';
+    var tL = 'translate(' + (-look).toFixed(2) + 'px,0px)';
+    var t0 = 'translate(0px,0px)';
+    /* Aave Motion: 0→+look .15 @0; +→− .3 @.35; −→0 .25 @.70; blink @1.20 + .05 */
     eyes.animate(
-      [{ transform: 'translateX(0%)' }, { transform: 'translateX(2%)' }],
+      [{ transform: t0 }, { transform: tR }],
       { duration: 150, easing: ease, fill: 'forwards' }
     );
     eyes.animate(
-      [{ transform: 'translateX(2%)' }, { transform: 'translateX(-2%)' }],
+      [{ transform: tR }, { transform: tL }],
       { duration: 300, delay: 350, easing: ease, fill: 'forwards' }
     );
     eyes.animate(
-      [{ transform: 'translateX(-2%)' }, { transform: 'translateX(0%)' }],
+      [{ transform: tL }, { transform: t0 }],
       { duration: 250, delay: 700, easing: ease, fill: 'forwards' }
     );
     var blink = [
       { transform: 'scaleY(1)' },
-      { transform: 'scaleY(0)' },
+      { transform: 'scaleY(0.05)' },
       { transform: 'scaleY(1)' }
     ];
     left.animate(blink, { duration: 150, delay: 1200, easing: ease });
     right.animate(blink, { duration: 150, delay: 1200, easing: ease });
-    left.animate(blink, { duration: 150, delay: 1250, easing: ease });
-    right.animate(blink, { duration: 150, delay: 1250, easing: ease });
-    window.setTimeout(function () { __qcxEyesBusy = false; }, 1450);
+    left.animate(blink, { duration: 150, delay: 1350, easing: ease });
+    right.animate(blink, { duration: 150, delay: 1350, easing: ease });
+    __qcxEyesBusyTimer = window.setTimeout(function () {
+      __qcxEyesBusy = false;
+      qcxCancelEyeAnims(eyes);
+      eyes.style.transform = 'translate(0px,0px)';
+    }, 1550);
   }
 
   function bindMenuLogoEyes(svg) {
@@ -536,8 +569,8 @@
     var host = document.getElementById('qcx-menu-logo');
     if (host) host.__qcxLogoSvg = svg;
     playMenuLogoEyes(svg);
-    if (host && host.getAttribute('data-qcx-aave-eyes-bound') === '2') return;
-    if (host) host.setAttribute('data-qcx-aave-eyes-bound', '2');
+    if (host && host.getAttribute('data-qcx-aave-eyes-bound') === '3') return;
+    if (host) host.setAttribute('data-qcx-aave-eyes-bound', '3');
     var timer = null;
     var arm = function () {
       var target = (host && host.__qcxLogoSvg) || svg;
@@ -549,7 +582,36 @@
     };
     window.addEventListener('scroll', arm, { passive: true });
     if (host) {
-      /* Hover: eyes track pointer + look/blink on enter (Aave timeline). */
+      var applyTrack = function () {
+        if (__qcxEyesBusy || !__qcxEyesTrack.hovering) {
+          __qcxEyesTrack.raf = 0;
+          return;
+        }
+        var mark = host.__qcxLogoSvg || host.querySelector('.qcx-menu-logo-mark');
+        if (!mark) {
+          __qcxEyesTrack.raf = 0;
+          return;
+        }
+        var eyes = mark.querySelector('.logo-eyes');
+        if (!eyes) {
+          __qcxEyesTrack.raf = 0;
+          return;
+        }
+        __qcxEyesTrack.tx += (__qcxEyesTrack.x - __qcxEyesTrack.tx) * 0.28;
+        __qcxEyesTrack.ty += (__qcxEyesTrack.y - __qcxEyesTrack.ty) * 0.28;
+        eyes.style.transform =
+          'translate(' + __qcxEyesTrack.tx.toFixed(2) + 'px,' + __qcxEyesTrack.ty.toFixed(2) + 'px)';
+        var left = mark.querySelector('.logo-eye-left');
+        var right = mark.querySelector('.logo-eye-right');
+        if (left) left.style.transform = '';
+        if (right) right.style.transform = '';
+        if (Math.abs(__qcxEyesTrack.x - __qcxEyesTrack.tx) > 0.05 ||
+            Math.abs(__qcxEyesTrack.y - __qcxEyesTrack.ty) > 0.05) {
+          __qcxEyesTrack.raf = window.requestAnimationFrame(applyTrack);
+        } else {
+          __qcxEyesTrack.raf = 0;
+        }
+      };
       var trackEyes = function (clientX, clientY) {
         if (__qcxEyesBusy) return;
         if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -561,21 +623,34 @@
         if (!rect.width || !rect.height) return;
         var nx = ((clientX - rect.left) / rect.width) * 2 - 1;
         var ny = ((clientY - rect.top) / rect.height) * 2 - 1;
-        var tx = Math.max(-3.2, Math.min(3.2, nx * 3.2));
-        var sy = Math.max(0.78, Math.min(1, 1 - Math.max(0, -ny) * 0.16));
-        eyes.style.transform = 'translateX(' + tx.toFixed(2) + '%)';
-        var left = mark.querySelector('.logo-eye-left');
-        var right = mark.querySelector('.logo-eye-right');
-        if (left) left.style.transform = 'scaleY(' + sy.toFixed(3) + ')';
-        if (right) right.style.transform = 'scaleY(' + sy.toFixed(3) + ')';
+        var maxX = 3.5;
+        var maxY = 1.5;
+        __qcxEyesTrack.hovering = true;
+        __qcxEyesTrack.x = Math.max(-maxX, Math.min(maxX, nx * maxX));
+        __qcxEyesTrack.y = Math.max(-maxY, Math.min(maxY, ny * maxY));
+        if (!__qcxEyesTrack.raf) {
+          __qcxEyesTrack.raf = window.requestAnimationFrame(applyTrack);
+        }
       };
       var resetEyes = function () {
+        __qcxEyesTrack.hovering = false;
+        __qcxEyesTrack.x = 0;
+        __qcxEyesTrack.y = 0;
+        __qcxEyesTrack.tx = 0;
+        __qcxEyesTrack.ty = 0;
+        if (__qcxEyesTrack.raf) {
+          window.cancelAnimationFrame(__qcxEyesTrack.raf);
+          __qcxEyesTrack.raf = 0;
+        }
         if (__qcxEyesBusy) return;
         var mark = host.__qcxLogoSvg || host.querySelector('.qcx-menu-logo-mark');
         if (!mark) return;
         var eyes = mark.querySelector('.logo-eyes');
         var left = mark.querySelector('.logo-eye-left');
         var right = mark.querySelector('.logo-eye-right');
+        qcxCancelEyeAnims(eyes);
+        qcxCancelEyeAnims(left);
+        qcxCancelEyeAnims(right);
         if (eyes) eyes.style.transform = '';
         if (left) left.style.transform = '';
         if (right) right.style.transform = '';
