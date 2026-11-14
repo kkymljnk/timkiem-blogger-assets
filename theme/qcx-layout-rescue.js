@@ -309,9 +309,23 @@
 
   function polishHeroCta() {
     var cta = document.querySelector('.qcx-hero-cta');
-    if (!cta || cta.getAttribute('data-qcx-cta-pro') === '1') return;
-    cta.setAttribute('data-qcx-cta-pro', '1');
+    if (!cta) return;
     cta.classList.add('qcx-hero-cta--pro');
+
+    if (!document.getElementById('qcx-cta-pro-live')) {
+      var st = document.createElement('style');
+      st.id = 'qcx-cta-pro-live';
+      st.textContent =
+        'html body .qcx-hero-cta.qcx-hero-cta--pro{display:flex!important;flex-direction:column!important;gap:10px!important;margin-top:14px!important;max-width:420px!important;width:100%!important}' +
+        'html body .qcx-hero-cta.qcx-hero-cta--pro>a.qcx-cta-btn{display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:10px!important;width:100%!important;min-height:48px!important;padding:0 18px!important;border-radius:12px!important;font:700 14px/1 system-ui,sans-serif!important;letter-spacing:-.01em!important;text-decoration:none!important}' +
+        'html body .qcx-hero-cta.qcx-hero-cta--pro>a.qcx-cta-btn:not(.qcx-cta-outline){background:linear-gradient(180deg,#34e6a0 0%,#1fd68a 100%)!important;border:1px solid rgba(0,0,0,.18)!important;color:#06140e!important;-webkit-text-fill-color:#06140e!important;box-shadow:0 1px 0 rgba(255,255,255,.28) inset,0 10px 28px rgba(0,240,163,.22)!important}' +
+        'html body .qcx-hero-cta.qcx-hero-cta--pro>a.qcx-cta-outline{background:rgba(255,255,255,.03)!important;border:1px solid rgba(0,240,163,.28)!important;color:#e8fff2!important;-webkit-text-fill-color:#e8fff2!important;box-shadow:none!important;font-weight:650!important}' +
+        '@media (min-width:861px){html body .qcx-hero-cta.qcx-hero-cta--pro{flex-direction:row!important;max-width:none!important;gap:12px!important}html body .qcx-hero-cta.qcx-hero-cta--pro>a.qcx-cta-btn{width:auto!important;min-width:168px!important}}';
+      (document.head || document.documentElement).appendChild(st);
+    }
+
+    if (cta.getAttribute('data-qcx-cta-pro') === '1') return;
+    cta.setAttribute('data-qcx-cta-pro', '1');
 
     var primary = cta.querySelector('a.qcx-cta-btn:not(.qcx-cta-outline)');
     var secondary = cta.querySelector('a.qcx-cta-outline');
@@ -361,7 +375,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.113/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.114/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
