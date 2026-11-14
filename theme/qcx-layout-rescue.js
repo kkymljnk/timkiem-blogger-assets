@@ -19,6 +19,33 @@
     });
   }
 
+  /* Display titles without "Brand — " prefix (keep full title in feed/SEO). */
+  function displayPostTitle(raw) {
+    if (typeof window.__qcxDisplayPostTitle === 'function' && window.__qcxDisplayPostTitle !== displayPostTitle) {
+      return window.__qcxDisplayPostTitle(raw);
+    }
+    var t = String(raw || '').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+    var m = t.match(/^.{1,40}?\s*[—–]\s+(.+)$/);
+    if (m && m[1]) return m[1].trim();
+    m = t.match(/^.{1,40}?\s+-\s+(.+)$/);
+    return (m && m[1]) ? m[1].trim() : t;
+  }
+  window.__qcxDisplayPostTitle = displayPostTitle;
+
+  function stripDomPostTitles(root) {
+    var scope = root && root.querySelectorAll ? root : document;
+    var nodes = scope.querySelectorAll(
+      '.card-content .title a, .card-content .title, h1.post-title, .item-title > a, .qcx-related-card > span, .qcx-search-result-title'
+    );
+    Array.prototype.forEach.call(nodes, function(el) {
+      var raw = (el.textContent || '').replace(/\s+/g, ' ').trim();
+      if (!raw) return;
+      var next = displayPostTitle(raw);
+      if (next && next !== raw) el.textContent = next;
+    });
+  }
+  window.__qcxStripDomPostTitles = stripDomPostTitles;
+
   function pathOf(url) {
     try { return new URL(url, location.origin).pathname.replace(/\/$/, ''); }
     catch (error) { return text(url).split('?')[0].replace(/\/$/, ''); }
@@ -297,7 +324,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.92/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.93/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -1310,7 +1337,7 @@
       return href;
     }
     function entryTitle(entry) {
-      return String((entry.title && entry.title.$t) || '').replace(/\s+/g, ' ').trim();
+      return displayPostTitle(String((entry.title && entry.title.$t) || '').replace(/\s+/g, ' ').trim());
     }
     function entryImage(entry) {
       var media = entry['media$thumbnail'] && entry['media$thumbnail'].url;
@@ -1430,7 +1457,8 @@
   }
 
   function cardFromEntry(entry, index) {
-    var title = (entry.title && entry.title.$t) || 'Bài viết';
+    var fullTitle = (entry.title && entry.title.$t) || 'Bài viết';
+    var title = displayPostTitle(fullTitle);
     var href = entryLink(entry) || '/';
     var labels = entryLabels(entry).slice(0, 2);
     var meta = entryThumbMeta(entry);
@@ -1451,11 +1479,11 @@
     col.innerHTML =
       '<article class="card">' +
       '<div class="card-header">' +
-      '<a href="' + escapeHtml(href) + '" title="' + escapeHtml(title) + '">' + media + '</a>' +
+      '<a href="' + escapeHtml(href) + '" title="' + escapeHtml(fullTitle) + '">' + media + '</a>' +
       (labelHtml ? '<div class="qcx-card-labels">' + labelHtml + '</div>' : '') +
       '</div>' +
       '<div class="card-content">' +
-      '<h2 class="title"><a href="' + escapeHtml(href) + '">' + escapeHtml(title) + '</a></h2>' +
+      '<h2 class="title"><a href="' + escapeHtml(href) + '" title="' + escapeHtml(fullTitle) + '">' + escapeHtml(title) + '</a></h2>' +
       '</div><div class="card-footer"></div></article>';
     return col;
   }
@@ -1474,7 +1502,8 @@
   }
 
   function renderSinglePost(main, entry) {
-    var title = (entry.title && entry.title.$t) || document.title || 'Bài viết';
+    var fullTitle = (entry.title && entry.title.$t) || document.title || 'Bài viết';
+    var title = displayPostTitle(fullTitle);
     var labels = entryLabels(entry);
     var published = (entry.published && entry.published.$t) || '';
     var sanitized = sanitizePostHtml((entry.content && entry.content.$t) || (entry.summary && entry.summary.$t) || '');
@@ -1496,8 +1525,8 @@
       '</div>';
     shell.appendChild(article);
     main.appendChild(shell);
-    updateMacPath(title);
-    document.title = title;
+    updateMacPath(fullTitle);
+    document.title = fullTitle;
     if (isAdmin) {
       try {
         document.documentElement.setAttribute('data-qcx-admin', '1');
@@ -1548,8 +1577,10 @@
       row.innerHTML = '';
       slice.forEach(function(entry, i){ row.appendChild(cardFromEntry(entry, i)); });
       cleanCardSnippets(row);
+      stripDomPostTitles(row);
       window.setTimeout(function(){
         cleanCardSnippets(row);
+        stripDomPostTitles(row);
         try {
           var cards = row.querySelectorAll('.card');
           cards.forEach(function(card){ card.style.minHeight = ''; card.style.height = ''; });
@@ -1947,9 +1978,13 @@
 
   function bootSnippetClean() {
     cleanCardSnippets();
+    stripDomPostTitles();
     window.setTimeout(cleanCardSnippets, 80);
+    window.setTimeout(stripDomPostTitles, 80);
     window.setTimeout(cleanCardSnippets, 400);
+    window.setTimeout(stripDomPostTitles, 400);
     window.setTimeout(cleanCardSnippets, 1200);
+    window.setTimeout(stripDomPostTitles, 1200);
   }
 
   function bootRescue() {

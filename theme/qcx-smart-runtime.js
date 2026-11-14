@@ -1,6 +1,15 @@
 (function() {
   'use strict';
 
+  function displayPostTitle(raw) {
+    if (typeof window.__qcxDisplayPostTitle === 'function') return window.__qcxDisplayPostTitle(raw);
+    var t = String(raw || '').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+    var m = t.match(/^.{1,40}?\s*[—–]\s+(.+)$/);
+    if (m && m[1]) return m[1].trim();
+    m = t.match(/^.{1,40}?\s+-\s+(.+)$/);
+    return (m && m[1]) ? m[1].trim() : t;
+  }
+
   function createElement(tagName, className, text) {
     var node = document.createElement(tagName);
     if (className) node.className = className;
@@ -487,7 +496,8 @@
              visible instead of flashing and then disappearing. */
           var fragment = document.createDocumentFragment();
           entries.forEach(function(entry) {
-            var title = cleanLatestPageText(entry.title && entry.title.$t ? entry.title.$t : '');
+            var fullTitle = cleanLatestPageText(entry.title && entry.title.$t ? entry.title.$t : '');
+            var title = displayPostTitle(fullTitle);
             var href = latestPostHref(entry);
             if (!title || !href) return;
             var imageUrl = latestPostImage(entry);
@@ -496,7 +506,7 @@
             thumb.className = 'item-thumbnail';
             var thumbLink = document.createElement('a');
             thumbLink.href = href;
-            thumbLink.title = title;
+            thumbLink.title = fullTitle;
             thumbLink.setAttribute('aria-label', title);
             if (imageUrl) {
               var image = document.createElement('img');
@@ -516,7 +526,7 @@
             }
             thumb.appendChild(thumbLink); li.appendChild(thumb);
             var titleWrap = document.createElement('div'); titleWrap.className = 'item-title';
-            var titleLink = document.createElement('a'); titleLink.href = href; titleLink.title = title; titleLink.textContent = title;
+            var titleLink = document.createElement('a'); titleLink.href = href; titleLink.title = fullTitle; titleLink.textContent = title;
             titleWrap.appendChild(titleLink); li.appendChild(titleWrap);
             fragment.appendChild(li);
           });
@@ -811,11 +821,13 @@
           if (rendered >= 3) return;
           var url = alternateLink(entry);
           if (!url || url.replace(/\/$/, '') === currentUrl.replace(/\/$/, '')) return;
-          var titleText = entry.title && entry.title.$t ? entry.title.$t : '';
+          var fullTitleText = entry.title && entry.title.$t ? entry.title.$t : '';
+          var titleText = displayPostTitle(fullTitleText);
           if (!titleText) return;
           var card = document.createElement('a');
           card.className = 'qcx-related-card';
           card.href = url;
+          card.title = fullTitleText;
           var imageUrl = relatedImage(entry);
           if (imageUrl) {
             var image = document.createElement('img');

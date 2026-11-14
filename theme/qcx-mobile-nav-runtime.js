@@ -168,6 +168,15 @@
     { title: 'CapCut Pro — Hướng Dẫn Kích Hoạt Gói Trải Nghiệm 7 Ngày Tính Năng Nâng Cao', href: '/2026/11/capcut-pro-trial.html', img: 'https://files.catbox.moe/2iq9f2.jpg' }
   ];
 
+  function displayPostTitle(raw) {
+    if (typeof window.__qcxDisplayPostTitle === 'function') return window.__qcxDisplayPostTitle(raw);
+    var t = String(raw || '').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+    var m = t.match(/^.{1,40}?\s*[—–]\s+(.+)$/);
+    if (m && m[1]) return m[1].trim();
+    m = t.match(/^.{1,40}?\s+-\s+(.+)$/);
+    return (m && m[1]) ? m[1].trim() : t;
+  }
+
   function renderTutorialList(railList) {
     if (!railList) return;
     railList.removeAttribute('aria-busy');
@@ -189,6 +198,7 @@
       thumb.className = 'item-thumbnail';
       thumb.style.cssText = 'width:72px!important;height:48px!important;border-radius:6px!important;overflow:hidden!important;background:#111;flex-shrink:0!important;display:block!important;';
 
+      var shownTitle = displayPostTitle(item.title);
       var aThumb = document.createElement('a');
       aThumb.href = item.href;
       aThumb.title = item.title;
@@ -196,7 +206,7 @@
 
       var img = document.createElement('img');
       img.src = item.img;
-      img.alt = item.title;
+      img.alt = shownTitle;
       img.loading = 'lazy';
       img.decoding = 'async';
       img.style.cssText = 'width:100%!important;height:100%!important;object-fit:cover!important;display:block!important;image-rendering:-webkit-optimize-contrast!important;image-rendering:crisp-edges!important;';
@@ -209,7 +219,7 @@
 
       var aTitle = document.createElement('a');
       aTitle.href = item.href;
-      aTitle.textContent = item.title;
+      aTitle.textContent = shownTitle;
       aTitle.title = item.title;
       aTitle.style.cssText = 'color:#d0ded5!important;text-decoration:none!important;display:-webkit-box!important;-webkit-line-clamp:2!important;-webkit-box-orient:vertical!important;overflow:hidden!important;word-break:break-word!important;';
       titleWrap.appendChild(aTitle);

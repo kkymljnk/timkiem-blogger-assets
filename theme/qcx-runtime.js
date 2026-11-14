@@ -1,4 +1,14 @@
 (function () {
+  /* Display titles without "Brand — " prefix (keep full title in feed/SEO). */
+  function displayPostTitle(raw) {
+    var t = String(raw || '').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+    var m = t.match(/^.{1,40}?\s*[—–]\s+(.+)$/);
+    if (m && m[1]) return m[1].trim();
+    m = t.match(/^.{1,40}?\s+-\s+(.+)$/);
+    return (m && m[1]) ? m[1].trim() : t;
+  }
+  window.__qcxDisplayPostTitle = displayPostTitle;
+
   function enterNow(nodes) {
     for (var i = 0; i < nodes.length; i++) nodes[i].classList.add('is-in');
   }
@@ -408,7 +418,7 @@
 
     function addSearchEntry(entry) {
       var href = entry && entry.href ? String(entry.href) : '';
-      var title = cleanSearchText(entry && (entry.title || entry.text));
+      var title = displayPostTitle(cleanSearchText(entry && (entry.title || entry.text)));
       if (!href || !title || title.length < 3) return;
       var labels = Array.isArray(entry.labels) ? entry.labels.filter(Boolean).slice(0, 5) : [];
       var summary = cleanSearchText(entry.summary).slice(0, 260);
