@@ -536,8 +536,8 @@
     var host = document.getElementById('qcx-menu-logo');
     if (host) host.__qcxLogoSvg = svg;
     playMenuLogoEyes(svg);
-    if (host && host.getAttribute('data-qcx-aave-eyes-bound') === '1') return;
-    if (host) host.setAttribute('data-qcx-aave-eyes-bound', '1');
+    if (host && host.getAttribute('data-qcx-aave-eyes-bound') === '2') return;
+    if (host) host.setAttribute('data-qcx-aave-eyes-bound', '2');
     var timer = null;
     var arm = function () {
       var target = (host && host.__qcxLogoSvg) || svg;
@@ -549,11 +549,8 @@
     };
     window.addEventListener('scroll', arm, { passive: true });
     if (host) {
-      /* Hover: eyes track pointer (Aave-feel) + play look/blink on enter */
-      host.addEventListener('pointerenter', function () {
-        playMenuLogoEyes(host.__qcxLogoSvg || svg);
-      });
-      host.addEventListener('pointermove', function (ev) {
+      /* Hover: eyes track pointer + look/blink on enter (Aave timeline). */
+      var trackEyes = function (clientX, clientY) {
         if (__qcxEyesBusy) return;
         if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
         var mark = host.__qcxLogoSvg || host.querySelector('.qcx-menu-logo-mark');
@@ -561,18 +558,18 @@
         var eyes = mark.querySelector('.logo-eyes');
         if (!eyes) return;
         var rect = mark.getBoundingClientRect();
-        if (!rect.width) return;
-        var nx = ((ev.clientX - rect.left) / rect.width) * 2 - 1; /* -1..1 */
-        var ny = ((ev.clientY - rect.top) / rect.height) * 2 - 1;
-        var tx = Math.max(-3, Math.min(3, nx * 3));
-        var sy = Math.max(0.82, Math.min(1, 1 - Math.max(0, -ny) * 0.12));
+        if (!rect.width || !rect.height) return;
+        var nx = ((clientX - rect.left) / rect.width) * 2 - 1;
+        var ny = ((clientY - rect.top) / rect.height) * 2 - 1;
+        var tx = Math.max(-3.2, Math.min(3.2, nx * 3.2));
+        var sy = Math.max(0.78, Math.min(1, 1 - Math.max(0, -ny) * 0.16));
         eyes.style.transform = 'translateX(' + tx.toFixed(2) + '%)';
         var left = mark.querySelector('.logo-eye-left');
         var right = mark.querySelector('.logo-eye-right');
         if (left) left.style.transform = 'scaleY(' + sy.toFixed(3) + ')';
         if (right) right.style.transform = 'scaleY(' + sy.toFixed(3) + ')';
-      });
-      host.addEventListener('pointerleave', function () {
+      };
+      var resetEyes = function () {
         if (__qcxEyesBusy) return;
         var mark = host.__qcxLogoSvg || host.querySelector('.qcx-menu-logo-mark');
         if (!mark) return;
@@ -582,7 +579,14 @@
         if (eyes) eyes.style.transform = '';
         if (left) left.style.transform = '';
         if (right) right.style.transform = '';
+      };
+      host.addEventListener('pointerenter', function () {
+        playMenuLogoEyes(host.__qcxLogoSvg || svg);
       });
+      host.addEventListener('pointermove', function (ev) { trackEyes(ev.clientX, ev.clientY); });
+      host.addEventListener('mousemove', function (ev) { trackEyes(ev.clientX, ev.clientY); });
+      host.addEventListener('pointerleave', resetEyes);
+      host.addEventListener('mouseleave', resetEyes);
     }
     arm();
   }
