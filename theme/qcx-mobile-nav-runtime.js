@@ -492,21 +492,8 @@
     '<path d="M108.37 15.37H106.459V4.135H108.37L111.991 13.08L115.618 4.135H117.555V15.37H115.644V11.909Q115.644 11.06 115.647 10.486Q115.649 9.912 115.662 9.51Q115.675 9.108 115.696 8.804Q115.717 8.5 115.754 8.191L112.898 15.37H111.084L108.239 8.205Q108.324 8.715 108.347 9.501Q108.37 10.287 108.37 11.349Z" fill="black"/>' +
     '</svg>';
 
-  /*
-   * Aave.com logo eyes — measured live from Motion timeline on aave.com:
-   *   style: translateX(%) on .logo-eyes (fill-box), scaleY on each eye path (fill-box)
-   *   Sequence (at:"+N" = N seconds AFTER previous segment ends):
-   *     0.00  eyes 0%→+2%   150ms
-   *     0.50  eyes +2%→−2%  300ms   (gap 350ms)
-   *     1.15  eyes −2%→0%   250ms   (gap 350ms)
-   *     1.90  both blink [1,0,1] 150ms  (gap 500ms)
-   *     2.10  both blink [1,0,1] 150ms  (gap 50ms)
-   *   Triggers: every 10s + scroll (same as Aave). Hover also replays.
-   */
-  var __qcxEyesBusy = false;
-  var __qcxEyesBusyTimer = null;
-  var __qcxEyesSeqRaf = 0;
-  var __qcxEyesPlayGen = 0;
+  /* Menu logo eyes: realtime cursor tracking only (no Aave look/blink sequence). */
+  var __qcxEyesTrack = { x: 0, y: 0, tx: 0, ty: 0, raf: 0, hovering: false };
 
   function qcxLiveLogoParts() {
     var host = document.getElementById('qcx-menu-logo');
@@ -522,15 +509,6 @@
       left: mark.querySelector('.logo-eye-left'),
       right: mark.querySelector('.logo-eye-right')
     };
-  }
-
-  function qcxEase(t) {
-    /* Motion default-ish ease-in-out */
-    return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
-  }
-
-  function qcxLerp(a, b, t) {
-    return a + (b - a) * t;
   }
 
   function qcxResetEyesTransform(p) {
@@ -549,138 +527,84 @@
     }
   }
 
-  function qcxReduceMotion() {
-    return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  function qcxEyesTrackMax(mark) {
+    var w = 120;
+    try {
+      var r = mark.getBoundingClientRect();
+      if (r && r.width) w = r.width;
+    } catch (e) {}
+    /* Visible follow at 16px logo height; stay inside ghost. */
+    return {
+      x: Math.max(2.2, Math.min(3.6, w * 0.028)),
+      y: Math.max(1.1, Math.min(1.8, w * 0.014))
+    };
   }
-
-  /* Sample Aave look % at time t (seconds from sequence start). */
-  function qcxAaveLookPct(t) {
-    if (t < 0) return 0;
-    if (t < 0.15) return qcxLerp(0, 2, qcxEase(t / 0.15));
-    if (t < 0.5) return 2;
-    if (t < 0.8) return qcxLerp(2, -2, qcxEase((t - 0.5) / 0.3));
-    if (t < 1.15) return -2;
-    if (t < 1.4) return qcxLerp(-2, 0, qcxEase((t - 1.15) / 0.25));
-    return 0;
-  }
-
-  /* Sample Aave blink scaleY [1,0,1] keyframes (equal offsets). */
-  function qcxAaveBlinkSy(u) {
-    if (u < 0 || u > 0.15) return null;
-    if (u < 0.075) return qcxLerp(1, 0, qcxEase(u / 0.075));
-    return qcxLerp(0, 1, qcxEase((u - 0.075) / 0.075));
-  }
-
-  function qcxAaveBlinkAt(t) {
-    /* Later blink wins when both active (Motion replaces). */
-    var a = qcxAaveBlinkSy(t - 1.9);
-    var b = qcxAaveBlinkSy(t - 2.1);
-    if (b != null) return b;
-    if (a != null) return a;
-    return 1;
-  }
-
-  function playMenuLogoEyes(svg, opts) {
-    opts = opts || {};
-    var force = !!opts.force;
-    var reduce = qcxReduceMotion();
-    /* Aave still plays look+blink even with OS reduce in practice; we only skip auto spam. */
-    if (reduce && opts.auto && !force) return;
-    if (svg && svg.isConnected) {
-      var host0 = document.getElementById('qcx-menu-logo');
-      if (host0) host0.__qcxLogoSvg = svg;
-    }
-    var parts = qcxLiveLogoParts();
-    if (!parts || !parts.eyes || !parts.left || !parts.right) return;
-    var gen = ++__qcxEyesPlayGen;
-    __qcxEyesBusy = true;
-    if (__qcxEyesBusyTimer) clearTimeout(__qcxEyesBusyTimer);
-    if (__qcxEyesSeqRaf) {
-      window.cancelAnimationFrame(__qcxEyesSeqRaf);
-      __qcxEyesSeqRaf = 0;
-    }
-    qcxResetEyesTransform(parts);
-    var t0 = performance.now();
-    var TOTAL = 2.25; /* last blink ends ~2.25s */
-
-    function paint(tSec) {
-      var p = qcxLiveLogoParts();
-      if (!p || !p.eyes || !p.left || !p.right) return;
-      if (reduce) {
-        /* Soft path: blink only, compressed */
-        var syR = 1;
-        var u1 = tSec - 0;
-        var u2 = tSec - 0.2;
-        var b1 = qcxAaveBlinkSy(u1);
-        var b2 = qcxAaveBlinkSy(u2);
-        if (b2 != null) syR = b2;
-        else if (b1 != null) syR = b1;
-        p.eyes.style.transform = '';
-        p.left.style.transform = syR === 1 ? '' : 'scaleY(' + syR.toFixed(5) + ')';
-        p.right.style.transform = p.left.style.transform;
-        return;
-      }
-      var pct = qcxAaveLookPct(tSec);
-      var sy = qcxAaveBlinkAt(tSec);
-      if (Math.abs(pct) < 0.001) p.eyes.style.transform = '';
-      else p.eyes.style.transform = 'translateX(' + pct.toFixed(5) + '%)';
-      if (sy >= 0.999) {
-        p.left.style.transform = '';
-        p.right.style.transform = '';
-      } else {
-        var s = 'scaleY(' + sy.toFixed(5) + ')';
-        p.left.style.transform = s;
-        p.right.style.transform = s;
-      }
-    }
-
-    function frame(now) {
-      if (gen !== __qcxEyesPlayGen) return;
-      var tSec = (now - t0) / 1000;
-      var end = reduce ? 0.4 : TOTAL;
-      paint(Math.min(tSec, end));
-      if (tSec < end) {
-        __qcxEyesSeqRaf = window.requestAnimationFrame(frame);
-      } else {
-        qcxResetEyesTransform(qcxLiveLogoParts());
-        __qcxEyesBusy = false;
-        __qcxEyesSeqRaf = 0;
-      }
-    }
-    __qcxEyesSeqRaf = window.requestAnimationFrame(frame);
-    __qcxEyesBusyTimer = window.setTimeout(function () {
-      if (gen === __qcxEyesPlayGen) {
-        qcxResetEyesTransform(qcxLiveLogoParts());
-        __qcxEyesBusy = false;
-      }
-    }, reduce ? 500 : 2400);
-  }
-  window.__qcxPlayMenuLogoEyes = playMenuLogoEyes;
 
   function bindMenuLogoEyes(svg) {
     if (!svg) return;
     var host = document.getElementById('qcx-menu-logo');
     if (host && svg.isConnected) host.__qcxLogoSvg = svg;
     qcxResetEyesTransform(qcxLiveLogoParts());
-    if (!__qcxEyesBusy) playMenuLogoEyes(svg, { auto: true });
-    if (host && host.getAttribute('data-qcx-aave-eyes-bound') === '9') return;
-    if (host) host.setAttribute('data-qcx-aave-eyes-bound', '9');
-    var timer = null;
-    var arm = function () {
-      if (timer) clearInterval(timer);
-      timer = setInterval(function () {
-        playMenuLogoEyes(null, { auto: true });
-      }, 10000);
-      playMenuLogoEyes(null, { auto: true });
+    if (host && host.getAttribute('data-qcx-aave-eyes-bound') === '10') return;
+    if (host) host.setAttribute('data-qcx-aave-eyes-bound', '10');
+    if (!host) return;
+
+    var applyTrack = function () {
+      if (!__qcxEyesTrack.hovering) {
+        __qcxEyesTrack.raf = 0;
+        return;
+      }
+      var p = qcxLiveLogoParts();
+      if (!p || !p.eyes) {
+        __qcxEyesTrack.raf = 0;
+        return;
+      }
+      __qcxEyesTrack.tx += (__qcxEyesTrack.x - __qcxEyesTrack.tx) * 0.32;
+      __qcxEyesTrack.ty += (__qcxEyesTrack.y - __qcxEyesTrack.ty) * 0.32;
+      p.eyes.style.transform =
+        'translate(' + __qcxEyesTrack.tx.toFixed(2) + 'px,' + __qcxEyesTrack.ty.toFixed(2) + 'px)';
+      if (Math.abs(__qcxEyesTrack.x - __qcxEyesTrack.tx) > 0.04 ||
+          Math.abs(__qcxEyesTrack.y - __qcxEyesTrack.ty) > 0.04) {
+        __qcxEyesTrack.raf = window.requestAnimationFrame(applyTrack);
+      } else {
+        __qcxEyesTrack.raf = 0;
+      }
     };
-    window.addEventListener('scroll', arm, { passive: true });
-    if (host) {
-      /* Aave has no pointer-track — only replay the sequence on enter. */
-      host.addEventListener('pointerenter', function () {
-        playMenuLogoEyes(null, { force: true });
-      });
-    }
-    arm();
+
+    var trackEyes = function (clientX, clientY) {
+      var p = qcxLiveLogoParts();
+      if (!p || !p.mark) return;
+      var rect = p.mark.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+      var nx = ((clientX - rect.left) / rect.width) * 2 - 1;
+      var ny = ((clientY - rect.top) / rect.height) * 2 - 1;
+      var max = qcxEyesTrackMax(p.mark);
+      __qcxEyesTrack.hovering = true;
+      __qcxEyesTrack.x = Math.max(-max.x, Math.min(max.x, nx * max.x));
+      __qcxEyesTrack.y = Math.max(-max.y, Math.min(max.y, ny * max.y));
+      if (!__qcxEyesTrack.raf) {
+        __qcxEyesTrack.raf = window.requestAnimationFrame(applyTrack);
+      }
+    };
+
+    var resetEyes = function () {
+      __qcxEyesTrack.hovering = false;
+      __qcxEyesTrack.x = 0;
+      __qcxEyesTrack.y = 0;
+      __qcxEyesTrack.tx = 0;
+      __qcxEyesTrack.ty = 0;
+      if (__qcxEyesTrack.raf) {
+        window.cancelAnimationFrame(__qcxEyesTrack.raf);
+        __qcxEyesTrack.raf = 0;
+      }
+      qcxResetEyesTransform(qcxLiveLogoParts());
+    };
+
+    host.addEventListener('pointermove', function (ev) { trackEyes(ev.clientX, ev.clientY); });
+    host.addEventListener('mousemove', function (ev) { trackEyes(ev.clientX, ev.clientY); });
+    host.addEventListener('pointerenter', function (ev) { trackEyes(ev.clientX, ev.clientY); });
+    host.addEventListener('pointerleave', resetEyes);
+    host.addEventListener('mouseleave', resetEyes);
   }
 
   function closeLogoBrandMenu() {
@@ -837,7 +761,6 @@
     window.requestAnimationFrame(function () {
       menu.classList.add('is-open');
     });
-    playMenuLogoEyes(host.__qcxLogoSvg || host.querySelector('.qcx-menu-logo-mark'));
   }
 
   function bindMenuLogoBrandMenu(host) {
