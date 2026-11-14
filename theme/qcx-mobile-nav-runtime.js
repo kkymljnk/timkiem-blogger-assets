@@ -548,8 +548,15 @@
   }
 
   var __qcxEyesPlayGen = 0;
-  function playMenuLogoEyes(svg) {
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  function qcxReduceMotion() {
+    return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  }
+  function playMenuLogoEyes(svg, opts) {
+    opts = opts || {};
+    var force = !!opts.force;
+    var reduce = qcxReduceMotion();
+    /* Auto/interval skipped when reduce; hover still gets a short blink. */
+    if (reduce && opts.auto && !force) return;
     if (svg && svg.isConnected) {
       var host0 = document.getElementById('qcx-menu-logo');
       if (host0) host0.__qcxLogoSvg = svg;
@@ -563,7 +570,7 @@
       window.cancelAnimationFrame(__qcxEyesSeqRaf);
       __qcxEyesSeqRaf = 0;
     }
-    var look = qcxEyesLookPx(parts.eyes);
+    var look = reduce ? 0 : qcxEyesLookPx(parts.eyes);
     var setX = function (x) {
       if (gen !== __qcxEyesPlayGen) return;
       var p = qcxLiveLogoParts();
@@ -580,8 +587,35 @@
       p.left.style.transform = s;
       p.right.style.transform = s;
     };
+    var finish = function () {
+      if (gen !== __qcxEyesPlayGen) return;
+      var p = qcxLiveLogoParts();
+      if (p) {
+        if (p.left) p.left.style.transform = '';
+        if (p.right) p.right.style.transform = '';
+        if (p.eyes) {
+          p.eyes.style.transform = 'translate(0px,0px)';
+          p.eyes.setAttribute('transform', 'translate(0 0)');
+        }
+      }
+      __qcxEyesBusy = false;
+    };
     setX(0);
     setBlink(1);
+    if (reduce || look < 0.5) {
+      /* Short double blink only */
+      qcxTween(1, 0.05, 80, 0, setBlink, function () {
+        qcxTween(0.05, 1, 80, 0, setBlink, function () {
+          qcxTween(1, 0.05, 80, 40, setBlink, function () {
+            qcxTween(0.05, 1, 80, 0, setBlink, finish);
+          });
+        });
+      });
+      __qcxEyesBusyTimer = window.setTimeout(function () {
+        if (gen === __qcxEyesPlayGen) __qcxEyesBusy = false;
+      }, 600);
+      return;
+    }
     /* Aave: 0→+look 150; +→− 300; −→0 250; double blink */
     qcxTween(0, look, 150, 0, setX, function () {
       if (gen !== __qcxEyesPlayGen) return;
@@ -595,19 +629,7 @@
               if (gen !== __qcxEyesPlayGen) return;
               qcxTween(1, 0.05, 75, 50, setBlink, function () {
                 if (gen !== __qcxEyesPlayGen) return;
-                qcxTween(0.05, 1, 75, 0, setBlink, function () {
-                  if (gen !== __qcxEyesPlayGen) return;
-                  var p = qcxLiveLogoParts();
-                  if (p) {
-                    if (p.left) p.left.style.transform = '';
-                    if (p.right) p.right.style.transform = '';
-                    if (p.eyes) {
-                      p.eyes.style.transform = 'translate(0px,0px)';
-                      p.eyes.setAttribute('transform', 'translate(0 0)');
-                    }
-                  }
-                  __qcxEyesBusy = false;
-                });
+                qcxTween(0.05, 1, 75, 0, setBlink, finish);
               });
             });
           });
@@ -625,21 +647,21 @@
     var host = document.getElementById('qcx-menu-logo');
     if (host && svg.isConnected) host.__qcxLogoSvg = svg;
     /* Debounce: avoid rebuild storms cancelling the visible sequence. */
-    if (!__qcxEyesBusy) playMenuLogoEyes(svg);
-    if (host && host.getAttribute('data-qcx-aave-eyes-bound') === '6') return;
-    if (host) host.setAttribute('data-qcx-aave-eyes-bound', '6');
+    if (!__qcxEyesBusy) playMenuLogoEyes(svg, { auto: true });
+    if (host && host.getAttribute('data-qcx-aave-eyes-bound') === '7') return;
+    if (host) host.setAttribute('data-qcx-aave-eyes-bound', '7');
     var timer = null;
     var arm = function () {
       if (timer) clearInterval(timer);
       timer = setInterval(function () {
-        playMenuLogoEyes(null);
+        playMenuLogoEyes(null, { auto: true });
       }, 10000);
-      playMenuLogoEyes(null);
+      playMenuLogoEyes(null, { auto: true });
     };
     window.addEventListener('scroll', arm, { passive: true });
     if (host) {
       var applyTrack = function () {
-        if (__qcxEyesBusy || !__qcxEyesTrack.hovering) {
+        if (__qcxEyesBusy || !__qcxEyesTrack.hovering || qcxReduceMotion()) {
           __qcxEyesTrack.raf = 0;
           return;
         }
@@ -667,8 +689,7 @@
         }
       };
       var trackEyes = function (clientX, clientY) {
-        if (__qcxEyesBusy) return;
-        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        if (__qcxEyesBusy || qcxReduceMotion()) return;
         var p = qcxLiveLogoParts();
         if (!p || !p.mark) return;
         var rect = p.mark.getBoundingClientRect();
@@ -705,7 +726,7 @@
         if (p.right) p.right.style.transform = '';
       };
       host.addEventListener('pointerenter', function () {
-        playMenuLogoEyes(null);
+        playMenuLogoEyes(null, { force: true });
       });
       host.addEventListener('pointermove', function (ev) { trackEyes(ev.clientX, ev.clientY); });
       host.addEventListener('mousemove', function (ev) { trackEyes(ev.clientX, ev.clientY); });
