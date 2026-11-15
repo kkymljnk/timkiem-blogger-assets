@@ -379,7 +379,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.124/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.125/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -1768,10 +1768,10 @@
     function paintButton() {
       pagerInner.innerHTML = '';
       if (!opts.hasMore()) {
-        pager.style.display = 'none';
+        try { pager.style.setProperty('display', 'none', 'important'); } catch (err) { pager.style.display = 'none'; }
         return;
       }
-      pager.style.display = '';
+      try { pager.style.removeProperty('display'); } catch (err2) { pager.style.display = ''; }
       var more = el('button', 'older-link theme-button qcx-load-more', 'Xem thêm');
       more.type = 'button';
       more.disabled = loading;
