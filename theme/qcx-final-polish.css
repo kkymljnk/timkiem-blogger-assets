@@ -347,8 +347,8 @@ a.qcx-sc-btn {
 /* Tutorial rail: keep horizontal row style (thumb left + title right). */
 #PopularPosts1,
 #sidebar .qcx-sidebar-rail {
-  --qcx-latest-thumb-width: 72px;
-  --qcx-latest-thumb-height: 72px;
+  --qcx-latest-thumb-width: 96px;
+  --qcx-latest-thumb-height: 96px;
   --qcx-latest-duration: 200ms;
   --qcx-latest-ease: cubic-bezier(.25,1,.5,1);
   overflow: visible !important;

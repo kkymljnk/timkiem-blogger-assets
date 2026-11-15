@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.15.146/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.15.147/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.wiki/favicon.ico';
@@ -515,6 +515,33 @@
     link.rel = 'stylesheet';
     link.href = href;
     (document.head || document.documentElement).appendChild(link);
+  }
+
+  /* Force related-rail square thumbs even if cached CSS still has 48/72 landscape. */
+  function ensureRelatedRailSquareThumbs() {
+    document.documentElement.setAttribute('data-qcx-rail-thumb', '96');
+    var id = 'qcx-rail-square-thumbs';
+    var css =
+      '#PopularPosts1,.qcx-sidebar-rail,.qcx-tutorial-inline{' +
+      '--qcx-latest-thumb-width:96px!important;--qcx-latest-thumb-height:96px!important}' +
+      '#PopularPosts1 .item-thumbnail,#sidebar .qcx-sidebar-rail .item-thumbnail,' +
+      '.qcx-sidebar-rail .item-thumbnail,.qcx-tutorial-inline .item-thumbnail{' +
+      'width:96px!important;height:96px!important;aspect-ratio:1/1!important;' +
+      'flex-shrink:0!important;overflow:hidden!important;margin:0!important}' +
+      '#PopularPosts1 .item-thumbnail img,#sidebar .qcx-sidebar-rail .item-thumbnail img,' +
+      '.qcx-sidebar-rail .item-thumbnail img,.qcx-tutorial-inline .item-thumbnail img{' +
+      'width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;' +
+      'object-fit:cover!important;object-position:center!important;display:block!important}' +
+      '#PopularPosts1 .item-snippet,#sidebar .qcx-sidebar-rail .item-snippet,' +
+      '.qcx-sidebar-rail .item-snippet,.qcx-tutorial-inline .item-snippet,' +
+      '#sidebar .qcx-sidebar-rail .item-content,.qcx-sidebar-rail .snippet{display:none!important}';
+    var st = document.getElementById(id);
+    if (!st) {
+      st = document.createElement('style');
+      st.id = id;
+      (document.head || document.documentElement).appendChild(st);
+    }
+    if (st.textContent !== css) st.textContent = css;
   }
 
   function ensureBreakdevFonts() {
@@ -1665,8 +1692,8 @@
           image.src = imageUrl;
           image.loading = 'lazy';
           image.decoding = 'async';
-          image.width = 72;
-          image.height = 72;
+          image.width = 96;
+          image.height = 96;
           image.addEventListener('error', function onThumbErr() {
             var fallback = imageInfo.raw && imageInfo.raw !== image.src ? imageInfo.raw : '';
             if (fallback && !image.getAttribute('data-qcx-thumb-retry')) {
@@ -2912,6 +2939,7 @@
     ensureBreakdevFonts();
     ensureDefaultFavicon();
     ensureAtmosphere();
+    ensureRelatedRailSquareThumbs();
     ensureMenuDrawer();
     ensureMobileNavReady();
     ensureSharpBrandAvatar();
@@ -2928,6 +2956,7 @@
   ensureBreakdevFonts();
   ensureDefaultFavicon();
   ensureAtmosphere();
+  ensureRelatedRailSquareThumbs();
   ensureSidebarSearch();
   ensureSidebarRail();
   relocateHeroForDesktopRail();
@@ -2944,6 +2973,7 @@
       ensureBreakdevFonts();
       ensureDefaultFavicon();
       ensureAtmosphere();
+      ensureRelatedRailSquareThumbs();
       ensureSidebarSearch();
       ensureSidebarRail();
       relocateHeroForDesktopRail();

@@ -531,8 +531,8 @@
               image.src = imageUrl;
               image.loading = 'lazy';
               image.decoding = 'async';
-              image.width = 72;
-              image.height = 72;
+              image.width = 96;
+              image.height = 96;
               image.addEventListener('error', function() {
                 image.remove();
                 thumb.classList.add('no-img');

@@ -987,8 +987,8 @@ html[data-page-item='single'] .qcx-comments-shell:not(:has(iframe, textarea, .co
   }
   /* Keep thumb|title row when rail leaves #sidebar (styles were #sidebar-scoped) */
   .qcx-tutorial-inline {
-    --qcx-latest-thumb-width: 72px;
-    --qcx-latest-thumb-height: 72px;
+    --qcx-latest-thumb-width: 96px;
+    --qcx-latest-thumb-height: 96px;
   }
   .qcx-tutorial-inline .qcx-latest-list {
     display: block !important;
