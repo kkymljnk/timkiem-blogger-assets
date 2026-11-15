@@ -379,7 +379,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.127/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.128/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -499,6 +499,11 @@
       'html[data-page-type="homepage"] .nav-pagination:not(.qcx-home-pager):not(.qcx-rescue-pager),' +
       'html[data-page-type="index"] .nav-pagination:not(.qcx-home-pager):not(.qcx-rescue-pager){' +
       'display:none!important}' +
+      /* Allow old labels + added Tutorial (3 chips). */ +
+      '.all_posts .qcx-card-labels a:nth-child(n+4),' +
+      '[data-page-item=\"multiple\"] .qcx-card-labels a:nth-child(n+4){display:none!important}' +
+      '.all_posts .qcx-card-labels a:nth-child(-n+3),' +
+      '[data-page-item=\"multiple\"] .qcx-card-labels a:nth-child(-n+3){display:inline-flex!important}' +
       '.nav-pagination .blog-pager>a,.nav-pagination .blog-pager>button,' +
       '.blog-pager .older-link,.blog-pager .newer-link,' +
       '.qcx-pager .theme-button,.qcx-pager button.theme-button,' +
@@ -1643,14 +1648,47 @@
     }
   }
 
+  function cardLabelsWithTutorial(allLabels) {
+    var list = (allLabels || []).filter(Boolean);
+    var others = [];
+    var hasTutorial = false;
+    list.forEach(function(label){
+      if (/^tutorial$/i.test(String(label))) hasTutorial = true;
+      else others.push(label);
+    });
+    /* Keep old labels first, then ADD Tutorial — never replace. */
+    var out = others.slice(0, 2);
+    if (hasTutorial) out.push('Tutorial');
+    return out;
+  }
+
+  function ensureCardLabelsWithTutorial(root) {
+    try {
+      (root || document).querySelectorAll('.qcx-card-labels').forEach(function(wrap){
+        var links = Array.prototype.slice.call(wrap.querySelectorAll('a'));
+        if (!links.length) return;
+        var tutorial = null;
+        var others = [];
+        links.forEach(function(a){
+          if (/^tutorial$/i.test((a.textContent || '').trim()) || /\/label\/Tutorial(?:\?|$)/i.test(a.getAttribute('href') || '')) {
+            tutorial = a;
+          } else {
+            others.push(a);
+          }
+        });
+        if (!tutorial) return;
+        wrap.innerHTML = '';
+        others.slice(0, 2).forEach(function(a){ wrap.appendChild(a); });
+        wrap.appendChild(tutorial);
+      });
+    } catch (err) {}
+  }
+
   function cardFromEntry(entry, index) {
     var fullTitle = (entry.title && entry.title.$t) || 'Bài viết';
     var title = displayPostTitle(fullTitle);
     var href = entryLink(entry) || '/';
-    /* Keep original label order; only hide Tutorial chip so old tags stay visible. */
-    var labels = entryLabels(entry).filter(function(label){
-      return !/^tutorial$/i.test(String(label || ''));
-    }).slice(0, 2);
+    var labels = cardLabelsWithTutorial(entryLabels(entry));
     var meta = entryThumbMeta(entry);
     var thumb = meta.url;
     var eager = index === 0;
@@ -1751,9 +1789,11 @@
   function polishHomepageCards(row) {
     cleanCardSnippets(row);
     stripDomPostTitles(row);
+    ensureCardLabelsWithTutorial(row);
     window.setTimeout(function(){
       cleanCardSnippets(row);
       stripDomPostTitles(row);
+      ensureCardLabelsWithTutorial(row);
       try {
         var cards = row.querySelectorAll('.card');
         cards.forEach(function(card){ card.style.minHeight = ''; card.style.height = ''; });
@@ -2736,6 +2776,7 @@
   ensureSidebarRail();
   relocateHeroForDesktopRail();
   hideDropsOnHome();
+  ensureCardLabelsWithTutorial(document);
   ensureAdminChrome();
   ensureSiteFooter();
   ensureSharpBrandAvatar();
@@ -2750,6 +2791,7 @@
       ensureSidebarRail();
       relocateHeroForDesktopRail();
       hideDropsOnHome();
+      ensureCardLabelsWithTutorial(document);
       ensureAdminChrome();
       ensureSiteFooter();
       ensureSharpBrandAvatar();
@@ -2757,6 +2799,8 @@
       sharpenCardImages();
     }, { once: true });
   }
+  window.setTimeout(function(){ ensureCardLabelsWithTutorial(document); }, 80);
+  window.setTimeout(function(){ ensureCardLabelsWithTutorial(document); }, 400);
   window.setTimeout(ensureSidebarRail, 80);
   window.setTimeout(ensureSidebarRail, 400);
   window.setTimeout(relocateHeroForDesktopRail, 60);

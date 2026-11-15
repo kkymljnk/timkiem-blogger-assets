@@ -137,10 +137,10 @@ html[data-page-type='homepage'] .qcx-hero {
   text-transform: uppercase !important;
   padding: 4px 8px !important;
 }
-[data-page-item='multiple'] .card-header .qcx-card-labels a:nth-child(n+3),
-.all_posts .card-header .qcx-card-labels a:nth-child(n+3),
-[data-page-item='multiple'] .card-content .qcx-card-labels a:nth-child(n+3),
-.all_posts .card-content .qcx-card-labels a:nth-child(n+3) {
+[data-page-item='multiple'] .card-header .qcx-card-labels a:nth-child(n+4),
+.all_posts .card-header .qcx-card-labels a:nth-child(n+4),
+[data-page-item='multiple'] .card-content .qcx-card-labels a:nth-child(n+4),
+.all_posts .card-content .qcx-card-labels a:nth-child(n+4) {
   display: none !important;
 }
 
