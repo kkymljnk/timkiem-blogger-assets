@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.15.148/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.15.149/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.wiki/favicon.ico';
@@ -517,21 +517,32 @@
     (document.head || document.documentElement).appendChild(link);
   }
 
-  /* Force related-rail square thumbs even if cached CSS still has 48/72 landscape. */
+  /* Force related-rail 16:9 cards even if cached CSS still has square thumbs. */
   function ensureRelatedRailSquareThumbs() {
-    document.documentElement.setAttribute('data-qcx-rail-thumb', '96');
+    document.documentElement.setAttribute('data-qcx-rail-thumb', '16x9');
     var id = 'qcx-rail-square-thumbs';
     var css =
+      '.qcx-related-heading{text-transform:uppercase!important;letter-spacing:.12em!important}' +
       '#PopularPosts1,.qcx-sidebar-rail,.qcx-tutorial-inline{' +
-      '--qcx-latest-thumb-width:96px!important;--qcx-latest-thumb-height:96px!important}' +
+      '--qcx-latest-thumb-width:100%!important;--qcx-latest-thumb-height:auto!important}' +
+      '#PopularPosts1 .widget-content>ul:not(.spinner),#sidebar .qcx-sidebar-rail .qcx-latest-list,' +
+      '.qcx-sidebar-rail .qcx-latest-list,.qcx-tutorial-inline .qcx-latest-list{' +
+      'display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:12px!important}' +
+      '#PopularPosts1 .widget-content>ul:not(.spinner)>li,#sidebar .qcx-sidebar-rail .qcx-latest-list>li,' +
+      '.qcx-sidebar-rail .qcx-latest-list>li,.qcx-tutorial-inline .qcx-latest-list>li{' +
+      'display:flex!important;flex-direction:column!important;gap:0!important;padding:0!important;margin:0!important;' +
+      'overflow:hidden!important;border:1px solid rgba(28,36,32,.17)!important;border-radius:12px!important;' +
+      'background:rgba(6,17,10,.82)!important}' +
       '#PopularPosts1 .item-thumbnail,#sidebar .qcx-sidebar-rail .item-thumbnail,' +
       '.qcx-sidebar-rail .item-thumbnail,.qcx-tutorial-inline .item-thumbnail{' +
-      'width:96px!important;height:96px!important;aspect-ratio:1/1!important;' +
-      'flex-shrink:0!important;overflow:hidden!important;margin:0!important}' +
+      'width:100%!important;height:auto!important;aspect-ratio:16/9!important;' +
+      'flex-shrink:0!important;overflow:hidden!important;margin:0!important;border:0!important;border-radius:0!important}' +
       '#PopularPosts1 .item-thumbnail img,#sidebar .qcx-sidebar-rail .item-thumbnail img,' +
       '.qcx-sidebar-rail .item-thumbnail img,.qcx-tutorial-inline .item-thumbnail img{' +
       'width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;' +
       'object-fit:cover!important;object-position:center!important;display:block!important}' +
+      '#PopularPosts1 .item-title,#sidebar .qcx-sidebar-rail .item-title,' +
+      '.qcx-sidebar-rail .item-title,.qcx-tutorial-inline .item-title{padding:12px 13px!important;margin:0!important}' +
       '#PopularPosts1 .item-snippet,#sidebar .qcx-sidebar-rail .item-snippet,' +
       '.qcx-sidebar-rail .item-snippet,.qcx-tutorial-inline .item-snippet,' +
       '#sidebar .qcx-sidebar-rail .item-content,.qcx-sidebar-rail .snippet{display:none!important}';
@@ -690,15 +701,17 @@
       '@media (max-width:860px){.qcx-sidebar-rail.qcx-tutorial-inline,#qcx-sidebar-rail-rescue.qcx-tutorial-inline{' +
       'display:block!important;width:100%!important;margin:12px 0 16px!important;padding:12px!important;' +
       'box-sizing:border-box!important;border:1px solid rgba(28,36,32,.14)!important;border-radius:14px!important;' +
-      'background:rgba(4,10,7,.72)!important;--qcx-latest-thumb-width:72px;--qcx-latest-thumb-height:48px}' +
-      '.qcx-tutorial-inline .qcx-latest-list{display:block!important;margin:0!important;padding:0!important;list-style:none!important}' +
-      '.qcx-tutorial-inline .qcx-latest-list>li{display:grid!important;grid-template-columns:72px minmax(0,1fr)!important;' +
-      'gap:10px!important;align-items:center!important;min-height:56px!important;margin:0!important;padding:8px 0!important;' +
-      'border-bottom:1px solid rgba(28,36,32,.11)!important;list-style:none!important}' +
-      '.qcx-tutorial-inline .item-thumbnail{width:72px!important;height:48px!important;margin:0!important;border-radius:8px!important;overflow:hidden!important}' +
+      'background:rgba(4,10,7,.72)!important;--qcx-latest-thumb-width:100%;--qcx-latest-thumb-height:auto}' +
+      '.qcx-tutorial-inline .qcx-related-heading{text-transform:uppercase!important;letter-spacing:.12em!important}' +
+      '.qcx-tutorial-inline .qcx-latest-list{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:12px!important;margin:0!important;padding:0!important;list-style:none!important}' +
+      '.qcx-tutorial-inline .qcx-latest-list>li{display:flex!important;flex-direction:column!important;gap:0!important;' +
+      'margin:0!important;padding:0!important;overflow:hidden!important;border:1px solid rgba(28,36,32,.17)!important;' +
+      'border-radius:12px!important;background:rgba(6,17,10,.82)!important;list-style:none!important}' +
+      '.qcx-tutorial-inline .item-thumbnail{width:100%!important;height:auto!important;aspect-ratio:16/9!important;margin:0!important;border-radius:0!important;overflow:hidden!important}' +
       '.qcx-tutorial-inline .item-thumbnail img{width:100%!important;height:100%!important;object-fit:cover!important;display:block!important}' +
+      '.qcx-tutorial-inline .item-title{padding:12px 13px!important;margin:0!important}' +
       '.qcx-tutorial-inline .item-title a{display:-webkit-box!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:2!important;' +
-      'overflow:hidden!important;color:#dce9df!important;font:700 11px/1.4 var(--mono),monospace!important;text-decoration:none!important}' +
+      'overflow:hidden!important;color:#dce9df!important;font:800 12px/1.55 var(--mono),monospace!important;text-decoration:none!important}' +
       'body:not(#layout):has(#qcx-sidebar-rail-rescue) #sidebar #HTML4,' +
       'body:not(#layout):has(#qcx-sidebar-rail-rescue) #sidebar #HTML4.qcx-sidebar-rail,' +
       'body:not(#layout):has(#qcx-sidebar-rail-rescue) #HTML4,' +
@@ -1362,7 +1375,7 @@
 
   /* Related posts rail — 9 items to match homepage batch size. */
   var QCX_TUTORIAL_COUNT = 9;
-  var QCX_RELATED_HEADING = 'Bài Viết liên quan';
+  var QCX_RELATED_HEADING = 'BÀI VIẾT LIÊN QUAN';
 
   function isAdminPath() {
     try {
@@ -1540,12 +1553,16 @@
       if (node === rail) return;
       try { if (node.parentNode) node.parentNode.removeChild(node); } catch (ignoreDup) {}
     });
-    /* Rename legacy “Tutorial” heading/aria from SSR gadgets. */
+    /* Normalize related heading/aria (Tutorial legacy + title-case → uppercase). */
     document.querySelectorAll('.qcx-related-heading').forEach(function(node){
-      if (/^tutorial$/i.test(text(node.textContent))) node.textContent = QCX_RELATED_HEADING;
+      var cur = text(node.textContent);
+      if (!cur || /^tutorial$/i.test(cur) || /bài\s*viết\s*liên\s*quan/i.test(cur)) {
+        node.textContent = QCX_RELATED_HEADING;
+      }
     });
     document.querySelectorAll('.qcx-latest-list[aria-label]').forEach(function(node){
-      if (/^tutorial$/i.test(node.getAttribute('aria-label') || '')) {
+      var label = node.getAttribute('aria-label') || '';
+      if (!label || /^tutorial$/i.test(label) || /bài\s*viết\s*liên\s*quan/i.test(label)) {
         node.setAttribute('aria-label', QCX_RELATED_HEADING);
       }
     });

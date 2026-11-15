@@ -679,11 +679,11 @@ a.qcx-sc-btn {
   }
 }
 
-/* Tutorial rail: keep horizontal row style (thumb left + title right). */
+/* Related rail: stacked 16:9 cards (image on top) — match .qcx-related-card. */
 #PopularPosts1,
 #sidebar .qcx-sidebar-rail {
-  --qcx-latest-thumb-width: 96px;
-  --qcx-latest-thumb-height: 96px;
+  --qcx-latest-thumb-width: 100%;
+  --qcx-latest-thumb-height: auto;
   --qcx-latest-duration: 200ms;
   --qcx-latest-ease: cubic-bezier(.25,1,.5,1);
   overflow: visible !important;
@@ -692,7 +692,7 @@ a.qcx-sc-btn {
 #PopularPosts1 .qcx-related-heading,
 #sidebar .qcx-sidebar-rail .qcx-related-heading {
   min-height: 40px !important;
-  margin: 0 0 8px !important;
+  margin: 0 0 10px !important;
   padding: 0 12px !important;
   display: flex !important;
   align-items: center !important;
@@ -701,43 +701,54 @@ a.qcx-sc-btn {
   border-radius: 9px !important;
   color: var(--fg) !important;
   font: 700 11px/1 var(--mono) !important;
-  letter-spacing: .04em !important;
+  letter-spacing: .12em !important;
+  text-transform: uppercase !important;
 }
 #PopularPosts1 .widget-content,
 #sidebar .qcx-sidebar-rail .widget-content { padding: 0 !important; }
 #PopularPosts1 .widget-content > ul:not(.spinner),
 #sidebar .qcx-sidebar-rail .qcx-latest-list {
-  display: block !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 12px !important;
   margin: 0 !important;
   padding: 0 !important;
   list-style: none !important;
 }
 #PopularPosts1 .widget-content > ul:not(.spinner) > li,
 #sidebar .qcx-sidebar-rail .qcx-latest-list > li {
-  display: grid !important;
-  grid-template-columns: var(--qcx-latest-thumb-width) minmax(0, 1fr) !important;
-  gap: 10px !important;
-  align-items: center !important;
-  min-height: var(--qcx-latest-thumb-height) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0 !important;
+  align-items: stretch !important;
+  min-height: 0 !important;
   margin: 0 !important;
-  padding: 8px 0 !important;
-  border-bottom: 1px solid rgba(28,36,32,.11) !important;
-  overflow: visible !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(28,36,32,.17) !important;
+  border-radius: 12px !important;
+  background: rgba(6,17,10,.82) !important;
+  transition: transform .18s ease, border-color .18s ease !important;
+}
+#PopularPosts1 .widget-content > ul:not(.spinner) > li:hover,
+#sidebar .qcx-sidebar-rail .qcx-latest-list > li:hover {
+  transform: translateY(-2px) !important;
+  border-color: rgba(28,36,32,.45) !important;
 }
 #PopularPosts1 .widget-content > ul:not(.spinner) > li:last-child,
-#sidebar .qcx-sidebar-rail .qcx-latest-list > li:last-child { border-bottom: 0 !important; }
+#sidebar .qcx-sidebar-rail .qcx-latest-list > li:last-child { border-bottom: 1px solid rgba(28,36,32,.17) !important; }
 #PopularPosts1 .item-thumbnail,
 #sidebar .qcx-sidebar-rail .item-thumbnail {
   position: relative !important;
   float: none !important;
-  width: var(--qcx-latest-thumb-width) !important;
-  height: var(--qcx-latest-thumb-height) !important;
-  aspect-ratio: 1 / 1 !important;
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 16 / 9 !important;
   margin: 0 !important;
-  border-radius: 8px !important;
-  background: #07110a !important;
+  border-radius: 0 !important;
+  background: #030704 !important;
   overflow: hidden !important;
-  border: 1px solid rgba(28,36,32,.14) !important;
+  border: 0 !important;
   flex-shrink: 0 !important;
 }
 #PopularPosts1 .item-thumbnail a,
@@ -772,9 +783,10 @@ a.qcx-sc-btn {
 #PopularPosts1 .item-title,
 #sidebar .qcx-sidebar-rail .item-title {
   min-width: 0 !important;
-  align-self: center !important;
+  align-self: stretch !important;
   margin: 0 !important;
-  padding: 0 !important;
+  padding: 12px 13px !important;
+  box-sizing: border-box !important;
 }
 #PopularPosts1 .item-title a,
 #sidebar .qcx-sidebar-rail .item-title a {
@@ -785,7 +797,7 @@ a.qcx-sc-btn {
   -webkit-box-orient: vertical !important;
   -webkit-line-clamp: 2 !important;
   color: #dce9df !important;
-  font: 700 11px/1.4 var(--mono) !important;
+  font: 800 12px/1.55 var(--mono) !important;
   text-decoration: none !important;
   word-break: break-word !important;
   overflow-wrap: anywhere !important;
