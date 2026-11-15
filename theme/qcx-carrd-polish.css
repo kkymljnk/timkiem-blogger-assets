@@ -230,35 +230,23 @@ body:not(#layout) .qcx-hero-divider,
   animation: none !important;
 }
 
-/* Card excerpt — 2 lines PC + mobile */
+/* Homepage cards title-only — hide card excerpts (teaser is .qcx-teaser in-post) */
 [data-page-item='multiple'] .card-content .post-entry,
 [data-page-item='multiple'] .card-content .qcx-card-excerpt,
 .all_posts .card-content .post-entry,
 .all_posts .card-content .qcx-card-excerpt,
 .qcx-rescue-blog .card-content .post-entry,
 .qcx-rescue-blog .card-content .qcx-card-excerpt {
-  display: -webkit-box !important;
-  visibility: visible !important;
-  height: auto !important;
-  max-height: 2.8em !important;
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  max-height: 0 !important;
   min-height: 0 !important;
-  margin: 6px 0 0 !important;
+  margin: 0 !important;
   padding: 0 !important;
   overflow: hidden !important;
   flex: none !important;
-  opacity: 1 !important;
-  -webkit-line-clamp: 2 !important;
-  -webkit-box-orient: vertical !important;
-  font-size: 13px !important;
-  line-height: 1.4 !important;
-  color: rgba(190, 211, 198, .62) !important;
-}
-[data-page-item='multiple'] .card-content .post-entry:empty,
-[data-page-item='multiple'] .card-content .qcx-card-excerpt:empty,
-.all_posts .card-content .post-entry:empty,
-.all_posts .card-content .qcx-card-excerpt:empty {
-  display: none !important;
-  margin: 0 !important;
+  opacity: 0 !important;
 }
 [data-page-item='multiple'] .card-content .date,
 .all_posts .card-content .date {

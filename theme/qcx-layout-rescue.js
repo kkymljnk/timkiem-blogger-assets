@@ -75,20 +75,8 @@
 
   function cleanCardSnippets(root) {
     var scope = root || document;
-    /* Keep intentional excerpts (data-qcx-excerpt=1); promote valid native text; strip CSS-leak only. */
+    /* Homepage cards are title-only — always strip card snippets/excerpts (teaser lives in-post). */
     scope.querySelectorAll('.card-content .post-entry, .card .post-entry, .card-content .qcx-card-excerpt').forEach(function(node){
-      var raw = text(node.textContent).replace(/\s+/g, ' ').trim();
-      var looksLeak = !raw || raw.length < 18 ||
-        /box-sizing|font-family|linear-gradient|\.btn-download|^\*|^\.\w/i.test(raw) ||
-        ((raw.match(/[{}:;]/g) || []).length >= 2);
-      if (!looksLeak) {
-        node.setAttribute('data-qcx-excerpt', '1');
-        node.classList.add('qcx-card-excerpt');
-        node.removeAttribute('data-qcx-snippet');
-        node.classList.remove('is-css-leak');
-        try { node.style.removeProperty('display'); } catch (ignoreShow) {}
-        return;
-      }
       node.innerHTML = '';
       node.classList.add('is-css-leak');
       node.setAttribute('data-qcx-snippet', 'hidden');
@@ -99,62 +87,8 @@
   }
   window.__qcxCleanCardSnippets = cleanCardSnippets;
 
-  function injectCardExcerpt(card, excerpt) {
-    if (!card || !excerpt) return false;
-    var existing = card.querySelector('.qcx-card-excerpt[data-qcx-excerpt="1"], .post-entry[data-qcx-excerpt="1"]');
-    if (existing) {
-      var cur = text(existing.textContent).replace(/\s+/g, ' ').trim();
-      if (cur === excerpt) return false;
-      existing.textContent = excerpt;
-      return true;
-    }
-    var content = card.querySelector('.card-content');
-    if (!content) return false;
-    var p = document.createElement('p');
-    p.className = 'qcx-card-excerpt post-entry';
-    p.setAttribute('data-qcx-excerpt', '1');
-    p.textContent = excerpt;
-    var title = content.querySelector('.title, h2.title, h3.title');
-    if (title) title.insertAdjacentElement('afterend', p);
-    else content.insertBefore(p, content.firstChild);
-    return true;
-  }
-
-  function hydrateNativeCardExcerpts(root) {
-    try {
-      if (typeof isStrictHomepage === 'function' && !isStrictHomepage()) return;
-    } catch (ignoreHome) {}
-    var scope = root || document;
-    var cards = Array.prototype.slice.call(scope.querySelectorAll('article.card'));
-    if (!cards.length) return;
-    var max = Math.max(cards.length, (typeof QCX_HOME_FEED_BATCH === 'number' ? QCX_HOME_FEED_BATCH : 27));
-    fetchJson('/feeds/posts/summary?alt=json&max-results=' + max).then(function(payload){
-      var entries = (payload && payload.feed && payload.feed.entry) || [];
-      var byPath = {};
-      entries.forEach(function(entry){
-        var href = entryLink(entry) || '';
-        var p = pathOf(href);
-        if (p) byPath[p] = entry;
-        var id = postIdOf(entry);
-        if (id) byPath['id:' + id] = entry;
-      });
-      cards.forEach(function(card){
-        var a = card.querySelector('.card-content .title a, h2.title a, .card-header a[href]');
-        if (!a) return;
-        var entry = byPath[pathOf(a.href)] || null;
-        if (!entry) {
-          var m = String(a.href || '').match(/post-(\d+)/i) || String(a.getAttribute('href') || '').match(/\/(\d{10,})/);
-          if (m) entry = byPath['id:' + m[1]] || null;
-        }
-        if (!entry) return;
-        var excerpt = plainSummary(
-          (entry.summary && entry.summary.$t) ||
-          (entry.content && entry.content.$t) ||
-          ''
-        );
-        injectCardExcerpt(card, excerpt);
-      });
-    }).catch(function(){});
+  function hydrateNativeCardExcerpts() {
+    /* no-op: homepage cards stay title-only; teaser is .qcx-teaser inside posts */
   }
   window.__qcxHydrateNativeCardExcerpts = hydrateNativeCardExcerpts;
 
@@ -461,7 +395,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.15.142/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.15.143/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.wiki/favicon.ico';
@@ -1817,11 +1751,6 @@
     var meta = entryThumbMeta(entry);
     var thumb = meta.url;
     var eager = index === 0;
-    var excerpt = plainSummary(
-      (entry.summary && entry.summary.$t) ||
-      (entry.content && entry.content.$t) ||
-      ''
-    );
     var col = el('div', 'col-md-4');
     var media = thumb
       ? ('<img class="qcx-card-media" alt="' + escapeHtml(title) + '"' +
@@ -1834,9 +1763,6 @@
     var labelHtml = labels.map(function(label){
       return '<a href="/search/label/' + encodeURIComponent(label) + '" rel="tag">' + escapeHtml(label) + '</a>';
     }).join('');
-    var excerptHtml = excerpt
-      ? ('<p class="qcx-card-excerpt post-entry" data-qcx-excerpt="1">' + escapeHtml(excerpt) + '</p>')
-      : '';
     col.innerHTML =
       '<article class="card">' +
       '<div class="card-header">' +
@@ -1845,7 +1771,6 @@
       '</div>' +
       '<div class="card-content">' +
       '<h2 class="title"><a href="' + escapeHtml(href) + '" title="' + escapeHtml(fullTitle) + '">' + escapeHtml(title) + '</a></h2>' +
-      excerptHtml +
       '</div><div class="card-footer"></div></article>';
     return col;
   }
@@ -1924,12 +1849,10 @@
     cleanCardSnippets(row);
     stripDomPostTitles(row);
     ensureCardLabelsWithTutorial(row);
-    hydrateNativeCardExcerpts(row);
     window.setTimeout(function(){
       cleanCardSnippets(row);
       stripDomPostTitles(row);
       ensureCardLabelsWithTutorial(row);
-      hydrateNativeCardExcerpts(row);
       try {
         var cards = row.querySelectorAll('.card');
         cards.forEach(function(card){ card.style.minHeight = ''; card.style.height = ''; });
@@ -2070,7 +1993,6 @@
     if (!cols.length) return;
     native.setAttribute('data-qcx-home-more', '1');
     polishHomepageCards(row);
-    hydrateNativeCardExcerpts(row);
 
     var PAGE_SIZE = QCX_HOME_PAGE_SIZE;
     var hidden = [];
@@ -2534,16 +2456,12 @@
   function bootSnippetClean() {
     cleanCardSnippets();
     stripDomPostTitles();
-    hydrateNativeCardExcerpts();
     window.setTimeout(cleanCardSnippets, 80);
     window.setTimeout(stripDomPostTitles, 80);
-    window.setTimeout(hydrateNativeCardExcerpts, 80);
     window.setTimeout(cleanCardSnippets, 400);
     window.setTimeout(stripDomPostTitles, 400);
-    window.setTimeout(hydrateNativeCardExcerpts, 400);
     window.setTimeout(cleanCardSnippets, 1200);
     window.setTimeout(stripDomPostTitles, 1200);
-    window.setTimeout(hydrateNativeCardExcerpts, 1200);
   }
 
   function bootRescue() {
