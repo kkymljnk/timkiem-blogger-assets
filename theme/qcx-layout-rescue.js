@@ -379,7 +379,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.122/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.123/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -1811,6 +1811,7 @@
     var shown = 0;
     var totalResults = Math.max(pool.length, 0);
     var exhausted = false;
+    var controls = null;
 
     function appendNext() {
       var slice = pool.slice(shown, shown + PAGE_SIZE);
@@ -1824,7 +1825,7 @@
       if (shown < pool.length) return true;
       if (exhausted) return false;
       if (totalResults > 0) return shown < totalResults;
-      return pool.length >= PAGE_SIZE;
+      return true;
     }
 
     function loadMore() {
@@ -1847,7 +1848,7 @@
           pool.push(entry);
         });
         if (!appendNext()) exhausted = true;
-        if (page.entries.length < PAGE_SIZE) exhausted = true;
+        if (page.entries.length < PAGE_SIZE || (totalResults > 0 && shown >= totalResults)) exhausted = true;
         return true;
       }).catch(function(){
         exhausted = true;
@@ -1856,7 +1857,12 @@
     }
 
     appendNext();
-    mountHomeLoadMore(pager, pagerInner, { hasMore: hasMore, loadMore: loadMore });
+    controls = mountHomeLoadMore(pager, pagerInner, { hasMore: hasMore, loadMore: loadMore });
+    fetchHomepageFeedPage(1, 1).then(function(page){
+      totalResults = Math.max(totalResults, page.total || 0);
+      if (totalResults > 0 && shown >= totalResults) exhausted = true;
+      if (controls && controls.refresh) controls.refresh();
+    }).catch(function(){});
   }
 
   function enhanceNativeHomepageFeed() {
@@ -1882,10 +1888,9 @@
       try { col.remove(); } catch (err) { col.style.display = 'none'; }
     });
 
-    var oldPager = native.querySelector('.nav-pagination, .blog-pager');
-    if (oldPager) {
-      try { oldPager.style.display = 'none'; } catch (ignorePager) {}
-    }
+    native.querySelectorAll('.nav-pagination, .blog-pager').forEach(function(node){
+      try { node.style.setProperty('display', 'none', 'important'); } catch (ignorePager) {}
+    });
 
     var pager = el('div', 'nav-pagination qcx-pager qcx-home-pager');
     var pagerInner = el('div', 'blog-pager');
@@ -1895,12 +1900,13 @@
     var shown = Math.min(cols.length, PAGE_SIZE);
     var exhausted = false;
     var totalResults = 0;
+    var controls = null;
 
     function hasMore() {
       if (hidden.length) return true;
       if (exhausted) return false;
       if (totalResults > 0) return shown < totalResults;
-      return cols.length >= PAGE_SIZE;
+      return true;
     }
 
     function revealHidden() {
@@ -1930,7 +1936,7 @@
         });
         shown += page.entries.length;
         polishHomepageCards(row);
-        if (page.entries.length < PAGE_SIZE) exhausted = true;
+        if (page.entries.length < PAGE_SIZE || (totalResults > 0 && shown >= totalResults)) exhausted = true;
         return true;
       }).catch(function(){
         exhausted = true;
@@ -1938,11 +1944,12 @@
       });
     }
 
-    if (!hasMore()) {
-      pager.style.display = 'none';
-      return;
-    }
-    mountHomeLoadMore(pager, pagerInner, { hasMore: hasMore, loadMore: loadMore });
+    controls = mountHomeLoadMore(pager, pagerInner, { hasMore: hasMore, loadMore: loadMore });
+    fetchHomepageFeedPage(1, 1).then(function(page){
+      totalResults = Math.max(totalResults, page.total || 0);
+      if (totalResults > 0 && shown >= totalResults) exhausted = true;
+      if (controls && controls.refresh) controls.refresh();
+    }).catch(function(){});
   }
 
   function postIdOf(entry) {
