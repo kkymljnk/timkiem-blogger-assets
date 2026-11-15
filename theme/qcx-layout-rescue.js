@@ -417,7 +417,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.15.144/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.15.145/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.wiki/favicon.ico';
@@ -2830,7 +2830,7 @@
       '<p class="qcx-sc-desc">Nhận bài mới trên Blogger và cập nhật nhanh qua Telegram.</p>' +
       '</div>' +
       '<div class="qcx-sc-actions">' +
-      '<a class="qcx-sc-btn" href="' + follow + '" rel="nofollow noopener" target="_blank">Theo dõi blog</a>' +
+      '<a class="qcx-sc-btn" data-qcx-follow="1" href="' + follow + '" rel="nofollow noopener" target="_blank">Theo dõi blog</a>' +
       '<a class="qcx-sc-btn qcx-sc-btn-outline" href="https://t.me/superkhung" rel="noopener noreferrer" target="_blank">Kênh Telegram</a>' +
       '</div>';
 
