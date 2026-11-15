@@ -1,5 +1,5 @@
 /**
- * TIMKIEM secure resource gate (Blogspot theme client).
+ * MMO secure resource gate (Blogspot theme client).
  * Secrets never live in post HTML — delivery comes from Cloudflare Worker.
  * v20261113-marker2 — wait for marker id before free boot; prefer marker over slug.
  */
@@ -7,7 +7,7 @@
   'use strict';
   if (window.__qcxSecureResourceBooted) return;
 
-  var API_BASE = 'https://api.timkiem.app';
+  var API_BASE = 'https://api.mmo.wiki';
   var FREE_TOKEN_KEY = 'qcx_free_token_v1';
   var UNLOCK_SESSION_KEY = 'qcx_free_unlock_session_v1';
   var PRICE_LABEL = /^(?:\d{1,3}(?:[.,]\d{3})+|\d+)(?:\s*đ|d|vnd)?$/i;
@@ -1927,7 +1927,7 @@
         method: 'POST',
         body: JSON.stringify({
           customerName: 'Blog reader',
-          customerEmail: 'pass+' + Date.now() + '@timkiem.app',
+          customerEmail: 'pass+' + Date.now() + '@mmo.wiki',
           customerContact: 'blog-pass'
         })
       }).then(function (result) {

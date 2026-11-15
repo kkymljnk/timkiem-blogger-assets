@@ -1,4 +1,4 @@
-/* Aave navigationLink SVGs + CSS-var hover (grey→mint), TIMKIEM actives. */
+/* Aave navigationLink SVGs + CSS-var hover (grey→mint), MMO actives. */
 (function (root) {
   'use strict';
   var ICONS = {

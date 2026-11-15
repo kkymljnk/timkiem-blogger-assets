@@ -234,7 +234,7 @@
 
     var menuHeader = createElement('div');
     menuHeader.id = 'qcx-menu-header';
-    var menuLogo = createElement('div', '', 'CÔNG CỤ.AI');
+    var menuLogo = createElement('div', '', 'MMO');
     menuLogo.id = 'qcx-menu-logo';
     var menuClose = createElement('button', '', '\u00d7');
     menuClose.id = 'qcx-menu-close';
@@ -745,7 +745,7 @@
       copy.appendChild(titleEl);
       var metaText = entry.labels.slice(0, 2).join(' · ');
       if (entry.date) metaText += (metaText ? ' · ' : '') + entry.date;
-      copy.appendChild(createElement('span', 'qcx-search-result-meta', metaText || 'Bài viết TIMKIEM'));
+      copy.appendChild(createElement('span', 'qcx-search-result-meta', metaText || 'Bài viết MMO'));
       link.appendChild(media);
       link.appendChild(copy);
       searchResults.appendChild(link);
@@ -963,7 +963,7 @@
     bindCommand(shareButton, function() {
       var directShareUrl = shareButton ? shareButton.getAttribute('data-share-url') : '';
       var articleUrl = canonicalArticleUrl(directShareUrl);
-      var shareTitle = document.title || 'AI HUB TOOLS';
+      var shareTitle = document.title || 'MMO';
       if (navigator.share) {
         navigator.share({ title: shareTitle, url: articleUrl }).catch(function(){});
         return;

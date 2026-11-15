@@ -108,8 +108,8 @@
       return word.length > 2 && !/^(?:và|cho|của|trên|một|the|with|from)$/i.test(word);
     }).slice(0, 3).join(' ');
     var keywordSlug = slugify(keyword).split('-').slice(0, 4).join('-') || 'article';
-    path.textContent = 'timkiem/' + keywordSlug;
-    path.title = keyword ? 'Từ khóa: ' + keyword : 'TIMKIEM';
+    path.textContent = 'mmo/' + keywordSlug;
+    path.title = keyword ? 'Từ khóa: ' + keyword : 'MMO';
   }
 
   function copyText(text) {
@@ -289,7 +289,7 @@
         if (!driveUrl) return;
         event.preventDefault();
         event.stopImmediatePropagation();
-        var driveWindow = window.open(driveUrl, 'TimkiemDriveResource', 'noopener,noreferrer');
+        var driveWindow = window.open(driveUrl, 'MmoDriveResource', 'noopener,noreferrer');
         if (driveWindow) {
           try { driveWindow.opener = null; } catch (ignore) {}
         }
