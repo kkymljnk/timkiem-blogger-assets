@@ -267,7 +267,7 @@
   }
 
   var QCX_HERO_TITLE = 'MMO TEAM';
-  var QCX_HERO_BIO = 'Tool AI · share · mã nguồn thực chiến. Support Telegram.';
+  var QCX_HERO_BIO = 'Công cụ AI · tài nguyên · mã nguồn thực chiến. Hỗ trợ qua Telegram.';
 
   function polishHeroBrand() {
     var titleEl = document.querySelector('.qcx-hero-title');
@@ -388,7 +388,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.130/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.131/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
