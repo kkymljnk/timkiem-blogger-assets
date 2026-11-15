@@ -92,23 +92,34 @@ body:not(#layout) .qcx-hero-divider,
   transition: transform .18s cubic-bezier(.2,.8,.2,1), border-color .18s ease, box-shadow .18s ease !important;
 }
 [data-page-item='multiple'] .card-header,
-.all_posts .card-header {
-  aspect-ratio: 16 / 10 !important;
+.all_posts .card-header,
+.qcx-rescue-blog .card-header {
+  aspect-ratio: 16 / 9 !important;
   border-radius: 0 !important;
   overflow: hidden !important;
   background: #070b08 !important;
+  position: relative !important;
 }
 [data-page-item='multiple'] .card-header > a,
-.all_posts .card-header > a {
+.all_posts .card-header > a,
+.qcx-rescue-blog .card-header > a {
   display: block !important;
   width: 100% !important;
   height: 100% !important;
   padding-bottom: 0 !important;
   overflow: hidden !important;
+  position: relative !important;
 }
 [data-page-item='multiple'] .card-header img,
 [data-page-item='multiple'] .card-header > a img,
-.all_posts .card-header img {
+.all_posts .card-header img,
+.qcx-rescue-blog .card-header img {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center center !important;
   transition: transform .18s cubic-bezier(.2,.8,.2,1) !important;
   transform-origin: center center !important;
   will-change: transform;
@@ -141,6 +152,10 @@ body:not(#layout) .qcx-hero-divider,
   letter-spacing: .06em !important;
   text-transform: uppercase !important;
   padding: 4px 8px !important;
+  max-width: 108px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
 }
 [data-page-item='multiple'] .card-header .qcx-card-labels a:nth-child(n+4),
 .all_posts .card-header .qcx-card-labels a:nth-child(n+4),
@@ -215,40 +230,44 @@ body:not(#layout) .qcx-hero-divider,
   animation: none !important;
 }
 
-/* PC: optional 1-line snippet + quiet date */
-@media (min-width: 681px) {
-  [data-page-item='multiple'] .card-content .post-entry,
-  .all_posts .card-content .post-entry,
-  .qcx-rescue-blog .card-content .post-entry {
-    display: -webkit-box !important;
-    visibility: visible !important;
-    height: auto !important;
-    max-height: 1.4em !important;
-    min-height: 0 !important;
-    margin: 6px 0 0 !important;
-    padding: 0 !important;
-    overflow: hidden !important;
-    flex: none !important;
-    -webkit-line-clamp: 1 !important;
-    -webkit-box-orient: vertical !important;
-    font-size: 13px !important;
-    line-height: 1.4 !important;
-    color: rgba(190, 211, 198, .62) !important;
-  }
-  [data-page-item='multiple'] .card-content .post-entry:empty,
-  .all_posts .card-content .post-entry:empty {
-    display: none !important;
-    margin: 0 !important;
-  }
-  [data-page-item='multiple'] .card-content .date,
-  .all_posts .card-content .date {
-    display: inline-block !important;
-    margin-top: 6px !important;
-    font-size: 11px !important;
-    letter-spacing: .04em !important;
-    color: rgba(190, 211, 198, .55) !important;
-    opacity: .65 !important;
-  }
+/* Card excerpt — 2 lines PC + mobile */
+[data-page-item='multiple'] .card-content .post-entry,
+[data-page-item='multiple'] .card-content .qcx-card-excerpt,
+.all_posts .card-content .post-entry,
+.all_posts .card-content .qcx-card-excerpt,
+.qcx-rescue-blog .card-content .post-entry,
+.qcx-rescue-blog .card-content .qcx-card-excerpt {
+  display: -webkit-box !important;
+  visibility: visible !important;
+  height: auto !important;
+  max-height: 2.8em !important;
+  min-height: 0 !important;
+  margin: 6px 0 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  flex: none !important;
+  opacity: 1 !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  font-size: 13px !important;
+  line-height: 1.4 !important;
+  color: rgba(190, 211, 198, .62) !important;
+}
+[data-page-item='multiple'] .card-content .post-entry:empty,
+[data-page-item='multiple'] .card-content .qcx-card-excerpt:empty,
+.all_posts .card-content .post-entry:empty,
+.all_posts .card-content .qcx-card-excerpt:empty {
+  display: none !important;
+  margin: 0 !important;
+}
+[data-page-item='multiple'] .card-content .date,
+.all_posts .card-content .date {
+  display: inline-block !important;
+  margin-top: 6px !important;
+  font-size: 11px !important;
+  letter-spacing: .04em !important;
+  color: rgba(190, 211, 198, .55) !important;
+  opacity: .65 !important;
 }
 
 @media (max-width: 680px) {
@@ -264,8 +283,9 @@ body:not(#layout) .qcx-hero-divider,
     border-radius: 12px !important;
   }
   [data-page-item='multiple'] .card-header,
-  .all_posts .card-header {
-    aspect-ratio: 16 / 11 !important;
+  .all_posts .card-header,
+  .qcx-rescue-blog .card-header {
+    aspect-ratio: 16 / 9 !important;
   }
   [data-page-item='multiple'] .card-content .title,
   .all_posts .card-content .title {
@@ -276,11 +296,7 @@ body:not(#layout) .qcx-hero-divider,
   [data-page-item='multiple'] .card-content .title a {
     min-height: 44px;
   }
-  [data-page-item='multiple'] .card-content .post-entry,
-  [data-page-item='multiple'] .card-content .date,
   [data-page-item='multiple'] .card-content .meta,
-  .all_posts .card-content .post-entry,
-  .all_posts .card-content .date,
   .all_posts .card-content .meta {
     display: none !important;
   }

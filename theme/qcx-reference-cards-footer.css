@@ -181,10 +181,11 @@ body {
 [data-page-item='multiple'] .card-content .meta {
   display: none !important;
 }
-[data-page-item='multiple'] .card-content .post-entry,
+/* Keep intentional excerpts; hide only CSS-leak / scrubbed nodes */
 [data-page-item='multiple'] .card-content .post-entry[data-qcx-snippet='hidden'],
 [data-page-item='multiple'] .card-content .post-entry.is-css-leak,
-[data-page-item='multiple'] .card-content .post-entry p {
+[data-page-item='multiple'] .card-content .qcx-card-excerpt[data-qcx-snippet='hidden'],
+[data-page-item='multiple'] .card-content .qcx-card-excerpt.is-css-leak {
   display: none !important;
   visibility: hidden !important;
   height: 0 !important;
@@ -194,7 +195,23 @@ body {
   padding: 0 !important;
   overflow: hidden !important;
   opacity: 0 !important;
-  -webkit-line-clamp: unset !important;
+}
+[data-page-item='multiple'] .card-content .post-entry[data-qcx-excerpt='1'],
+[data-page-item='multiple'] .card-content .qcx-card-excerpt[data-qcx-excerpt='1'] {
+  display: -webkit-box !important;
+  visibility: visible !important;
+  height: auto !important;
+  max-height: 2.8em !important;
+  min-height: 0 !important;
+  margin: 6px 0 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  opacity: 1 !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  font-size: 13px !important;
+  line-height: 1.4 !important;
+  color: rgba(190, 211, 198, .62) !important;
 }
 [data-page-item='multiple'] .card-header .qcx-card-noimg,
 [data-page-item='multiple'] .qcx-card-noimg {

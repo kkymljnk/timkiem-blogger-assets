@@ -74,11 +74,21 @@
 
   function cleanCardSnippets(root) {
     var scope = root || document;
-    /* Cards are title-only — always strip description/snippet blocks. */
-    scope.querySelectorAll('.card-content .post-entry, .card .post-entry').forEach(function(node){
+    /* Keep intentional excerpts (data-qcx-excerpt=1); strip CSS-leak / empty garbage only. */
+    scope.querySelectorAll('.card-content .post-entry, .card .post-entry, .card-content .qcx-card-excerpt').forEach(function(node){
+      if (node.getAttribute('data-qcx-excerpt') === '1') {
+        var keep = text(node.textContent).replace(/\s+/g, ' ').trim();
+        if (keep.length >= 18 && !/box-sizing|font-family|linear-gradient/i.test(keep)) return;
+      }
+      var raw = text(node.textContent).replace(/\s+/g, ' ').trim();
+      var looksLeak = !raw || raw.length < 18 ||
+        /box-sizing|font-family|linear-gradient|\.btn-download|^\*|^\.\w/i.test(raw) ||
+        ((raw.match(/[{}:;]/g) || []).length >= 2);
+      if (!looksLeak && node.getAttribute('data-qcx-excerpt') === '1') return;
       node.innerHTML = '';
       node.classList.add('is-css-leak');
       node.setAttribute('data-qcx-snippet', 'hidden');
+      node.removeAttribute('data-qcx-excerpt');
       node.style.setProperty('display', 'none', 'important');
       try { node.remove(); } catch (ignore) {}
     });
@@ -388,7 +398,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.138/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.15.139/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.wiki/favicon.ico';
@@ -1692,16 +1702,26 @@
 
   function cardLabelsWithTutorial(allLabels) {
     var list = (allLabels || []).filter(Boolean);
+    var skip = /^(50\.?000|bca|themeblogspot)$/i;
+    var mode = null;
     var others = [];
     var hasTutorial = false;
     list.forEach(function(label){
-      if (/^tutorial$/i.test(String(label))) hasTutorial = true;
-      else others.push(label);
+      var name = String(label || '').trim();
+      if (!name || skip.test(name)) return;
+      if (/^tutorial$/i.test(name)) { hasTutorial = true; return; }
+      if (/^(free|vip)$/i.test(name)) {
+        if (!mode) mode = /^vip$/i.test(name) ? 'VIP' : 'FREE';
+        return;
+      }
+      others.push(name);
     });
-    /* Keep old labels first, then ADD Tutorial — never replace. */
+    /* Compact: ≤2 topic chips + optional FREE/VIP + Tutorial (CSS caps at 3 visible). */
     var out = others.slice(0, 2);
+    if (mode && out.length < 2) out.unshift(mode);
+    else if (mode && out.length >= 2) out = [mode].concat(out.slice(0, 1));
     if (hasTutorial) out.push('Tutorial');
-    return out;
+    return out.slice(0, 3);
   }
 
   function ensureCardLabelsWithTutorial(root) {
@@ -1734,6 +1754,11 @@
     var meta = entryThumbMeta(entry);
     var thumb = meta.url;
     var eager = index === 0;
+    var excerpt = plainSummary(
+      (entry.summary && entry.summary.$t) ||
+      (entry.content && entry.content.$t) ||
+      ''
+    );
     var col = el('div', 'col-md-4');
     var media = thumb
       ? ('<img class="qcx-card-media" alt="' + escapeHtml(title) + '"' +
@@ -1746,6 +1771,9 @@
     var labelHtml = labels.map(function(label){
       return '<a href="/search/label/' + encodeURIComponent(label) + '" rel="tag">' + escapeHtml(label) + '</a>';
     }).join('');
+    var excerptHtml = excerpt
+      ? ('<p class="qcx-card-excerpt post-entry" data-qcx-excerpt="1">' + escapeHtml(excerpt) + '</p>')
+      : '';
     col.innerHTML =
       '<article class="card">' +
       '<div class="card-header">' +
@@ -1754,6 +1782,7 @@
       '</div>' +
       '<div class="card-content">' +
       '<h2 class="title"><a href="' + escapeHtml(href) + '" title="' + escapeHtml(fullTitle) + '">' + escapeHtml(title) + '</a></h2>' +
+      excerptHtml +
       '</div><div class="card-footer"></div></article>';
     return col;
   }
