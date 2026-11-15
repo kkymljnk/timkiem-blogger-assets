@@ -266,17 +266,26 @@
     header.appendChild(wrap);
   }
 
+  var QCX_HERO_TITLE = 'MMO TEAM';
+  var QCX_HERO_BIO = 'Tool AI · share · mã nguồn thực chiến. Support Telegram.';
+
+  function polishHeroBrand() {
+    var titleEl = document.querySelector('.qcx-hero-title');
+    if (titleEl && text(titleEl.textContent) !== QCX_HERO_TITLE) titleEl.textContent = QCX_HERO_TITLE;
+    var bioEl = document.querySelector('.qcx-hero .qcx-bio, .qcx-bio');
+    if (bioEl && text(bioEl.textContent) !== QCX_HERO_BIO) bioEl.textContent = QCX_HERO_BIO;
+  }
+
   function ensureHero(main) {
+    polishHeroBrand();
     if (document.querySelector('.qcx-hero')) return;
-    var title = text(document.querySelector('meta[property="og:site_name"]') && document.querySelector('meta[property="og:site_name"]').content) ||
-      text(document.title || 'Blog').replace(/\s*[|\-].*$/, '') || 'Blog';
     var hero = el('section', 'qcx-hero');
     hero.setAttribute('data-enter', 'hero');
     hero.innerHTML =
       '<div class="qcx-hero-inner">' +
-      '<h1 class="qcx-hero-title" data-enter="title">' + escapeHtml(title) + '</h1>' +
+      '<h1 class="qcx-hero-title" data-enter="title">' + escapeHtml(QCX_HERO_TITLE) + '</h1>' +
       '<div class="qcx-hero-divider"></div>' +
-      '<p class="qcx-bio" data-enter="bio">Công cụ AI, tài nguyên và mã nguồn thực chiến. Hỗ trợ qua Telegram.</p>' +
+      '<p class="qcx-bio" data-enter="bio">' + escapeHtml(QCX_HERO_BIO) + '</p>' +
       '<div class="qcx-hero-cta qcx-hero-cta--pro" data-enter="cta" data-qcx-cta-pro="1">' +
       '<a class="qcx-cta-btn" href="/search/label/AI"><span class="qcx-cta-label">Khám phá AI</span>' +
       '<span class="qcx-cta-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h12M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>' +
@@ -379,7 +388,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.129/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.130/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -2709,7 +2718,7 @@
     var home = ((document.querySelector('link[rel="canonical"]') || {}).href) || (location.origin + '/');
     var title = text(((document.querySelector('meta[property="og:site_name"]') || {}).content) || '') ||
       text(((document.querySelector('.qcx-hero-title') || {}).textContent) || '') ||
-      'AI HUB TOOLS';
+      QCX_HERO_TITLE;
     var follow = 'https://www.blogger.com/follow.g?blogID=' + encodeURIComponent(blogId) +
       '&returnUrl=' + encodeURIComponent(home);
     var card = el('section', 'qcx-subscribe-card');
@@ -2776,6 +2785,7 @@
   ensureSidebarRail();
   relocateHeroForDesktopRail();
   hideDropsOnHome();
+  polishHeroBrand();
   ensureCardLabelsWithTutorial(document);
   ensureAdminChrome();
   ensureSiteFooter();
@@ -2791,6 +2801,7 @@
       ensureSidebarRail();
       relocateHeroForDesktopRail();
       hideDropsOnHome();
+      polishHeroBrand();
       ensureCardLabelsWithTutorial(document);
       ensureAdminChrome();
       ensureSiteFooter();
@@ -2799,8 +2810,8 @@
       sharpenCardImages();
     }, { once: true });
   }
-  window.setTimeout(function(){ ensureCardLabelsWithTutorial(document); }, 80);
-  window.setTimeout(function(){ ensureCardLabelsWithTutorial(document); }, 400);
+  window.setTimeout(function(){ polishHeroBrand(); ensureCardLabelsWithTutorial(document); }, 80);
+  window.setTimeout(function(){ polishHeroBrand(); ensureCardLabelsWithTutorial(document); }, 400);
   window.setTimeout(ensureSidebarRail, 80);
   window.setTimeout(ensureSidebarRail, 400);
   window.setTimeout(relocateHeroForDesktopRail, 60);
