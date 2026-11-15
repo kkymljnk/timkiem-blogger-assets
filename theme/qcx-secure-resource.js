@@ -2003,15 +2003,17 @@
       scheduleBootRetry();
       return;
     }
-    /* Path/label can say free before rescue injects the marker. Wait for
-     * data-resource-id so free/start hits the vault id, not the permalink slug. */
-    if (
-      mode === 'free' &&
-      !(marker && marker.resourceId) &&
-      !readFreeTokenMatch(slug) &&
-      (!window.__qcxSecureBootTries || window.__qcxSecureBootTries < 40)
-    ) {
-      scheduleBootRetry();
+    /* CapCut contract requires #qcx-resource. Labels alone must not invent a lock
+     * shell on legacy Telegram posts (that blanked the whole body as "preview"). */
+    var hasVaultMarker =
+      !!(marker && marker.resourceId) || !!document.getElementById('qcx-resource');
+    if (!hasVaultMarker && !readFreeTokenMatch(slug)) {
+      if (!window.__qcxSecureBootTries || window.__qcxSecureBootTries < 40) {
+        scheduleBootRetry();
+        return;
+      }
+      document.documentElement.setAttribute('data-qcx-unlocked', '1');
+      window.__qcxSecureResourceBooted = true;
       return;
     }
     if (window.__qcxSecureBootMo) {
