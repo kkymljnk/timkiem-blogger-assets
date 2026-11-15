@@ -56,19 +56,22 @@
     box.innerHTML = text(html);
     box.querySelectorAll('script,style,noscript,svg,iframe,code,pre').forEach(function(node){ node.remove(); });
     var raw = text(box.textContent).replace(/\s+/g, ' ').trim();
-    /* Strip leaked CSS / style blocks that often land in Blogger snippets */
-    raw = raw
-      .replace(/\/\*[\s\S]*?\*\//g, ' ')
-      .replace(/\{[^{}]{0,800}\}/g, ' ')
-      .replace(/(?:^|[\s;,{])(?:\*|\*|html|body|[\.\#][\w\-]+|[\w\-]+(?:\s+[\.\#\*]?[\w\-]+){0,6})\s*(?:,\s*(?:\*|html|body|[\.\#]?[\w\-]+(?:\s+[\.\#\*]?[\w\-]+){0,4}))*\s*\{?/gi, ' ')
-      .replace(/(?:box-sizing|font-family|background(?:-image|-color|-size)?|margin(?:-[a-z]+)?|padding(?:-[a-z]+)?|color|display|position|width|height|border(?:-radius|-color|-width)?|overflow|z-index|opacity|transform|transition|content|flex|grid|gap|top|left|right|bottom)\s*:\s*[^;{]{1,120};?/gi, ' ')
-      .replace(/[{};]+/g, ' ')
-      .replace(/(?:^|\s)(?:\*|\.|\#)[\w\-]*(?:\s+[\.\#\*]?[\w\-]+){0,4}(?=\s|$)/g, ' ')
-      .replace(/\s+/g, ' ')
-      .trim();
+    /* Only scrub when text looks like leaked CSS — broad selector regexes eat Vietnamese/ASCII prose. */
+    var cssy = /[{}]/.test(raw) ||
+      ((raw.match(/[{}:;]/g) || []).length >= 3) ||
+      /box-sizing\s*:|font-family\s*:|linear-gradient\s*\(|\.btn-download/i.test(raw);
+    if (cssy) {
+      raw = raw
+        .replace(/\/\*[\s\S]*?\*\//g, ' ')
+        .replace(/\{[^{}]{0,800}\}/g, ' ')
+        .replace(/(?:box-sizing|font-family|background(?:-image|-color|-size)?|margin(?:-[a-z]+)?|padding(?:-[a-z]+)?|color|display|position|width|height|border(?:-radius|-color|-width)?|overflow|z-index|opacity|transform|transition|content|flex|grid|gap|top|left|right|bottom)\s*:\s*[^;{]{1,120};?/gi, ' ')
+        .replace(/[{};]+/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
     if (!raw || /^[\{\}\*\#\.\;\:\-\s,]+$/.test(raw) || raw.length < 18) return '';
-    if (/box-sizing|font-family|linear-gradient|\.btn-download|\.contain|body\s*\.|^\*\s|^\.\w/i.test(raw)) return '';
-    if ((raw.match(/[{}:;]/g) || []).length >= 2) return '';
+    if (cssy && /box-sizing|font-family|linear-gradient|\.btn-download|\.contain|body\s*\.|^\*\s|^\.\w/i.test(raw)) return '';
+    if (cssy && (raw.match(/[{}:;]/g) || []).length >= 2) return '';
     return raw.slice(0, 140);
   }
 
@@ -100,7 +103,13 @@
 
   function injectCardExcerpt(card, excerpt) {
     if (!card || !excerpt) return false;
-    if (card.querySelector('.qcx-card-excerpt[data-qcx-excerpt="1"], .post-entry[data-qcx-excerpt="1"]')) return false;
+    var existing = card.querySelector('.qcx-card-excerpt[data-qcx-excerpt="1"], .post-entry[data-qcx-excerpt="1"]');
+    if (existing) {
+      var cur = text(existing.textContent).replace(/\s+/g, ' ').trim();
+      if (cur === excerpt) return false;
+      existing.textContent = excerpt;
+      return true;
+    }
     var content = card.querySelector('.card-content');
     if (!content) return false;
     var p = document.createElement('p');
@@ -120,10 +129,6 @@
     var scope = root || document;
     var cards = Array.prototype.slice.call(scope.querySelectorAll('article.card'));
     if (!cards.length) return;
-    var missing = cards.filter(function(card){
-      return !card.querySelector('.qcx-card-excerpt[data-qcx-excerpt="1"], .post-entry[data-qcx-excerpt="1"]');
-    });
-    if (!missing.length) return;
     var max = Math.max(cards.length, (typeof QCX_HOME_FEED_BATCH === 'number' ? QCX_HOME_FEED_BATCH : 27));
     fetchJson('/feeds/posts/summary?alt=json&max-results=' + max).then(function(payload){
       var entries = (payload && payload.feed && payload.feed.entry) || [];
@@ -136,7 +141,6 @@
         if (id) byPath['id:' + id] = entry;
       });
       cards.forEach(function(card){
-        if (card.querySelector('[data-qcx-excerpt="1"]')) return;
         var a = card.querySelector('.card-content .title a, h2.title a, .card-header a[href]');
         if (!a) return;
         var entry = byPath[pathOf(a.href)] || null;
@@ -459,7 +463,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.15.140/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.15.141/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.wiki/favicon.ico';
