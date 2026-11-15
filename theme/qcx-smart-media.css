@@ -129,10 +129,10 @@
   background: rgba(8,28,18,.9) !important;
   color: #e7fff3 !important;
 }
-[data-page-item='multiple'] .card-header .qcx-card-labels a:nth-child(n+3),
-.qcx-rescue-blog .card-header .qcx-card-labels a:nth-child(n+3),
-.all_posts .card-header .qcx-card-labels a:nth-child(n+3),
-[data-page-item='multiple'] .qcx-card-labels a:nth-child(n+3) { display: none !important; }
+[data-page-item='multiple'] .card-header .qcx-card-labels a:nth-child(n+4),
+.qcx-rescue-blog .card-header .qcx-card-labels a:nth-child(n+4),
+.all_posts .card-header .qcx-card-labels a:nth-child(n+4),
+[data-page-item='multiple'] .qcx-card-labels a:nth-child(n+4) { display: none !important; }
 [data-page-item='multiple'] .qcx-card-date {
   display: none !important;
 }
