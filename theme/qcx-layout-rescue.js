@@ -56,10 +56,9 @@
     box.innerHTML = text(html);
     box.querySelectorAll('script,style,noscript,svg,iframe,code,pre').forEach(function(node){ node.remove(); });
     var raw = text(box.textContent).replace(/\s+/g, ' ').trim();
-    /* Only scrub when text looks like leaked CSS — broad selector regexes eat Vietnamese/ASCII prose. */
+    /* Only scrub when text looks like leaked CSS. Do NOT treat prose colons (B1:, http:) as CSS. */
     var cssy = /[{}]/.test(raw) ||
-      ((raw.match(/[{}:;]/g) || []).length >= 3) ||
-      /box-sizing\s*:|font-family\s*:|linear-gradient\s*\(|\.btn-download/i.test(raw);
+      /box-sizing\s*:|font-family\s*:|linear-gradient\s*\(|\.btn-download\s*\{/i.test(raw);
     if (cssy) {
       raw = raw
         .replace(/\/\*[\s\S]*?\*\//g, ' ')
@@ -70,8 +69,7 @@
         .trim();
     }
     if (!raw || /^[\{\}\*\#\.\;\:\-\s,]+$/.test(raw) || raw.length < 18) return '';
-    if (cssy && /box-sizing|font-family|linear-gradient|\.btn-download|\.contain|body\s*\.|^\*\s|^\.\w/i.test(raw)) return '';
-    if (cssy && (raw.match(/[{}:;]/g) || []).length >= 2) return '';
+    if (/[{}]/.test(raw) && /box-sizing|font-family|linear-gradient|\.btn-download/i.test(raw)) return '';
     return raw.slice(0, 140);
   }
 
@@ -463,7 +461,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.15.141/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.15.142/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.wiki/favicon.ico';
