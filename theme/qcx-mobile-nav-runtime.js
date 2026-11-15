@@ -279,7 +279,7 @@
         var box = document.createElement('div');
         box.className = 'widget HTML qcx-sidebar-rail';
         box.id = 'qcx-sidebar-rail-runtime';
-        box.innerHTML = '<div class="widget-content"><div class="qcx-related-heading" role="heading" aria-level="2">Tutorial</div><ul class="qcx-latest-list"></ul></div>';
+        box.innerHTML = '<div class="widget-content"><div class="qcx-related-heading" role="heading" aria-level="2">Bài Viết liên quan</div><ul class="qcx-latest-list" aria-label="Bài Viết liên quan"></ul></div>';
         sidebar.appendChild(box);
         rails = [box.querySelector('.qcx-latest-list')];
       }

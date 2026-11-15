@@ -388,7 +388,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.132/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.133/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -1257,8 +1257,9 @@
   }
   window.__qcxEnsureGhostBlink = ensureGhostBlink;
 
-  /* Fixed Tutorial count — 5 fits the right rail without crowding mobile. */
-  var QCX_TUTORIAL_COUNT = 5;
+  /* Related posts rail — 9 items to match homepage batch size. */
+  var QCX_TUTORIAL_COUNT = 9;
+  var QCX_RELATED_HEADING = 'Bài Viết liên quan';
 
   function isAdminPath() {
     try {
@@ -1405,10 +1406,10 @@
               var shell = rail.querySelector('.widget-content') || rail;
               if (!rail.querySelector('.qcx-related-heading')) {
                 shell.insertAdjacentHTML('afterbegin',
-                  '<div aria-level="2" class="qcx-related-heading" role="heading">Tutorial</div>');
+                  '<div aria-level="2" class="qcx-related-heading" role="heading">' + QCX_RELATED_HEADING + '</div>');
               }
               shell.insertAdjacentHTML('beforeend',
-                '<ul class="qcx-latest-list" aria-busy="true" aria-label="Tutorial"></ul>');
+                '<ul class="qcx-latest-list" aria-busy="true" aria-label="' + QCX_RELATED_HEADING + '"></ul>');
             }
           }
         }
@@ -1425,8 +1426,8 @@
         rail.id = 'qcx-sidebar-rail-rescue';
         rail.innerHTML =
           '<div class="widget-content">' +
-          '<div aria-level="2" class="qcx-related-heading" role="heading">Tutorial</div>' +
-          '<ul class="qcx-latest-list" aria-busy="true" aria-label="Tutorial"></ul>' +
+          '<div aria-level="2" class="qcx-related-heading" role="heading">' + QCX_RELATED_HEADING + '</div>' +
+          '<ul class="qcx-latest-list" aria-busy="true" aria-label="' + QCX_RELATED_HEADING + '"></ul>' +
           '</div>';
         sidebar.appendChild(rail);
       }
@@ -1435,6 +1436,15 @@
     document.querySelectorAll('#qcx-sidebar-rail-rescue, .post-body > .qcx-sidebar-rail.qcx-tutorial-inline').forEach(function(node) {
       if (node === rail) return;
       try { if (node.parentNode) node.parentNode.removeChild(node); } catch (ignoreDup) {}
+    });
+    /* Rename legacy “Tutorial” heading/aria from SSR gadgets. */
+    document.querySelectorAll('.qcx-related-heading').forEach(function(node){
+      if (/^tutorial$/i.test(text(node.textContent))) node.textContent = QCX_RELATED_HEADING;
+    });
+    document.querySelectorAll('.qcx-latest-list[aria-label]').forEach(function(node){
+      if (/^tutorial$/i.test(node.getAttribute('aria-label') || '')) {
+        node.setAttribute('aria-label', QCX_RELATED_HEADING);
+      }
     });
     /* Mobile: always hide Layout HTML4 / other Tutorial clones when rescue exists.
        Theme skin forces `#sidebar #HTML4{display:block!important}` — reassert inline hide. */
@@ -1588,7 +1598,7 @@
         shown += 1;
       });
       if (!shown) {
-        list.innerHTML = '<li class="qcx-latest-empty">Chưa có Tutorial</li>';
+        list.innerHTML = '<li class="qcx-latest-empty">Chưa có bài viết liên quan</li>';
       } else {
         list.innerHTML = '';
         list.appendChild(fragment);
