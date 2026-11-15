@@ -379,7 +379,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.123/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.124/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -496,10 +496,14 @@
       'linear-gradient(180deg,rgba(255,255,255,.05),transparent 42%)!important;' +
       'background-color:transparent!important}' +
       '.qcx-subscribe-card>*{position:relative!important;z-index:1!important}' +
+      'html[data-page-type="homepage"] .nav-pagination:not(.qcx-home-pager):not(.qcx-rescue-pager),' +
+      'html[data-page-type="index"] .nav-pagination:not(.qcx-home-pager):not(.qcx-rescue-pager){' +
+      'display:none!important}' +
       '.nav-pagination .blog-pager>a,.nav-pagination .blog-pager>button,' +
       '.blog-pager .older-link,.blog-pager .newer-link,' +
       '.qcx-pager .theme-button,.qcx-pager button.theme-button,' +
-      '.qcx-rescue-pager .theme-button,.qcx-rescue-pager button.theme-button{' +
+      '.qcx-rescue-pager .theme-button,.qcx-rescue-pager button.theme-button,' +
+      '.qcx-home-pager .theme-button,.qcx-home-pager button.theme-button{' +
       'background-color:#24352c!important;background-image:none!important;' +
       'border:1px solid rgba(0,240,163,.28)!important;border-radius:10px!important;color:#e8efe9!important;' +
       'box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 8px 24px rgba(0,0,0,.4)!important;isolation:isolate!important}' +
@@ -1945,11 +1949,33 @@
     }
 
     controls = mountHomeLoadMore(pager, pagerInner, { hasMore: hasMore, loadMore: loadMore });
-    fetchHomepageFeedPage(1, 1).then(function(page){
-      totalResults = Math.max(totalResults, page.total || 0);
-      if (totalResults > 0 && shown >= totalResults) exhausted = true;
+    function syncTotals() {
+      return fetchHomepageFeedPage(1, 1).then(function(page){
+        totalResults = Math.max(totalResults, page.total || 0);
+        if (totalResults > 0 && shown >= totalResults) exhausted = true;
+        if (controls && controls.refresh) controls.refresh();
+      }).catch(function(){});
+    }
+    function fillInitialPage() {
+      if (shown >= PAGE_SIZE || exhausted) return Promise.resolve();
+      var need = PAGE_SIZE - shown;
+      return fetchHomepageFeedPage(shown + 1, need).then(function(page){
+        totalResults = Math.max(totalResults, page.total || 0);
+        if (!page.entries.length) {
+          exhausted = true;
+          return;
+        }
+        page.entries.forEach(function(entry, i){
+          row.appendChild(cardFromEntry(entry, shown + i));
+        });
+        shown += page.entries.length;
+        polishHomepageCards(row);
+        if (page.entries.length < need || (totalResults > 0 && shown >= totalResults)) exhausted = true;
+      }).catch(function(){});
+    }
+    syncTotals().then(fillInitialPage).then(function(){
       if (controls && controls.refresh) controls.refresh();
-    }).catch(function(){});
+    });
   }
 
   function postIdOf(entry) {
