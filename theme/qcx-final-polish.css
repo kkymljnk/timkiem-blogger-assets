@@ -642,16 +642,22 @@ html body .qcx-top-download .qcx-download-button.qcx-follow-gate b {
 .qcx-lock-panel[hidden],
 html[data-qcx-unlocked='1'] .qcx-lock-panel { display: none !important; }
 /* While locked: hide article text only — hero stays under title/meta.
-   Early-hide raw SSR children BEFORE JS wraps .qcx-content-unlock (FOUC). */
-html:not([data-qcx-unlocked='1']) .post-body > :not(.mac-frame):not(.mac-frame-image):not(.separator):not(.qcx-teaser):not(.qcx-lock-panel):not(.qcx-content-unlock):not(#comments):not(.qcx-comments-shell):not(#qcx-resource):not(.qcx-resource-marker):not(.qcx-sidebar-rail):not(#HTML4):not(#qcx-sidebar-rail-rescue) {
+   Early-hide raw SSR children BEFORE JS wraps .qcx-content-unlock (FOUC).
+   Scope to CapCut contract only (:has #qcx-resource / unlock) so legacy
+   Telegram posts without teaser/mac-frame are not blanked entirely. */
+html:not([data-qcx-unlocked='1']):has(#qcx-resource) .post-body > :not(.mac-frame):not(.mac-frame-image):not(.separator):not(.qcx-teaser):not(.qcx-lock-panel):not(.qcx-content-unlock):not(#comments):not(.qcx-comments-shell):not(#qcx-resource):not(.qcx-resource-marker):not(.qcx-sidebar-rail):not(#HTML4):not(#qcx-sidebar-rail-rescue),
+html:not([data-qcx-unlocked='1']):has(.qcx-content-unlock) .post-body > :not(.mac-frame):not(.mac-frame-image):not(.separator):not(.qcx-teaser):not(.qcx-lock-panel):not(.qcx-content-unlock):not(#comments):not(.qcx-comments-shell):not(#qcx-resource):not(.qcx-resource-marker):not(.qcx-sidebar-rail):not(#HTML4):not(#qcx-sidebar-rail-rescue) {
   display: none !important;
 }
 html:not([data-qcx-unlocked='1']) .post-body .qcx-content-unlock:not(.is-open) {
   display: none !important;
 }
-html:not([data-qcx-unlocked='1']) .post-body .mac-frame,
-html:not([data-qcx-unlocked='1']) .post-body .mac-frame-image,
-html:not([data-qcx-unlocked='1']) .post-body > .separator {
+html:not([data-qcx-unlocked='1']):has(#qcx-resource) .post-body .mac-frame,
+html:not([data-qcx-unlocked='1']):has(#qcx-resource) .post-body .mac-frame-image,
+html:not([data-qcx-unlocked='1']):has(#qcx-resource) .post-body > .separator,
+html:not([data-qcx-unlocked='1']):has(.qcx-content-unlock) .post-body .mac-frame,
+html:not([data-qcx-unlocked='1']):has(.qcx-content-unlock) .post-body .mac-frame-image,
+html:not([data-qcx-unlocked='1']):has(.qcx-content-unlock) .post-body > .separator {
   display: block !important;
   max-height: min(40vh, 280px) !important;
   overflow: hidden !important;
