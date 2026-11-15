@@ -74,17 +74,20 @@
 
   function cleanCardSnippets(root) {
     var scope = root || document;
-    /* Keep intentional excerpts (data-qcx-excerpt=1); strip CSS-leak / empty garbage only. */
+    /* Keep intentional excerpts (data-qcx-excerpt=1); promote valid native text; strip CSS-leak only. */
     scope.querySelectorAll('.card-content .post-entry, .card .post-entry, .card-content .qcx-card-excerpt').forEach(function(node){
-      if (node.getAttribute('data-qcx-excerpt') === '1') {
-        var keep = text(node.textContent).replace(/\s+/g, ' ').trim();
-        if (keep.length >= 18 && !/box-sizing|font-family|linear-gradient/i.test(keep)) return;
-      }
       var raw = text(node.textContent).replace(/\s+/g, ' ').trim();
       var looksLeak = !raw || raw.length < 18 ||
         /box-sizing|font-family|linear-gradient|\.btn-download|^\*|^\.\w/i.test(raw) ||
         ((raw.match(/[{}:;]/g) || []).length >= 2);
-      if (!looksLeak && node.getAttribute('data-qcx-excerpt') === '1') return;
+      if (!looksLeak) {
+        node.setAttribute('data-qcx-excerpt', '1');
+        node.classList.add('qcx-card-excerpt');
+        node.removeAttribute('data-qcx-snippet');
+        node.classList.remove('is-css-leak');
+        try { node.style.removeProperty('display'); } catch (ignoreShow) {}
+        return;
+      }
       node.innerHTML = '';
       node.classList.add('is-css-leak');
       node.setAttribute('data-qcx-snippet', 'hidden');
@@ -94,6 +97,64 @@
     });
   }
   window.__qcxCleanCardSnippets = cleanCardSnippets;
+
+  function injectCardExcerpt(card, excerpt) {
+    if (!card || !excerpt) return false;
+    if (card.querySelector('.qcx-card-excerpt[data-qcx-excerpt="1"], .post-entry[data-qcx-excerpt="1"]')) return false;
+    var content = card.querySelector('.card-content');
+    if (!content) return false;
+    var p = document.createElement('p');
+    p.className = 'qcx-card-excerpt post-entry';
+    p.setAttribute('data-qcx-excerpt', '1');
+    p.textContent = excerpt;
+    var title = content.querySelector('.title, h2.title, h3.title');
+    if (title) title.insertAdjacentElement('afterend', p);
+    else content.insertBefore(p, content.firstChild);
+    return true;
+  }
+
+  function hydrateNativeCardExcerpts(root) {
+    try {
+      if (typeof isStrictHomepage === 'function' && !isStrictHomepage()) return;
+    } catch (ignoreHome) {}
+    var scope = root || document;
+    var cards = Array.prototype.slice.call(scope.querySelectorAll('article.card'));
+    if (!cards.length) return;
+    var missing = cards.filter(function(card){
+      return !card.querySelector('.qcx-card-excerpt[data-qcx-excerpt="1"], .post-entry[data-qcx-excerpt="1"]');
+    });
+    if (!missing.length) return;
+    var max = Math.max(cards.length, (typeof QCX_HOME_FEED_BATCH === 'number' ? QCX_HOME_FEED_BATCH : 27));
+    fetchJson('/feeds/posts/summary?alt=json&max-results=' + max).then(function(payload){
+      var entries = (payload && payload.feed && payload.feed.entry) || [];
+      var byPath = {};
+      entries.forEach(function(entry){
+        var href = entryLink(entry) || '';
+        var p = pathOf(href);
+        if (p) byPath[p] = entry;
+        var id = postIdOf(entry);
+        if (id) byPath['id:' + id] = entry;
+      });
+      cards.forEach(function(card){
+        if (card.querySelector('[data-qcx-excerpt="1"]')) return;
+        var a = card.querySelector('.card-content .title a, h2.title a, .card-header a[href]');
+        if (!a) return;
+        var entry = byPath[pathOf(a.href)] || null;
+        if (!entry) {
+          var m = String(a.href || '').match(/post-(\d+)/i) || String(a.getAttribute('href') || '').match(/\/(\d{10,})/);
+          if (m) entry = byPath['id:' + m[1]] || null;
+        }
+        if (!entry) return;
+        var excerpt = plainSummary(
+          (entry.summary && entry.summary.$t) ||
+          (entry.content && entry.content.$t) ||
+          ''
+        );
+        injectCardExcerpt(card, excerpt);
+      });
+    }).catch(function(){});
+  }
+  window.__qcxHydrateNativeCardExcerpts = hydrateNativeCardExcerpts;
 
   function sanitizePostHtml(html) {
     var box = document.createElement('div');
@@ -398,7 +459,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.15.139/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.15.140/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.wiki/favicon.ico';
@@ -1861,10 +1922,12 @@
     cleanCardSnippets(row);
     stripDomPostTitles(row);
     ensureCardLabelsWithTutorial(row);
+    hydrateNativeCardExcerpts(row);
     window.setTimeout(function(){
       cleanCardSnippets(row);
       stripDomPostTitles(row);
       ensureCardLabelsWithTutorial(row);
+      hydrateNativeCardExcerpts(row);
       try {
         var cards = row.querySelectorAll('.card');
         cards.forEach(function(card){ card.style.minHeight = ''; card.style.height = ''; });
@@ -2004,6 +2067,8 @@
     });
     if (!cols.length) return;
     native.setAttribute('data-qcx-home-more', '1');
+    polishHomepageCards(row);
+    hydrateNativeCardExcerpts(row);
 
     var PAGE_SIZE = QCX_HOME_PAGE_SIZE;
     var hidden = [];
@@ -2467,12 +2532,16 @@
   function bootSnippetClean() {
     cleanCardSnippets();
     stripDomPostTitles();
+    hydrateNativeCardExcerpts();
     window.setTimeout(cleanCardSnippets, 80);
     window.setTimeout(stripDomPostTitles, 80);
+    window.setTimeout(hydrateNativeCardExcerpts, 80);
     window.setTimeout(cleanCardSnippets, 400);
     window.setTimeout(stripDomPostTitles, 400);
+    window.setTimeout(hydrateNativeCardExcerpts, 400);
     window.setTimeout(cleanCardSnippets, 1200);
     window.setTimeout(stripDomPostTitles, 1200);
+    window.setTimeout(hydrateNativeCardExcerpts, 1200);
   }
 
   function bootRescue() {
