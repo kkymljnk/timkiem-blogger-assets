@@ -441,35 +441,144 @@
     }
     nav.appendChild(grid1);
 
-    var rawLinks = document.querySelectorAll('#Label1 a[href*="/search/label/"], .widget.Label a[href*="/search/label/"]');
-    var allLabels = {};
-    Array.prototype.forEach.call(rawLinks, function (a) {
-      var rawName = (a.textContent || '').trim();
-      var href = a.getAttribute('href') || ('/search/label/' + encodeURIComponent(rawName));
-      if (!rawName) return;
-      if (/^(FREE|blog|50[.,]000|bca|themeblogspot)$/i.test(rawName)) return;
-      var cleanName = rawName;
-      if (/^giaoduc$/i.test(rawName)) cleanName = 'Giáo dục';
-      if (/^onthithpt$/i.test(rawName)) cleanName = 'Ôn thi THPT';
-      if (/^luyenthimienphi$/i.test(rawName)) cleanName = 'Luyện thi miễn phí';
-      if (/^hoconline$/i.test(rawName)) cleanName = 'Học online';
-      var k = cleanName.toLowerCase();
-      if (!allLabels[k]) allLabels[k] = { name: cleanName, href: href };
-    });
-    var labelKeys = Object.keys(allLabels);
-    if (labelKeys.length) {
-      var secLab = el('div', 'qcx-menu-section', 'Nhãn');
-      nav.appendChild(secLab);
-      var cloud = el('div', 'qcx-menu-labels-cloud');
-      labelKeys.slice(0, 12).forEach(function (k) {
-        var item = allLabels[k];
-        var chip = el('a', 'qcx-menu-chip', item.name);
-        chip.href = item.href;
-        chip.title = 'Nhãn ' + item.name;
-        cloud.appendChild(chip);
-      });
-      nav.appendChild(cloud);
+    var HIDDEN_LABEL_RE = /^(FREE|VIP|Tutorial|blog|bca|themeblogspot|\d+[.,]\d+|\d+k|edtech|giaoduc|giáo\s*dục|hoconline|học\s*online|học\s*sinh|hocsinh|luyenthimienphi|luyện\s*thi\s*miễn\s*phí|onthithpt|ôn\s*thi\s*thpt|jailbreak)$/i;
+    var MENU_LABELS_CACHE_KEY = 'qcx:menu:labels:v2';
+
+    function isAllowedMenuLabel(raw) {
+      var name = String(raw || '').trim();
+      if (!name) return false;
+      if (HIDDEN_LABEL_RE.test(name)) return false;
+      return true;
     }
+
+    function renderLabelsSection(targetNav, items) {
+      var existingSec = targetNav.querySelector('.qcx-menu-section-labels');
+      var existingCloud = targetNav.querySelector('.qcx-menu-labels-cloud');
+      if (!items || !items.length) {
+        if (existingSec && existingSec.parentNode) existingSec.parentNode.removeChild(existingSec);
+        if (existingCloud && existingCloud.parentNode) existingCloud.parentNode.removeChild(existingCloud);
+        return;
+      }
+      if (!existingSec) {
+        existingSec = el('div', 'qcx-menu-section qcx-menu-section-labels', 'Nhãn');
+        targetNav.appendChild(existingSec);
+      }
+      if (!existingCloud) {
+        existingCloud = el('div', 'qcx-menu-labels-cloud');
+        targetNav.appendChild(existingCloud);
+      } else {
+        existingCloud.innerHTML = '';
+      }
+      items.slice(0, 16).forEach(function (item) {
+        var chip = el('a', 'qcx-menu-chip', item.name);
+        chip.href = item.href || ('/search/label/' + encodeURIComponent(item.name) + '?max-results=12');
+        chip.title = 'Nhãn ' + item.name;
+        existingCloud.appendChild(chip);
+      });
+    }
+
+    function collectSeedLabels() {
+      try {
+        var cachedRaw = sessionStorage.getItem(MENU_LABELS_CACHE_KEY);
+        if (cachedRaw) {
+          var parsed = JSON.parse(cachedRaw);
+          if (parsed && Array.isArray(parsed.items) && parsed.items.length && (Date.now() - (parsed.t || 0) < 300000)) {
+            return parsed.items.filter(function (it) { return it && isAllowedMenuLabel(it.name); });
+          }
+        }
+      } catch (ignoreCache) {}
+
+      var map = {};
+      function addTerm(rawName, customHref) {
+        var clean = String(rawName || '').trim();
+        if (!isAllowedMenuLabel(clean)) return;
+        var k = clean.toLowerCase();
+        if (!map[k]) {
+          map[k] = {
+            name: clean,
+            href: customHref || ('/search/label/' + encodeURIComponent(clean) + '?max-results=12')
+          };
+        }
+      }
+
+      /* Reuse homepage summary feed cache if qcx-layout-rescue already fetched it. */
+      try {
+        for (var si = 0; si < sessionStorage.length; si += 1) {
+          var sKey = sessionStorage.key(si) || '';
+          if (sKey.indexOf('qcx:feed:summary:') === 0) {
+            var sVal = JSON.parse(sessionStorage.getItem(sKey) || '{}');
+            var entries = (sVal && sVal.d) || [];
+            entries.forEach(function (entry) {
+              ((entry && entry.category) || []).forEach(function (cat) {
+                if (cat && cat.term) addTerm(cat.term);
+              });
+            });
+          }
+        }
+      } catch (ignoreSummary) {}
+
+      var rawLinks = document.querySelectorAll(
+        '.all_posts a[href*="/search/label/"], .post-labels a[href*="/search/label/"], #Label1 a[href*="/search/label/"], .widget.Label a[href*="/search/label/"]'
+      );
+      Array.prototype.forEach.call(rawLinks, function (a) {
+        var rawName = (a.textContent || '').trim();
+        var href = a.getAttribute('href') || '';
+        addTerm(rawName, href);
+      });
+
+      return Object.keys(map).map(function (k) { return map[k]; });
+    }
+
+    renderLabelsSection(nav, collectSeedLabels());
+
+    /* Authoritative sync from live Blogger feed (bypasses frozen #Label1 USER_SELECTED). */
+    fetch('/feeds/posts/summary?alt=json&max-results=50', { credentials: 'same-origin' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (data) {
+        if (!data || !data.feed) return;
+        var counts = {};
+        var displayNames = {};
+        var entries = data.feed.entry || [];
+        entries.forEach(function (entry) {
+          ((entry && entry.category) || []).forEach(function (cat) {
+            var term = cat && cat.term ? String(cat.term).trim() : '';
+            if (!isAllowedMenuLabel(term)) return;
+            var k = term.toLowerCase();
+            counts[k] = (counts[k] || 0) + 1;
+            if (!displayNames[k]) displayNames[k] = term;
+          });
+        });
+        /* Only include labels actually attached to current entries; fall back to feed.category if entries empty. */
+        if (!Object.keys(counts).length && Array.isArray(data.feed.category)) {
+          data.feed.category.forEach(function (cat) {
+            var term = cat && cat.term ? String(cat.term).trim() : '';
+            if (!isAllowedMenuLabel(term)) return;
+            var k = term.toLowerCase();
+            counts[k] = 1;
+            if (!displayNames[k]) displayNames[k] = term;
+          });
+        }
+        var sorted = Object.keys(counts)
+          .sort(function (a, b) {
+            if (counts[b] !== counts[a]) return counts[b] - counts[a];
+            return displayNames[a].localeCompare(displayNames[b], 'vi');
+          })
+          .map(function (k) {
+            var name = displayNames[k];
+            return {
+              name: name,
+              href: '/search/label/' + encodeURIComponent(name) + '?max-results=12'
+            };
+          });
+        if (sorted.length) {
+          try {
+            sessionStorage.setItem(MENU_LABELS_CACHE_KEY, JSON.stringify({ t: Date.now(), items: sorted }));
+          } catch (ignoreStore) {}
+          var liveNav = document.getElementById('qcx-menu-nav');
+          if (liveNav) renderLabelsSection(liveNav, sorted);
+        }
+      })
+      .catch(function () {});
 
     var footer = document.getElementById('qcx-menu-footer');
     if (footer) footer.innerHTML = '';
