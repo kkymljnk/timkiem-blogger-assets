@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.15.151/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.15.152/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.wiki/favicon.ico';
@@ -517,15 +517,18 @@
     (document.head || document.documentElement).appendChild(link);
   }
 
-  /* Clamp post heroes so preview text sits above the fold (legacy + locked). */
+  /* Clamp post heroes so preview text sits above the fold (legacy + locked).
+     Match page-skin specificity (html + body:not(#layout)) so embedded theme CSS cannot win. */
   function ensureHeroPreviewClamp() {
     var id = 'qcx-hero-preview-clamp';
     var css =
-      '.post-body>.separator,.post-body .mac-frame,.post-body .mac-frame-image{' +
+      'html:not([data-qcx-unlocked=\"1\"]) body:not(#layout) .post-body>.separator,' +
+      'html:not([data-qcx-unlocked=\"1\"]) body:not(#layout) .post-body .mac-frame,' +
+      'html:not([data-qcx-unlocked=\"1\"]) body:not(#layout) .post-body .mac-frame-image{' +
       'display:block!important;max-height:min(40vh,280px)!important;overflow:hidden!important}' +
-      'html[data-qcx-unlocked=\"1\"] .post-body>.separator,' +
-      'html[data-qcx-unlocked=\"1\"] .post-body .mac-frame,' +
-      'html[data-qcx-unlocked=\"1\"] .post-body .mac-frame-image{' +
+      'html[data-qcx-unlocked=\"1\"] body:not(#layout) .post-body>.separator,' +
+      'html[data-qcx-unlocked=\"1\"] body:not(#layout) .post-body .mac-frame,' +
+      'html[data-qcx-unlocked=\"1\"] body:not(#layout) .post-body .mac-frame-image{' +
       'max-height:none!important;overflow:visible!important}';
     var st = document.getElementById(id);
     if (!st) {
