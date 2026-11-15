@@ -7,7 +7,7 @@
   'use strict';
   if (window.__qcxSecureResourceBooted) return;
 
-  var API_BASE = 'https://api.mmo.wiki';
+  var API_BASE = 'https://timkiem-store-api.kkymljnk.workers.dev';
   var FREE_TOKEN_KEY = 'qcx_free_token_v1';
   var UNLOCK_SESSION_KEY = 'qcx_free_unlock_session_v1';
   var PRICE_LABEL = /^(?:\d{1,3}(?:[.,]\d{3})+|\d+)(?:\s*đ|d|vnd)?$/i;
