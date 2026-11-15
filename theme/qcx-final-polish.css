@@ -654,6 +654,14 @@ html:not([data-qcx-unlocked='1']):has(#qcx-resource) .post-body > :not(.mac-fram
 html:not([data-qcx-unlocked='1']):has(#qcx-resource) .post-body .qcx-content-unlock:not(.is-open) {
   display: none !important;
 }
+/* Clamp hero above the fold so teaser/preview text is visible (legacy + locked). */
+.post-body > .separator,
+.post-body .mac-frame,
+.post-body .mac-frame-image {
+  display: block !important;
+  max-height: min(40vh, 280px) !important;
+  overflow: hidden !important;
+}
 html:not([data-qcx-unlocked='1']):has(#qcx-resource) .post-body .mac-frame,
 html:not([data-qcx-unlocked='1']):has(#qcx-resource) .post-body .mac-frame-image,
 html:not([data-qcx-unlocked='1']):has(#qcx-resource) .post-body > .separator {
@@ -661,6 +669,7 @@ html:not([data-qcx-unlocked='1']):has(#qcx-resource) .post-body > .separator {
   max-height: min(40vh, 280px) !important;
   overflow: hidden !important;
 }
+/* After unlock: full hero again. */
 html[data-qcx-unlocked='1'] .post-body .mac-frame,
 html[data-qcx-unlocked='1'] .post-body .mac-frame-image,
 html[data-qcx-unlocked='1'] .post-body > .separator {

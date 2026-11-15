@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.15.150/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.15.151/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.wiki/favicon.ico';
@@ -515,6 +515,25 @@
     link.rel = 'stylesheet';
     link.href = href;
     (document.head || document.documentElement).appendChild(link);
+  }
+
+  /* Clamp post heroes so preview text sits above the fold (legacy + locked). */
+  function ensureHeroPreviewClamp() {
+    var id = 'qcx-hero-preview-clamp';
+    var css =
+      '.post-body>.separator,.post-body .mac-frame,.post-body .mac-frame-image{' +
+      'display:block!important;max-height:min(40vh,280px)!important;overflow:hidden!important}' +
+      'html[data-qcx-unlocked=\"1\"] .post-body>.separator,' +
+      'html[data-qcx-unlocked=\"1\"] .post-body .mac-frame,' +
+      'html[data-qcx-unlocked=\"1\"] .post-body .mac-frame-image{' +
+      'max-height:none!important;overflow:visible!important}';
+    var st = document.getElementById(id);
+    if (!st) {
+      st = document.createElement('style');
+      st.id = id;
+      (document.head || document.documentElement).appendChild(st);
+    }
+    if (st.textContent !== css) st.textContent = css;
   }
 
   /* Force related-rail square thumb|title rows (override cached 16:9 stack). */
@@ -2958,6 +2977,7 @@
     ensureDefaultFavicon();
     ensureAtmosphere();
     ensureRelatedRailSquareThumbs();
+    ensureHeroPreviewClamp();
     ensureMenuDrawer();
     ensureMobileNavReady();
     ensureSharpBrandAvatar();
@@ -2975,6 +2995,7 @@
   ensureDefaultFavicon();
   ensureAtmosphere();
   ensureRelatedRailSquareThumbs();
+  ensureHeroPreviewClamp();
   ensureSidebarSearch();
   ensureSidebarRail();
   relocateHeroForDesktopRail();
@@ -2992,6 +3013,7 @@
       ensureDefaultFavicon();
       ensureAtmosphere();
       ensureRelatedRailSquareThumbs();
+      ensureHeroPreviewClamp();
       ensureSidebarSearch();
       ensureSidebarRail();
       relocateHeroForDesktopRail();
