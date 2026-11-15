@@ -156,7 +156,8 @@
     (function initStickyResourceStack() {
       var sidebar = document.querySelector('#sidebar');
       var resourceCard = document.querySelector('.qcx-top-download');
-      var relatedWidget = document.querySelector('#PopularPosts1');
+      /* Live theme uses HTML4 / .qcx-sidebar-rail; PopularPosts1 is legacy. */
+      var relatedWidget = document.querySelector('#sidebar .qcx-sidebar-rail, #sidebar #HTML4, #PopularPosts1');
       var resourceAnchor = article.querySelector('.qcx-download-anchor');
       if (!sidebar || !resourceCard || !relatedWidget) return;
 
@@ -414,8 +415,11 @@
       });
     });
 
-    /* Populate the sidebar with the five newest published Blogger pages. */
-    var latestList = document.querySelector('#PopularPosts1 .widget-content>ul');
+    /* Related rail is owned by qcx-layout-rescue (HTML4 / .qcx-latest-list).
+       Skip legacy PopularPosts1 feed fill — widget is not in the live theme. */
+    var latestList = document.querySelector('.qcx-sidebar-rail .qcx-latest-list, #HTML4 .qcx-latest-list')
+      ? null
+      : document.querySelector('#PopularPosts1 .widget-content>ul');
     if (latestList && latestList.getAttribute('data-qcx-latest-ready') !== 'true') {
       latestList.setAttribute('data-qcx-latest-ready', 'true');
       latestList.setAttribute('aria-label', 'Tutorial');
@@ -776,17 +780,6 @@
       endActions.appendChild(contactAction);
       articleEnd.appendChild(endActions);
 
-      var relatedSection = document.createElement('div');
-      relatedSection.className = 'qcx-related-smart';
-      relatedSection.hidden = true;
-      var relatedTitle = document.createElement('div');
-      relatedTitle.className = 'qcx-related-title';
-      relatedTitle.textContent = '// b\u00e0i vi\u1ebft li\u00ean quan';
-      var relatedGrid = document.createElement('div');
-      relatedGrid.className = 'qcx-related-grid';
-      relatedSection.appendChild(relatedTitle);
-      relatedSection.appendChild(relatedGrid);
-      articleEnd.appendChild(relatedSection);
       article.insertAdjacentElement('afterend', articleEnd);
 
       var currentUrl = window.qcxCanonicalArticleUrl ? window.qcxCanonicalArticleUrl() : window.location.href;
@@ -801,72 +794,87 @@
           .catch(function() { flashAction(copyAction, 'L\u1ed7i sao ch\u00e9p'); });
       });
 
-      function alternateLink(entry) {
-        var links = entry.link || [];
-        for (var linkIndex = 0; linkIndex < links.length; linkIndex += 1) {
-          if (links[linkIndex].rel === 'alternate') return links[linkIndex].href || '';
-        }
-        return '';
-      }
-      function relatedImage(entry) {
-        var media = entry['media$thumbnail'];
-        if (!media || !media.url) return '';
-        return highResolutionUrl(media.url
-          .replace(/\/s72-c\//i, '/w1600-h900-c/')
-          .replace(/=s72-c/i, '=w1600-h900-c'));
-      }
-      function renderRelated(entries) {
-        var rendered = 0;
-        entries.forEach(function(entry) {
-          if (rendered >= 3) return;
-          var url = alternateLink(entry);
-          if (!url || url.replace(/\/$/, '') === currentUrl.replace(/\/$/, '')) return;
-          var fullTitleText = entry.title && entry.title.$t ? entry.title.$t : '';
-          var titleText = displayPostTitle(fullTitleText);
-          if (!titleText) return;
-          var card = document.createElement('a');
-          card.className = 'qcx-related-card';
-          card.href = url;
-          card.title = fullTitleText;
-          var imageUrl = relatedImage(entry);
-          if (imageUrl) {
-            var image = document.createElement('img');
-            image.src = imageUrl;
-            image.alt = titleText;
-            image.loading = 'lazy';
-            image.decoding = 'async';
-            card.appendChild(image);
-          } else {
-            card.classList.add('is-text-only');
+      /* Desktop sidebar rail already shows related — skip in-article grid + feed. */
+      var sidebarHasRelated = window.matchMedia('(min-width: 861px)').matches &&
+        !!document.querySelector('#sidebar .qcx-sidebar-rail, #sidebar #HTML4, #sidebar #PopularPosts2, #sidebar.qcx-download-sidebar #PopularPosts1');
+      if (!sidebarHasRelated) {
+        var relatedSection = document.createElement('div');
+        relatedSection.className = 'qcx-related-smart';
+        relatedSection.hidden = true;
+        var relatedTitle = document.createElement('div');
+        relatedTitle.className = 'qcx-related-title';
+        relatedTitle.textContent = '// b\u00e0i vi\u1ebft li\u00ean quan';
+        var relatedGrid = document.createElement('div');
+        relatedGrid.className = 'qcx-related-grid';
+        relatedSection.appendChild(relatedTitle);
+        relatedSection.appendChild(relatedGrid);
+        articleEnd.appendChild(relatedSection);
+
+        function alternateLink(entry) {
+          var links = entry.link || [];
+          for (var linkIndex = 0; linkIndex < links.length; linkIndex += 1) {
+            if (links[linkIndex].rel === 'alternate') return links[linkIndex].href || '';
           }
-          var titleSpan = document.createElement('span');
-          titleSpan.textContent = titleText;
-          card.appendChild(titleSpan);
-          relatedGrid.appendChild(card);
-          rendered += 1;
-        });
-        var sidebarHasRelated = window.matchMedia('(min-width: 861px)').matches &&
-          !!document.querySelector('#sidebar .qcx-sidebar-rail, #sidebar #PopularPosts2, #sidebar.qcx-download-sidebar #PopularPosts1');
-        relatedSection.hidden = rendered === 0 || sidebarHasRelated;
-        return rendered;
-      }
-      function requestRelated(useLabel) {
-        var labelPath = useLabel ? '/-/' + encodeURIComponent(useLabel) : '';
-        return fetch('/feeds/posts/default' + labelPath + '?alt=json&max-results=8', { credentials: 'same-origin' })
-          .then(function(response) {
-            if (!response.ok) throw new Error('feed unavailable');
-            return response.json();
-          })
-          .then(function(data) {
-            return renderRelated(data.feed && data.feed.entry ? data.feed.entry : []);
+          return '';
+        }
+        function relatedImage(entry) {
+          var media = entry['media$thumbnail'];
+          if (!media || !media.url) return '';
+          return highResolutionUrl(media.url
+            .replace(/\/s72-c\//i, '/w1600-h900-c/')
+            .replace(/=s72-c/i, '=w1600-h900-c'));
+        }
+        function renderRelated(entries) {
+          var rendered = 0;
+          entries.forEach(function(entry) {
+            if (rendered >= 3) return;
+            var url = alternateLink(entry);
+            if (!url || url.replace(/\/$/, '') === currentUrl.replace(/\/$/, '')) return;
+            var fullTitleText = entry.title && entry.title.$t ? entry.title.$t : '';
+            var titleText = displayPostTitle(fullTitleText);
+            if (!titleText) return;
+            var card = document.createElement('a');
+            card.className = 'qcx-related-card';
+            card.href = url;
+            card.title = fullTitleText;
+            var imageUrl = relatedImage(entry);
+            if (imageUrl) {
+              var image = document.createElement('img');
+              image.src = imageUrl;
+              image.alt = titleText;
+              image.loading = 'lazy';
+              image.decoding = 'async';
+              card.appendChild(image);
+            } else {
+              card.classList.add('is-text-only');
+            }
+            var titleSpan = document.createElement('span');
+            titleSpan.textContent = titleText;
+            card.appendChild(titleSpan);
+            relatedGrid.appendChild(card);
+            rendered += 1;
           });
-      }
-      requestRelated(validArticleLabels[0] || '')
-        .then(function(rendered) {
-          if (!rendered && validArticleLabels.length) return requestRelated('');
+          relatedSection.hidden = rendered === 0;
           return rendered;
-        })
-        .catch(function() { relatedSection.hidden = true; });
+        }
+        function requestRelated(useLabel) {
+          var labelPath = useLabel ? '/-/' + encodeURIComponent(useLabel) : '';
+          return fetch('/feeds/posts/default' + labelPath + '?alt=json&max-results=8', { credentials: 'same-origin' })
+            .then(function(response) {
+              if (!response.ok) throw new Error('feed unavailable');
+              return response.json();
+            })
+            .then(function(data) {
+              return renderRelated(data.feed && data.feed.entry ? data.feed.entry : []);
+            });
+        }
+        requestRelated(validArticleLabels[0] || '')
+          .then(function(rendered) {
+            if (!rendered && validArticleLabels.length) return requestRelated('');
+            return rendered;
+          })
+          .catch(function() { relatedSection.hidden = true; });
+      }
     }
 
     /* One requestAnimationFrame-driven reading progress listener. */

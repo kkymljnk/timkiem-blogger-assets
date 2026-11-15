@@ -388,7 +388,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.133/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.134/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -1544,11 +1544,25 @@
       return displayPostTitle(String((entry.title && entry.title.$t) || '').replace(/\s+/g, ' ').trim());
     }
     function entryImage(entry) {
-      var media = entry['media$thumbnail'] && entry['media$thumbnail'].url;
-      if (!media) return '';
-      return String(media)
-        .replace(/\/s\d+(?:-c)?\//i, '/w320-h180-c/')
-        .replace(/=s\d+(?:-c)?(?=$|&)/i, '=w320-h180-c');
+      /* Reuse homepage extractor: body img first, then media$thumbnail. */
+      var meta = entryThumbMeta(entry);
+      var url = meta && meta.url ? String(meta.url) : '';
+      if (!url) return { url: '', raw: '' };
+      var raw = url;
+      try {
+        if (entry['media$thumbnail'] && entry['media$thumbnail'].url) {
+          raw = String(entry['media$thumbnail'].url);
+        }
+      } catch (ignoreRaw) {}
+      /* Rail size: compact crop (CSS 72×48). */
+      var compact = url
+        .replace(/\/w\d+-h\d+-c\//i, '/w320-h180-c/')
+        .replace(/=w\d+-h\d+-c(?=$|[/?#])/i, '=w320-h180-c')
+        .replace(/\/s\d+-c\//i, '/w320-h180-c/')
+        .replace(/=s\d+-c(?=$|[/?#])/i, '=w320-h180-c')
+        .replace(/\/s\d+\//i, '/w320-h180-c/')
+        .replace(/=s\d+(?=$|[/?#])/i, '=w320-h180-c');
+      return { url: compact || url, raw: raw };
     }
     function renderItems(entries) {
       var current = normalizeUrl((document.querySelector('link[rel="canonical"]') || {}).href || location.href);
@@ -1567,7 +1581,8 @@
         thumbLink.href = href;
         thumbLink.title = title;
         thumbLink.setAttribute('aria-label', title);
-        var imageUrl = entryImage(entry);
+        var imageInfo = entryImage(entry);
+        var imageUrl = imageInfo.url;
         if (imageUrl) {
           var image = document.createElement('img');
           image.alt = '';
@@ -1576,7 +1591,14 @@
           image.decoding = 'async';
           image.width = 152;
           image.height = 96;
-          image.addEventListener('error', function() {
+          image.addEventListener('error', function onThumbErr() {
+            var fallback = imageInfo.raw && imageInfo.raw !== image.src ? imageInfo.raw : '';
+            if (fallback && !image.getAttribute('data-qcx-thumb-retry')) {
+              image.setAttribute('data-qcx-thumb-retry', '1');
+              image.src = fallback;
+              return;
+            }
+            image.removeEventListener('error', onThumbErr);
             image.remove();
             thumb.classList.add('no-img');
           });
@@ -1602,6 +1624,7 @@
       } else {
         list.innerHTML = '';
         list.appendChild(fragment);
+        try { sharpenCardImages(list); } catch (ignoreSharp) {}
       }
       list.removeAttribute('aria-busy');
     }
@@ -2091,8 +2114,13 @@
 
   function loadHomepageEntries() {
     var cacheKey = 'qcx:feed:summary:' + QCX_HOME_FEED_BATCH;
-    var cached = readFeedCache(cacheKey);
-    if (cached) return Promise.resolve(cached);
+    /* F5: never return stale summary — that re-paints after skeleton/native and flashes. */
+    if (isReloadNavigation()) {
+      try { sessionStorage.removeItem(cacheKey); } catch (e) {}
+    } else {
+      var cached = readFeedCache(cacheKey);
+      if (cached) return Promise.resolve(cached);
+    }
     return fetchJson('/feeds/posts/summary?alt=json&max-results=' + QCX_HOME_FEED_BATCH).then(function(payload){
       var entries = (payload.feed && payload.feed.entry) || [];
       writeFeedCache(cacheKey, entries);
@@ -2353,8 +2381,8 @@
     var cacheKey = isSingle
       ? ((isStaticPage ? 'qcx:page:' : 'qcx:post:') + currentPath)
       : 'qcx:feed:summary:' + QCX_HOME_FEED_BATCH;
-    /* Reload: skip sessionStorage instant paint (F5 stale flash). Keep for navigate. */
-    var skipInstantCache = isSingle && isReloadNavigation();
+    /* Reload: skip sessionStorage instant paint (F5 stale flash) on home + single. Soft navigate keeps cache. */
+    var skipInstantCache = isReloadNavigation();
     if (skipInstantCache) {
       try { sessionStorage.removeItem(cacheKey); } catch (e) {}
     }
