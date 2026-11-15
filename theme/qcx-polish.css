@@ -2060,6 +2060,11 @@ html[data-page-type='homepage'] .qcx-hero {
   min-height: clamp(220px, 42vh, 420px);
   align-content: center;
 }
+/* Title → bio: ~one space (was 20px + 24px divider). */
+body:not(#layout) .qcx-hero-title,
+.qcx-hero-title { margin: 0 0 4px !important; }
+body:not(#layout) .qcx-hero-divider,
+.qcx-hero-divider { margin: 0 0 4px !important; }
 /* Mobile: drop tall min-height so CTA sits close to cards */
 @media (max-width: 860px) {
   body[data-page-type='homepage'] .qcx-hero,
