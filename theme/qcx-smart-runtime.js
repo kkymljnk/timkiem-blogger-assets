@@ -491,8 +491,10 @@
         var imageUrl = isLatestPageThumbnail(mediaUrl) ? mediaUrl : firstLatestPageImage(contentHtml);
         if (!isLatestPageThumbnail(imageUrl)) return '';
         return String(imageUrl)
-          .replace(/\/s\d+(?:-c)?\//i, '/w320-h180-c/')
-          .replace(/=s\d+(?:-c)?(?=$|&)/i, '=w320-h180-c');
+          .replace(/\/w\d+-h\d+-c\//i, '/w320-h320-c/')
+          .replace(/=w\d+-h\d+-c(?=$|[/?#])/i, '=w320-h320-c')
+          .replace(/\/s\d+(?:-c)?\//i, '/w320-h320-c/')
+          .replace(/=s\d+(?:-c)?(?=$|&)/i, '=w320-h320-c');
       };
       var renderLatestPosts = function(entries) {
           /* Build the replacement off-screen first. If Blogger returns an
@@ -518,8 +520,8 @@
               image.src = imageUrl;
               image.loading = 'lazy';
               image.decoding = 'async';
-              image.width = 152;
-              image.height = 96;
+              image.width = 72;
+              image.height = 72;
               image.addEventListener('error', function() {
                 image.remove();
                 thumb.classList.add('no-img');

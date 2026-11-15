@@ -2,6 +2,28 @@
   var already = document.documentElement.getAttribute('data-qcx-rescue') === 'true';
   document.documentElement.setAttribute('data-qcx-rescue', 'true');
 
+  /* F5 homepage: hide Blog SSR immediately so stale cards never flash before rescue. */
+  (function hideSsrOnReload() {
+    try {
+      var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+      var reload = (nav && nav.type === 'reload') ||
+        (typeof performance.navigation !== 'undefined' && performance.navigation.type === 1);
+      if (!reload) return;
+      var item = document.documentElement.getAttribute('data-page-item') || '';
+      var type = document.documentElement.getAttribute('data-page-type') || '';
+      if (item === 'single' || type === 'post' || type === 'page') return;
+      document.documentElement.setAttribute('data-qcx-reload', '1');
+      if (document.getElementById('qcx-reload-hide-ssr')) return;
+      var st = document.createElement('style');
+      st.id = 'qcx-reload-hide-ssr';
+      st.textContent =
+        'html[data-qcx-reload="1"] .widget.Blog:not(.qcx-rescue-blog):not(.qcx-rescue-skel){' +
+        'visibility:hidden!important;opacity:0!important;pointer-events:none!important;' +
+        'min-height:240px!important}';
+      (document.head || document.documentElement).appendChild(st);
+    } catch (e) {}
+  })();
+
   function text(value) {
     return String(value == null ? '' : value);
   }
@@ -395,7 +417,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.15.143/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.15.144/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.wiki/favicon.ico';
@@ -1561,14 +1583,14 @@
           raw = String(entry['media$thumbnail'].url);
         }
       } catch (ignoreRaw) {}
-      /* Rail size: compact crop (CSS 72×48). */
+      /* Rail size: square crop (CSS 72×72, object-fit cover). */
       var compact = url
-        .replace(/\/w\d+-h\d+-c\//i, '/w320-h180-c/')
-        .replace(/=w\d+-h\d+-c(?=$|[/?#])/i, '=w320-h180-c')
-        .replace(/\/s\d+-c\//i, '/w320-h180-c/')
-        .replace(/=s\d+-c(?=$|[/?#])/i, '=w320-h180-c')
-        .replace(/\/s\d+\//i, '/w320-h180-c/')
-        .replace(/=s\d+(?=$|[/?#])/i, '=w320-h180-c');
+        .replace(/\/w\d+-h\d+-c\//i, '/w320-h320-c/')
+        .replace(/=w\d+-h\d+-c(?=$|[/?#])/i, '=w320-h320-c')
+        .replace(/\/s\d+-c\//i, '/w320-h320-c/')
+        .replace(/=s\d+-c(?=$|[/?#])/i, '=w320-h320-c')
+        .replace(/\/s\d+\//i, '/w320-h320-c/')
+        .replace(/=s\d+(?=$|[/?#])/i, '=w320-h320-c');
       return { url: compact || url, raw: raw };
     }
     function renderItems(entries) {
@@ -1596,8 +1618,8 @@
           image.src = imageUrl;
           image.loading = 'lazy';
           image.decoding = 'async';
-          image.width = 152;
-          image.height = 96;
+          image.width = 72;
+          image.height = 72;
           image.addEventListener('error', function onThumbErr() {
             var fallback = imageInfo.raw && imageInfo.raw !== image.src ? imageInfo.raw : '';
             if (fallback && !image.getAttribute('data-qcx-thumb-retry')) {
@@ -2315,6 +2337,14 @@
     main.querySelectorAll('.qcx-hero, .qcx-rule, .qcx-section-head, .qcx-rescue-blog, .qcx-rescue-status').forEach(function(node){ node.remove(); });
   }
 
+  function clearReloadHide() {
+    try {
+      document.documentElement.removeAttribute('data-qcx-reload');
+      var st = document.getElementById('qcx-reload-hide-ssr');
+      if (st && st.parentNode) st.parentNode.removeChild(st);
+    } catch (e) {}
+  }
+
   function paintRescue(main, isSingle, result) {
     clearRescuePaint(main);
     if (isSingle) renderSinglePost(main, result);
@@ -2324,6 +2354,7 @@
       hideSidebarOnFeed();
       ensureSidebarRail();
     }
+    clearReloadHide();
     try {
       var adminNow = /\/p\/admin\.html$/i.test(pathOf(location.href)) ||
         !!document.getElementById('qcx-admin-root') ||
@@ -2387,7 +2418,12 @@
       return;
     }
 
-    if (hasUsableNativeBlog()) {
+    /* F5 homepage: kill Blog SSR — enhanceNative keeps stale cards visible until feed refresh. */
+    if (!isSingle && isReloadNavigation()) {
+      main.querySelectorAll('.widget.Blog:not(.qcx-rescue-blog):not(.qcx-rescue-skel)').forEach(function(node){
+        try { node.remove(); } catch (err) { node.style.display = 'none'; }
+      });
+    } else if (hasUsableNativeBlog()) {
       enhanceNativeHomepageFeed();
       return;
     }
@@ -2480,6 +2516,14 @@
     } catch (e) {}
     /* Admin must not wait for native Blog — it would flash SSR/old HTML. */
     if (/\/p\/admin\.html$/i.test(pathOf(location.href))) {
+      rescuePosts();
+      return;
+    }
+    var pageTypeBoot = document.documentElement.getAttribute('data-page-type') || '';
+    var pageItemBoot = document.documentElement.getAttribute('data-page-item') || '';
+    var isSingleBoot = pageItemBoot === 'single' || pageTypeBoot === 'post' || pageTypeBoot === 'page';
+    /* F5 homepage: skip enhanceNative — rebuild from feed so stale SSR never shows. */
+    if (!isSingleBoot && isReloadNavigation()) {
       rescuePosts();
       return;
     }

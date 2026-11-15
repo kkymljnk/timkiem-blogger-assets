@@ -348,7 +348,7 @@ a.qcx-sc-btn {
 #PopularPosts1,
 #sidebar .qcx-sidebar-rail {
   --qcx-latest-thumb-width: 72px;
-  --qcx-latest-thumb-height: 48px;
+  --qcx-latest-thumb-height: 72px;
   --qcx-latest-duration: 200ms;
   --qcx-latest-ease: cubic-bezier(.25,1,.5,1);
   overflow: visible !important;
@@ -382,8 +382,8 @@ a.qcx-sc-btn {
   display: grid !important;
   grid-template-columns: var(--qcx-latest-thumb-width) minmax(0, 1fr) !important;
   gap: 10px !important;
-  align-items: start !important;
-  min-height: 56px !important;
+  align-items: center !important;
+  min-height: var(--qcx-latest-thumb-height) !important;
   margin: 0 !important;
   padding: 8px 0 !important;
   border-bottom: 1px solid rgba(28,36,32,.11) !important;
@@ -397,11 +397,13 @@ a.qcx-sc-btn {
   float: none !important;
   width: var(--qcx-latest-thumb-width) !important;
   height: var(--qcx-latest-thumb-height) !important;
-  margin: 2px 0 0 !important;
+  aspect-ratio: 1 / 1 !important;
+  margin: 0 !important;
   border-radius: 8px !important;
   background: #07110a !important;
   overflow: hidden !important;
   border: 1px solid rgba(28,36,32,.14) !important;
+  flex-shrink: 0 !important;
 }
 #PopularPosts1 .item-thumbnail a,
 #sidebar .qcx-sidebar-rail .item-thumbnail a {
@@ -414,7 +416,10 @@ a.qcx-sc-btn {
 #sidebar .qcx-sidebar-rail .item-thumbnail img {
   width: 100% !important;
   height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
   object-fit: cover !important;
+  object-position: center !important;
   display: block !important;
   transition: transform var(--qcx-latest-duration) var(--qcx-latest-ease) !important;
 }
@@ -461,7 +466,10 @@ a.qcx-sc-btn {
   outline-offset: 2px !important;
   border-radius: 4px !important;
 }
-#PopularPosts1 .item-snippet { display: none !important; }
+#PopularPosts1 .item-snippet,
+#sidebar .qcx-sidebar-rail .item-snippet,
+#sidebar .qcx-sidebar-rail .item-content,
+#sidebar .qcx-sidebar-rail .snippet { display: none !important; }
 #PopularPosts1 .qcx-latest-list[aria-busy='true'],
 #sidebar .qcx-sidebar-rail .qcx-latest-list[aria-busy='true'] {
   min-height: 64px !important;

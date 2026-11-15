@@ -988,7 +988,7 @@ html[data-page-item='single'] .qcx-comments-shell:not(:has(iframe, textarea, .co
   /* Keep thumb|title row when rail leaves #sidebar (styles were #sidebar-scoped) */
   .qcx-tutorial-inline {
     --qcx-latest-thumb-width: 72px;
-    --qcx-latest-thumb-height: 48px;
+    --qcx-latest-thumb-height: 72px;
   }
   .qcx-tutorial-inline .qcx-latest-list {
     display: block !important;
@@ -1001,7 +1001,7 @@ html[data-page-item='single'] .qcx-comments-shell:not(:has(iframe, textarea, .co
     grid-template-columns: var(--qcx-latest-thumb-width) minmax(0, 1fr) !important;
     gap: 10px !important;
     align-items: center !important;
-    min-height: 56px !important;
+    min-height: var(--qcx-latest-thumb-height) !important;
     margin: 0 !important;
     padding: 8px 0 !important;
     border-bottom: 1px solid rgba(28, 36, 32, .11) !important;
@@ -1011,18 +1011,26 @@ html[data-page-item='single'] .qcx-comments-shell:not(:has(iframe, textarea, .co
   .qcx-tutorial-inline .item-thumbnail {
     width: var(--qcx-latest-thumb-width) !important;
     height: var(--qcx-latest-thumb-height) !important;
+    aspect-ratio: 1 / 1 !important;
     margin: 0 !important;
     border-radius: 8px !important;
     overflow: hidden !important;
     border: 1px solid rgba(28, 36, 32, .14) !important;
     background: #07110a !important;
+    flex-shrink: 0 !important;
   }
   .qcx-tutorial-inline .item-thumbnail img {
     width: 100% !important;
     height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
     object-fit: cover !important;
+    object-position: center !important;
     display: block !important;
   }
+  .qcx-tutorial-inline .item-snippet,
+  .qcx-tutorial-inline .item-content,
+  .qcx-tutorial-inline .snippet { display: none !important; }
   .qcx-tutorial-inline .item-title {
     min-width: 0 !important;
     margin: 0 !important;
