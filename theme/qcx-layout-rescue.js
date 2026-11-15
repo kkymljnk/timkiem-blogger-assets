@@ -379,7 +379,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.126/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.13.127/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.timkiem.app/favicon.ico';
@@ -1643,45 +1643,14 @@
     }
   }
 
-  function pickCardLabels(allLabels) {
-    var list = (allLabels || []).filter(Boolean);
-    if (!list.length) return [];
-    var preferred = ['Tutorial', 'FREE', 'AI', 'Tools'];
-    var picked = [];
-    preferred.forEach(function(name){
-      if (picked.length >= 2) return;
-      var hit = list.filter(function(label){ return String(label).toLowerCase() === name.toLowerCase(); })[0];
-      if (hit && picked.indexOf(hit) < 0) picked.push(hit);
-    });
-    list.forEach(function(label){
-      if (picked.length >= 2) return;
-      if (picked.indexOf(label) < 0) picked.push(label);
-    });
-    return picked.slice(0, 2);
-  }
-
-  function prioritizeCardLabelDom(root) {
-    try {
-      (root || document).querySelectorAll('.qcx-card-labels').forEach(function(wrap){
-        var links = Array.prototype.slice.call(wrap.querySelectorAll('a[rel=\"tag\"], a'));
-        if (links.length < 2) return;
-        var preferred = null;
-        links.forEach(function(a){
-          if (preferred) return;
-          if (/^tutorial$/i.test((a.textContent || '').trim())) preferred = a;
-        });
-        if (preferred && wrap.firstElementChild !== preferred) {
-          wrap.insertBefore(preferred, wrap.firstElementChild);
-        }
-      });
-    } catch (err) {}
-  }
-
   function cardFromEntry(entry, index) {
     var fullTitle = (entry.title && entry.title.$t) || 'Bài viết';
     var title = displayPostTitle(fullTitle);
     var href = entryLink(entry) || '/';
-    var labels = pickCardLabels(entryLabels(entry));
+    /* Keep original label order; only hide Tutorial chip so old tags stay visible. */
+    var labels = entryLabels(entry).filter(function(label){
+      return !/^tutorial$/i.test(String(label || ''));
+    }).slice(0, 2);
     var meta = entryThumbMeta(entry);
     var thumb = meta.url;
     var eager = index === 0;
@@ -1782,11 +1751,9 @@
   function polishHomepageCards(row) {
     cleanCardSnippets(row);
     stripDomPostTitles(row);
-    prioritizeCardLabelDom(row);
     window.setTimeout(function(){
       cleanCardSnippets(row);
       stripDomPostTitles(row);
-      prioritizeCardLabelDom(row);
       try {
         var cards = row.querySelectorAll('.card');
         cards.forEach(function(card){ card.style.minHeight = ''; card.style.height = ''; });
@@ -2769,7 +2736,6 @@
   ensureSidebarRail();
   relocateHeroForDesktopRail();
   hideDropsOnHome();
-  prioritizeCardLabelDom(document);
   ensureAdminChrome();
   ensureSiteFooter();
   ensureSharpBrandAvatar();
@@ -2784,7 +2750,6 @@
       ensureSidebarRail();
       relocateHeroForDesktopRail();
       hideDropsOnHome();
-      prioritizeCardLabelDom(document);
       ensureAdminChrome();
       ensureSiteFooter();
       ensureSharpBrandAvatar();
@@ -2792,8 +2757,6 @@
       sharpenCardImages();
     }, { once: true });
   }
-  window.setTimeout(function(){ prioritizeCardLabelDom(document); }, 80);
-  window.setTimeout(function(){ prioritizeCardLabelDom(document); }, 400);
   window.setTimeout(ensureSidebarRail, 80);
   window.setTimeout(ensureSidebarRail, 400);
   window.setTimeout(relocateHeroForDesktopRail, 60);
