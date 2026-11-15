@@ -24,6 +24,53 @@
     } catch (e) {}
   })();
 
+  /* Cursor/Electron Simple Browser: t.me pages redirect to tg:// and spam
+     "Open External Link". Keep normal Chrome/mobile behavior; only gate embedded. */
+  (function guardTelegramInEmbeddedBrowser() {
+    try {
+      var ua = String(navigator.userAgent || '');
+      if (!/Electron|Cursor\//i.test(ua)) return;
+      if (document.documentElement.getAttribute('data-qcx-tg-guard') === '1') return;
+      document.documentElement.setAttribute('data-qcx-tg-guard', '1');
+      function isTelegramHref(href) {
+        return /(?:^|\b)(?:tg:\/\/|https?:\/\/(?:t\.me|telegram\.me|web\.telegram\.org)\b)/i.test(String(href || ''));
+      }
+      function toast(msg) {
+        try {
+          var n = document.getElementById('qcx-tg-guard-toast');
+          if (!n) {
+            n = document.createElement('div');
+            n.id = 'qcx-tg-guard-toast';
+            n.setAttribute('role', 'status');
+            n.style.cssText = 'position:fixed;z-index:2147483646;left:50%;bottom:24px;transform:translateX(-50%);' +
+              'max-width:min(420px,92vw);padding:10px 14px;border-radius:10px;background:#0b1610;color:#dce9df;' +
+              'border:1px solid rgba(0,240,163,.28);font:600 12px/1.4 ui-monospace,monospace;box-shadow:0 8px 24px rgba(0,0,0,.35)';
+            (document.body || document.documentElement).appendChild(n);
+          }
+          n.textContent = msg;
+          n.hidden = false;
+          window.clearTimeout(n._t);
+          n._t = window.setTimeout(function(){ n.hidden = true; }, 3200);
+        } catch (ignoreToast) {}
+      }
+      document.addEventListener('click', function(ev) {
+        var a = ev.target && ev.target.closest ? ev.target.closest('a[href]') : null;
+        if (!a) return;
+        var href = a.getAttribute('href') || a.href || '';
+        if (!isTelegramHref(href)) return;
+        ev.preventDefault();
+        ev.stopPropagation();
+        var safe = /^tg:\/\//i.test(href) ? 'https://t.me/superkhung' : href;
+        var done = function(){ toast('Đã copy link Telegram — mở bằng app hoặc Chrome'); };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(safe).then(done).catch(function(){ toast('Telegram: ' + safe); });
+        } else {
+          toast('Telegram: ' + safe);
+        }
+      }, true);
+    } catch (e) {}
+  })();
+
   function text(value) {
     return String(value == null ? '' : value);
   }
@@ -417,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.15.145/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.15.146/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.wiki/favicon.ico';
