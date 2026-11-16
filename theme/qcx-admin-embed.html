@@ -68,7 +68,14 @@
                   <button type="button" data-label="Developer">Developer</button>
                   <button type="button" data-label="Automation">Automation</button>
                   <button type="button" data-label="Gemini">Gemini</button>
+                  <button type="button" data-label="Google">Google</button>
                   <button type="button" data-label="Google Cloud">Google Cloud</button>
+                  <button type="button" data-label="ChatGPT">ChatGPT</button>
+                  <button type="button" data-label="CapCut">CapCut</button>
+                  <button type="button" data-label="Cursor">Cursor</button>
+                  <button type="button" data-label="Facebook">Facebook</button>
+                  <button type="button" data-label="Instagram">Instagram</button>
+                  <button type="button" data-label="Meta">Meta</button>
                   <button type="button" data-label="IOS">IOS</button>
                   <button type="button" data-label="MOBILE">MOBILE</button>
                 </div>
@@ -291,16 +298,71 @@
     return withBloggerSize(raw, 's1600');
   }
 
+  /* Keep in sync with media/labels_allowlist.json */
+  var LABEL_ALLOWLIST = {
+    topics: [
+      'AI', 'API', 'Antigravity', 'Automation', 'CapCut', 'ChatGPT', 'Cloud', 'Cursor',
+      'Dev', 'Developer', 'DevOps', 'Editing', 'ElevenLabs', 'Facebook', 'Gemini', 'Google',
+      'Google Cloud', 'IOS', 'Instagram', 'LINE', 'Linux', 'MOBILE', 'Meta', 'Student',
+      'Tools', 'Video', 'Voice'
+    ],
+    aliases: {
+      'google-cloud': 'Google Cloud', googlecloud: 'Google Cloud', chatgpt: 'ChatGPT', gpt: 'ChatGPT',
+      fb: 'Facebook', ig: 'Instagram', ios: 'IOS', mobile: 'MOBILE', devops: 'DevOps',
+      elevenlabs: 'ElevenLabs', capcut: 'CapCut', antigravity: 'Antigravity'
+    }
+  };
+
+  function canonicalizeLabel(name) {
+    var raw = String(name || '').trim();
+    if (!raw) return '';
+    var key = raw.toLowerCase().replace(/\s+/g, '-');
+    if (LABEL_ALLOWLIST.aliases[key]) return LABEL_ALLOWLIST.aliases[key];
+    var hit = LABEL_ALLOWLIST.topics.find(function (t) { return t.toLowerCase() === raw.toLowerCase(); });
+    if (hit) return hit;
+    if (/^(free|vip|tutorial)$/i.test(raw)) {
+      return raw.charAt(0).toUpperCase() + raw.slice(1).toLowerCase();
+    }
+    if (/^\d{1,3}([.,]\d{3})*$/.test(raw)) return raw; /* price label */
+    return raw;
+  }
+
   function parseLabels(raw, currentMode, price) {
-    var parts = String(raw || '').split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+    var parts = String(raw || '').split(',').map(function (s) { return canonicalizeLabel(s); }).filter(Boolean);
     var need = currentMode === 'paid' ? 'VIP' : 'FREE';
     var hasNeed = parts.some(function (p) { return p.toUpperCase() === need; });
     if (!hasNeed) parts.unshift(need);
+    if (!parts.some(function (p) { return /^tutorial$/i.test(p); })) parts.push('Tutorial');
     if (currentMode === 'paid' && price) {
       var hasPrice = parts.some(function (p) { return p === price; });
       if (!hasPrice) parts.push(price);
     }
-    return parts;
+    /* de-dupe case-insensitive */
+    var seen = {};
+    return parts.filter(function (p) {
+      var k = p.toLowerCase();
+      if (seen[k]) return false;
+      seen[k] = true;
+      return true;
+    });
+  }
+
+  function topicLabelsOf(labels) {
+    return (labels || []).filter(function (p) {
+      return !/^(free|vip|tutorial)$/i.test(p) && !/^\d{1,3}([.,]\d{3})*$/.test(p);
+    });
+  }
+
+  function labelsAllowlistOk(labels) {
+    var topics = topicLabelsOf(labels);
+    if (topics.length < 1 || topics.length > 3) {
+      return { ok: false, detail: 'cần 1–3 topic (có ' + topics.length + ')' };
+    }
+    var bad = topics.filter(function (t) {
+      return !LABEL_ALLOWLIST.topics.some(function (a) { return a.toLowerCase() === String(t).toLowerCase(); });
+    });
+    if (bad.length) return { ok: false, detail: 'ngoài allowlist: ' + bad.join(', ') };
+    return { ok: true, detail: topics.join(', ') };
   }
 
   function collectForm() {
@@ -386,9 +448,25 @@
       errors.push('resourceId chỉ dùng a-z 0-9 và dấu gạch ngang');
     }
     if (!data.locked) errors.push('Thiếu locked HTML');
+    if (!data.teaser) errors.push('Thiếu teaser (.qcx-teaser)');
+    if (!(data.labels || []).some(function (l) { return /^tutorial$/i.test(l); })) {
+      errors.push('Labels thiếu Tutorial');
+    }
+    var allow = labelsAllowlistOk(data.labels || []);
+    if (!allow.ok) errors.push('Labels: ' + allow.detail);
     if (forVault && !data.driveUrl) errors.push('Thiếu driveUrl cho vault');
     if (data.mode === 'paid' && !data.price) errors.push('Paid cần price');
+    if (!forVault) {
+      if (!data.hero) errors.push('Thiếu hero CDN (bắt buộc live publish)');
+      else if (!data.heroIsCdn) errors.push('Hero phải là Blogspot CDN');
+      else if (/images%20%284%29\.jpg/i.test(data.hero)) errors.push('Hero còn placeholder images%20(4).jpg');
+      else if (!/\/s1600\/|=s1600|\/s0\//i.test(data.hero)) errors.push('Hero phải dùng token s1600 (CapCut skeleton)');
+    }
     var html = buildPostHtml(data);
+    if (!/mac-frame/i.test(html)) errors.push('Thiếu .mac-frame hero (CapCut skeleton)');
+    if (!/qcx-teaser/i.test(html)) errors.push('HTML thiếu .qcx-teaser');
+    if (!/qcx-content-unlock/i.test(html)) errors.push('HTML thiếu .qcx-content-unlock');
+    if (!/id=["']qcx-resource["']/i.test(html)) errors.push('HTML thiếu #qcx-resource marker');
     if (/drive\.google\.com/i.test(html)) errors.push('HTML body không được chứa drive.google.com');
     if (/drive\.google\.com/i.test(data.teaser + data.locked)) {
       errors.push('Teaser/locked chứa Drive — chuyển sang vault');
@@ -410,10 +488,13 @@
     htmlOut.textContent = check.html;
     var titleOk = !!data.title;
     var slugOk = !!data.resourceId && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(data.resourceId);
-    var labelsOk = data.labels && data.labels.length > 0;
+    var tutorialOk = (data.labels || []).some(function (l) { return /^tutorial$/i.test(l); });
+    var allow = labelsAllowlistOk(data.labels || []);
+    var labelsOk = !!(data.labels && data.labels.length) && tutorialOk && allow.ok;
     var teaserOk = !!data.teaser;
     var lockedOk = !!data.locked;
     var driveOk = !!data.driveUrl;
+    var heroOk = !!data.hero && data.heroIsCdn && !/images%20%284%29\.jpg/i.test(data.hero || '');
     var noDriveInHtml = !/drive\.google\.com/i.test(check.html) &&
       !/drive\.google\.com/i.test(data.teaser + data.locked);
     var modeDetail = data.mode.toUpperCase() +
@@ -422,14 +503,19 @@
       checkItem(titleOk, 'Title', titleOk ? data.title.slice(0, 48) : 'Thiếu'),
       checkItem(slugOk, 'Slug', slugOk ? data.resourceId : (data.resourceId || '—')),
       checkItem(data.mode === 'free' || !!data.price, 'Mode', modeDetail),
-      checkItem(labelsOk, 'Labels', labelsOk ? data.labels.join(', ') : '—'),
+      checkItem(labelsOk, 'Labels', labelsOk ? data.labels.join(', ') : (allow.detail || 'Thiếu Tutorial / allowlist')),
+      checkItem(tutorialOk, 'Tutorial', tutorialOk ? 'ok' : 'thiếu'),
       checkItem(teaserOk, 'Teaser', teaserOk ? 'có' : 'trống'),
       checkItem(lockedOk, 'Locked', lockedOk ? 'có' : 'Thiếu'),
+      checkItem(/mac-frame/i.test(check.html), 'mac-frame', /mac-frame/i.test(check.html) ? 'CapCut' : 'thiếu'),
+      checkItem(/id=["']qcx-resource["']/i.test(check.html), '#qcx-resource', /id=["']qcx-resource["']/i.test(check.html) ? 'ok' : 'thiếu'),
+      checkItem(/qcx-content-unlock/i.test(check.html), 'Unlock', /qcx-content-unlock/i.test(check.html) ? 'ok' : 'thiếu'),
       checkItem(driveOk, 'Drive', driveOk ? 'vault' : 'chưa'),
+      checkItem(heroOk, 'Hero CDN', heroOk ? 's1600' : (data.heroRaw ? 'CDN/placeholder lỗi' : 'thiếu')),
       checkItem(noDriveInHtml, 'No Drive in HTML', noDriveInHtml ? 'ok' : 'lỗi')
     ];
-    if (data.heroRaw) {
-      items.push(checkItem(data.heroIsCdn, 'Hero CDN', data.heroIsCdn ? 'Blogspot' : 'không phải CDN'));
+    if (data.heroRaw && !heroOk) {
+      items.push(checkItem(data.heroIsCdn, 'Hero host', data.heroIsCdn ? 'Blogspot' : 'không phải CDN'));
     }
     if (data.videoUrl) {
       items.push(checkItem(!!data.hero, 'Video + Poster', data.hero ? 'có poster' : 'thiếu poster ảnh tĩnh'));
