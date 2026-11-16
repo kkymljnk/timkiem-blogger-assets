@@ -501,9 +501,17 @@
   function capCommentsForUnlockChrome(comments) {
     if (!comments) return;
     try {
+      comments.removeAttribute('data-qcx-comments-empty');
+      comments.classList.remove('is-dismissed');
+      comments.classList.add('has-gate');
+      comments.style.setProperty('display', 'block', 'important');
+      comments.style.setProperty('visibility', 'visible', 'important');
+      comments.style.setProperty('height', 'auto', 'important');
+      comments.style.setProperty('min-height', '480px', 'important');
       comments.style.setProperty('max-height', 'none', 'important');
-      comments.style.setProperty('overflow-x', 'hidden', 'important');
-      comments.style.setProperty('overflow-y', 'visible', 'important');
+      comments.style.setProperty('overflow', 'visible', 'important');
+      comments.style.removeProperty('overflow-x');
+      comments.style.removeProperty('overflow-y');
     } catch (ignore) {}
   }
 
@@ -749,11 +757,14 @@
   function placeCommentsForUnlock(comments) {
     if (!comments) return null;
     try {
+      comments.removeAttribute('data-qcx-comments-empty');
       comments.setAttribute('data-qcx-unlock-chrome', '1');
       /* Stay in settled position so layout does not jump; gate lives inside #comments. */
       placeCommentsSettled(comments);
+      comments.removeAttribute('data-qcx-comments-empty');
       comments.setAttribute('data-qcx-unlock-chrome', '1');
       comments.classList.remove('is-settled');
+      comments.classList.add('has-gate');
       capCommentsForUnlockChrome(comments);
     } catch (ignore) {}
     return comments;
@@ -1123,6 +1134,11 @@
       event.preventDefault();
       killLegacyGatePopups();
       var meta = blogMeta();
+      var cmt = ensureCommentsMount(meta) || document.getElementById('comments');
+      if (cmt) {
+        cmt.removeAttribute('data-qcx-comments-empty');
+        capCommentsForUnlockChrome(cmt);
+      }
       scrollToComments(meta);
       if (typeof window.__qcxStartFreeUnlock === 'function') {
         window.__qcxStartFreeUnlock();

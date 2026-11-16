@@ -1307,8 +1307,12 @@
   function syncEmptyCommentsShell() {
     var box = document.getElementById('comments') || document.querySelector('.qcx-comments-shell');
     if (!box) return;
+    if (box.getAttribute('data-qcx-unlock-chrome') === '1' || box.classList.contains('has-gate') || box.querySelector('.qcx-inline-gate')) {
+      box.removeAttribute('data-qcx-comments-empty');
+      return;
+    }
     var hasReal = !!box.querySelector(
-      'iframe, textarea, .comment, #comment-editor, .qcx-comment-list, .qcx-comment-item, .comment-body'
+      'iframe, textarea, .comment, #comment-editor, .qcx-comment-list, .qcx-comment-item, .comment-body, .qcx-inline-gate'
     );
     if (hasReal) box.removeAttribute('data-qcx-comments-empty');
     else box.setAttribute('data-qcx-comments-empty', '1');
