@@ -1,0 +1,95 @@
+#!/usr/bin/env python3
+"""Generate MMO.TEAM path wordmark from Satoshi (closer to FT Regola Neue / Aave)."""
+from __future__ import annotations
+
+import re
+from pathlib import Path
+
+from fontTools.ttLib import TTFont
+from fontTools.pens.svgPathPen import SVGPathPen
+from fontTools.pens.transformPen import TransformPen
+from fontTools.misc.transform import Transform
+from fontTools.varLib.instancer import instantiateVariableFont
+
+HERE = Path(__file__).resolve().parent
+FONT = HERE / "satoshi" / "Satoshi_Complete" / "Fonts" / "TTF" / "Satoshi-Variable.ttf"
+OUT_SVG = HERE / "mmo-team-wordmark.svg"
+OUT_SNIP = HERE / "mmo-menu-logo-snippet.js"
+
+GHOST_BODY = (
+    "M14.985 0C6.70823 0 -0.00216598 6.80197 5.24457e-07 15.19H3.82821"
+    "C3.82821 8.90381 8.78373 3.8072 14.985 3.8072C21.1862 3.8072 26.1418 8.90381 "
+    "26.1418 15.19H29.9699C29.9715 6.80197 23.261 0 14.985 0Z"
+)
+EYE_L = (
+    "M11.007 15.5481C12.6893 15.5481 14.053 14.1915 14.053 12.5182"
+    "C14.053 10.8448 12.6893 9.48828 11.007 9.48828C9.32471 9.48828 7.96094 10.8448 "
+    "7.96094 12.5182C7.96094 14.1915 9.32471 15.5481 11.007 15.5481Z"
+)
+EYE_R = (
+    "M18.9679 15.5481C20.6502 15.5481 22.014 14.1915 22.014 12.5182"
+    "C22.014 10.8448 20.6502 9.48828 18.9679 9.48828C17.2856 9.48828 15.9219 10.8448 "
+    "15.9219 12.5182C15.9219 14.1915 17.2856 15.5481 18.9679 15.5481Z"
+)
+
+
+def round_path(d: str) -> str:
+    def repl(m: re.Match[str]) -> str:
+        v = float(m.group(0))
+        s = f"{v:.3f}"
+        if "." in s:
+            s = s.rstrip("0").rstrip(".")
+        return s
+
+    return re.sub(r"-?\d+\.?\d*(?:e[-+]?\d+)?", repl, d, flags=re.I)
+
+
+def main() -> None:
+    font = instantiateVariableFont(TTFont(str(FONT)), {"wght": 700})
+    gs = font.getGlyphSet()
+    cmap = font.getBestCmap()
+    upm = font["head"].unitsPerEm
+    # Match Aave letter height (~15.37)
+    scale = 15.37 / upm
+    # Slight tracking tighten like Aave wordmark
+    tracking = -0.15 * scale * upm * 0.01  # mild negative tracking in font units→px
+    x = 33.0
+    baseline_y = 15.37
+    paths: list[str] = []
+    # Lowercase like Aave wordmark ("aave") — same Satoshi Bold geometric style.
+    text = "mmo.team"
+    for i, ch in enumerate(text):
+        gname = cmap[ord(ch)]
+        glyph = gs[gname]
+        pen = SVGPathPen(gs)
+        glyph.draw(TransformPen(pen, Transform(scale, 0, 0, -scale, x, baseline_y)))
+        paths.append(round_path(pen.getCommands()))
+        adv = glyph.width * scale
+        if i < len(text) - 1:
+            adv += tracking
+        x += adv
+
+    vb_w = round(x + 1.0, 1)
+    fill = "#28d28c"
+    parts = [
+        f'<path d="{GHOST_BODY}" fill="{fill}"/>',
+        '<g class="logo-eyes">',
+        f'<path class="logo-eye-left qcx-eye" d="{EYE_L}" fill="{fill}"/>',
+        f'<path class="logo-eye-right qcx-eye" d="{EYE_R}" fill="{fill}"/>',
+        "</g>",
+    ]
+    parts.extend(f'<path d="{d}" fill="{fill}"/>' for d in paths if d)
+    inner = "".join(parts)
+    svg = (
+        f'<svg class="qcx-menu-logo-mark" width="{vb_w}" height="16" '
+        f'viewBox="0 0 {vb_w} 16" fill="none" xmlns="http://www.w3.org/2000/svg" '
+        f'role="img" aria-label="MMO.TEAM">{inner}</svg>'
+    )
+    OUT_SVG.write_text(svg + "\n", encoding="utf-8")
+    # Also emit JS concatenation lines for mobile-nav
+    OUT_SNIP.write_text(svg, encoding="utf-8")
+    print(f"VB={vb_w} chars={len(svg)} -> {OUT_SVG.name}")
+
+
+if __name__ == "__main__":
+    main()

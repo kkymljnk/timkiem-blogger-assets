@@ -608,11 +608,6 @@
       if (unlock && unlock.parentNode) unlock.parentNode.insertBefore(panel, unlock);
       else body.appendChild(panel);
     }
-    try {
-      var cmtNew = document.getElementById('comments') || document.querySelector('.qcx-comments-shell');
-      placeCommentsForUnlock(cmtNew);
-      capCommentsForUnlockChrome(cmtNew);
-    } catch (ignorePlace2) {}
     wireLockPanel(panel);
     removeLegacyDownloadCards();
     return panel;
@@ -1136,7 +1131,10 @@
       var meta = blogMeta();
       var cmt = ensureCommentsMount(meta) || document.getElementById('comments');
       if (cmt) {
+        cmt.classList.add('is-active');
+        cmt.setAttribute('data-qcx-unlock-active', '1');
         cmt.removeAttribute('data-qcx-comments-empty');
+        placeCommentsForUnlock(cmt);
         capCommentsForUnlockChrome(cmt);
       }
       scrollToComments(meta);
