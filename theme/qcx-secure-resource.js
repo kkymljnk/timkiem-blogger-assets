@@ -644,7 +644,7 @@
   function blogHomeOrigin() {
     try {
       var canon = (document.querySelector('link[rel="canonical"]') || {}).href || '';
-      if (canon) return new URL(canon).origin;
+      if (canon) return new URL(canon).origin.replace(/^http:/i, location.protocol);
     } catch (ignore) {}
     return location.origin;
   }
@@ -653,7 +653,9 @@
     var ids = resolvePostIds(meta);
     if (!ids.postId) return [];
     var urls = [];
-    urls.push(blogHomeOrigin() + '/feeds/' + ids.postId + '/comments/default?alt=json&max-results=20');
+    var baseOrigin = blogHomeOrigin().replace(/^http:/i, 'https:');
+    urls.push(baseOrigin + '/feeds/' + ids.postId + '/comments/default?alt=json&max-results=20');
+    urls.push('/feeds/' + ids.postId + '/comments/default?alt=json&max-results=20');
     if (ids.blogId) {
       urls.push('https://www.blogger.com/feeds/' + ids.blogId + '/' + ids.postId + '/comments/default?alt=json&max-results=20');
     }
