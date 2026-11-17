@@ -464,16 +464,16 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.15.153/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.6/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
-  var QCX_SITE_FAVICON = 'https://www.mmo.wiki/favicon.ico';
+  var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
 
   function brandAvatarHtml() {
     var src1 = QCX_CDN + 'qcx-brand-mark.png';
     var src2 = QCX_CDN + 'qcx-brand-mark-1024.png';
     return '<div class="qcx-avatar" aria-label="MMO">' +
-      '<img class="qcx-brand-raster" src="' + src2 + '" srcset="' + src1 + ' 1x, ' + src2 + ' 2x" ' +
+      '<img class="qcx-brand-raster" src="' + src1 + '" srcset="' + src1 + ' 1x, ' + src2 + ' 2x" ' +
       'width="64" height="64" decoding="async" alt="MMO"/>' +
       '<svg xmlns="http://www.w3.org/2000/svg" class="qcx-brand-mark qcx-brand-svg qcx-brand-eyes-only" ' +
       'viewBox="0 0 512 512" width="300" height="300" role="img" aria-hidden="true" tabindex="0">' +
@@ -903,7 +903,7 @@
       'min-height:28px!important;padding:0 10px!important;border:1px solid rgba(255,255,255,.08)!important;' +
       'border-radius:999px!important;background:rgba(255,255,255,.03)!important;color:rgba(210,230,216,.88)!important;' +
       'font-size:11px!important;font-weight:600!important;text-decoration:none!important;white-space:nowrap!important}' +
-      '#qcx-menu-footer{display:none!important}' + '.qcx-footer-widget,.qcx-footer-widget .widget-content{width:100%!important;float:none!important;padding:0!important;margin:0!important}' + '.qcx-footer-social{padding:20px 16px;text-align:center;border-top:1px solid rgba(255,255,255,0.08)}' + '.qcx-footer-brand{margin-bottom:10px}' + '.qcx-footer-brand strong{display:block;font-size:15px;color:#4caf82;letter-spacing:.05em}' + '.qcx-footer-links{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:10px 0}' + '.qcx-footer-links a{color:#aaa;font-size:12px;text-decoration:none;padding:4px 10px;border:1px solid rgba(255,255,255,0.1);border-radius:4px}' + '.qcx-footer-copy{font-size:11px;color:#555;margin-top:8px}' +
+      '#qcx-menu-footer{display:none!important}' + '.qcx-footer-widget,.qcx-footer-widget .widget-content{width:100%!important;float:none!important;padding:0!important;margin:0!important}' + '.footer .widget.qcx-footer-widget{width:100%!important;max-width:100%!important;display:block!important;float:none!important}' + '.footer .widget:nth-of-type(1).qcx-footer-widget,.footer .widget:nth-child(1).qcx-footer-widget{width:100%!important}' + '.qcx-footer-social{padding:20px 16px;text-align:center;border-top:1px solid rgba(255,255,255,0.08)}' + '.qcx-footer-brand{margin-bottom:10px}' + '.qcx-footer-brand strong{display:block;font-size:15px;color:#4caf82;letter-spacing:.05em}' + '.qcx-footer-links{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:10px 0}' + '.qcx-footer-links a{color:#ccc;font-size:12px;text-decoration:none;padding:4px 10px;border:1px solid rgba(255,255,255,0.1);border-radius:4px}' + '.qcx-footer-copy{font-size:11px;color:#888;margin-top:8px}' +
       '#qcx-menu-nav{padding-bottom:calc(14px + env(safe-area-inset-bottom,0px))!important}' +
       '#qcx-menu .qcx-mobile-menu-hidden{display:none!important}' +
       'body.qcx-menu-open{overflow:hidden!important}' +
@@ -2944,7 +2944,11 @@
       '<a href="/search/label/FREE">FREE</a>' +
       '</div><p class="qcx-footer-copy">&copy; 2026 MMO TEAM</p>' +
       '</div></div>';
+    widget.setAttribute('style', 'width:100%!important;max-width:100%!important;float:none!important;display:block!important;box-sizing:border-box!important');
     footerSection.classList.add('qcx-footer-gadgets');
+    footerSection.style.setProperty('width', '100%', 'important');
+    footerSection.style.setProperty('max-width', 'none', 'important');
+    footerSection.style.setProperty('display', 'block', 'important');
     footerSection.appendChild(widget);
   }
 
