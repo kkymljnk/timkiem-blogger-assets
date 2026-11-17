@@ -2929,53 +2929,23 @@
 
   function ensureSiteFooter() {
     if (isAdminPath()) return;
-    if (document.querySelector('.qcx-subscribe-card[data-qcx-footer="1"]')) return;
-    var host = document.querySelector('main.main-container') || document.querySelector('#main') || document.body;
-    if (!host) return;
-    var blogId = document.documentElement.getAttribute('data-blog-id') || '5252547691219049876';
-    var home = ((document.querySelector('link[rel="canonical"]') || {}).href) || (location.origin + '/');
-    var title = text(((document.querySelector('meta[property="og:site_name"]') || {}).content) || '') ||
-      text(((document.querySelector('.qcx-hero-title') || {}).textContent) || '') ||
-      QCX_HERO_TITLE;
-    var follow = 'https://www.blogger.com/follow.g?blogID=' + encodeURIComponent(blogId) +
-      '&returnUrl=' + encodeURIComponent(home);
-    var card = el('section', 'qcx-subscribe-card');
-    card.setAttribute('data-qcx-footer', '1');
-    card.setAttribute('aria-label', 'Theo dõi blog');
-    card.innerHTML =
-      '<div class="qcx-sc-text">' +
-      '<div class="qcx-sc-title">Theo dõi ' + escapeHtml(title) + '</div>' +
-      '<p class="qcx-sc-desc">Nhận bài mới trên Blogger và cập nhật nhanh qua Telegram.</p>' +
-      '</div>' +
-      '<div class="qcx-sc-actions">' +
-      '<a class="qcx-sc-btn" data-qcx-follow="1" href="' + follow + '" rel="nofollow noopener" target="_blank">Theo dõi blog</a>' +
-      '<a class="qcx-sc-btn qcx-sc-btn-outline" href="https://t.me/superkhung" rel="noopener noreferrer" target="_blank">Kênh Telegram</a>' +
-      '</div>';
-
-    /* Prefer placing just above footer section so Layout “Chân trang” stays the widget zone. */
+    /* v2: MMO TEAM footer — no subscribe card */
     var footerSection = document.getElementById('footer') || document.querySelector('footer.footer');
-    if (footerSection && footerSection.parentNode) {
-      footerSection.parentNode.insertBefore(card, footerSection);
-    } else {
-      host.appendChild(card);
-    }
-
-    /* Keep a visible HTML shell inside #footer so Chân trang is not empty live. */
-    if (footerSection) {
-      footerSection.classList.add('qcx-footer-gadgets');
-      if (!footerSection.querySelector('.widget.HTML.qcx-footer-links, #HTML5')) {
-        var widget = el('div', 'widget HTML qcx-footer-links');
-        widget.id = 'HTML5';
-        widget.innerHTML =
-          '<div class="widget-content">' +
-          '<div class="qcx-footer-links-row">' +
-          '<a href="/">Trang chủ</a>' +
-          '<a href="/search">Tất cả bài</a>' +
-          '<a href="https://t.me/superkhung" rel="noopener noreferrer" target="_blank">Telegram</a>' +
-          '</div></div>';
-        footerSection.appendChild(widget);
-      }
-    }
+    if (!footerSection) return;
+    if (footerSection.querySelector('.qcx-footer-social, #HTML5')) return;
+    var widget = el('div', 'widget HTML qcx-footer-widget');
+    widget.id = 'HTML5';
+    widget.innerHTML =
+      '<div class="widget-content"><div class="qcx-footer-social">' +
+      '<div class="qcx-footer-brand"><strong>MMO TEAM</strong></div>' +
+      '<div class="qcx-footer-links">' +
+      '<a href="https://t.me/superkhung" target="_blank" rel="noopener">Telegram</a>' +
+      '<a href="/search/label/Tutorial">Tutorial</a>' +
+      '<a href="/search/label/FREE">FREE</a>' +
+      '</div><p class="qcx-footer-copy">&copy; 2026 MMO TEAM</p>' +
+      '</div></div>';
+    footerSection.classList.add('qcx-footer-gadgets');
+    footerSection.appendChild(widget);
   }
 
   /* Re-entry after CDN bump: refresh atmosphere/fonts/menu/ghost. */
