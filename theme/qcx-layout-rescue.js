@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.8/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.9/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -689,7 +689,7 @@
       'background:rgba(0,0,0,.35)!important;border:1px solid rgba(0,240,163,.25)!important;' +
       'color:#00f0a3!important;border-radius:6px!important;padding:3px 7px!important}' +
       '@media (max-width:860px){.qcx-inline-search,.qcx-inline-search.qcx-results-search{display:none!important}}' +
-      '.qcx-home-pager,.qcx-rescue-pager{grid-column:1/-1!important;width:100%!important;'+'margin:40px auto 40px!important;text-align:center!important;display:flex!important;justify-content:center!important}' +
+      '.qcx-home-pager{grid-column:1/-1!important;width:100%!important;margin:40px auto 40px!important;text-align:center!important;display:flex!important;justify-content:center!important}' +'.qcx-rescue-pager{clear:both!important;float:none!important;width:100%!important;padding-top:40px!important;margin-bottom:40px!important;text-align:center!important;display:block!important}' +
       '.all_posts,[data-page-item=\"multiple\"] .all_posts{clear:both!important;margin-top:0!important}' +
       '#qcx-admin-root .gate,html[data-qcx-admin=\"1\"] #qcx-admin-root .gate{' +
       'background-color:#24352c!important;background-image:none!important;' +
@@ -2049,7 +2049,7 @@
     var allPosts = el('div', 'all_posts');
     var row = el('div', 'row');
     var pager = el('div', 'nav-pagination qcx-pager qcx-rescue-pager');
-    pager.style.cssText = 'width:100%!important;margin:40px 0 40px!important;text-align:center!important;display:flex!important;justify-content:center!important;';
+    pager.style.cssText = 'clear:both!important;float:none!important;width:100%!important;padding-top:40px!important;margin-bottom:40px!important;text-align:center!important;display:block!important;';
     var pagerInner = el('div', 'blog-pager');
     pager.appendChild(pagerInner);
     allPosts.appendChild(row);
