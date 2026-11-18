@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.27/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.28/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -733,6 +733,11 @@
       '#comments>.qcx-inline-gate,.qcx-comments-shell>.qcx-inline-gate{order:1!important;width:100%!important;margin:0!important}' +
       '#comments>#qcx-comment-list,#comments>.qcx-comment-list,.qcx-comments-shell>#qcx-comment-list,.qcx-comments-shell>.qcx-comment-list{order:2!important;width:100%!important;margin:0!important}' +
       '#comments>.comment-form,.qcx-comments-shell>.comment-form{order:3!important;width:100%!important;margin:0!important}' +
+      /* Comments relocated inside rail widget */
+      '#comments[data-qcx-in-rail="1"],.qcx-comments-shell[data-qcx-in-rail="1"]{' +
+      'width:100%!important;margin:16px 0 0!important;padding-top:14px!important;' +
+      'border-top:1px solid rgba(28,36,32,.18)!important;border-radius:0!important;' +
+      'box-sizing:border-box!important}' +
       '@media (max-width:860px){.qcx-sidebar-rail.qcx-tutorial-inline,#qcx-sidebar-rail-rescue.qcx-tutorial-inline{' +
       'display:block!important;width:100%!important;margin:12px 0 16px!important;padding:12px!important;' +
       'box-sizing:border-box!important;border:1px solid rgba(28,36,32,.14)!important;border-radius:14px!important;' +
@@ -1558,6 +1563,25 @@
     }
   }
 
+  /* Move #comments into the rail widget so it appears directly below
+     "BÀI VIẾT LIÊN QUAN" on both desktop and mobile. */
+  function placeCommentsInRail(rail) {
+    if (!rail) return;
+    var cmt = document.getElementById('comments') || document.querySelector('.qcx-comments-shell');
+    if (!cmt) return;
+    /* Avoid double-insert */
+    if (rail.contains(cmt)) return;
+    /* Don't move on admin pages or non-article pages */
+    if (isAdminPath() || !isSingleArticlePage()) return;
+    try {
+      /* On mobile the rail is .qcx-tutorial-inline; on desktop it's in #sidebar.
+         Either way: append #comments as last child of the rail widget-content wrapper. */
+      var railContent = rail.querySelector('.widget-content') || rail;
+      railContent.appendChild(cmt);
+      cmt.setAttribute('data-qcx-in-rail', '1');
+    } catch (ignorePlaceCmt) {}
+  }
+
   function ensureSidebarRail() {
     /* Admin: never show Tutorial rail — full-width login/composer. */
     if (isAdminPath() || !isSingleArticlePage()) {
@@ -1710,6 +1734,7 @@
       showSidebarBesideArticle();
       placeTutorialBesideLock(rail, sidebar);
       hideMobileTutorialClones();
+      placeCommentsInRail(rail);
     }
     settleTutorialLayout();
     if (!rail.getAttribute('data-qcx-tutorial-reassert')) {
