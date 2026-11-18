@@ -3149,10 +3149,438 @@
     return;
   }
 
+  function ensureGmailAuthEngine() {
+    if (isAdminPath()) return;
+    var cssId = 'qcx-gmail-auth-css';
+    if (!document.getElementById(cssId)) {
+      var st = document.createElement('style');
+      st.id = cssId;
+      st.textContent =
+        '.qcx-auth-slot{display:inline-flex;align-items:center;position:relative;z-index:120}' +
+        '.qcx-mac-topbar .qcx-mt-right{display:inline-flex!important;align-items:center!important;gap:10px!important}' +
+        '.qcx-auth-login-btn{appearance:none;border:1px solid rgba(52,230,160,0.32)!important;background:rgba(9,20,14,0.88)!important;color:#e6f5ec!important;cursor:pointer!important;font:600 12px/1 var(--qcx-article-mono,monospace)!important;display:inline-flex!important;align-items:center!important;gap:7px!important;height:36px!important;padding:0 14px!important;border-radius:999px!important;transition:border-color .18s,background .18s,transform .18s!important}' +
+        '.qcx-auth-login-btn:hover{border-color:#34e6a0!important;background:rgba(52,230,160,0.14)!important;transform:translateY(-1px)}' +
+        '.qcx-auth-login-btn[hidden],.qcx-user-chip[hidden]{display:none!important}' +
+        '.qcx-google-ico{flex:0 0 auto;display:block}' +
+        '.qcx-user-chip{appearance:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 11px 0 5px;border-radius:999px;border:1px solid rgba(52,230,160,0.35);background:rgba(10,22,16,0.92);color:#e8fff2;font:600 12.5px/1 var(--qcx-article-sans,system-ui,sans-serif);transition:all .18s ease;max-width:260px}' +
+        '.qcx-user-avatar{width:24px;height:24px;border-radius:50%;object-fit:cover;flex:0 0 auto;border:1.5px solid #34e6a0;background:#07120c}' +
+        '.qcx-user-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:135px;font-weight:600}' +
+        '.qcx-user-role-badge{display:inline-flex;align-items:center;padding:2px 7px;border-radius:999px;font:800 9.5px/1.1 var(--qcx-article-mono,monospace);letter-spacing:.05em;text-transform:uppercase;flex:0 0 auto}' +
+        '.qcx-user-chip[data-role="member"]{border-color:rgba(52,230,160,0.36);background:rgba(52,230,160,0.08)}' +
+        '.qcx-user-chip[data-role="member"] .qcx-user-avatar{border-color:#34e6a0}' +
+        '.qcx-user-chip[data-role="member"] .qcx-user-name{color:#d9fbee}' +
+        '.qcx-user-chip[data-role="member"] .qcx-user-role-badge{background:rgba(52,230,160,0.18);color:#34e6a0}' +
+        '.qcx-user-chip[data-role="pro"]{border-color:rgba(56,189,248,0.48);background:rgba(56,189,248,0.10);box-shadow:0 0 14px rgba(56,189,248,0.12)}' +
+        '.qcx-user-chip[data-role="pro"] .qcx-user-avatar{border-color:#38bdf8}' +
+        '.qcx-user-chip[data-role="pro"] .qcx-user-name{color:#bae6fd;font-weight:700}' +
+        '.qcx-user-chip[data-role="pro"] .qcx-user-role-badge{background:rgba(56,189,248,0.22);color:#38bdf8}' +
+        '.qcx-user-chip[data-role="vip"]{border-color:rgba(255,209,102,0.58);background:linear-gradient(135deg,rgba(255,209,102,0.16),rgba(245,158,11,0.08));box-shadow:0 0 18px rgba(255,209,102,0.18)}' +
+        '.qcx-user-chip[data-role="vip"] .qcx-user-avatar{border-color:#ffd166}' +
+        '.qcx-user-chip[data-role="vip"] .qcx-user-name{color:#ffe599;font-weight:700}' +
+        '.qcx-user-chip[data-role="vip"] .qcx-user-role-badge{background:linear-gradient(135deg,#ffd166,#f59e0b);color:#140d00}' +
+        '.qcx-user-chip[data-role="admin"]{border-color:rgba(255,107,107,0.62);background:linear-gradient(135deg,rgba(255,95,86,0.18),rgba(255,189,46,0.10));box-shadow:0 0 20px rgba(255,95,86,0.22)}' +
+        '.qcx-user-chip[data-role="admin"] .qcx-user-avatar{border-color:#ff6b6b}' +
+        '.qcx-user-chip[data-role="admin"] .qcx-user-name{color:#ffb4ae;font-weight:700}' +
+        '.qcx-user-chip[data-role="admin"] .qcx-user-role-badge{background:linear-gradient(135deg,#ff5f56,#ffbd2e);color:#1a0500}' +
+        '#qcx-user-dropdown{position:fixed;z-index:999998;min-width:270px;max-width:310px;border-radius:14px;border:1px solid rgba(76,175,130,0.38);background:#09140e;color:#e6f5ec;box-shadow:0 20px 50px rgba(0,0,0,0.75);padding:14px;display:none;font-family:var(--qcx-article-sans,system-ui,sans-serif)}' +
+        '#qcx-user-dropdown.is-open{display:block}' +
+        '.qcx-ud-head{display:flex;align-items:center;gap:10px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:10px}' +
+        '.qcx-ud-head img{width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid #34e6a0}' +
+        '.qcx-ud-name{font-size:14px;font-weight:700;color:#fff;margin:0}' +
+        '.qcx-ud-email{font-size:11.5px;color:#8fb6a1;margin:2px 0 0;word-break:break-all}' +
+        '.qcx-ud-status{font-size:12px;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,0.04);margin-bottom:10px;color:#bde3ce}' +
+        '.qcx-ud-btn{width:100%;text-align:left;padding:8px 10px;border-radius:8px;border:0;background:transparent;color:#d8efe2;font:600 12.5px/1.3 var(--qcx-article-sans,system-ui,sans-serif);cursor:pointer;display:flex;align-items:center;gap:8px}' +
+        '.qcx-ud-btn:hover{background:rgba(52,230,160,0.12);color:#fff}' +
+        '.qcx-ud-btn.is-danger{color:#ff9b94}' +
+        '.qcx-ud-btn.is-danger:hover{background:rgba(255,95,86,0.14)}' +
+        '#qcx-google-auth-modal{position:fixed;inset:0;z-index:999999;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(3,9,6,0.84);backdrop-filter:blur(8px)}' +
+        '#qcx-google-auth-modal.is-open{display:flex}' +
+        '.qcx-google-oauth-btn{width:100%;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,0.18);background:#fff;color:#111;font:700 13.5px/1.2 var(--qcx-article-sans,system-ui,sans-serif);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:12px}' +
+        '.qcx-google-oauth-btn:hover{background:#f2f6f4}';
+      (document.head || document.documentElement).appendChild(st);
+    }
+
+    var slotMarkup =
+      '<button aria-label="Đăng nhập bằng Gmail" class="qcx-signal-x qcx-auth-login-btn" type="button">' +
+        '<svg aria-hidden="true" class="qcx-google-ico" height="14" viewBox="0 0 24 24" width="14"><path d="M21.35 11.1h-9.17v2.73h6.51c-.33 1.81-1.5 3.34-3.2 4.37v3.62h5.18c3.03-2.79 4.78-6.9 4.78-11.82 0-.8-.08-1.57-.23-2.3z" fill="#4285F4"></path><path d="M12.18 22c4.32 0 7.95-1.43 10.6-3.88l-5.18-3.62c-1.43.96-3.26 1.53-5.42 1.53-4.17 0-7.7-2.81-8.96-6.6H-2.1v3.73C.54 18.4 5.94 22 12.18 22z" fill="#34A853"></path><path d="M3.22 13.43a5.85 5.85 0 0 1 0-3.76V5.94H-2.1a9.99 9.99 0 0 0 0 8.95l5.32-3.73z" fill="#FBBC05"></path><path d="M12.18 5.98c2.35 0 4.46.81 6.12 2.4l4.59-4.59C20.12 1.19 16.5 0 12.18 0 5.94 0 .54 3.6-2.1 8.84l5.32 3.73c1.26-3.79 4.79-6.59 8.96-6.59z" fill="#EA4335"></path></svg>' +
+        '<span class="qcx-signal-x-label">Đăng nhập</span>' +
+        '<span aria-hidden="true" class="qcx-signal-x-arrow">&#8594;</span>' +
+      '</button>' +
+      '<button aria-expanded="false" aria-haspopup="menu" class="qcx-user-chip" data-role="member" hidden="hidden" type="button">' +
+        '<img alt="" class="qcx-user-avatar" decoding="async" height="22" loading="lazy" width="22"/>' +
+        '<span class="qcx-user-name"></span>' +
+        '<span class="qcx-user-role-badge">MEMBER</span>' +
+      '</button>';
+
+    /* Upgrade legacy a.qcx-signal-x (@superkhung ->) in .qcx-signal-header if XML not yet re-uploaded */
+    var sigRow = document.querySelector('.qcx-signal-header .qcx-signal-row');
+    if (sigRow && !sigRow.querySelector('.qcx-auth-slot')) {
+      var oldLink = sigRow.querySelector('a.qcx-signal-x');
+      var hSlot = document.createElement('div');
+      hSlot.className = 'qcx-auth-slot';
+      hSlot.setAttribute('data-qcx-auth-slot', 'header');
+      hSlot.innerHTML = slotMarkup;
+      if (oldLink && oldLink.parentNode === sigRow) {
+        sigRow.replaceChild(hSlot, oldLink);
+      } else {
+        sigRow.appendChild(hSlot);
+      }
+    }
+
+    var mtRight = document.querySelector('.qcx-mac-topbar .qcx-mt-right');
+    if (mtRight && !mtRight.querySelector('.qcx-auth-slot')) {
+      var tSlot = document.createElement('div');
+      tSlot.className = 'qcx-auth-slot qcx-auth-slot--topbar';
+      tSlot.setAttribute('data-qcx-auth-slot', 'topbar');
+      tSlot.innerHTML = slotMarkup;
+      mtRight.insertBefore(tSlot, mtRight.firstChild);
+    }
+
+    var mh = document.getElementById('qcx-menu-header');
+    if (mh && !mh.querySelector('.qcx-auth-slot')) {
+      var mSlot = document.createElement('div');
+      mSlot.className = 'qcx-auth-slot qcx-auth-slot--menu';
+      mSlot.setAttribute('data-qcx-auth-slot', 'menu');
+      mSlot.style.cssText = 'margin-left:auto;margin-right:8px;';
+      mSlot.innerHTML = slotMarkup;
+      var closeBtn = document.getElementById('qcx-menu-close');
+      if (closeBtn && closeBtn.parentNode === mh) mh.insertBefore(mSlot, closeBtn);
+      else mh.appendChild(mSlot);
+    }
+
+    if (typeof window.__qcxRenderAuthSlots !== 'function') {
+      (function initRescueAuthFallback() {
+        var API_BASE = 'https://timkiem-store-api.kkymljnk.workers.dev';
+        var ENT_KEY = 'qcx_payos_entitlement_v1';
+        var AUTH_CFG_KEY = 'qcx_google_auth_cfg_v1';
+        var DEFAULT_ADMIN_EMAILS = ['superkhung@gmail.com', 'admin@mmo.wiki', 'admin@mmo.team'];
+        var googleClientId = '';
+        var adminEmailsList = DEFAULT_ADMIN_EMAILS.slice();
+        var gsiScriptLoading = false;
+
+        function loadLocalAuthCfg() {
+          try {
+            var raw = JSON.parse(localStorage.getItem(AUTH_CFG_KEY) || '{}') || {};
+            if (raw.googleClientId) googleClientId = String(raw.googleClientId).trim();
+            if (Array.isArray(raw.adminEmails) && raw.adminEmails.length) {
+              raw.adminEmails.forEach(function (e) {
+                var em = String(e || '').trim().toLowerCase();
+                if (em && adminEmailsList.indexOf(em) === -1) adminEmailsList.push(em);
+              });
+            }
+          } catch (e) {}
+        }
+        function isClientAdminEmail(email) {
+          var em = String(email || '').trim().toLowerCase();
+          return !!(em && adminEmailsList.indexOf(em) !== -1);
+        }
+        function readEnt() {
+          try { return JSON.parse(localStorage.getItem(ENT_KEY) || '{}') || {}; } catch (e) { return {}; }
+        }
+        function roleBadgeText(role) {
+          if (role === 'admin') return '⚡ ADMIN';
+          if (role === 'vip') return '👑 VIP';
+          if (role === 'pro') return '💎 PRO';
+          return 'MEMBER';
+        }
+        function computeClientRole(email, vipExp, items) {
+          if (isClientAdminEmail(email)) return 'admin';
+          if (vipExp && new Date(vipExp).getTime() > Date.now()) return 'vip';
+          var cnt = Array.isArray(items) ? items.length : (items && typeof items === 'object' ? Object.keys(items).length : 0);
+          if (cnt > 0) return 'pro';
+          return 'member';
+        }
+        function saveEnt(next) {
+          try {
+            var cur = readEnt();
+            var merged = {
+              sessionToken: next.sessionToken || cur.sessionToken || '',
+              vipExpiresAt: next.vipExpiresAt || (next.user && next.user.vipExpiresAt) || cur.vipExpiresAt || null,
+              unlockedItems: cur.unlockedItems || {},
+              user: next.user || cur.user || null
+            };
+            if (Array.isArray(next.unlockedItems)) {
+              next.unlockedItems.forEach(function (id) { merged.unlockedItems[id] = true; });
+            }
+            if (merged.user) {
+              merged.user.role = computeClientRole(merged.user.email, merged.vipExpiresAt, merged.unlockedItems);
+            }
+            localStorage.setItem(ENT_KEY, JSON.stringify(merged));
+            renderAuthSlots();
+            return merged;
+          } catch (e) { return next; }
+        }
+        function clearEnt() {
+          try { localStorage.removeItem(ENT_KEY); } catch (e) {}
+          renderAuthSlots();
+        }
+        function renderAuthSlots() {
+          var ent = readEnt();
+          var u = ent && ent.user && ent.user.email ? ent.user : null;
+          var slots = document.querySelectorAll('.qcx-auth-slot');
+          for (var i = 0; i < slots.length; i++) {
+            var slot = slots[i];
+            var loginBtn = slot.querySelector('.qcx-auth-login-btn');
+            var chip = slot.querySelector('.qcx-user-chip');
+            if (!loginBtn || !chip) continue;
+            if (!loginBtn.getAttribute('data-qcx-bound')) {
+              loginBtn.setAttribute('data-qcx-bound', '1');
+              loginBtn.addEventListener('click', function (ev) {
+                ev.preventDefault();
+                ev.stopPropagation();
+                triggerGoogleSignIn(null);
+              });
+            }
+            if (!chip.getAttribute('data-qcx-bound')) {
+              chip.setAttribute('data-qcx-bound', '1');
+              chip.addEventListener('click', function (ev) {
+                ev.preventDefault();
+                ev.stopPropagation();
+                toggleUserDropdown(this);
+              });
+            }
+            if (u) {
+              loginBtn.hidden = true;
+              chip.hidden = false;
+              var r = (u.role || 'member').toLowerCase();
+              chip.setAttribute('data-role', r);
+              var av = chip.querySelector('.qcx-user-avatar');
+              var nm = chip.querySelector('.qcx-user-name');
+              var bg = chip.querySelector('.qcx-user-role-badge');
+              if (av) {
+                av.src = u.picture || ('https://ui-avatars.com/api/?name=' + encodeURIComponent(u.name || u.email) + '&background=0d261a&color=34e6a0&bold=true&size=96');
+                av.alt = u.name || u.email;
+              }
+              if (nm) nm.textContent = u.name || u.email.split('@')[0];
+              if (bg) bg.textContent = roleBadgeText(r);
+            } else {
+              loginBtn.hidden = false;
+              chip.hidden = true;
+            }
+          }
+        }
+        function buildClientAuthResponse(profile, recoverRes) {
+          var cur = readEnt();
+          var email = String(profile.email || '').trim().toLowerCase();
+          var name = String(profile.name || email.split('@')[0] || 'Member').trim();
+          var vipExp = (recoverRes && recoverRes.vipExpiresAt) || cur.vipExpiresAt || null;
+          var itemsArr = (recoverRes && Array.isArray(recoverRes.unlockedItems))
+            ? recoverRes.unlockedItems.slice()
+            : Object.keys(cur.unlockedItems || {});
+          var role = computeClientRole(email, vipExp, itemsArr);
+          var bgHex = role === 'admin' ? '2b0907' : (role === 'vip' ? '261c05' : (role === 'pro' ? '061d2b' : '0d261a'));
+          var fgHex = role === 'admin' ? 'ff6b6b' : (role === 'vip' ? 'ffd166' : (role === 'pro' ? '38bdf8' : '34e6a0'));
+          var pic = profile.picture || ('https://ui-avatars.com/api/?name=' + encodeURIComponent(name) + '&background=' + bgHex + '&color=' + fgHex + '&bold=true&size=96');
+          var sess = (recoverRes && recoverRes.sessionToken) || cur.sessionToken || ('qcx_gmail_' + encodeURIComponent(email));
+          return {
+            ok: true,
+            sessionToken: sess,
+            vipExpiresAt: vipExp,
+            unlockedItems: itemsArr,
+            user: {
+              email: email,
+              name: name,
+              picture: pic,
+              role: role,
+              vipActive: !!(vipExp && new Date(vipExp).getTime() > Date.now()),
+              vipUntil: vipExp ? new Date(vipExp).getTime() : 0,
+              items: itemsArr,
+              itemCount: itemsArr.length
+            }
+          };
+        }
+        function authenticateGmailProfile(profile, accessToken) {
+          var email = String((profile && profile.email) || '').trim().toLowerCase();
+          var name = String((profile && profile.name) || email.split('@')[0] || '').trim();
+          return fetch(API_BASE + '/api/auth/google', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(accessToken ? { accessToken: accessToken, fallbackProfile: { email: email, name: name, picture: profile && profile.picture } } : { fallbackProfile: { email: email, name: name, picture: profile && profile.picture } })
+          }).then(function (r) { return r.json(); }).then(function (res) {
+            if (res && res.ok && res.sessionToken) {
+              if (isClientAdminEmail(email) && res.user) res.user.role = 'admin';
+              saveEnt(res);
+              var gm = document.getElementById('qcx-google-auth-modal');
+              if (gm) gm.classList.remove('is-open');
+              return true;
+            }
+            return Promise.reject(new Error('FALLBACK'));
+          }).catch(function () {
+            return fetch(API_BASE + '/api/recover', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ query: email })
+            }).then(function (r) { return r.json(); }).catch(function () { return null; }).then(function (rec) {
+              var built = buildClientAuthResponse({ email: email, name: name, picture: profile && profile.picture }, rec && rec.ok ? rec : null);
+              saveEnt(built);
+              var gm = document.getElementById('qcx-google-auth-modal');
+              if (gm) gm.classList.remove('is-open');
+              return true;
+            });
+          });
+        }
+        function loadGsiScript(cb) {
+          if (window.google && window.google.accounts && window.google.accounts.oauth2) {
+            if (cb) cb();
+            return;
+          }
+          if (gsiScriptLoading) {
+            if (cb) setTimeout(cb, 450);
+            return;
+          }
+          gsiScriptLoading = true;
+          var s = document.createElement('script');
+          s.src = 'https://accounts.google.com/gsi/client';
+          s.async = true;
+          s.defer = true;
+          s.onload = function () { if (cb) cb(); };
+          (document.head || document.documentElement).appendChild(s);
+        }
+        function startGoogleOAuthPopup(statusEl) {
+          loadLocalAuthCfg();
+          if (!googleClientId) {
+            var emInp = document.getElementById('qcx-ga-email');
+            var nmInp = document.getElementById('qcx-ga-name');
+            if (emInp && emInp.value && emInp.value.indexOf('@') !== -1) {
+              var subBtn = document.getElementById('qcx-ga-submit');
+              if (subBtn) { subBtn.click(); return; }
+            }
+            if (statusEl) {
+              statusEl.classList.remove('is-err');
+              statusEl.textContent = 'Nhập Họ tên & Gmail của bạn bên dưới rồi bấm Đăng nhập.';
+            }
+            if (nmInp && !nmInp.value) nmInp.focus();
+            else if (emInp) emInp.focus();
+            return;
+          }
+          loadGsiScript(function () {
+            if (!(window.google && window.google.accounts && window.google.accounts.oauth2)) return;
+            try {
+              var client = window.google.accounts.oauth2.initTokenClient({
+                client_id: googleClientId,
+                scope: 'openid email profile',
+                prompt: 'select_account',
+                callback: function (tokenRes) {
+                  if (!tokenRes || !tokenRes.access_token) return;
+                  if (statusEl) statusEl.textContent = 'Đang xác thực tài khoản Google...';
+                  fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+                    headers: { 'Authorization': 'Bearer ' + tokenRes.access_token }
+                  }).then(function (r) { return r.json(); }).catch(function () { return {}; }).then(function (gInfo) {
+                    return authenticateGmailProfile({ email: gInfo.email, name: gInfo.name, picture: gInfo.picture }, tokenRes.access_token);
+                  });
+                }
+              });
+              client.requestAccessToken({ prompt: 'select_account' });
+            } catch (e) {}
+          });
+        }
+        function ensureGoogleAuthModal() {
+          var m = document.getElementById('qcx-google-auth-modal');
+          if (m) return m;
+          m = document.createElement('div');
+          m.id = 'qcx-google-auth-modal';
+          m.setAttribute('role', 'dialog');
+          m.setAttribute('aria-modal', 'true');
+          m.innerHTML =
+            '<div class="qcx-payos-dialog">' +
+              '<div class="qcx-payos-head">' +
+                '<div><span class="qcx-payos-badge">GOOGLE IDENTITY</span><h3 class="qcx-payos-title">Đăng nhập tài khoản Gmail</h3></div>' +
+                '<button type="button" class="qcx-payos-close" id="qcx-ga-close" aria-label="Đóng">&#215;</button>' +
+              '</div>' +
+              '<button type="button" class="qcx-google-oauth-btn" id="qcx-ga-popup-btn">' +
+                '<svg width="18" height="18" viewBox="0 0 24 24"><path d="M21.35 11.1h-9.17v2.73h6.51c-.33 1.81-1.5 3.34-3.2 4.37v3.62h5.18c3.03-2.79 4.78-6.9 4.78-11.82 0-.8-.08-1.57-.23-2.3z" fill="#4285F4"/><path d="M12.18 22c4.32 0 7.95-1.43 10.6-3.88l-5.18-3.62c-1.43.96-3.26 1.53-5.42 1.53-4.17 0-7.7-2.81-8.96-6.6H-2.1v3.73C.54 18.4 5.94 22 12.18 22z" fill="#34A853"/><path d="M3.22 13.43a5.85 5.85 0 0 1 0-3.76V5.94H-2.1a9.99 9.99 0 0 0 0 8.95l5.32-3.73z" fill="#FBBC05"/><path d="M12.18 5.98c2.35 0 4.46.81 6.12 2.4l4.59-4.59C20.12 1.19 16.5 0 12.18 0 5.94 0 .54 3.6-2.1 8.84l5.32 3.73c1.26-3.79 4.79-6.59 8.96-6.59z" fill="#EA4335"/></svg>' +
+                '<span>Chọn tài khoản Google (Popup)</span>' +
+              '</button>' +
+              '<div style="text-align:center;font-size:11.5px;color:#7ca690;margin:8px 0 10px">— hoặc nhập nhanh Họ tên &amp; Gmail của bạn —</div>' +
+              '<input type="text" class="qcx-payos-input" id="qcx-ga-name" placeholder="Họ và tên hiển thị (VD: Nguyễn Văn A)"/>' +
+              '<input type="email" class="qcx-payos-input" id="qcx-ga-email" placeholder="Địa chỉ Gmail của bạn (VD: tenban@gmail.com)"/>' +
+              '<button type="button" class="qcx-payos-btn" id="qcx-ga-submit">Đăng nhập &amp; Đồng bộ quyền VIP</button>' +
+              '<div class="qcx-payos-status" id="qcx-ga-status">Tự động khôi phục gói VIP &amp; bài viết đã mua theo Gmail trên mọi thiết bị</div>' +
+            '</div>';
+          document.body.appendChild(m);
+          document.getElementById('qcx-ga-close').addEventListener('click', function () { m.classList.remove('is-open'); });
+          document.getElementById('qcx-ga-popup-btn').addEventListener('click', function () {
+            startGoogleOAuthPopup(document.getElementById('qcx-ga-status'));
+          });
+          function submitDirect() {
+            var name = (document.getElementById('qcx-ga-name').value || '').trim();
+            var email = (document.getElementById('qcx-ga-email').value || '').trim().toLowerCase();
+            var st = document.getElementById('qcx-ga-status');
+            if (!email || email.indexOf('@') === -1) {
+              st.textContent = 'Vui lòng nhập đúng địa chỉ Gmail của bạn!';
+              st.classList.add('is-err');
+              return;
+            }
+            st.classList.remove('is-err');
+            st.textContent = 'Đang kết nối Gmail & đồng bộ quyền...';
+            authenticateGmailProfile({ email: email, name: name || email.split('@')[0] }, '');
+          }
+          document.getElementById('qcx-ga-submit').addEventListener('click', submitDirect);
+          ['qcx-ga-name', 'qcx-ga-email'].forEach(function (id) {
+            var el = document.getElementById(id);
+            if (el) el.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') { ev.preventDefault(); submitDirect(); } });
+          });
+          return m;
+        }
+        function triggerGoogleSignIn() {
+          var m = ensureGoogleAuthModal();
+          m.classList.add('is-open');
+          loadLocalAuthCfg();
+          if (googleClientId) startGoogleOAuthPopup(document.getElementById('qcx-ga-status'));
+          else {
+            var nm = document.getElementById('qcx-ga-name');
+            if (nm) nm.focus();
+          }
+        }
+        function toggleUserDropdown(anchorBtn) {
+          var dd = document.getElementById('qcx-user-dropdown');
+          if (!dd) {
+            dd = document.createElement('div');
+            dd.id = 'qcx-user-dropdown';
+            document.body.appendChild(dd);
+            document.addEventListener('click', function (ev) {
+              if (!dd.classList.contains('is-open')) return;
+              if (dd.contains(ev.target) || (ev.target.closest && ev.target.closest('.qcx-user-chip'))) return;
+              dd.classList.remove('is-open');
+            });
+          }
+          if (dd.classList.contains('is-open')) { dd.classList.remove('is-open'); return; }
+          var ent = readEnt();
+          var u = (ent && ent.user) || null;
+          if (!u) return;
+          var role = (u.role || 'member').toLowerCase();
+          var statusText = role === 'admin' ? '⚡ Quản trị viên hệ thống (Mở khóa toàn bộ)' : (role === 'vip' ? '👑 Thành viên VIP 30 ngày' : (role === 'pro' ? '💎 Thành viên PRO' : 'Hạng: Thành viên (Chưa kích hoạt VIP)'));
+          var avUrl = u.picture || ('https://ui-avatars.com/api/?name=' + encodeURIComponent(u.name || u.email) + '&background=0d261a&color=34e6a0&bold=true&size=96');
+          dd.innerHTML =
+            '<div class="qcx-ud-head"><img src="' + avUrl + '" alt=""/><div><p class="qcx-ud-name">' + (u.name || u.email) + '</p><p class="qcx-ud-email">' + u.email + '</p></div></div>' +
+            '<div class="qcx-ud-status">' + statusText + '</div>' +
+            (role === 'admin' ? '<a class="qcx-ud-btn" href="/p/admin.html" style="text-decoration:none">⚙️ Mở trang Quản trị Admin</a>' : '') +
+            '<button type="button" class="qcx-ud-btn is-danger" id="qcx-ud-logout">🚪 Đăng xuất tài khoản</button>';
+          var rect = anchorBtn.getBoundingClientRect();
+          dd.style.top = Math.min(window.innerHeight - 240, Math.max(8, rect.bottom + 8)) + 'px';
+          dd.style.left = Math.min(window.innerWidth - 290, Math.max(8, rect.right - 270)) + 'px';
+          dd.classList.add('is-open');
+          document.getElementById('qcx-ud-logout').onclick = function () {
+            dd.classList.remove('is-open');
+            clearEnt();
+          };
+        }
+        window.__qcxRenderAuthSlots = renderAuthSlots;
+        window.__qcxTriggerGoogleSignIn = triggerGoogleSignIn;
+      })();
+    }
+
+    if (typeof window.__qcxRenderAuthSlots === 'function') {
+      try { window.__qcxRenderAuthSlots(); } catch (ignore) {}
+    }
+  }
+  window.__qcxEnsureGmailAuthEngine = ensureGmailAuthEngine;
+
   bootRescue();
   ensureBreakdevFonts();
   ensureDefaultFavicon();
   ensureAtmosphere();
+  ensureGmailAuthEngine();
   ensureRelatedRailSquareThumbs();
   ensureHeroPreviewClamp();
   ensureSidebarSearch();
@@ -3171,6 +3599,7 @@
       ensureBreakdevFonts();
       ensureDefaultFavicon();
       ensureAtmosphere();
+      ensureGmailAuthEngine();
       ensureRelatedRailSquareThumbs();
       ensureHeroPreviewClamp();
       ensureSidebarSearch();
@@ -3186,6 +3615,8 @@
       sharpenCardImages();
     }, { once: true });
   }
+  window.setTimeout(ensureGmailAuthEngine, 100);
+  window.setTimeout(ensureGmailAuthEngine, 500);
   window.setTimeout(function(){ polishHeroBrand(); ensureCardLabelsWithTutorial(document); }, 80);
   window.setTimeout(function(){ polishHeroBrand(); ensureCardLabelsWithTutorial(document); }, 400);
   window.setTimeout(ensureSidebarRail, 80);

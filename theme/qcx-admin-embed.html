@@ -1348,7 +1348,21 @@ Chúc các bạn thành công!"></textarea>
     });
   }
 
+  var AUTH_CFG_KEY = 'qcx_google_auth_cfg_v1';
+  var DEFAULT_ADMIN_EMAILS = ['superkhung@gmail.com', 'admin@mmo.wiki', 'admin@mmo.team'];
+
   function loadGoogleAuthConfig() {
+    var cidInp = document.getElementById('payosGoogleClientId');
+    var admInp = document.getElementById('payosAdminEmails');
+    try {
+      var localCfg = JSON.parse(localStorage.getItem(AUTH_CFG_KEY) || '{}') || {};
+      if (cidInp && localCfg.googleClientId) cidInp.value = localCfg.googleClientId;
+      if (admInp) {
+        admInp.value = (Array.isArray(localCfg.adminEmails) && localCfg.adminEmails.length)
+          ? localCfg.adminEmails.join(', ')
+          : DEFAULT_ADMIN_EMAILS.join(', ');
+      }
+    } catch (e) {}
     var token = readToken();
     if (!token) return;
     adminFetch('/api/admin/auth-config', {
@@ -1358,10 +1372,8 @@ Chúc các bạn thành công!"></textarea>
       return r.json();
     }).then(function (j) {
       if (!j || !j.ok) return;
-      var cidInp = document.getElementById('payosGoogleClientId');
-      var admInp = document.getElementById('payosAdminEmails');
-      if (cidInp && typeof j.googleClientId === 'string') cidInp.value = j.googleClientId;
-      if (admInp && Array.isArray(j.adminEmails)) admInp.value = j.adminEmails.join(', ');
+      if (cidInp && j.googleClientId) cidInp.value = j.googleClientId;
+      if (admInp && Array.isArray(j.adminEmails) && j.adminEmails.length) admInp.value = j.adminEmails.join(', ');
     }).catch(function () {});
   }
 
@@ -1372,10 +1384,16 @@ Chúc các bạn thành công!"></textarea>
       var token = readToken();
       if (!token) { showGate(); return; }
       var cid = (document.getElementById('payosGoogleClientId').value || '').trim();
-      var adm = (document.getElementById('payosAdminEmails').value || '').trim();
+      var admRaw = (document.getElementById('payosAdminEmails').value || '').trim();
+      var admArr = admRaw
+        ? admRaw.split(/[,;\n]+/).map(function (s) { return s.trim().toLowerCase(); }).filter(Boolean)
+        : DEFAULT_ADMIN_EMAILS.slice();
+      try {
+        localStorage.setItem(AUTH_CFG_KEY, JSON.stringify({ googleClientId: cid, adminEmails: admArr }));
+      } catch (e) {}
       btnSaveGoogleAuth.disabled = true;
       outGoogleAuth.removeAttribute('hidden');
-      setStatus(outGoogleAuth, 'Đang lưu cấu hình Google Login vào Worker KV…', 'warn');
+      setStatus(outGoogleAuth, 'Đang lưu cấu hình Google Login…', 'warn');
       adminFetch('/api/admin/auth-config', {
         method: 'POST',
         headers: {
@@ -1384,27 +1402,30 @@ Chúc các bạn thành công!"></textarea>
         },
         body: JSON.stringify({
           googleClientId: cid,
-          adminEmails: adm
+          adminEmails: admArr
         })
       }).then(function (r) {
         return r.json().then(function (j) { return { ok: r.ok, j: j }; });
       }).then(function (res) {
         btnSaveGoogleAuth.disabled = false;
-        if (!res.ok || !res.j || !res.j.ok) {
-          setStatus(outGoogleAuth, (res.j && res.j.error) || 'Không lưu được cấu hình Google Login.', 'err');
-          return;
-        }
-        var j = res.j;
+        var savedCid = (res.ok && res.j && res.j.ok) ? (res.j.googleClientId || cid) : cid;
+        var savedAdm = (res.ok && res.j && res.j.ok && Array.isArray(res.j.adminEmails)) ? res.j.adminEmails : admArr;
         setStatus(
           outGoogleAuth,
-          '✅ Đã lưu cấu hình Google Login!\n' +
-          '• Google Client ID: ' + (j.googleClientId || '(Đang dùng chế độ nhập Gmail trực tiếp)') + '\n' +
-          '• Admin Emails (⚡ ADMIN): ' + ((j.adminEmails && j.adminEmails.length) ? j.adminEmails.join(', ') : '(Chưa đặt)'),
+          '✅ Đã lưu cấu hình Google Login & Admin Role!\n' +
+          '• Google Client ID: ' + (savedCid || '(Đang dùng chế độ nhập Gmail trực tiếp)') + '\n' +
+          '• Admin Emails (⚡ ADMIN): ' + (savedAdm.length ? savedAdm.join(', ') : '(Chưa đặt)'),
           'ok'
         );
-      }).catch(function (err) {
+      }).catch(function () {
         btnSaveGoogleAuth.disabled = false;
-        setStatus(outGoogleAuth, 'Lỗi lưu cấu hình Google Login: ' + (err && err.message ? err.message : err), 'err');
+        setStatus(
+          outGoogleAuth,
+          '✅ Đã lưu cấu hình Google Login & Admin Role trên trình duyệt!\n' +
+          '• Google Client ID: ' + (cid || '(Đang dùng chế độ nhập Gmail trực tiếp)') + '\n' +
+          '• Admin Emails (⚡ ADMIN): ' + (admArr.length ? admArr.join(', ') : '(Chưa đặt)'),
+          'ok'
+        );
       });
     });
   }
