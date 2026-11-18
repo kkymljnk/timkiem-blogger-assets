@@ -541,31 +541,35 @@
 
   /* Force related-rail square thumb|title rows (override cached 16:9 stack). */
   function ensureRelatedRailSquareThumbs() {
-    document.documentElement.setAttribute('data-qcx-rail-thumb', '72');
+    document.documentElement.setAttribute('data-qcx-rail-thumb', '80');
     var id = 'qcx-rail-square-thumbs';
     var css =
       '.qcx-related-heading{text-transform:uppercase!important;letter-spacing:.12em!important}' +
       '#PopularPosts1,.qcx-sidebar-rail,.qcx-tutorial-inline{' +
-      '--qcx-latest-thumb-width:72px!important;--qcx-latest-thumb-height:72px!important}' +
+      '--qcx-latest-thumb-width:80px!important;--qcx-latest-thumb-height:80px!important}' +
+      '.qcx-sidebar-rail>.widget-content,.qcx-tutorial-inline>.widget-content{' +
+      'width:100%!important;box-sizing:border-box!important;overflow:visible!important;padding:0!important}' +
       '#PopularPosts1 .widget-content>ul:not(.spinner),#sidebar .qcx-sidebar-rail .qcx-latest-list,' +
       '.qcx-sidebar-rail .qcx-latest-list,.qcx-tutorial-inline .qcx-latest-list{' +
-      'display:block!important;margin:0!important;padding:0!important;list-style:none!important}' +
+      'display:block!important;margin:0!important;padding:0!important;list-style:none!important;' +
+      'width:100%!important;box-sizing:border-box!important}' +
       '#PopularPosts1 .widget-content>ul:not(.spinner)>li,#sidebar .qcx-sidebar-rail .qcx-latest-list>li,' +
       '.qcx-sidebar-rail .qcx-latest-list>li,.qcx-tutorial-inline .qcx-latest-list>li{' +
-      'display:grid!important;grid-template-columns:72px minmax(0,1fr)!important;gap:12px!important;' +
-      'align-items:center!important;min-height:72px!important;margin:0!important;padding:10px 0!important;' +
+      'display:grid!important;grid-template-columns:80px minmax(0,1fr)!important;gap:12px!important;' +
+      'align-items:center!important;min-height:80px!important;margin:0!important;padding:10px 0!important;' +
       'border-bottom:1px solid rgba(28,36,32,.11)!important;background:transparent!important;border-radius:0!important;' +
-      'overflow:visible!important}' +
+      'overflow:visible!important;width:100%!important;box-sizing:border-box!important}' +
       '#PopularPosts1 .item-thumbnail,#sidebar .qcx-sidebar-rail .item-thumbnail,' +
       '.qcx-sidebar-rail .item-thumbnail,.qcx-tutorial-inline .item-thumbnail{' +
-      'width:72px!important;height:72px!important;aspect-ratio:1/1!important;border-radius:10px!important;' +
-      'flex-shrink:0!important;overflow:hidden!important;margin:0!important;border:1px solid rgba(28,36,32,.14)!important}' +
+      'width:80px!important;min-width:80px!important;height:80px!important;aspect-ratio:1/1!important;border-radius:10px!important;' +
+      'flex-shrink:0!important;overflow:hidden!important;margin:0!important;border:1px solid rgba(28,36,32,.14)!important;' +
+      'display:block!important}' +
       '#PopularPosts1 .item-thumbnail img,#sidebar .qcx-sidebar-rail .item-thumbnail img,' +
       '.qcx-sidebar-rail .item-thumbnail img,.qcx-tutorial-inline .item-thumbnail img{' +
       'width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;' +
       'object-fit:cover!important;object-position:center!important;display:block!important}' +
       '#PopularPosts1 .item-title,#sidebar .qcx-sidebar-rail .item-title,' +
-      '.qcx-sidebar-rail .item-title,.qcx-tutorial-inline .item-title{padding:0!important;margin:0!important}' +
+      '.qcx-sidebar-rail .item-title,.qcx-tutorial-inline .item-title{padding:0!important;margin:0!important;min-width:0!important}' +
       '#PopularPosts1 .item-snippet,#sidebar .qcx-sidebar-rail .item-snippet,' +
       '.qcx-sidebar-rail .item-snippet,.qcx-tutorial-inline .item-snippet,' +
       '#sidebar .qcx-sidebar-rail .item-content,.qcx-sidebar-rail .snippet{display:none!important}';
@@ -741,15 +745,16 @@
       '@media (max-width:860px){.qcx-sidebar-rail.qcx-tutorial-inline,#qcx-sidebar-rail-rescue.qcx-tutorial-inline{' +
       'display:block!important;width:100%!important;margin:12px 0 16px!important;padding:12px!important;' +
       'box-sizing:border-box!important;border:1px solid rgba(28,36,32,.14)!important;border-radius:14px!important;' +
-      'background:rgba(4,10,7,.72)!important;--qcx-latest-thumb-width:72px;--qcx-latest-thumb-height:72px}' +
+      'background:rgba(4,10,7,.72)!important;--qcx-latest-thumb-width:80px;--qcx-latest-thumb-height:80px}' +
       '.qcx-tutorial-inline .qcx-related-heading{text-transform:uppercase!important;letter-spacing:.12em!important}' +
-      '.qcx-tutorial-inline .qcx-latest-list{display:block!important;margin:0!important;padding:0!important;list-style:none!important}' +
-      '.qcx-tutorial-inline .qcx-latest-list>li{display:grid!important;grid-template-columns:72px minmax(0,1fr)!important;' +
-      'gap:12px!important;align-items:center!important;min-height:72px!important;margin:0!important;padding:10px 0!important;' +
-      'border-bottom:1px solid rgba(28,36,32,.11)!important;list-style:none!important;background:transparent!important}' +
-      '.qcx-tutorial-inline .item-thumbnail{width:72px!important;height:72px!important;aspect-ratio:1/1!important;margin:0!important;border-radius:10px!important;overflow:hidden!important}' +
+      '.qcx-tutorial-inline .qcx-latest-list{display:block!important;margin:0!important;padding:0!important;list-style:none!important;width:100%!important;box-sizing:border-box!important}' +
+      '.qcx-tutorial-inline .qcx-latest-list>li{display:grid!important;grid-template-columns:80px minmax(0,1fr)!important;' +
+      'gap:12px!important;align-items:center!important;min-height:80px!important;margin:0!important;padding:10px 0!important;' +
+      'border-bottom:1px solid rgba(28,36,32,.11)!important;list-style:none!important;background:transparent!important;' +
+      'width:100%!important;box-sizing:border-box!important;overflow:visible!important}' +
+      '.qcx-tutorial-inline .item-thumbnail{width:80px!important;min-width:80px!important;height:80px!important;aspect-ratio:1/1!important;margin:0!important;border-radius:10px!important;overflow:hidden!important;display:block!important;border:1px solid rgba(28,36,32,.14)!important}' +
       '.qcx-tutorial-inline .item-thumbnail img{width:100%!important;height:100%!important;object-fit:cover!important;display:block!important}' +
-      '.qcx-tutorial-inline .item-title{padding:0!important;margin:0!important}' +
+      '.qcx-tutorial-inline .item-title{padding:0!important;margin:0!important;min-width:0!important}' +
       '.qcx-tutorial-inline .item-title a{display:-webkit-box!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:2!important;' +
       'overflow:hidden!important;color:#dce9df!important;font:700 13px/1.35 var(--mono),monospace!important;text-decoration:none!important}' +
       'body:not(#layout):has(#qcx-sidebar-rail-rescue) #sidebar #HTML4,' +
