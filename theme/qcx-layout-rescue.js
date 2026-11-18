@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.31/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.32/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -1406,6 +1406,23 @@
   }
   window.__qcxSyncEmptyCommentsShell = syncEmptyCommentsShell;
 
+  /* Remove tabindex from any aria-hidden SVG/element to prevent a11y failure */
+  function fixAriaHiddenTabindex() {
+    try {
+      var hiddenEls = document.querySelectorAll('[aria-hidden="true"]');
+      Array.prototype.forEach.call(hiddenEls, function(el) {
+        if (el.getAttribute('tabindex') === '0') {
+          el.setAttribute('tabindex', '-1');
+        }
+        var focusChildren = el.querySelectorAll('[tabindex="0"]');
+        Array.prototype.forEach.call(focusChildren, function(child) {
+          child.setAttribute('tabindex', '-1');
+        });
+      });
+    } catch (ignore) {}
+  }
+  window.__qcxFixAriaHiddenTabindex = fixAriaHiddenTabindex;
+
   /* Theme often drops .qcx-backdrop / scanline / ghost-blink CSS — restore. */
   function ensureAtmosphere() {
     ensureStylesheet('qcx-atmosphere', QCX_ATMOSPHERE_CSS);
@@ -1414,6 +1431,7 @@
     ensureMobileNavReady();
     polishHeroCta();
     syncEmptyCommentsShell();
+    fixAriaHiddenTabindex();
     if (!document.querySelector('.qcx-backdrop')) {
       var backdrop = document.createElement('div');
       backdrop.className = 'qcx-backdrop';
@@ -1466,6 +1484,11 @@
       ensureGhostEyeSockets(svg);
       if (svg.getAttribute('data-qcx-blink-bound')) return;
       svg.setAttribute('data-qcx-blink-bound', '1');
+      /* If SVG is aria-hidden, it must NOT be focusable */
+      if (svg.getAttribute('aria-hidden') === 'true') {
+        svg.removeAttribute('tabindex');
+        svg.setAttribute('tabindex', '-1');
+      }
       var blinkOnce = function () {
         if (svg.classList.contains('is-blinking')) return;
         svg.classList.remove('is-blinking');
