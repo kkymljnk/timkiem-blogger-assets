@@ -148,7 +148,7 @@
 
   function detectMode(marker, labels) {
     if (marker && marker.mode === 'free') return 'free';
-    if (marker && marker.mode === 'paid') return 'paid';
+    if (marker && (marker.mode === 'paid' || marker.mode === 'vip' || marker.mode === 'item')) return 'paid';
     var i;
     for (i = 0; i < labels.length; i += 1) {
       var label = labels[i];

@@ -61,7 +61,7 @@ body#layout{
     linear-gradient(180deg,#070b08 0%,#0a100d 100%)!important;
   border:1px solid #243328!important;
   color:#e8fff2!important;
-  font-family:'Space Grotesk',Arial,sans-serif!important;
+  font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif!important;
   padding:18px!important;
   box-sizing:border-box!important;
 }
@@ -260,63 +260,113 @@ body#layout .qcx-layout-brand span{display:block;color:rgba(230,245,236,.7);font
   {
     &quot;@context&quot;: &quot;https://schema.org&quot;,
     &quot;@type&quot;: &quot;Organization&quot;,
-    &quot;name&quot;: &quot;MMO&quot;,
+    &quot;@id&quot;: &quot;<data:blog.canonicalHomepageUrl/>#organization&quot;,
+    &quot;name&quot;: &quot;MMO TEAM&quot;,
     &quot;alternateName&quot;: &quot;MMO&quot;,
     &quot;url&quot;: &quot;<data:blog.canonicalHomepageUrl/>&quot;,
-    &quot;description&quot;: &quot;Kho công cụ AI, tài nguyên công nghệ và hướng dẫn thực hành miễn phí cho người Việt.&quot;,
+    &quot;description&quot;: &quot;Kho công cụ AI, tài nguyên công nghệ và hướng dẫn thực chiến miễn phí cho người Việt. Chia sẻ ChatGPT, Claude, Gemini, VPS miễn phí, automation n8n và tài nguyên AI.&quot;,
+    &quot;inLanguage&quot;: &quot;vi-VN&quot;,
+    &quot;areaServed&quot;: &quot;VN&quot;,
+    &quot;foundingDate&quot;: &quot;2024&quot;,
     &quot;sameAs&quot;: [
-      &quot;https://t.me/superkhung&quot;,
-      &quot;https://zalo.me/0774567890&quot;
+      &quot;https://t.me/superkhung&quot;
     ],
-    &quot;logo&quot;: &quot;https://lh3.googleusercontent.com/ULB6iBuCeTVvSjjjU1A-O8e9ZpVba6uvyhtiWRti_rBAs9yMYOFBujxriJRZ-A=w600&quot;,
-    &quot;image&quot;: &quot;https://lh3.googleusercontent.com/ULB6iBuCeTVvSjjjU1A-O8e9ZpVba6uvyhtiWRti_rBAs9yMYOFBujxriJRZ-A=w1200&quot;
+    &quot;logo&quot;: { &quot;@type&quot;: &quot;ImageObject&quot;, &quot;url&quot;: &quot;https://lh3.googleusercontent.com/ULB6iBuCeTVvSjjjU1A-O8e9ZpVba6uvyhtiWRti_rBAs9yMYOFBujxriJRZ-A=w600&quot;, &quot;width&quot;: 600, &quot;height&quot;: 600 },
+    &quot;image&quot;: &quot;https://lh3.googleusercontent.com/ULB6iBuCeTVvSjjjU1A-O8e9ZpVba6uvyhtiWRti_rBAs9yMYOFBujxriJRZ-A=w1200&quot;,
+    &quot;contactPoint&quot;: { &quot;@type&quot;: &quot;ContactPoint&quot;, &quot;contactType&quot;: &quot;customer support&quot;, &quot;url&quot;: &quot;https://t.me/superkhung&quot; }
   }
   </script>
-  <script type='application/ld+json'>    
-    {
+  <script type='application/ld+json'>
+  {
     &quot;@context&quot;: &quot;https://schema.org&quot;,
     &quot;@type&quot;: &quot;WebSite&quot;,
-    &quot;url&quot;: &quot;<b:eval expr='data:blog.homepageUrl'/>&quot;,
-    &quot;name&quot;: &quot;MMO&quot;,
+    &quot;@id&quot;: &quot;<data:blog.canonicalHomepageUrl/>#website&quot;,
+    &quot;url&quot;: &quot;<data:blog.canonicalHomepageUrl/>&quot;,
+    &quot;name&quot;: &quot;MMO TEAM&quot;,
     &quot;alternateName&quot;: &quot;MMO&quot;,
     &quot;inLanguage&quot;: &quot;vi-VN&quot;,
     &quot;publisher&quot;: {
-      &quot;@type&quot;: &quot;Organization&quot;,
-      &quot;name&quot;: &quot;MMO&quot;
+      &quot;@id&quot;: &quot;<data:blog.canonicalHomepageUrl/>#organization&quot;
     },
     &quot;potentialAction&quot;: {
       &quot;@type&quot;: &quot;SearchAction&quot;,
-      &quot;target&quot;: &quot;<b:eval expr='data:blog.homepageUrl'/>search?q={search_term_string}&quot;,
+      &quot;target&quot;: {
+        &quot;@type&quot;: &quot;EntryPoint&quot;,
+        &quot;urlTemplate&quot;: &quot;<data:blog.canonicalHomepageUrl/>search?q={search_term_string}&quot;
+      },
       &quot;query-input&quot;: &quot;required name=search_term_string&quot;
     }
   }
   </script>
 </b:includable>
       <b:includable id='all-head'>
-<link rel='preconnect' href='https://fonts.googleapis.com'/>
+  <link rel='preconnect' href='https://fonts.googleapis.com' crossorigin='anonymous'/>
   <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin='anonymous'/>
-  <link rel='preload' as='style' href='https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700&amp;display=optional'/>
-  <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700&amp;display=optional' media='print' onload='this.media=&quot;all&quot;'/>
-  <noscript><link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700&amp;display=optional'/></noscript>
+  <link rel='preconnect' href='https://timkiem-store-api.kkymljnk.workers.dev' crossorigin='anonymous'/>
+  <!-- Unified Vietnamese-ready Fonts: Inter (400-800) + JetBrains Mono (400-700) in 1 request with display=optional (CLS=0.000) -->
+  <link rel='preload' as='style' crossorigin='anonymous' fetchpriority='high' href='https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700&amp;display=optional'/>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700&amp;display=optional' media='print' onload='this.media=&quot;all&quot;' crossorigin='anonymous'/>
+  <noscript><link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700&amp;display=optional'/></noscript>
+  <!-- Pre-empt CDN qcx-breakdev-fonts.css @import waterfall: fonts already loaded above -->
+  <style id='qcx-breakdev-fonts' type='text/css'>
+  :root{--qcx-article-sans:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;--qcx-article-mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace}
+  [data-page-type='post'] .post-header .post-title,.qcx-rescue-single .post-header .post-title,.post-item .post-header .post-title,[data-page-type='page'] .post-header .post-title,[data-page-type='post'] .post-body h2,[data-page-type='post'] .post-body h3,[data-page-type='post'] .post-body h4,.qcx-rescue-single .post-body h2,.qcx-rescue-single .post-body h3,.qcx-rescue-single .post-body h4{font-family:var(--qcx-article-sans)!important}
+  [data-page-type='post'] .post-header .post-title,.qcx-rescue-single .post-header .post-title,.post-item .post-header .post-title,[data-page-type='page'] .post-header .post-title{font-weight:800!important}
+  [data-page-type='post'] .post-body,.qcx-rescue-single .post-body,[data-page-type='page'] .post-body:not(:has(#qcx-admin-root)),[data-page-type='post'] .post-body p,[data-page-type='post'] .post-body li,.qcx-rescue-single .post-body p,.qcx-rescue-single .post-body li{font-family:var(--qcx-article-sans)!important}
+  [data-page-type='post'] .post-body code,[data-page-type='post'] .post-body pre,[data-page-type='post'] .post-body kbd,[data-page-type='post'] .post-body .mac-frame,[data-page-type='post'] .post-body .mac-frame-header,[data-page-type='post'] .post-body .CodeMirror,.qcx-rescue-single .post-body code,.qcx-rescue-single .post-body pre,.qcx-rescue-single .post-body .mac-frame{font-family:var(--qcx-article-mono)!important}
+  </style>
 
   <meta content='width=device-width,initial-scale=1,viewport-fit=cover' name='viewport'/>
   <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
+  <!-- Single canonical + hreflang + RSS/Atom autodiscovery (Blogger SEO standard) -->
   <link expr:href='data:view.url.canonical' rel='canonical'/>
+  <link expr:href='data:view.url.canonical' hreflang='vi' rel='alternate'/>
+  <link expr:href='data:view.url.canonical' hreflang='x-default' rel='alternate'/>
+  <link expr:href='data:blog.canonicalHomepageUrl + &quot;feeds/posts/default?alt=rss&quot;' rel='alternate' title='MMO TEAM - RSS Feed' type='application/rss+xml'/>
+  <link expr:href='data:blog.canonicalHomepageUrl + &quot;feeds/posts/default&quot;' rel='alternate' title='MMO TEAM - Atom Feed' type='application/atom+xml'/>
   <meta content='vi_VN' property='og:locale'/>
-  <meta content='AI tools, công cụ AI, ChatGPT, Claude, tài nguyên AI, MMO, MMO TEAM, MMO' name='keywords'/>
+  <meta content='Vietnamese' name='language'/>
   <meta content='MMO TEAM' name='author'/>
-  <b:if cond='!data:view.isError'> 
+  <b:if cond='!data:view.isError'>
+    <!-- Dynamic SEO Title per view (Homepage / Label / Search / Archive / Post / Page) -->
     <b:if cond='data:view.isHomepage'>
-      <title>MMO TEAM – Tool AI · share thực chiến</title>
+      <title>MMO TEAM – Công cụ AI · Hướng dẫn thực chiến · Tài nguyên miễn phí</title>
+    <b:elseif cond='data:view.search.label'/>
+      <title><data:view.search.label/> – Công cụ &amp; Hướng dẫn mới nhất | MMO TEAM</title>
+    <b:elseif cond='data:view.search.query'/>
+      <title>Tìm kiếm: <data:view.search.query/> | MMO TEAM</title>
     <b:else/>
-      <title><data:view.title.escaped/> | MMO</title>
+      <title><data:view.title.escaped/> | MMO TEAM</title>
     </b:if>
-    <b:if cond='data:view.isMultipleItems'>
-      <meta content='MMO TEAM — tool AI, share và mã nguồn thực chiến. Support Telegram.' name='description'/>
+    <!-- Dynamic SEO Meta Description (zero duplicates across labels/posts) -->
+    <b:if cond='data:view.isHomepage'>
+      <meta content='MMO TEAM — Kho công cụ AI, hướng dẫn thực chiến và tài nguyên miễn phí cho người Việt. ChatGPT, Claude, Gemini, VPS miễn phí, automation n8n và nhiều hơn nữa.' name='description'/>
+    <b:elseif cond='data:view.search.label'/>
+      <meta expr:content='&quot;Tổng hợp bài viết, công cụ và hướng dẫn chuyên mục &quot; + data:view.search.label + &quot; mới nhất, miễn phí và thực chiến tại MMO TEAM.&quot;' name='description'/>
+    <b:elseif cond='data:view.isPost'/>
+      <b:loop values='data:widgets.Blog.first.posts.first' var='post'>
+        <b:if cond='data:view.description != &quot;&quot; and data:view.description != data:blog.metaDescription'>
+          <meta expr:content='data:view.description.escaped' name='description'/>
+        <b:elseif cond='data:post.snippets.short != &quot;&quot;'/>
+          <meta expr:content='data:post.snippets.short.escaped' name='description'/>
+        <b:else/>
+          <meta expr:content='data:post.title.escaped + &quot; — Hướng dẫn chi tiết, công cụ và tài nguyên AI miễn phí trên MMO TEAM.&quot;' name='description'/>
+        </b:if>
+      </b:loop>
     <b:elseif cond='data:view.description != &quot;&quot;'/>
       <meta expr:content='data:view.description.escaped' name='description'/>
     <b:else/>
-      <meta expr:content='data:view.title.escaped + &quot; — hướng dẫn và tài nguyên AI miễn phí trên MMO.&quot;' name='description'/>
+      <meta expr:content='data:view.title.escaped + &quot; — Hướng dẫn chi tiết, công cụ và tài nguyên AI miễn phí trên MMO TEAM.&quot;' name='description'/>
+    </b:if>
+    <!-- Dynamic SEO Keywords per view -->
+    <b:if cond='data:view.isPost'>
+      <b:loop values='data:widgets.Blog.first.posts.first' var='post'>
+        <meta expr:content='data:post.title.escaped + &quot;, &quot; + (data:post.labels ? data:post.labels.first.name + &quot;, &quot; : &quot;&quot;) + &quot;hướng dẫn AI, công cụ AI miễn phí, MMO TEAM&quot;' name='keywords'/>
+      </b:loop>
+    <b:elseif cond='data:view.search.label'/>
+      <meta expr:content='data:view.search.label + &quot;, hướng dẫn &quot; + data:view.search.label + &quot;, tài nguyên &quot; + data:view.search.label + &quot; miễn phí, công cụ AI, MMO TEAM&quot;' name='keywords'/>
+    <b:else/>
+      <meta content='công cụ AI miễn phí, AI tools Vietnam, ChatGPT miễn phí, Claude AI, Gemini AI, VPS miễn phí, n8n self-host, tự động hóa AI, tài nguyên AI, thủ thuật công nghệ, MMO, MMO TEAM' name='keywords'/>
     </b:if>
     <meta content='summary_large_image' name='twitter:card'/>
     <meta content='MMO TEAM' property='og:site_name'/>
@@ -344,44 +394,78 @@ body#layout .qcx-layout-brand span{display:block;color:rgba(230,245,236,.7);font
       </b:loop>
     </b:if>
     <b:if cond='data:view.isHomepage'>
-      <meta content='MMO – Hub công cụ AI, tutorial và tài nguyên | MMO TEAM' property='og:title'/>
-      <meta content='MMO – Hub công cụ AI, tutorial và tài nguyên | MMO TEAM' name='twitter:title'/>
+      <meta content='MMO TEAM – Công cụ AI · Hướng dẫn thực chiến · Tài nguyên miễn phí' property='og:title'/>
+      <meta content='MMO TEAM – Công cụ AI · Hướng dẫn thực chiến · Tài nguyên miễn phí' name='twitter:title'/>
+    <b:elseif cond='data:view.search.label'/>
+      <meta expr:content='data:view.search.label + &quot; – Công cụ &amp; Hướng dẫn mới nhất | MMO TEAM&quot;' property='og:title'/>
+      <meta expr:content='data:view.search.label + &quot; – Công cụ &amp; Hướng dẫn mới nhất | MMO TEAM&quot;' name='twitter:title'/>
     <b:else/>
       <meta expr:content='data:view.title.escaped' property='og:title'/>
       <meta expr:content='data:view.title.escaped' name='twitter:title'/>
     </b:if>
-    <b:if cond='data:view.isMultipleItems'>
-      <meta content='MMO TEAM — tool AI, share và mã nguồn thực chiến. Support Telegram.' property='og:description'/>
-      <meta content='MMO TEAM — tool AI, share và mã nguồn thực chiến. Support Telegram.' name='twitter:description'/>
+    <b:if cond='data:view.isHomepage'>
+      <meta content='MMO TEAM — Kho công cụ AI, hướng dẫn thực chiến và tài nguyên miễn phí cho người Việt. ChatGPT, Claude, Gemini, VPS miễn phí, automation n8n và nhiều hơn nữa.' property='og:description'/>
+      <meta content='MMO TEAM — Kho công cụ AI, hướng dẫn thực chiến và tài nguyên miễn phí cho người Việt. ChatGPT, Claude, Gemini, VPS miễn phí, automation n8n và nhiều hơn nữa.' name='twitter:description'/>
+    <b:elseif cond='data:view.search.label'/>
+      <meta expr:content='&quot;Tổng hợp bài viết, công cụ và hướng dẫn chuyên mục &quot; + data:view.search.label + &quot; mới nhất, miễn phí và thực chiến tại MMO TEAM.&quot;' property='og:description'/>
+      <meta expr:content='&quot;Tổng hợp bài viết, công cụ và hướng dẫn chuyên mục &quot; + data:view.search.label + &quot; mới nhất, miễn phí và thực chiến tại MMO TEAM.&quot;' name='twitter:description'/>
+    <b:elseif cond='data:view.isPost'/>
+      <b:loop values='data:widgets.Blog.first.posts.first' var='post'>
+        <b:if cond='data:view.description != &quot;&quot; and data:view.description != data:blog.metaDescription'>
+          <meta expr:content='data:view.description.escaped' property='og:description'/>
+          <meta expr:content='data:view.description.escaped' name='twitter:description'/>
+        <b:elseif cond='data:post.snippets.short != &quot;&quot;'/>
+          <meta expr:content='data:post.snippets.short.escaped' property='og:description'/>
+          <meta expr:content='data:post.snippets.short.escaped' name='twitter:description'/>
+        <b:else/>
+          <meta expr:content='data:post.title.escaped + &quot; — Hướng dẫn chi tiết, công cụ và tài nguyên AI miễn phí trên MMO TEAM.&quot;' property='og:description'/>
+          <meta expr:content='data:post.title.escaped + &quot; — Hướng dẫn chi tiết, công cụ và tài nguyên AI miễn phí trên MMO TEAM.&quot;' name='twitter:description'/>
+        </b:if>
+      </b:loop>
     <b:elseif cond='data:view.description != &quot;&quot;'/>
       <meta expr:content='data:view.description.escaped' property='og:description'/>
       <meta expr:content='data:view.description.escaped' name='twitter:description'/>
     <b:else/>
-      <meta expr:content='data:view.title.escaped + &quot; — hướng dẫn và tài nguyên AI miễn phí trên MMO.&quot;' property='og:description'/>
-      <meta expr:content='data:view.title.escaped + &quot; — hướng dẫn và tài nguyên AI miễn phí trên MMO.&quot;' name='twitter:description'/>
+      <meta expr:content='data:view.title.escaped + &quot; — Hướng dẫn chi tiết, công cụ và tài nguyên AI miễn phí trên MMO TEAM.&quot;' property='og:description'/>
+      <meta expr:content='data:view.title.escaped + &quot; — Hướng dẫn chi tiết, công cụ và tài nguyên AI miễn phí trên MMO TEAM.&quot;' name='twitter:description'/>
     </b:if>
     <meta expr:content='data:view.title.escaped' property='og:image:alt'/>
     <meta expr:content='data:view.title.escaped' name='twitter:image:alt'/>
     <meta content='1200' property='og:image:width'/>
     <meta content='630' property='og:image:height'/>
-    <b:if cond='data:view.isSearch or data:view.isArchive'>
-      <meta content='noindex,noarchive' name='robots'/>
-      <meta content='noindex,noarchive' name='Googlebot'/>
+    <!-- Robots: Index homepage, posts, pages & label categories; noindex search queries & date archives -->
+    <b:if cond='data:view.search.query or data:view.isArchive'>
+      <meta content='noindex, noarchive, follow' name='robots'/>
+      <meta content='noindex, noarchive, follow' name='Googlebot'/>
     <b:else/>
       <meta content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' name='robots'/>
       <meta content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' name='Googlebot'/>
     </b:if>
-    <!-- Article schema in head so it survives Blog/rescue body rebuilds -->
+    <!-- Article OpenGraph + Single Canonical JSON-LD Schema in head (survives rescue body rebuilds) -->
     <b:if cond='data:view.isPost'>
       <b:loop values='data:widgets.Blog.first.posts' var='post'>
+        <meta expr:content='data:post.date.iso8601' property='article:published_time'/>
+        <meta expr:content='data:post.lastUpdated.ISO8601' property='article:modified_time'/>
+        <meta expr:content='data:post.author.name' property='article:author'/>
+        <b:if cond='data:post.labels'>
+          <meta expr:content='data:post.labels.first.name' property='article:section'/>
+          <b:loop values='data:post.labels' var='label'>
+            <meta expr:content='data:label.name' property='article:tag'/>
+          </b:loop>
+        </b:if>
         <script type='application/ld+json'>
         {
           &quot;@context&quot;: &quot;https://schema.org&quot;,
           &quot;@type&quot;: &quot;BlogPosting&quot;,
-          &quot;mainEntityOfPage&quot;: { &quot;@type&quot;: &quot;WebPage&quot;, &quot;@id&quot;: &quot;<data:post.url/>&quot; },
+          &quot;mainEntityOfPage&quot;: { &quot;@type&quot;: &quot;WebPage&quot;, &quot;@id&quot;: &quot;<data:post.url.canonical/>&quot; },
+          &quot;url&quot;: &quot;<data:post.url.canonical/>&quot;,
           &quot;headline&quot;: &quot;<data:post.title.jsonEscaped/>&quot;,
-          &quot;description&quot;: &quot;<b:if cond='data:view.description != &quot;&quot;'><data:view.description.jsonEscaped/><b:else/><data:post.title.jsonEscaped/> — hướng dẫn và tài nguyên AI miễn phí trên MMO.</b:if>&quot;,
+          &quot;description&quot;: &quot;<b:if cond='data:view.description != &quot;&quot; and data:view.description != data:blog.metaDescription'><data:view.description.jsonEscaped/><b:elseif cond='data:post.snippets.short != &quot;&quot;'/><data:post.snippets.short.jsonEscaped/><b:else/><data:post.title.jsonEscaped/> — Hướng dẫn chi tiết, công cụ và tài nguyên AI miễn phí trên MMO TEAM.</b:if>&quot;,
           &quot;inLanguage&quot;: &quot;vi-VN&quot;,
+          <b:if cond='data:post.labels'>
+          &quot;articleSection&quot;: &quot;<data:post.labels.first.name.jsonEscaped/>&quot;,
+          &quot;keywords&quot;: [<b:loop index='ki' values='data:post.labels' var='klabel'><b:if cond='data:ki != 0'>,</b:if>&quot;<data:klabel.name.jsonEscaped/>&quot;</b:loop>],
+          </b:if>
           <b:if cond='data:post.featuredImage.isResizable'>
           &quot;image&quot;: { &quot;@type&quot;: &quot;ImageObject&quot;, &quot;url&quot;: &quot;<b:eval expr='resizeImage(data:post.featuredImage, 1200, &quot;1200:630&quot;)'/>&quot;, &quot;width&quot;: 1200, &quot;height&quot;: 630 },
           <b:elseif cond='data:post.featuredImage'/>
@@ -394,10 +478,16 @@ body#layout .qcx-layout-brand span{display:block;color:rgba(230,245,236,.7);font
           &quot;author&quot;: { &quot;@type&quot;: &quot;Person&quot;, &quot;name&quot;: &quot;<data:post.author.name.jsonEscaped/>&quot;, &quot;url&quot;: &quot;https://t.me/superkhung&quot; },
           &quot;publisher&quot;: {
             &quot;@type&quot;: &quot;Organization&quot;,
-            &quot;name&quot;: &quot;MMO&quot;,
+            &quot;@id&quot;: &quot;<data:blog.canonicalHomepageUrl/>#organization&quot;,
+            &quot;name&quot;: &quot;MMO TEAM&quot;,
             &quot;logo&quot;: { &quot;@type&quot;: &quot;ImageObject&quot;, &quot;url&quot;: &quot;https://lh3.googleusercontent.com/ULB6iBuCeTVvSjjjU1A-O8e9ZpVba6uvyhtiWRti_rBAs9yMYOFBujxriJRZ-A=w600&quot;, &quot;width&quot;: 600, &quot;height&quot;: 600 }
           },
-          &quot;isAccessibleForFree&quot;: true
+          &quot;isAccessibleForFree&quot;: false,
+          &quot;hasPart&quot;: {
+            &quot;@type&quot;: &quot;WebPageElement&quot;,
+            &quot;isAccessibleForFree&quot;: false,
+            &quot;cssSelector&quot;: &quot;.qcx-content-unlock&quot;
+          }
         }
         </script>
         <script type='application/ld+json'>
@@ -406,20 +496,38 @@ body#layout .qcx-layout-brand span{display:block;color:rgba(230,245,236,.7);font
           &quot;@type&quot;: &quot;BreadcrumbList&quot;,
           &quot;itemListElement&quot;: [
             { &quot;@type&quot;: &quot;ListItem&quot;, &quot;position&quot;: 1, &quot;name&quot;: &quot;Trang chủ&quot;, &quot;item&quot;: &quot;<data:blog.canonicalHomepageUrl/>&quot; }
-            <b:loop index='i' values='data:post.labels' var='label'>
-              <b:if cond='data:i == &quot;0&quot; and data:label.name != &quot;blog&quot;'>
-            ,{ &quot;@type&quot;: &quot;ListItem&quot;, &quot;position&quot;: 2, &quot;name&quot;: &quot;<data:label.name.jsonEscaped/>&quot;, &quot;item&quot;: &quot;<data:label.url/>&quot; }
-              </b:if>
-            </b:loop>
-            ,{ &quot;@type&quot;: &quot;ListItem&quot;, &quot;position&quot;: 3, &quot;name&quot;: &quot;<data:post.title.jsonEscaped/>&quot;, &quot;item&quot;: &quot;<data:post.url/>&quot; }
+            <b:if cond='data:post.labels and data:post.labels.first.name != &quot;blog&quot;'>
+            ,{ &quot;@type&quot;: &quot;ListItem&quot;, &quot;position&quot;: 2, &quot;name&quot;: &quot;<data:post.labels.first.name.jsonEscaped/>&quot;, &quot;item&quot;: &quot;<data:post.labels.first.url/>&quot; }
+            ,{ &quot;@type&quot;: &quot;ListItem&quot;, &quot;position&quot;: 3, &quot;name&quot;: &quot;<data:post.title.jsonEscaped/>&quot;, &quot;item&quot;: &quot;<data:post.url.canonical/>&quot; }
+            <b:else/>
+            ,{ &quot;@type&quot;: &quot;ListItem&quot;, &quot;position&quot;: 2, &quot;name&quot;: &quot;<data:post.title.jsonEscaped/>&quot;, &quot;item&quot;: &quot;<data:post.url.canonical/>&quot; }
+            </b:if>
           ]
         }
         </script>
       </b:loop>
+    <b:elseif cond='data:view.isHomepage'/>
+      <script type='application/ld+json'>
+      {
+        &quot;@context&quot;: &quot;https://schema.org&quot;,
+        &quot;@type&quot;: &quot;WebSite&quot;,
+        &quot;@id&quot;: &quot;<data:blog.canonicalHomepageUrl/>#website&quot;,
+        &quot;url&quot;: &quot;<data:blog.canonicalHomepageUrl/>&quot;,
+        &quot;name&quot;: &quot;MMO TEAM&quot;,
+        &quot;description&quot;: &quot;Kho công cụ AI, hướng dẫn thực chiến, source code và tài nguyên MMO cho người Việt.&quot;,
+        &quot;inLanguage&quot;: &quot;vi-VN&quot;,
+        &quot;potentialAction&quot;: {
+          &quot;@type&quot;: &quot;SearchAction&quot;,
+          &quot;target&quot;: &quot;<data:blog.canonicalHomepageUrl/>search?q={search_term_string}&quot;,
+          &quot;query-input&quot;: &quot;required name=search_term_string&quot;
+        }
+      }
+      </script>
     </b:if>
   <b:else/>
-    <title>Rất tiếc, không tìm được trang này. | MMO</title>
-    <meta content='Không tìm thấy nội dung trên MMO. Trang có thể đã được chuyển, xoá hoặc địa chỉ URL chưa chính xác.' name='description'/>
+    <title>Rất tiếc, không tìm được trang này. | MMO TEAM</title>
+    <meta content='Không tìm thấy nội dung trên MMO TEAM. Trang có thể đã được chuyển, xoá hoặc địa chỉ URL chưa chính xác.' name='description'/>
+    <meta content='noindex, nofollow' name='robots'/>
   </b:if>
   <meta content='IE=edge' http-equiv='X-UA-Compatible'/>
   <meta content='#07140f' name='theme-color'/>
@@ -431,7 +539,7 @@ body#layout .qcx-layout-brand span{display:block;color:rgba(230,245,236,.7);font
   <meta content='no' name='msapplication-tap-highlight'/>
   <meta content='aapEgxBJeA55UQSN9guWq4rlu05ah3DlDRbmj2ruZLc' name='google-site-verification'/>
   <link expr:href='data:blog.blogspotFaviconUrl' rel='icon' type='image/x-icon'/>
-  <link href='https://blogger.googleusercontent.com' rel='preconnect'/>
+  <link href='https://blogger.googleusercontent.com' rel='preconnect' crossorigin='anonymous'/>
   <link href='https://cdn.jsdelivr.net' rel='preconnect' crossorigin='anonymous'/>
   <link href='https://cdnjs.cloudflare.com' rel='preconnect' crossorigin='anonymous'/>
   <!-- QCX external theme assets (jsDelivr, not GitHub raw) -->
@@ -481,21 +589,13 @@ body#layout .qcx-layout-brand span{display:block;color:rgba(230,245,236,.7);font
 })();
     </script>
   </b:if>
-  <link expr:href='data:blog.canonicalUrl' rel='canonical'/>
-  <b:if cond='data:view.isSearch'>
-    <link expr:href='data:blog.canonicalUrl + &quot;&amp;m=1&quot;' media='only screen and (max-width: 640px)' rel='alternate'/>
-    <link expr:href='data:blog.canonicalUrl + &quot;&amp;m=1&quot;' media='handheld' rel='alternate'/>
-  <b:else/>
-    <link expr:href='data:blog.canonicalUrl + &quot;?m=1&quot;' media='only screen and (max-width: 640px)' rel='alternate'/>
-    <link expr:href='data:blog.canonicalUrl + &quot;?m=1&quot;' media='handheld' rel='alternate'/>
-  </b:if>
-  
+  <!-- Duplicate canonical and obsolete ?m=1 handheld alternates removed (responsive theme uses single canonical in all-head) -->
 </b:includable>
       <b:includable id='font-face'>
   <b:tag name='style'>/* <![CDATA[ */
-/* SFProDisplay / vietblogdao CDN removed for supply-chain + performance. UI uses JetBrains Mono. */
+/* Unified typography: Inter (Vietnamese UI/article) + JetBrains Mono (terminal/code) loaded in all-head */
 html{color-scheme:dark}
-body,input,button,textarea,pre{font-family:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;font-display:optional}
+body,input,button,textarea,pre{font-family:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace}
   /* ]]> */</b:tag>
 </b:includable>
       <b:includable id='page-skin'>
@@ -692,7 +792,7 @@ header .header{-webkit-box-flex:1;-ms-flex:1;flex:1;min-height:50px;height:100%;
 .card-content{padding:14px 16px}.card-content .title{font-size:0.95rem;line-height:1.4}
 .card-content .title a{font-weight:600;color:#e8efe9!important}.card-footer .label-name{font-weight:500;color:inherit;line-height:32px}
 .card-content .meta{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:40px;font-size:15px;font-weight:normal}
-.card-content .meta,.card-content .meta a{color:#757575}.card-content .date,.card-content .cmt-num a{display:inline-block}
+.card-content .meta,.card-content .meta a{color:#8aa596}.card-content .date,.card-content .cmt-num a{display:inline-block}
 .card-content .date{font-size:14px;cursor:default}.card-content .cmt-num:before{content:'-';padding:0 5px}
 .card-content .post-entry{font-size:15px;font-weight:normal;line-height:1.5}
 .card-footer{-webkit-align-items:center;align-items:center;display:flex;padding:10px 16px;border-top:1px solid rgba(76,175,130,0.1)}
@@ -760,7 +860,7 @@ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/sv
 [data-view-type=desktop] .item-title a:hover,[data-view-type=desktop] .item-title a:focus{text-decoration:underline}
 .item-thumbnail a:focus,.item-title a:focus{outline:none!important}
 .item-meta{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:14px;line-height:28px}
-.item-date{margin-right:7px;font-family:sans-serif;color:#9ec4b0;cursor:default}
+.item-date{margin-right:7px;font-family:var(--mono);color:#9ec4b0;cursor:default}
 .item-label{text-transform:uppercase}.item-label a{color:rgba(0,0,0,0.87)}
 .item-snippet p{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis;line-height:1.4;font-size:95%;color:#888}
 .the-article{background:transparent;float:left;width:100%;margin:0 auto;display:block;position:relative;padding:15px;font-size:1rem}
@@ -799,7 +899,7 @@ pre:focus,pre>button:focus{outline:none!important;border:1px solid #00aeef}
 .tr-caption-container,p.separator{margin:0 auto 1.3rem auto}
 .video-container{position:relative;padding-bottom:56.25%}
 .video-container iframe{position:absolute;top:0;left:0;width:100%;height:100%}
-.tr-caption{font-size:15px;color:#777;line-height:1.6;padding:10px 0;}
+.tr-caption{font-size:15px;color:#8aa596;line-height:1.6;padding:10px 0;}
 .post-body blockquote{color:#666;border-left:3px solid #006BA0;padding-left:15px}
 .post-body blockquote{color:#666;border-left:3px solid #365899;padding-left:15px}
 .overflow{overflow-x:auto;margin-bottom:1.3rem}
@@ -834,7 +934,7 @@ pre:focus,pre>button:focus{outline:none!important;border:1px solid #00aeef}
   </b:if> 
 <b:if cond='data:view.isPost'>
     <b:tag name='style'>/* <![CDATA[ */
-.post-meta{margin-top:5px;border-bottom:.0625rem solid rgba(0,0,0,.2)}.post-meta,.post-author a{color:#757575}
+.post-meta{margin-top:5px;border-bottom:.0625rem solid rgba(0,0,0,.2)}.post-meta,.post-author a{color:#8aa596}
 .post-label a:not(:last-child):after{content:","}.post-label a{color:#008db8}.allBylineItems{margin-right:auto}
 .post-meta>div *{display:inline-block;line-height:26px}.post-meta>div>span+span:before{content:'-';padding:0 5px;font-weight:600}
 .post-share{margin-left:auto;width:34px;height:34px;border-radius:50%}.post-share:hover{background:rgba(60,64,67,0.08)}
@@ -1068,13 +1168,13 @@ header,.post-meta,.box-no-padding .demo,.post-footer,.sidebar,footer,#comments,.
   --fg:       #e6f5ec;
   --fg-dim:   #8aa596;
   --line:     #1d2a1f;
-  --accent:   #1c2420;
+  --accent:   #4caf82;
   --accent-2: #b48cff;
   --danger:   #ff5470;
   --card:     #0e170f;
   --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-  --sans: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-  --focus: #2a3530;
+  --sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --focus: #4caf82;
 }
 a:focus-visible,button:focus-visible,input:focus-visible,[tabindex]:focus-visible,.qcx-cta-btn:focus-visible,.qcx-signal-status:focus-visible,.qcx-signal-x:focus-visible,.card-header>a:focus-visible,.web-search input:focus-visible,.web-search button:focus-visible,.scroll--top:focus-visible{
   outline:2px solid var(--focus)!important;
@@ -1415,7 +1515,7 @@ a.share {
     0 2px 6px rgba(0,0,0,.85),
     0 0 60px rgba(28,36,32,.06);
   border-bottom: none;
-  font-family: 'Space Grotesk', var(--mono);
+  font-family: var(--mono);
   text-transform: uppercase;
   overflow: visible;
   padding-top: 0.08em;
@@ -1837,8 +1937,8 @@ a.qcx-sc-btn:not(.qcx-sc-btn-outline):hover {
   padding: 12px 4px 24px;
 }
 @keyframes qcxSkelShine {
-  0% { background-position: 100% 0; }
-  100% { background-position: -100% 0; }
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 }
 @keyframes qcxFeedIn {
   from { opacity: 0; transform: translateY(10px); }
@@ -1854,8 +1954,17 @@ a.qcx-sc-btn:not(.qcx-sc-btn-outline):hover {
 .qcx-skel-block {
   display: block;
   border-radius: 8px;
-  background: linear-gradient(90deg, rgba(255,255,255,.04) 0%, rgba(28,36,32,.10) 45%, rgba(255,255,255,.04) 90%);
-  background-size: 200% 100%;
+  position: relative;
+  overflow: hidden;
+  background: rgba(255,255,255,.04);
+}
+.qcx-skel-media::after,
+.qcx-skel-line::after,
+.qcx-skel-block::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(28,36,32,.12) 45%, transparent 90%);
   animation: qcxSkelShine 1.1s ease-in-out infinite;
 }
 .qcx-skel-media {
@@ -2043,48 +2152,58 @@ a.qcx-sc-btn:not(.qcx-sc-btn-outline):hover {
 /* --- FOOTER CONTENT REDESIGN --- */
 .qcx-footer-social {
   width: 100% !important;
-  padding: 32px 24px !important;
+  padding: 28px 24px 20px !important;
   text-align: center !important;
-  border-top: 1px solid rgba(76,175,130,0.2) !important;
-  background: #080f0a !important;
+  border-top: 1px solid rgba(76,175,130,0.25) !important;
+  background: #0a150c !important;
   box-sizing: border-box !important;
 }
 .qcx-footer-brand strong {
   display: block;
-  font-size: 16px;
-  color: #6dd9a4;
+  font-size: 15px;
+  color: #4caf82;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   margin-bottom: 4px;
   font-weight: 700;
 }
+.qcx-footer-brand span {
+  display: block;
+  font-size: 12px;
+  color: #b8d4c4;
+  margin-bottom: 0;
+}
 .qcx-footer-links {
   display: flex !important;
   flex-wrap: wrap !important;
-  gap: 10px !important;
+  gap: 8px !important;
   justify-content: center !important;
-  margin: 16px 0 !important;
+  margin: 14px 0 12px !important;
 }
 .qcx-footer-links a {
-  color: #e8efe9 !important;
-  font-size: 13px !important;
-  padding: 6px 18px !important;
-  border: 1px solid rgba(255,255,255,0.35) !important;
+  color: #d4ece0 !important;
+  font-size: 12px !important;
+  padding: 5px 14px !important;
+  border: 1px solid rgba(76,175,130,0.3) !important;
   border-radius: 999px !important;
   text-decoration: none !important;
-  background: rgba(255,255,255,0.05) !important;
+  background: rgba(76,175,130,0.06) !important;
   transition: color 0.2s, border-color 0.2s, background 0.2s !important;
 }
 .qcx-footer-links a:hover,
 .qcx-footer-links a:focus {
   color: #fff !important;
   border-color: rgba(76,175,130,0.8) !important;
-  background: rgba(76,175,130,0.12) !important;
+  background: rgba(76,175,130,0.14) !important;
 }
 .qcx-footer-copy {
-  font-size: 12px !important;
-  color: #9ec4b0 !important;
-  margin-top: 8px !important;
+  font-size: 11px !important;
+  color: #8ab8a0 !important;
+  margin-top: 6px !important;
+}
+.qcx-footer-copy a {
+  color: #8ab8a0 !important;
+  text-decoration: none !important;
 }
 
 /* --- CARD GRID: proper gap + mobile responsive --- */
@@ -3361,40 +3480,39 @@ footer.footer > .main-container {
   display: flex !important;
   justify-content: space-between !important;
   align-items: center !important;
-  /* Full-width + padding formula khớp topbar */
   max-width: 100% !important;
-  margin-top: 80px !important;
+  margin-top: 0 !important;
   margin-left: 0 !important;
   margin-right: 0 !important;
-  padding-top: 24px !important;
-  padding-bottom: 24px !important;
-  /* Căn theo cột 1120px — khớp topbar */
+  padding-top: 16px !important;
+  padding-bottom: 16px !important;
   padding-left: max(24px, calc((100% - 1120px) / 2 + 24px)) !important;
   padding-right: max(24px, calc((100% - 1120px) / 2 + 24px)) !important;
-  border-top: 1px dashed var(--line) !important;
+  border-top: 1px solid rgba(76,175,130,0.15) !important;
   font-family: var(--mono) !important;
   font-size: 12px !important;
   color: var(--fg-dim) !important;
-  background: transparent !important;
+  background: #0a150c !important;
   box-sizing: border-box;
   width: 100% !important;
 }
 
 /* 3. "QCXINT" brand left — footer .brand { color: var(--fg) } */
 footer.footer > .main-container::before {
-  content: 'MMO';
+  content: 'MMO TEAM';
   font-family: var(--mono) !important;
   font-size: 12px !important;
-  color: var(--fg) !important;
-  font-weight: 400 !important;
+  color: #4caf82 !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.06em !important;
 }
 
 /* 4. "// end of transmission" right */
 footer.footer > .main-container::after {
-  content: '// end of transmission';
+  content: '© 2026 MMO TEAM';
   font-family: var(--mono) !important;
-  font-size: 12px !important;
-  color: var(--fg-dim) !important;
+  font-size: 11px !important;
+  color: #8ab8a0 !important;
   font-weight: 400 !important;
 }
 
@@ -3408,9 +3526,13 @@ footer.footer #footer.qcx-footer-gadgets .HTML {
   display: block !important;
 }
 
-.footer a { color: var(--fg-dim) !important; }
+.footer a { color: #b8d4c4 !important; }
 .footer a:hover { color: var(--accent) !important; }
 .footer + div { background: var(--bg) !important; }
+/* Footer bottom bar - ensure visible text */
+footer.footer > .main-container > * { color: #b8d4c4 !important; }
+footer.footer > .main-container a { color: #b8d4c4 !important; }
+footer.footer > .main-container a:hover { color: #4caf82 !important; }
 
 /* ==================================================
    MOBILE FOOTER NAV BAR (Blogger native)
@@ -4697,7 +4819,7 @@ a[title='Live Preview'],
   gap: 10px;
 }
 #qcx-menu-logo {
-  font-family: 'Space Grotesk', var(--mono);
+  font-family: var(--mono);
   font-size: 15px;
   font-weight: 700;
   color: #e8fff2;
@@ -5648,7 +5770,7 @@ a.qcx-sc-btn.qcx-sc-btn-outline:hover,
         }
       }
       try{
-      const header=document.querySelector('header'),menu=document.querySelector('.menu'),
+      var header=document.querySelector('header'),menu=document.querySelector('.menu'),
         title=document.querySelectorAll('.menu .title:not(.home)'),button=document.querySelector('.header button.open'),
         input=document.querySelector('.web-search input'),results=document.querySelector('.web-search .results-content'),
         li=document.querySelectorAll('.results-content li'),reset=document.querySelector('.web-search .reset'),
@@ -6209,7 +6331,7 @@ body {
   border-radius: 8px;
   padding: 16px;
   color: #ff5f56;
-  font-family: &#39;Courier New&#39;, Courier, monospace;
+  font-family: var(--mono);
   font-size: 13px;
   line-height: 1.6;
   margin: 1.5em 0;
@@ -6303,7 +6425,7 @@ body {
   border: 1px solid var(--accent);
   border-radius: 4px;
   padding: 2px 8px;
-  font-family: &#39;Courier New&#39;, Courier, monospace;
+  font-family: var(--mono);
   font-size: 13px;
   margin-right: 16px;
   height: max-content;
@@ -6314,12 +6436,12 @@ body {
 .qcx-step-title {
   color: var(--fg);
   font-weight: 700;
-  font-family: &#39;Courier New&#39;, Courier, monospace;
+  font-family: var(--mono);
   font-size: 16px;
 }
 .qcx-step-desc {
   color: #8a9994;
-  font-family: &#39;Courier New&#39;, Courier, monospace;
+  font-family: var(--mono);
   font-size: 13px;
   margin-top: 6px;
   line-height: 1.5;
@@ -6346,20 +6468,20 @@ body {
 }
 .qcx-feature-fn {
   color: var(--accent);
-  font-family: &#39;Courier New&#39;, Courier, monospace;
+  font-family: var(--mono);
   font-size: 13px;
   margin-bottom: 16px;
 }
 .qcx-feature-title {
   color: var(--fg);
-  font-family: &#39;Courier New&#39;, Courier, monospace;
+  font-family: var(--mono);
   font-size: 16px;
   font-weight: 700;
   margin-bottom: 10px;
 }
 .qcx-feature-desc {
   color: #8a9994;
-  font-family: &#39;Courier New&#39;, Courier, monospace;
+  font-family: var(--mono);
   font-size: 13px;
   line-height: 1.6;
 }
@@ -6371,10 +6493,7 @@ h1.post-title.entry-title::after, .header .title::after {
   margin-left: 4px;
   animation: qcx-blink 1s step-end infinite;
 }
-@keyframes qcx-blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
+/* qcx-blink defined above at L4964 — no duplicate needed */
 
 /* Hide original sku 018 */
 
@@ -6817,12 +6936,7 @@ img.lazyload.qcx-card-media {
   object-fit: cover !important;
   aspect-ratio: 16 / 9 !important;
 }
-/* Prevent font FOUT layout shift */
-.card .title,
-.card-content .title,
-.qcx-card-excerpt {
-  font-display: optional !important;
-}
+/* Invalid font-display on non-@font-face selectors removed (display=swap handled in Google Fonts head link) */
 /* Sidebar CLS fix */
 .sidebar .widget,
 .sidebar-wrapper {
@@ -6970,7 +7084,7 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
             <b:includable id='main'>
   <b:attr name='class' value='widget qcx-brand-widget'/>
   <div class='qcx-layout-brand'>
-    <span class="qcx-avatar qcx-layout-avatar" aria-label="MMO" style="display:inline-block;position:relative;width:72px;height:72px"><img alt="MMO" class="qcx-brand-raster" decoding="async" fetchpriority="high" height="72" src="https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.4/theme/qcx-brand-mark.png" width="72"/><svg xmlns="http://www.w3.org/2000/svg" class="qcx-brand-mark qcx-brand-svg qcx-brand-eyes-only" viewBox="0 0 512 512" width="72" height="72" role="img" aria-hidden="true" tabindex="-1"><g class="qcx-ghost-eyes"><circle class="qcx-eye-socket" cx="230.6" cy="189.9" r="16.5" fill="#f2f2f2"/><circle class="qcx-eye qcx-eye-l" cx="230.6" cy="189.9" r="13.2" fill="#0a0a0a"/><circle class="qcx-eye-socket" cx="294.1" cy="183.5" r="16" fill="#f2f2f2"/><circle class="qcx-eye qcx-eye-r" cx="294.1" cy="183.5" r="12.8" fill="#0a0a0a"/></g></svg></span>
+    <span class="qcx-avatar qcx-layout-avatar" aria-label="MMO" style="display:inline-block;position:relative;width:72px;height:72px"><img alt="MMO" class="qcx-brand-raster" decoding="async" loading="eager" height="72" src="https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.4/theme/qcx-brand-mark.png" width="72"/><svg xmlns="http://www.w3.org/2000/svg" class="qcx-brand-mark qcx-brand-svg qcx-brand-eyes-only" viewBox="0 0 512 512" width="72" height="72" role="img" aria-hidden="true" tabindex="-1"><g class="qcx-ghost-eyes"><circle class="qcx-eye-socket" cx="230.6" cy="189.9" r="16.5" fill="#f2f2f2"/><circle class="qcx-eye qcx-eye-l" cx="230.6" cy="189.9" r="13.2" fill="#0a0a0a"/><circle class="qcx-eye-socket" cx="294.1" cy="183.5" r="16" fill="#f2f2f2"/><circle class="qcx-eye qcx-eye-r" cx="294.1" cy="183.5" r="12.8" fill="#0a0a0a"/></g></svg></span>
     <div>
       <strong>MMO</strong>
       <span>MMO TEAM · branding</span>
@@ -7200,7 +7314,7 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
   </div>
   <div class='qcx-avatar-wrap'>
     <div class='qcx-avatar' aria-label='MMO'>
-      <img alt='MMO' class='qcx-brand-raster' decoding='async' fetchpriority='high' height='64' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.4/theme/qcx-brand-mark.png' width='64'/>
+      <img alt='MMO' class='qcx-brand-raster' decoding='async' loading='eager' height='64' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.4/theme/qcx-brand-mark.png' width='64'/>
       <svg xmlns="http://www.w3.org/2000/svg" class="qcx-brand-mark qcx-brand-svg qcx-brand-eyes-only" viewBox="0 0 512 512" width="300" height="300" role="img" aria-hidden="true"><g class="qcx-ghost-eyes"><circle class="qcx-eye-socket" cx="230.6" cy="189.9" r="16.5" fill="#f2f2f2"/><circle class="qcx-eye qcx-eye-l" cx="230.6" cy="189.9" r="13.2" fill="#0a0a0a"/><circle class="qcx-eye-socket" cx="294.1" cy="183.5" r="16" fill="#f2f2f2"/><circle class="qcx-eye qcx-eye-r" cx="294.1" cy="183.5" r="12.8" fill="#0a0a0a"/></g></svg>
     </div>
   </div>
@@ -7762,59 +7876,7 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
   <b:include data='post' name='postMetadataJSON'/>
 </b:includable>
             <b:includable id='postMetadataJSON' var='post'>
-  <script type='application/ld+json'>
-  {
-    &quot;@context&quot;: &quot;https://schema.org&quot;,
-    &quot;@type&quot;: &quot;BlogPosting&quot;,
-    &quot;mainEntityOfPage&quot;: {
-      &quot;@type&quot;: &quot;WebPage&quot;,
-      &quot;@id&quot;: &quot;<data:post.url/>&quot;
-    },
-    &quot;headline&quot;: &quot;<data:post.title.jsonEscaped/>&quot;,
-    &quot;description&quot;: &quot;<b:if cond='data:view.description != &quot;&quot;'><data:view.description.jsonEscaped/><b:else/><data:post.title.jsonEscaped/> — hướng dẫn và tài nguyên AI miễn phí trên MMO.</b:if>&quot;,
-    &quot;inLanguage&quot;: &quot;vi-VN&quot;,
-    <b:include data='post' name='postMetadataJSONImage'/>
-    &quot;datePublished&quot;: &quot;<b:eval expr='data:post.date.iso8601'/>&quot;,
-    &quot;dateModified&quot;: &quot;<b:eval expr='data:post.lastUpdated.ISO8601'/>&quot;,
-    &quot;author&quot;: {
-      &quot;@type&quot;: &quot;Person&quot;,
-      &quot;name&quot;: &quot;<data:post.author.name.jsonEscaped/>&quot;,
-      &quot;url&quot;: &quot;https://t.me/superkhung&quot;
-    },
-    <b:include data='post' name='postMetadataJSONPublisher'/>
-    &quot;isAccessibleForFree&quot;: true
-  }
-  </script>
-  <script type='application/ld+json'>
-  {
-    &quot;@context&quot;: &quot;https://schema.org&quot;,
-    &quot;@type&quot;: &quot;BreadcrumbList&quot;,
-    &quot;itemListElement&quot;: [
-      {
-        &quot;@type&quot;: &quot;ListItem&quot;,
-        &quot;position&quot;: 1,
-        &quot;name&quot;: &quot;Trang chủ&quot;,
-        &quot;item&quot;: &quot;<data:blog.canonicalHomepageUrl/>&quot;
-      }
-      <b:loop index='i' values='data:post.labels' var='label'>
-        <b:if cond='data:i == &quot;0&quot; and data:label.name != &quot;blog&quot;'>
-      ,{
-        &quot;@type&quot;: &quot;ListItem&quot;,
-        &quot;position&quot;: 2,
-        &quot;name&quot;: &quot;<data:label.name.jsonEscaped/>&quot;,
-        &quot;item&quot;: &quot;<data:label.url/>&quot;
-      }
-        </b:if>
-      </b:loop>
-      ,{
-        &quot;@type&quot;: &quot;ListItem&quot;,
-        &quot;position&quot;: 3,
-        &quot;name&quot;: &quot;<data:post.title.jsonEscaped/>&quot;,
-        &quot;item&quot;: &quot;<data:post.url/>&quot;
-      }
-    ]
-  }
-  </script>
+  <!-- Canonical BlogPosting + BreadcrumbList JSON-LD emitted once in all-head to avoid duplicate structured data -->
 </b:includable>
             <b:includable id='postMetadataJSONImage'>
   &quot;image&quot;: {
@@ -8217,21 +8279,21 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
 <!-- CSS links live in head (all-head); keep admin UI inline for F5 -->
 <style id='qcx-admin-ui' type='text/css'>
 /* ── QCX Footer Social Widget ── */
-.qcx-footer-social { padding: 24px 20px; text-align: center; border-top: 1px solid rgba(255,255,255,0.08); margin-top: 0; background: #060d08 !important; }
-.qcx-footer-brand { margin-bottom: 12px; }
-.qcx-footer-brand strong { display: block; font-size: 16px; color: var(--accent, #4caf82); letter-spacing: 0.05em; }
-.qcx-footer-brand span { font-size: 12px; color: #9ec4b0; }
-.qcx-footer-links { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 12px 0; }
-.qcx-footer-links a { color: #c8e8d4; font-size: 13px; text-decoration: none; padding: 4px 10px; border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; transition: color .2s, border-color .2s; }
-.qcx-footer-links a:hover { color: var(--accent, #4caf82); border-color: var(--accent, #4caf82); }
-.qcx-footer-copy { font-size: 11px; color: #9ec4b0; margin-top: 10px; }
-.qcx-footer-copy a { color: #9ec4b0; text-decoration: none; }
+.qcx-footer-social { padding: 28px 24px 20px; text-align: center; border-top: 1px solid rgba(76,175,130,0.25); margin-top: 0; background: #0a150c !important; }
+.qcx-footer-brand { margin-bottom: 10px; }
+.qcx-footer-brand strong { display: block; font-size: 15px; color: #4caf82; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; }
+.qcx-footer-brand span { font-size: 12px; color: #b8d4c4; display: block; margin-top: 3px; }
+.qcx-footer-links { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 12px 0 10px; }
+.qcx-footer-links a { color: #d4ece0; font-size: 12px; text-decoration: none; padding: 5px 14px; border: 1px solid rgba(76,175,130,0.3); border-radius: 999px; background: rgba(76,175,130,0.06); transition: color .2s, border-color .2s; }
+.qcx-footer-links a:hover { color: #fff; border-color: rgba(76,175,130,0.8); background: rgba(76,175,130,0.14); }
+.qcx-footer-copy { font-size: 11px; color: #8ab8a0; margin-top: 6px; }
+.qcx-footer-copy a { color: #8ab8a0; text-decoration: none; }
 /* Force footer social widget full-width (beat .footer .widget:nth-of-type(1){width:30%}) */
 footer.footer #footer .qcx-footer-widget,
 footer.footer #footer .qcx-footer-widget .widget-content,
 .qcx-footer-gadgets .qcx-footer-widget,
 .qcx-footer-gadgets .qcx-footer-widget .widget-content { width:100%!important; float:none!important; padding:0!important; margin:0!important; }
-footer.footer, #footer, .qcx-footer-gadgets { background: #060d08 !important; }
+footer.footer, #footer, .qcx-footer-gadgets { background: #0a150c !important; }
 /* ── END Footer Social Widget ── */
 /* qcx-admin-ui */
 /* MMO Admin — dense cockpit (PC + mobile) */
@@ -8245,7 +8307,7 @@ footer.footer, #footer, .qcx-footer-gadgets { background: #060d08 !important; }
       --qcx-admin-mint: #7dcea0;
       --qcx-admin-mint-ink: #06110a;
       --qcx-admin-input: #0b120c;
-      --sans: 'IBM Plex Sans', 'Segoe UI', sans-serif;
+      --sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
       --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
       margin: 0 auto;
       min-height: 0;
@@ -8992,7 +9054,7 @@ window.addEventListener('load', qcxBootMacFrames, { once: true });
 
 <!-- moved to CDN: qcx-smart-runtime -->
 
-<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.42/theme/qcx-secure-resource.js'></script>
+<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.41/theme/qcx-secure-resource.js'></script>
 
 <!-- moved to CDN: qcx-terminal-lightbox -->
 
@@ -9000,7 +9062,7 @@ window.addEventListener('load', qcxBootMacFrames, { once: true });
 <script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.13/theme/qcx-runtime.js'></script>
 <script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.26/theme/qcx-smart-runtime.js'></script>
 <!-- secure-resource.js handles unlock flow -->
-<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.42/theme/qcx-layout-rescue.js'></script>
+<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.41/theme/qcx-layout-rescue.js'></script>
 <!-- moved to CDN: qcx-layout-rescue -->
 <script>//<![CDATA[
 (function(){
@@ -9167,52 +9229,74 @@ window.addEventListener('load', qcxBootMacFrames, { once: true });
 </script>
 <script>
 //<![CDATA[
-/* QCX Card Hero Fallback — MutationObserver: populate card thumbnails from Blogger JSON feed */
+/* QCX Card Hero Fallback — pathname-matched (protocol/domain agnostic) + media$thumbnail & body img */
 (function() {
   var isHome = !document.querySelector('.post-body.entry-content');
   if (!isHome) return;
-  var CDN_BASE = 'https://www.mmo.team';
   var fetchedMap = null;
-  var fetchPending = false;
+  var fetchPromise = null;
+
+  function normPath(u) {
+    try {
+      var a = document.createElement('a');
+      a.href = String(u || '');
+      return (a.pathname || '').replace(/\/+$/, '').toLowerCase();
+    } catch (e) { return ''; }
+  }
+
+  function upgradeThumb(u) {
+    if (!u || u.indexOf('data:image') !== -1) return '';
+    return u
+      .replace(/\/s\d+(-[a-z0-9-]+)?\//i, '/w720-h405-p-k-no-nu/')
+      .replace(/=s\d+(-[a-z0-9-]+)?$/i, '=w720-h405-p-k-no-nu');
+  }
 
   function getImageMap() {
     if (fetchedMap) return Promise.resolve(fetchedMap);
-    if (fetchPending) return Promise.resolve(null);
-    fetchPending = true;
-    return fetch(CDN_BASE + '/feeds/posts/default?alt=json&max-results=50&orderby=published')
+    if (fetchPromise) return fetchPromise;
+    fetchPromise = fetch('/feeds/posts/default?alt=json&max-results=60&orderby=published', { credentials: 'same-origin' })
       .then(function(r) { return r.json(); })
       .then(function(data) {
         var entries = (data.feed && data.feed.entry) || [];
         var map = {};
         entries.forEach(function(e) {
-          var postUrl = '';
-          (e.link || []).forEach(function(l) { if (l.rel === 'alternate') postUrl = l.href.split('?')[0]; });
-          if (!postUrl) return;
-          var content = (e.content && e.content.$t) || (e.summary && e.summary.$t) || '';
-          var m = content.match(/<img[^>]+src=["']([^"']+)["']/i);
-          if (m && m[1] && m[1].indexOf('data:image') === -1) map[postUrl] = m[1];
+          var postPath = '';
+          (e.link || []).forEach(function(l) {
+            if (l.rel === 'alternate' && l.href) postPath = normPath(l.href);
+          });
+          if (!postPath) return;
+          var thumb = (e['media$thumbnail'] && e['media$thumbnail'].url) ? upgradeThumb(e['media$thumbnail'].url) : '';
+          if (!thumb) {
+            var content = (e.content && e.content.$t) || (e.summary && e.summary.$t) || '';
+            var m = content.match(/<img[^>]+src=["']([^"']+)["']/i);
+            if (m && m[1] && m[1].indexOf('data:image') === -1) thumb = upgradeThumb(m[1]);
+          }
+          if (thumb) map[postPath] = thumb;
         });
         fetchedMap = map;
         return map;
       })
       .catch(function() { fetchedMap = {}; return {}; });
+    return fetchPromise;
   }
 
   function applyImages(map) {
     document.querySelectorAll('.qcx-card-noimg').forEach(function(noimg) {
       var card = noimg.closest('article, li, .post-outer');
       if (!card) return;
-      var link = card.querySelector('a[href]');
+      var link = card.querySelector('.card-content .title a[href], .card-header > a[href], a[href*=".html"]');
       if (!link) return;
-      var postUrl = link.href.split('?')[0];
-      var imgUrl = map[postUrl];
+      var postPath = normPath(link.getAttribute('href') || link.href);
+      var imgUrl = map[postPath];
       if (!imgUrl) return;
       var img = document.createElement('img');
       img.src = imgUrl;
-      img.alt = '';
+      img.alt = (link.getAttribute('title') || link.textContent || '').trim();
       img.className = 'qcx-card-media';
-      img.loading = 'lazy';
+      img.loading = 'eager';
       img.decoding = 'async';
+      img.width = 720;
+      img.height = 405;
       img.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:2';
       noimg.replaceWith(img);
     });
@@ -9220,10 +9304,9 @@ window.addEventListener('load', qcxBootMacFrames, { once: true });
 
   function tryFix() {
     if (!document.querySelector('.qcx-card-noimg')) return;
-    getImageMap().then(function(map) { if (map) applyImages(map); });
+    getImageMap().then(function(map) { map && applyImages(map); });
   }
 
-  /* Watch for async card injection by qcx-rescue-pager */
   try {
     var debTimer;
     var obs = new MutationObserver(function() {
@@ -9231,23 +9314,565 @@ window.addEventListener('load', qcxBootMacFrames, { once: true });
       debTimer = setTimeout(tryFix, 150);
     });
     obs.observe(document.documentElement, { childList: true, subtree: true });
-  } catch(e) {}
+  } catch (e) {}
 
-  /* Fallback polling for browsers without MutationObserver or delayed paint */
   window.addEventListener('load', function() { setTimeout(tryFix, 300); setTimeout(tryFix, 1200); setTimeout(tryFix, 3000); });
-  setTimeout(tryFix, 800);
-  setTimeout(tryFix, 2000);
+  setTimeout(tryFix, 600);
+  setTimeout(tryFix, 1800);
 })();
 //]]>
 </script>
 
   <style id='qcx-a11y-fixes' type='text/css'>
-footer.footer .qcx-footer-social .qcx-footer-copy,body .qcx-footer-copy{color:#9ec4b0!important}
-.card-content .qcx-card-labels,.qcx-card-labels a[rel=tag],.card-content a[rel=tag],a[rel=tag]{min-height:36px!important;min-width:44px!important;padding:6px 12px!important;margin-bottom:6px!important;align-items:center!important;display:inline-flex!important;box-sizing:border-box!important}
+/* ── Typography override: beat frozen CDN qcx-polish.css Ghost Font 'Space Grotesk' ── */
+[data-page-item='multiple'] .card-content .title,
+[data-page-item='multiple'] .card-content .title a,
+.post-header .post-title,
+.qcx-rescue-single .post-header .post-title,
+.qcx-related .item-title,
+.qcx-latest-list a,
+#PopularPosts1 .item-title a {
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+}
+.qcx-hero-title {
+  font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace !important;
+}
+/* ── Footer canonical polish: remove ugly .qcx-addon-zone rounded box, align to 1120px grid, fix contrast and scroll-top overlap ── */
+html body footer.footer,
+html body footer.footer #footer,
+html body footer.footer #footer.qcx-footer-gadgets {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 40px 0 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: #070e09 !important;
+  display: block !important;
+  box-shadow: none !important;
+}
+html body footer.footer #footer.qcx-footer-gadgets .widget,
+html body footer.footer #footer .qcx-footer-widget,
+html body footer.footer #footer .qcx-footer-widget .widget-content {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+html body footer.footer .qcx-footer-social {
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 18px 24px !important;
+  border: 0 !important;
+  border-top: 1px solid rgba(76,175,130,0.22) !important;
+  border-radius: 0 !important;
+  background: #070e09 !important;
+  box-sizing: border-box !important;
+}
+html body footer.footer .qcx-footer-inner {
+  width: 100% !important;
+  max-width: 1080px !important;
+  margin: 0 auto !important;
+  padding: 0 72px 0 8px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 16px !important;
+  box-sizing: border-box !important;
+}
+html body footer.footer .qcx-footer-logo {
+  font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  color: #5ee3a5 !important;
+  letter-spacing: 0.1em !important;
+}
+html body footer.footer .qcx-footer-copy,
+html body .qcx-footer-copy {
+  font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace !important;
+  font-size: 12px !important;
+  color: #9ec4b0 !important;
+  opacity: 1 !important;
+}
+html body footer.footer .qcx-footer-copy a,
+html body .qcx-footer-copy a {
+  color: #b8ded0 !important;
+  text-decoration: none !important;
+}
+html body footer.footer .qcx-footer-tg-btn {
+  font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  color: #b8ded0 !important;
+  -webkit-text-fill-color: #b8ded0 !important;
+  min-height: 38px !important;
+  padding: 7px 16px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  border: 1px solid rgba(76,175,130,0.32) !important;
+  border-radius: 999px !important;
+  background: rgba(76,175,130,0.08) !important;
+}
+html body footer.footer .qcx-footer-tg-btn:hover {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border-color: #4caf82 !important;
+  background: rgba(76,175,130,0.18) !important;
+}
+html body .scroll--top {
+  bottom: 78px !important;
+  right: 20px !important;
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(76,175,130,0.36) !important;
+  background: rgba(13,24,18,0.92) !important;
+  backdrop-filter: blur(8px) !important;
+  z-index: 90 !important;
+  transition: transform .2s ease, bottom .2s ease, opacity .2s ease !important;
+}
+html[data-at-footer='1'] body .scroll--top {
+  bottom: 86px !important;
+}
+html body .scroll--top:hover {
+  border-color: #4caf82 !important;
+  background: #14261c !important;
+  transform: translateY(-2px) !important;
+}
+@media (max-width: 860px) {
+  html body footer.footer .qcx-footer-social {
+    padding: 16px 16px calc(76px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+  html body footer.footer .qcx-footer-inner {
+    padding: 0 4px !important;
+  }
+  html body .scroll--top {
+    display: none !important;
+  }
+}
+/* ── Touch target a11y (Mobile 100/100) ── */
+.card-content .qcx-card-labels,.qcx-card-labels a[rel=tag],.card-content a[rel=tag],a[rel=tag],.qcx-footer-links a{min-height:40px!important;min-width:44px!important;padding:8px 14px!important;margin:0 4px 6px 0!important;align-items:center!important;display:inline-flex!important;box-sizing:border-box!important}
+/* ── PayOS 3-Tier VietQR Modal &amp; Smart Tier Banner ── */
+.qcx-payos-vip-banner{margin:10px 0 0;padding:10px 14px;border-radius:10px;border:1px solid rgba(224,179,90,0.45);background:rgba(224,179,90,0.09);color:#f5dca2;font:500 12.5px/1.45 var(--qcx-article-sans,system-ui,sans-serif)}
+.qcx-payos-vip-banner strong{color:#ffd678;font-weight:700}
+.qcx-payos-recover-link{display:inline-flex;align-items:center;gap:5px;margin-top:8px;padding:4px 0;color:#6dd9a4;font:600 12px/1.3 var(--qcx-article-mono,monospace);background:none;border:0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.qcx-payos-recover-link:hover{color:#9ff3c7}
+#qcx-payos-modal{position:fixed;inset:0;z-index:999999;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(3,9,6,0.82);backdrop-filter:blur(8px)}
+#qcx-payos-modal.is-open{display:flex}
+.qcx-payos-dialog{width:100%;max-width:460px;max-height:92vh;overflow-y:auto;border-radius:16px;border:1px solid rgba(76,175,130,0.38);background:#09130d;color:#e6f5ec;box-shadow:0 24px 64px rgba(0,0,0,0.72);padding:20px;box-sizing:border-box;font-family:var(--qcx-article-sans,system-ui,sans-serif)}
+.qcx-payos-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}
+.qcx-payos-badge{display:inline-block;padding:3px 9px;border-radius:999px;font:700 10.5px/1.2 var(--qcx-article-mono,monospace);letter-spacing:.06em;text-transform:uppercase;background:rgba(52,230,160,0.15);color:#34e6a0;border:1px solid rgba(52,230,160,0.35)}
+.qcx-payos-badge.is-item{background:rgba(224,179,90,0.15);color:#ffd275;border-color:rgba(224,179,90,0.4)}
+.qcx-payos-title{margin:6px 0 0;font-size:16px;font-weight:800;color:#fff;line-height:1.3}
+.qcx-payos-close{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#b8d4c4;width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:16px;line-height:1;display:inline-flex;align-items:center;justify-content:center}
+.qcx-payos-qr-box{text-align:center;background:#fff;border-radius:12px;padding:12px;margin:12px 0}
+.qcx-payos-qr-box img{max-width:230px;width:100%;height:auto;display:block;margin:0 auto}
+.qcx-payos-meta{display:flex;flex-direction:column;gap:8px;margin:12px 0;padding:12px;border-radius:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(76,175,130,0.2);font-size:12.5px}
+.qcx-payos-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.qcx-payos-row span{color:#9ec4b0}
+.qcx-payos-row strong{color:#fff;font-family:var(--qcx-article-mono,monospace)}
+.qcx-payos-input{width:100%;padding:9px 12px;border-radius:8px;border:1px solid rgba(76,175,130,0.3);background:#050b07;color:#e6f5ec;font-size:13px;margin-bottom:10px;box-sizing:border-box}
+.qcx-payos-btn{width:100%;padding:11px 16px;border-radius:10px;border:0;background:linear-gradient(180deg,#34e6a0 0%,#1fd68a 100%);color:#04140c;font:700 13.5px/1.2 var(--qcx-article-sans,system-ui,sans-serif);cursor:pointer}
+.qcx-payos-btn:disabled{opacity:.6;cursor:wait}
+.qcx-payos-status{margin-top:10px;padding:8px 10px;border-radius:8px;background:rgba(52,230,160,0.08);border:1px solid rgba(52,230,160,0.22);color:#7dcea0;font:600 12px/1.35 var(--qcx-article-mono,monospace);text-align:center}
+.qcx-payos-status.is-err{background:rgba(255,95,86,0.1);border-color:rgba(255,95,86,0.35);color:#ff9b94}
   </style>
   <script type='text/javascript'>
   //<![CDATA[
-  (function(){function qcxFixAriaHiddenTabindex(){document.querySelectorAll('[aria-hidden="true"]').forEach(function(el){el.querySelectorAll('a,button,input,select,textarea,[tabindex]').forEach(function(ch){ch.setAttribute('tabindex','-1')})});}qcxFixAriaHiddenTabindex();document.addEventListener('DOMContentLoaded',qcxFixAriaHiddenTabindex,{once:true});window.addEventListener('load',qcxFixAriaHiddenTabindex,{once:true});setTimeout(qcxFixAriaHiddenTabindex,800);})();
+  (function(){
+    var rIC=window.requestIdleCallback||function(cb){return setTimeout(cb,120)};
+    function qcxFixAriaHiddenTabindex(){
+      document.querySelectorAll('[aria-hidden="true"]').forEach(function(el){
+        el.querySelectorAll('a,button,input,select,textarea,[tabindex]').forEach(function(ch){ch.setAttribute('tabindex','-1')});
+      });
+    }
+    function qcxOptimizeMobileBrandMark(){
+      var imgs=document.querySelectorAll('.qcx-avatar img,.qcx-layout-avatar img,img.qcx-brand-raster');
+      for(var i=0;i<imgs.length;i++){
+        if(imgs[i].hasAttribute('srcset')){imgs[i].removeAttribute('srcset');}
+      }
+    }
+    function qcxObserveFooterClearance(){
+      if(!('IntersectionObserver' in window))return;
+      var ft=document.querySelector('footer.footer');
+      if(!ft)return;
+      var io=new IntersectionObserver(function(entries){
+        entries.forEach(function(en){
+          if(en.isIntersecting)document.documentElement.setAttribute('data-at-footer','1');
+          else document.documentElement.removeAttribute('data-at-footer');
+        });
+      },{threshold:0.05});
+      io.observe(ft);
+    }
+    rIC(function(){qcxFixAriaHiddenTabindex();qcxOptimizeMobileBrandMark();qcxObserveFooterClearance();});
+    document.addEventListener('DOMContentLoaded',function(){rIC(function(){qcxFixAriaHiddenTabindex();qcxOptimizeMobileBrandMark();qcxObserveFooterClearance();});},{once:true});
+    window.addEventListener('load',function(){rIC(function(){qcxFixAriaHiddenTabindex();qcxOptimizeMobileBrandMark();});},{once:true});
+
+    /* ── MMO TEAM PayOS 3-Tier Auto-Check & Self-Healing Engine ── */
+    var API_BASE='https://timkiem-store-api.kkymljnk.workers.dev';
+    var ENT_KEY='qcx_payos_entitlement_v1';
+    var PEND_KEY='qcx_payos_pending_v1';
+    var pollTimer=0;
+
+    function fmtVnd(n){
+      var v=Number(n)||0;
+      return v.toString().replace(/\B(?=(\d{3})+(?!\d))/g,'.')+' đ';
+    }
+    function readEnt(){
+      try{return JSON.parse(localStorage.getItem(ENT_KEY)||'{}')||{};}catch(e){return {};}
+    }
+    function saveEnt(next){
+      try{
+        var cur=readEnt();
+        var merged={
+          sessionToken:next.sessionToken||cur.sessionToken||'',
+          vipExpiresAt:next.vipExpiresAt||cur.vipExpiresAt||null,
+          unlockedItems:cur.unlockedItems||{}
+        };
+        if(Array.isArray(next.unlockedItems)){
+          next.unlockedItems.forEach(function(id){merged.unlockedItems[id]=true;});
+        }else if(next.unlockedItem){
+          merged.unlockedItems[next.unlockedItem]=true;
+        }
+        localStorage.setItem(ENT_KEY,JSON.stringify(merged));
+        return merged;
+      }catch(e){return next;}
+    }
+    function isVipActive(ent){
+      ent=ent||readEnt();
+      return !!(ent.vipExpiresAt && new Date(ent.vipExpiresAt).getTime()>Date.now());
+    }
+    function getResourceConfig(){
+      var node=document.getElementById('qcx-resource');
+      var slug=(location.pathname.split('/').pop()||'').replace(/\.html$/i,'').toLowerCase();
+      if(!node)return {mode:'free',resourceId:slug,price:500000};
+      var mode=(node.getAttribute('data-mode')||'').toLowerCase();
+      var rid=(node.getAttribute('data-resource-id')||node.getAttribute('data-resource')||slug).toLowerCase();
+      var price=Number(node.getAttribute('data-price')||0);
+      if(!mode){
+        try{
+          var j=JSON.parse(node.textContent||'{}');
+          if(j.mode)mode=String(j.mode).toLowerCase();
+          if(j.resourceId)rid=String(j.resourceId).toLowerCase();
+          if(j.price)price=Number(j.price);
+        }catch(e){}
+      }
+      if(mode==='paid')mode='vip';
+      if(mode==='vip' && !price)price=500000;
+      if(mode==='item' && !price)price=300000;
+      return {mode:mode||'free',resourceId:rid||slug,price:price||500000};
+    }
+    function unlockDomWithDelivery(data){
+      document.documentElement.setAttribute('data-qcx-unlocked','1');
+      var unlock=document.querySelector('.qcx-content-unlock');
+      if(unlock){
+        unlock.hidden=false;
+        unlock.style.removeProperty('display');
+        unlock.classList.add('is-open');
+      }
+      var panel=document.querySelector('.qcx-lock-panel');
+      if(panel){
+        panel.hidden=true;
+        panel.style.setProperty('display','none','important');
+        panel.classList.add('is-done');
+      }
+      if(data && data.driveUrl){
+        var btns=document.querySelectorAll('[data-qcx-drive], .qcx-download-btn, a[href="#qcx-drive"]');
+        btns.forEach(function(b){b.setAttribute('href',data.driveUrl);b.setAttribute('target','_blank');});
+      }
+      var modal=document.getElementById('qcx-payos-modal');
+      if(modal)modal.classList.remove('is-open');
+    }
+    function tryAutoDelivery(cfg){
+      var ent=readEnt();
+      if(!ent.sessionToken)return Promise.resolve(false);
+      return fetch(API_BASE+'/api/delivery?resourceId='+encodeURIComponent(cfg.resourceId),{
+        method:'GET',
+        headers:{'Authorization':'Bearer '+ent.sessionToken}
+      }).then(function(r){return r.json();}).then(function(res){
+        if(res && res.ok && res.data){
+          unlockDomWithDelivery(res.data);
+          return true;
+        }
+        return false;
+      }).catch(function(){return false;});
+    }
+    function ensurePayosModal(){
+      var m=document.getElementById('qcx-payos-modal');
+      if(m)return m;
+      m=document.createElement('div');
+      m.id='qcx-payos-modal';
+      m.setAttribute('role','dialog');
+      m.setAttribute('aria-modal','true');
+      m.innerHTML=
+        '<div class="qcx-payos-dialog">' +
+          '<div class="qcx-payos-head">' +
+            '<div><span class="qcx-payos-badge" id="qcx-po-badge">VIP 30 NGÀY</span><h3 class="qcx-payos-title" id="qcx-po-title">Mở khóa PayOS VietQR</h3></div>' +
+            '<button type="button" class="qcx-payos-close" id="qcx-po-close" aria-label="Đóng">&#215;</button>' +
+          '</div>' +
+          '<div id="qcx-po-checkout-view">' +
+            '<input type="text" class="qcx-payos-input" id="qcx-po-contact" placeholder="Nhập SĐT hoặc Email (để khôi phục trên máy khác)"/>' +
+            '<div class="qcx-payos-qr-box" id="qcx-po-qr-wrap" style="display:none"><img id="qcx-po-qr-img" alt="Mã VietQR PayOS"/></div>' +
+            '<div class="qcx-payos-meta" id="qcx-po-meta" style="display:none">' +
+              '<div class="qcx-payos-row"><span>Số tiền:</span><strong id="qcx-po-amt">—</strong></div>' +
+              '<div class="qcx-payos-row"><span>Nội dung CK:</span><strong id="qcx-po-desc">—</strong></div>' +
+              '<div class="qcx-payos-row"><span>Mã đơn (OrderCode):</span><strong id="qcx-po-code">—</strong></div>' +
+            '</div>' +
+            '<button type="button" class="qcx-payos-btn" id="qcx-po-action">Tạo mã QR Thanh toán</button>' +
+            '<div class="qcx-payos-status" id="qcx-po-status">Chọn Tạo mã QR để quét VietQR tự động 24/7</div>' +
+            '<div style="text-align:center"><button type="button" class="qcx-payos-recover-link" id="qcx-po-switch-recover">Đã thanh toán hoặc có VIP? Khôi phục 1 chạm</button></div>' +
+          '</div>' +
+          '<div id="qcx-po-recover-view" style="display:none">' +
+            '<input type="text" class="qcx-payos-input" id="qcx-po-recover-input" placeholder="Nhập SĐT, Email hoặc Mã đơn 8 số (OrderCode)"/>' +
+            '<button type="button" class="qcx-payos-btn" id="qcx-po-recover-btn">Khôi phục quyền truy cập ngay</button>' +
+            '<div class="qcx-payos-status" id="qcx-po-recover-status">Nhập đúng SĐT/Email hoặc Mã đơn để đồng bộ quyền VIP &amp; bài mua lẻ</div>' +
+            '<div style="text-align:center"><button type="button" class="qcx-payos-recover-link" id="qcx-po-switch-pay">&#8592; Quay lại màn hình tạo QR</button></div>' +
+          '</div>' +
+        '</div>';
+      document.body.appendChild(m);
+      document.getElementById('qcx-po-close').addEventListener('click',function(){
+        m.classList.remove('is-open');
+      });
+      document.getElementById('qcx-po-switch-recover').addEventListener('click',function(){
+        document.getElementById('qcx-po-checkout-view').style.display='none';
+        document.getElementById('qcx-po-recover-view').style.display='block';
+      });
+      document.getElementById('qcx-po-switch-pay').addEventListener('click',function(){
+        document.getElementById('qcx-po-recover-view').style.display='none';
+        document.getElementById('qcx-po-checkout-view').style.display='block';
+      });
+      document.getElementById('qcx-po-recover-btn').addEventListener('click',function(){
+        var q=(document.getElementById('qcx-po-recover-input').value||'').trim();
+        var st=document.getElementById('qcx-po-recover-status');
+        if(!q){st.textContent='Vui lòng nhập SĐT/Email hoặc Mã đơn hàng!';st.classList.add('is-err');return;}
+        st.classList.remove('is-err');
+        st.textContent='Đang tra cứu dữ liệu từ Vault...';
+        fetch(API_BASE+'/api/recover',{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({query:q})
+        }).then(function(r){return r.json();}).then(function(res){
+          if(res && res.ok && res.sessionToken){
+            saveEnt(res);
+            st.textContent='Khôi phục thành công! Đang mở khóa bài viết...';
+            var cfg=getResourceConfig();
+            tryAutoDelivery(cfg).then(function(opened){
+              if(!opened){
+                st.textContent='Đã khôi phục gói của bạn! (Lưu ý: Bài giá riêng cần mua độc lập với VIP)';
+              }
+            });
+          }else{
+            st.textContent=(res && res.error)||'Không tìm thấy giao dịch phù hợp.';
+            st.classList.add('is-err');
+          }
+        }).catch(function(){
+          st.textContent='Lỗi kết nối mạng khi khôi phục.';
+          st.classList.add('is-err');
+        });
+      });
+      return m;
+    }
+
+    function checkOrderNow(orderCode, cfg, force){
+      if(!orderCode)return Promise.resolve(false);
+      var url=API_BASE+'/api/check-order?orderCode='+encodeURIComponent(orderCode)+(force?'&force=1':'');
+      return fetch(url,{method:'GET'}).then(function(r){return r.json();}).then(function(res){
+        if(res && res.ok && res.status==='paid'){
+          window.clearInterval(pollTimer);
+          try{localStorage.removeItem(PEND_KEY);}catch(e){}
+          saveEnt({
+            sessionToken:res.sessionToken,
+            vipExpiresAt:res.vipExpiresAt,
+            unlockedItem:res.scope==='item'?res.resourceId:null
+          });
+          var st=document.getElementById('qcx-po-status');
+          if(st){st.classList.remove('is-err');st.textContent='Thanh toán thành công! Đang mở khóa...';}
+          return tryAutoDelivery(cfg);
+        }
+        return false;
+      }).catch(function(){return false;});
+    }
+
+    function openPayosModal(cfg, startRecover){
+      var m=ensurePayosModal();
+      var badge=document.getElementById('qcx-po-badge');
+      var title=document.getElementById('qcx-po-title');
+      var btn=document.getElementById('qcx-po-action');
+      var st=document.getElementById('qcx-po-status');
+      var qrWrap=document.getElementById('qcx-po-qr-wrap');
+      var metaBox=document.getElementById('qcx-po-meta');
+
+      if(cfg.mode==='item'){
+        badge.textContent='SOURCE GIÁ RIÊNG · VĨNH VIỄN';
+        badge.classList.add('is-item');
+        title.textContent='Mua riêng tài liệu này ('+fmtVnd(cfg.price)+')';
+      }else{
+        badge.textContent='GÓI VIP 30 NGÀY · FULL VIP';
+        badge.classList.remove('is-item');
+        title.textContent='Nâng cấp VIP 30 ngày ('+fmtVnd(500000)+')';
+      }
+
+      document.getElementById('qcx-po-checkout-view').style.display=startRecover?'none':'block';
+      document.getElementById('qcx-po-recover-view').style.display=startRecover?'block':'none';
+      m.classList.add('is-open');
+
+      btn.onclick=function(){
+        var activeOrder=btn.getAttribute('data-active-order');
+        if(activeOrder){
+          st.textContent='Đang đối soát trực tiếp với PayOS...';
+          checkOrderNow(activeOrder,cfg,true).then(function(done){
+            if(!done)st.textContent='Hệ thống đang chờ ngân hàng xác nhận — tự động kiểm tra mỗi 2.5s...';
+          });
+          return;
+        }
+        btn.disabled=true;
+        st.classList.remove('is-err');
+        st.textContent='Đang khởi tạo mã VietQR PayOS...';
+        var contact=(document.getElementById('qcx-po-contact').value||'').trim();
+        fetch(API_BASE+'/api/checkout',{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({
+            scope:cfg.mode==='item'?'item':'vip',
+            resourceId:cfg.resourceId,
+            email:contact,
+            returnUrl:location.href.split('#')[0],
+            cancelUrl:location.href.split('#')[0]
+          })
+        }).then(function(r){return r.json();}).then(function(res){
+          btn.disabled=false;
+          if(!res || (!res.ok && !res.success)){
+            st.textContent=(res && res.error)||'Không tạo được mã QR PayOS.';
+            st.classList.add('is-err');
+            return;
+          }
+          var oCode=res.orderCode;
+          btn.setAttribute('data-active-order',String(oCode));
+          btn.textContent='Tôi đã chuyển khoản — Kiểm tra ngay';
+          try{
+            localStorage.setItem(PEND_KEY,JSON.stringify({
+              orderCode:oCode,
+              resourceId:cfg.resourceId,
+              mode:cfg.mode,
+              createdAt:Date.now()
+            }));
+          }catch(e){}
+          if(res.qrImageUrl){
+            document.getElementById('qcx-po-qr-img').src=res.qrImageUrl;
+            qrWrap.style.display='block';
+          }else if(res.checkoutUrl){
+            window.open(res.checkoutUrl,'_blank','noopener');
+          }
+          document.getElementById('qcx-po-amt').textContent=fmtVnd(res.amount||cfg.price);
+          document.getElementById('qcx-po-desc').textContent=res.description||('MMO '+oCode);
+          document.getElementById('qcx-po-code').textContent=String(oCode);
+          metaBox.style.display='flex';
+          st.textContent='Quét mã VietQR để thanh toán — Tự động mở khóa sau 1-3 giây...';
+          window.clearInterval(pollTimer);
+          pollTimer=window.setInterval(function(){
+            if(document.visibilityState==='hidden')return;
+            checkOrderNow(oCode,cfg,false);
+          },2500);
+        }).catch(function(){
+          btn.disabled=false;
+          st.textContent='Lỗi kết nối khi tạo mã QR.';
+          st.classList.add('is-err');
+        });
+      };
+    }
+
+    function enhanceThreeTierPanel(){
+      var cfg=getResourceConfig();
+      if(cfg.mode!=='vip' && cfg.mode!=='item')return;
+      var panel=document.querySelector('.qcx-lock-panel');
+      if(!panel || panel.classList.contains('is-done'))return;
+
+      var divSpan=panel.querySelector('.qcx-lock-divider span');
+      var strongEl=panel.querySelector('.qcx-lock-foot-copy strong');
+      var descEl=panel.querySelector('.qcx-lock-foot-copy span');
+      var ctaBtn=panel.querySelector('.qcx-lock-cta');
+      var ctaText=panel.querySelector('.qcx-lock-cta b');
+
+      if(cfg.mode==='item'){
+        if(divSpan)divSpan.textContent='SOURCE / TÀI LIỆU GIÁ RIÊNG ('+fmtVnd(cfg.price)+')';
+        if(strongEl)strongEl.textContent='Tài liệu giá riêng — Mở khóa vĩnh viễn';
+        if(descEl)descEl.textContent='Thanh toán 1 lần ('+fmtVnd(cfg.price)+') để sở hữu riêng tài liệu này (Không thuộc gói VIP tháng)';
+        if(ctaText)ctaText.textContent='Mua riêng '+fmtVnd(cfg.price);
+        if(isVipActive() && !panel.querySelector('.qcx-payos-vip-banner')){
+          var banner=document.createElement('div');
+          banner.className='qcx-payos-vip-banner';
+          banner.innerHTML='<strong>Thành viên VIP:</strong> Tài liệu này có mức giá riêng (<strong>'+fmtVnd(cfg.price)+'</strong>) độc lập với gói VIP 500k/tháng. Bạn chỉ cần mua 1 lần để mở vĩnh viễn.';
+          panel.appendChild(banner);
+        }
+      }else{
+        if(divSpan)divSpan.textContent='TÀI LIỆU THÀNH VIÊN VIP (500.000Đ / 30 NGÀY)';
+        if(strongEl)strongEl.textContent='Nâng cấp VIP mở khóa toàn bộ kho tài liệu VIP';
+        if(descEl)descEl.textContent='Chỉ 500.000 đ / tháng — Mở tất cả bài viết VIP tự động (Không bao gồm các bài để giá riêng)';
+        if(ctaText)ctaText.textContent='Mở khóa VIP (500k)';
+      }
+
+      if(ctaBtn && ctaBtn.getAttribute('data-qcx-payos-3tier')!=='1'){
+        ctaBtn.setAttribute('data-qcx-payos-3tier','1');
+        var clone=ctaBtn.cloneNode(true);
+        ctaBtn.parentNode.replaceChild(clone,ctaBtn);
+        clone.addEventListener('click',function(e){
+          e.preventDefault();
+          e.stopPropagation();
+          openPayosModal(cfg,false);
+        });
+      }
+
+      if(!panel.querySelector('.qcx-payos-recover-link')){
+        var rec=document.createElement('button');
+        rec.type='button';
+        rec.className='qcx-payos-recover-link';
+        rec.textContent='Đã thanh toán / Có VIP? Khôi phục quyền truy cập 1 chạm';
+        rec.addEventListener('click',function(){openPayosModal(cfg,true);});
+        panel.appendChild(rec);
+      }
+    }
+
+    function bootPayosAutoCheck(){
+      var cfg=getResourceConfig();
+      if(cfg.mode!=='vip' && cfg.mode!=='item')return;
+      enhanceThreeTierPanel();
+      tryAutoDelivery(cfg).then(function(unlocked){
+        if(unlocked)return;
+        try{
+          var pend=JSON.parse(localStorage.getItem(PEND_KEY)||'null');
+          if(pend && pend.orderCode && (Date.now()-(pend.createdAt||0)<1800000)){
+            checkOrderNow(pend.orderCode,cfg,true);
+          }
+        }catch(e){}
+      });
+    }
+
+    document.addEventListener('visibilitychange',function(){
+      if(document.visibilityState!=='visible')return;
+      try{
+        var pend=JSON.parse(localStorage.getItem(PEND_KEY)||'null');
+        if(pend && pend.orderCode){
+          checkOrderNow(pend.orderCode,getResourceConfig(),true);
+        }
+      }catch(e){}
+    });
+
+    document.addEventListener('DOMContentLoaded',function(){
+      setTimeout(bootPayosAutoCheck,250);
+      setTimeout(bootPayosAutoCheck,1200);
+    },{once:true});
+    window.addEventListener('load',function(){
+      setTimeout(bootPayosAutoCheck,300);
+    },{once:true});
+  })();
   //]]>
   </script>
 </body>
