@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.15/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.16/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -782,7 +782,9 @@
       '.qcx-rescue-single .post-header .qcx-read-time::before,.post-item .post-header .qcx-read-time::before{' +
       'content:\"// \"!important;color:#28d28c!important;-webkit-text-fill-color:#28d28c!important;' +
       'opacity:1!important;font-weight:700!important}' +
-      'html[data-qcx-admin=\"1\"] .qcx-read-time{display:none!important}';
+      'html[data-qcx-admin=\"1\"] .qcx-read-time{display:none!important}' +
+      /* Hide code block title text — keep mac-dots + copy button only */
+      '.mac-title{display:none!important}';
     if (style.textContent !== css) style.textContent = css;
   }
   function ensureSubscribeCardPanel() { ensureRaisedChrome(); }
