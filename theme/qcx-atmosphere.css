@@ -903,33 +903,40 @@ body#layout #qcx-native-tabbar {
   }
 }
 
-/* Always hide “N Nhận xét” stub — unlock chrome owns comments UI */
+/* Always hide “N Nhận xét” stub and legacy Contempo .commentForm.spinner — unlock chrome owns comments UI */
 html[data-page-type='post'] #comments > h4.postAComment,
 html[data-page-type='page'] #comments > h4.postAComment,
 html[data-page-item='single'] #comments > h4.postAComment,
 html[data-page-type='post'] .qcx-comments-shell > h4.postAComment,
 html[data-page-type='page'] .qcx-comments-shell > h4.postAComment,
-html[data-page-item='single'] .qcx-comments-shell > h4.postAComment {
+html[data-page-item='single'] .qcx-comments-shell > h4.postAComment,
+#comments .commentForm,
+#comments .commentForm.spinner,
+.qcx-comments-shell .commentForm,
+.qcx-comments-shell .commentForm.spinner,
+#comments #comment-editor-src {
   display: none !important;
   margin: 0 !important;
   padding: 0 !important;
   height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
   overflow: hidden !important;
   border: 0 !important;
   background: transparent !important;
   box-shadow: none !important;
 }
 /* Collapse empty comments shell — bare .comment-form wrappers do NOT count */
-html[data-page-type='post'] #comments:not(:has(iframe, textarea, .comment, #comment-editor, .qcx-comment-list, .qcx-comment-item, .comment-body)),
-html[data-page-type='page'] #comments:not(:has(iframe, textarea, .comment, #comment-editor, .qcx-comment-list, .qcx-comment-item, .comment-body)),
-html[data-page-item='single'] #comments:not(:has(iframe, textarea, .comment, #comment-editor, .qcx-comment-list, .qcx-comment-item, .comment-body)),
-html[data-page-type='post'] .qcx-comments-shell:not(:has(iframe, textarea, .comment, #comment-editor, .qcx-comment-list, .qcx-comment-item, .comment-body)),
-html[data-page-type='page'] .qcx-comments-shell:not(:has(iframe, textarea, .comment, #comment-editor, .qcx-comment-list, .qcx-comment-item, .comment-body)),
-html[data-page-item='single'] .qcx-comments-shell:not(:has(iframe, textarea, .comment, #comment-editor, .qcx-comment-list, .qcx-comment-item, .comment-body)),
+html[data-page-type='post'] #comments:not(:has(iframe, textarea, .comment, #comment-editor, .qcx-comment-list, .qcx-comment-item, .comment-body, .qcx-inline-gate)),
+html[data-page-type='page'] #comments:not(:has(iframe, textarea, .comment, #comment-editor, .qcx-comment-list, .qcx-comment-item, .comment-body, .qcx-inline-gate)),
+html[data-page-item='single'] #comments:not(:has(iframe, textarea, .comment, #comment-editor, .qcx-comment-list, .qcx-comment-item, .comment-body, .qcx-inline-gate)),
+html[data-page-type='post'] .qcx-comments-shell:not(:has(iframe, textarea, .comment, #comment-editor, .qcx-comment-list, .qcx-comment-item, .comment-body, .qcx-inline-gate)),
+html[data-page-type='page'] .qcx-comments-shell:not(:has(iframe, textarea, .comment, #comment-editor, .qcx-comment-list, .qcx-comment-item, .comment-body, .qcx-inline-gate)),
+html[data-page-item='single'] .qcx-comments-shell:not(:has(iframe, textarea, .comment, #comment-editor, .qcx-comment-list, .qcx-comment-item, .comment-body, .qcx-inline-gate)),
 #comments[data-qcx-comments-empty='1'],
 .qcx-comments-shell[data-qcx-comments-empty='1'],
-#comments[data-qcx-unlock-chrome='1']:not(.is-settled):not(:has(iframe, textarea, .comment, #comment-editor, .qcx-comment-list, .qcx-comment-item, .comment-body)),
-.qcx-comments-shell[data-qcx-unlock-chrome='1']:not(.is-settled):not(:has(iframe, textarea, .comment, #comment-editor, .qcx-comment-list, .qcx-comment-item, .comment-body)) {
+#comments[data-qcx-unlock-chrome='1']:not(.is-settled):not(:has(iframe, textarea, .comment, #comment-editor, .qcx-comment-list, .qcx-comment-item, .comment-body, .qcx-inline-gate)),
+.qcx-comments-shell[data-qcx-unlock-chrome='1']:not(.is-settled):not(:has(iframe, textarea, .comment, #comment-editor, .qcx-comment-list, .qcx-comment-item, .comment-body, .qcx-inline-gate)) {
   display: none !important;
   height: 0 !important;
   max-height: 0 !important;
@@ -948,6 +955,33 @@ html[data-page-item='single'] .qcx-comments-shell:not(:has(iframe, textarea, .co
   background: transparent !important;
   box-shadow: none !important;
   padding: 0 !important;
+  margin: 0 !important;
+}
+/* Canonical vertical order inside #comments: 1. gate -> 2. #qcx-comment-list -> 3. .comment-form */
+#comments,
+.qcx-comments-shell {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+}
+#comments > .qcx-inline-gate,
+.qcx-comments-shell > .qcx-inline-gate {
+  order: 1 !important;
+  width: 100% !important;
+  margin: 0 !important;
+}
+#comments > #qcx-comment-list,
+#comments > .qcx-comment-list,
+.qcx-comments-shell > #qcx-comment-list,
+.qcx-comments-shell > .qcx-comment-list {
+  order: 2 !important;
+  width: 100% !important;
+  margin: 0 !important;
+}
+#comments > .comment-form,
+.qcx-comments-shell > .comment-form {
+  order: 3 !important;
+  width: 100% !important;
   margin: 0 !important;
 }
 

@@ -161,6 +161,7 @@
     var path = (location.pathname || '') + ' ' + (document.title || '');
     if (/\bfree\b|mien-phi|miễn\s*phí/i.test(path)) return 'free';
     if (marker && marker.resourceId) return 'free';
+    if (document.getElementById('qcx-resource') || document.querySelector('.post-body .qcx-content-unlock')) return 'free';
     return null;
   }
 
@@ -504,10 +505,12 @@
       comments.removeAttribute('data-qcx-comments-empty');
       comments.classList.remove('is-dismissed');
       comments.classList.add('has-gate');
-      comments.style.setProperty('display', 'block', 'important');
+      comments.style.setProperty('display', 'flex', 'important');
+      comments.style.setProperty('flex-direction', 'column', 'important');
+      comments.style.setProperty('gap', '12px', 'important');
       comments.style.setProperty('visibility', 'visible', 'important');
       comments.style.setProperty('height', 'auto', 'important');
-      comments.style.setProperty('min-height', '120px', 'important');
+      comments.style.setProperty('min-height', '480px', 'important');
       comments.style.setProperty('max-height', 'none', 'important');
       comments.style.setProperty('overflow', 'visible', 'important');
       comments.style.removeProperty('overflow-x');
@@ -543,6 +546,7 @@
       }
       placeHeroUnderTitle(body);
       removeLegacyDownloadCards();
+      restoreUnlockCommentsChrome();
       return hidePanel;
     }
     var existing = body.querySelector('.qcx-lock-panel');
@@ -558,13 +562,25 @@
         }
         placeHeroUnderTitle(body);
         removeLegacyDownloadCards();
+        restoreUnlockCommentsChrome();
         return existing;
       }
       placeLockPanelAboveFold(body, existing);
       try {
         var cmtExisting = document.getElementById('comments') || document.querySelector('.qcx-comments-shell');
-        placeCommentsForUnlock(cmtExisting);
-        capCommentsForUnlockChrome(cmtExisting);
+        if (cmtExisting) {
+          var isCmtActive =
+            cmtExisting.classList.contains('is-active') ||
+            cmtExisting.getAttribute('data-qcx-unlock-active') === '1' ||
+            !!cmtExisting.querySelector('.qcx-inline-gate.is-open');
+          if (isCmtActive) {
+            placeCommentsForUnlock(cmtExisting);
+            capCommentsForUnlockChrome(cmtExisting);
+          } else {
+            cmtExisting.setAttribute('data-qcx-comments-empty', '1');
+            cmtExisting.style.setProperty('display', 'none', 'important');
+          }
+        }
       } catch (ignorePlace) {}
       wireLockPanel(existing);
       removeLegacyDownloadCards();
@@ -670,6 +686,36 @@
     return null;
   }
 
+  function enforceCommentsChildOrder(box) {
+    if (!box) return;
+    try {
+      Array.prototype.slice.call(box.querySelectorAll('.commentForm, .spinner, #comment-editor-src')).forEach(function (n) {
+        try { if (n.parentNode) n.parentNode.removeChild(n); } catch (ignoreRm) {}
+      });
+      var gateEl = box.querySelector('.qcx-inline-gate');
+      var listEl = box.querySelector('#qcx-comment-list, .qcx-comment-list');
+      var formEl = box.querySelector('.comment-form');
+      if (gateEl) {
+        gateEl.style.setProperty('order', '1', 'important');
+        gateEl.style.setProperty('width', '100%', 'important');
+      }
+      if (listEl) {
+        listEl.style.setProperty('order', '2', 'important');
+        listEl.style.setProperty('width', '100%', 'important');
+      }
+      if (formEl) {
+        formEl.style.setProperty('order', '3', 'important');
+        formEl.style.setProperty('width', '100%', 'important');
+      }
+      if (gateEl && listEl && gateEl.parentNode === box && listEl.parentNode === box) {
+        if (gateEl.nextSibling !== listEl) box.insertBefore(gateEl, listEl);
+      }
+      if (listEl && formEl && listEl.parentNode === box && formEl.parentNode === box) {
+        if (listEl.nextSibling !== formEl) box.insertBefore(listEl, formEl);
+      }
+    } catch (ignoreOrder) {}
+  }
+
   function ensureCommentListHost(box) {
     if (!box) return null;
     var list = box.querySelector('#qcx-comment-list');
@@ -686,6 +732,7 @@
     }
     if (list) {
       fitCommentListItems(list);
+      enforceCommentsChildOrder(box);
       return list;
     }
     list = createEl('div', 'qcx-comment-list');
@@ -693,7 +740,7 @@
     list.setAttribute('aria-live', 'polite');
     list.setAttribute(
       'style',
-      'margin:0 0 12px!important;padding:10px 12px!important;border:1px solid rgba(0,240,163,.16)!important;border-radius:12px!important;background:rgba(0,240,163,.03)!important'
+      'order:2!important;width:100%!important;margin:0 0 12px!important;padding:10px 12px!important;border:1px solid rgba(0,240,163,.16)!important;border-radius:12px!important;background:rgba(0,240,163,.03)!important'
     );
     list.innerHTML =
       '<div class="qcx-comment-list-head" style="display:flex!important;align-items:center!important;justify-content:space-between!important;gap:8px!important;margin:0 0 8px!important">' +
@@ -702,9 +749,10 @@
       '<ul class="qcx-comment-list-items" style="list-style:none!important;margin:0!important;padding:0!important;display:flex!important;flex-direction:column!important;gap:2px!important;max-height:min(42vh,280px)!important;overflow-y:auto!important;overflow-x:hidden!important"></ul>';
     var form = box.querySelector('.comment-form');
     var gate = box.querySelector('.qcx-inline-gate');
-    if (gate && gate.parentNode) gate.parentNode.insertBefore(list, gate.nextSibling);
-    else if (form && form.parentNode) form.parentNode.insertBefore(list, form);
+    if (gate && gate.parentNode === box) box.insertBefore(list, gate.nextSibling);
+    else if (form && form.parentNode === box) box.insertBefore(list, form);
     else box.appendChild(list);
+    enforceCommentsChildOrder(box);
     return list;
   }
 
@@ -719,20 +767,23 @@
       if (gate.parentNode !== hint.parentNode || hint.nextSibling !== gate) {
         hint.parentNode.insertBefore(gate, hint.nextSibling);
       }
-    } else if (form && form.parentNode) {
-      form.parentNode.insertBefore(gate, form);
+    } else if (form && form.parentNode === box) {
+      box.insertBefore(gate, form);
+    } else if (box.firstChild) {
+      box.insertBefore(gate, box.firstChild);
     } else {
       box.appendChild(gate);
     }
     var list = ensureCommentListHost(box);
-    if (list && gate.parentNode) {
-      if (list.parentNode !== gate.parentNode || gate.nextSibling !== list) {
-        gate.parentNode.insertBefore(list, gate.nextSibling);
+    if (list && gate.parentNode === box) {
+      if (list.parentNode !== box || gate.nextSibling !== list) {
+        box.insertBefore(list, gate.nextSibling);
       }
     }
-    if (form && list && list.parentNode && list.nextSibling !== form) {
-      list.parentNode.insertBefore(form, list.nextSibling);
+    if (form && list && list.parentNode === box && list.nextSibling !== form) {
+      box.insertBefore(form, list.nextSibling);
     }
+    enforceCommentsChildOrder(box);
     return box;
   }
 
@@ -826,9 +877,12 @@
     Array.prototype.slice.call(nodes).forEach(function (node) {
       try {
         node.classList.remove('is-dismissed');
+        node.removeAttribute('data-qcx-comments-empty');
         node.hidden = false;
         node.removeAttribute('aria-hidden');
-        node.style.setProperty('display', 'block', 'important');
+        node.style.setProperty('display', 'flex', 'important');
+        node.style.setProperty('flex-direction', 'column', 'important');
+        node.style.setProperty('gap', '12px', 'important');
         node.style.setProperty('visibility', 'visible', 'important');
         node.style.removeProperty('height');
         node.style.removeProperty('overflow');
@@ -836,6 +890,7 @@
           node.style.setProperty('margin', '20px 0 28px', 'important');
           node.style.setProperty('padding', '18px', 'important');
         }
+        enforceCommentsChildOrder(node);
       } catch (ignore) {}
     });
     Array.prototype.slice.call(document.querySelectorAll('#qcx-comment-list, .qcx-comment-list')).forEach(function (list) {
@@ -1042,8 +1097,22 @@
     }
     if (existing) {
       existing.classList.remove('is-dismissed');
+      existing.classList.add('comments', 'embed', 'qcx-comments-shell');
       existing.hidden = false;
       existing.removeAttribute('aria-hidden');
+      Array.prototype.slice.call(existing.querySelectorAll('.commentForm, .spinner, #comment-editor-src')).forEach(function (n) {
+        try { if (n.parentNode) n.parentNode.removeChild(n); } catch (ignoreRm) {}
+      });
+      var existingForm = existing.querySelector('.comment-form');
+      if (!existingForm) {
+        existingForm = createEl('div', 'comment-form qcx-comments-rescue');
+        existingForm.setAttribute('style', 'display:flex;flex-direction:column;gap:10px;order:3!important;width:100%!important');
+        existing.appendChild(existingForm);
+      }
+      var strayFrame = existing.querySelector('iframe.qcx-blogger-comment-frame');
+      if (strayFrame && strayFrame.parentNode !== existingForm) {
+        existingForm.appendChild(strayFrame);
+      }
       /* Unlock hint only while still locked. */
       if (!isPageUnlocked()) ensureUnlockHint(existing);
       else {
@@ -1053,7 +1122,10 @@
       }
       ensureCommentListHost(existing);
       ensureFrame(existing);
-      existing.style.setProperty('display', 'block', 'important');
+      enforceCommentsChildOrder(existing);
+      existing.style.setProperty('display', 'flex', 'important');
+      existing.style.setProperty('flex-direction', 'column', 'important');
+      existing.style.setProperty('gap', '12px', 'important');
       existing.style.setProperty('visibility', 'visible', 'important');
       if (isPageUnlocked()) placeCommentsSettled(existing);
       else placeCommentsForUnlock(existing);
@@ -1069,20 +1141,21 @@
     box.setAttribute('data-embed', 'true');
     box.setAttribute('data-allow-comments', 'true');
     box.setAttribute('data-qcx-comments-rescue', '1');
-    box.setAttribute('style', 'display:block!important;visibility:visible!important;margin:20px 0 28px;padding:18px;border:1px solid #1d2a1f;border-radius:16px;background:#101810;color:#e6f5ec;position:relative;z-index:5');
+    box.setAttribute('style', 'display:flex!important;flex-direction:column!important;gap:12px!important;visibility:visible!important;margin:20px 0 28px;padding:18px;border:1px solid #1d2a1f;border-radius:16px;background:#101810;color:#e6f5ec;position:relative;z-index:5');
     var title = createEl('h4', 'postAComment', 'Bình luận Blogger');
     title.setAttribute('style', 'margin:0 0 12px;font-size:1.15rem;color:#e6f5ec');
     var form = createEl('div', 'comment-form qcx-comments-rescue');
-    form.setAttribute('style', 'display:flex;flex-direction:column;gap:10px');
+    form.setAttribute('style', 'display:flex;flex-direction:column;gap:10px;order:3!important;width:100%!important');
     if (!frameUrl) {
       var missing = createEl('p', 'qcx-comments-hint', 'Không lấy được blogId/postId để tải form bình luận.');
       form.appendChild(missing);
     }
     box.appendChild(title);
     if (!isPageUnlocked()) ensureUnlockHint(box);
-    box.appendChild(form);
     ensureCommentListHost(box);
+    box.appendChild(form);
     ensureFrame(box);
+    enforceCommentsChildOrder(box);
     if (isPageUnlocked()) {
       if (!box.parentNode) host.appendChild(box);
       placeCommentsSettled(box);
@@ -1271,11 +1344,36 @@
 
 
   function applyDelivery(resourceId, freeToken, closeOverlayFn) {
+    /* Inline Comment-Unlock Mode: post has inline .qcx-content-unlock and was unlocked via comment feed. */
+    if (String(freeToken || '').indexOf('inline-token:') === 0) {
+      revealLockedContent();
+      if (closeOverlayFn) closeOverlayFn();
+      try {
+        var inlineMeta = readFreeTokenMatch(resourceId);
+        saveFreeToken(resourceId, freeToken, (inlineMeta && inlineMeta.expiresAt) || defaultTokenExpiry());
+      } catch (ignoreInlinePin) {}
+      return Promise.resolve({ ok: true, resourceId: resourceId });
+    }
     var ids = resourceIdCandidates(resourceId);
     var last = { status: 0, error: '', hard: false };
     var anyHard = false;
     function tryOne(index) {
       if (index >= ids.length) {
+        /* If Worker returned 404 (not in KV) and post has inline .qcx-content-unlock with no stripped Drive links, unlock inline. */
+        if (
+          freeToken &&
+          !anyHard &&
+          last.status === 404 &&
+          document.querySelector('.post-body .qcx-content-unlock, [data-qcx-unhidden]') &&
+          !document.querySelector('.post-body .qcx-stripped-link')
+        ) {
+          revealLockedContent();
+          if (closeOverlayFn) closeOverlayFn();
+          try {
+            saveFreeToken(resourceId, freeToken, defaultTokenExpiry());
+          } catch (ignore404Pin) {}
+          return Promise.resolve({ ok: true, resourceId: resourceId });
+        }
         return Promise.resolve({
           ok: false,
           error: last.error || 'Không lấy được tài nguyên.',
@@ -1543,13 +1641,19 @@
           /* New public comment → immediately ask Worker to unlock. */
           if (state.nonce && !state.commentOk) pollComment(true);
         }
-        var sawCode = !!(state.commentCode && result.comments.some(function (c) {
-          return (c.text || '').indexOf(state.commentCode) !== -1;
+        var targetCode = String(state.commentCode || '').trim().toUpperCase();
+        var sawCode = !!(targetCode && result.comments.some(function (c) {
+          return String(c.text || '').toUpperCase().indexOf(targetCode) !== -1;
         }));
         state.sawCode = sawCode;
         listEl.classList.toggle('has-code', sawCode);
         if (sawCode && state.nonce && !state.commentOk) {
           setStatus('Đã thấy mã — đang mở khoá…', 'ok');
+          if (String(state.nonce || '').indexOf('inline:') === 0) {
+            stopCommentPoll();
+            finishWithToken('inline-token:' + state.commentCode, defaultTokenExpiry(), { freshMint: true });
+            return result;
+          }
           /* Priority check — skip if mid-backoff unless pause already elapsed. */
           if (Date.now() >= (state.pollPausedUntil || 0)) pollComment(true);
           state.listFastUntil = Date.now() + 30 * 1000;
@@ -1628,6 +1732,11 @@
 
     function pollComment(auto) {
       if (!state.nonce || state.commentOk || state.unlocked) return;
+      if (String(state.nonce || '').indexOf('inline:') === 0) {
+        refreshCommentList({ busy: false });
+        if (auto && !state.commentOk && !state.unlocked) scheduleCommentPoll(3500);
+        return;
+      }
       if (state.pollInflight) return;
       if (auto && Date.now() < (state.pollPausedUntil || 0)) {
         scheduleCommentPoll(state.pollPausedUntil - Date.now());
@@ -1727,6 +1836,29 @@
       return meta;
     }
 
+    function startInlineChallenge(next) {
+      var existingSession = readUnlockSession(config.resourceId);
+      var inlineCode = (existingSession && existingSession.commentCode) || '';
+      if (!inlineCode || !/^TK-[A-Z0-9]{4}$/.test(inlineCode)) {
+        var chars = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
+        var suffix = '';
+        for (var ci = 0; ci < 4; ci += 1) {
+          suffix += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        inlineCode = 'TK-' + suffix;
+      }
+      state.nonce = 'inline:' + inlineCode;
+      state.sessionStartedAt = (existingSession && existingSession.startedAt) || Date.now();
+      applyCode(inlineCode);
+      saveUnlockSession(config.resourceId, {
+        nonce: state.nonce,
+        commentCode: state.commentCode,
+        startedAt: state.sessionStartedAt
+      });
+      setStatus('Đang chờ…', 'busy');
+      if (typeof next === 'function') next();
+    }
+
     function ensureChallengeThen(next) {
       var ids = liveMeta();
       if (!ids.blogId || !ids.postId) {
@@ -1751,7 +1883,17 @@
       }).then(function (result) {
         state.starting = false;
         if (!result.ok || !result.data || !result.data.ok) {
-          setStatus((result.data && result.data.error) || 'Không tạo được phiên.', 'err');
+          /* Inline Comment-Unlock Mode fallback when post is not registered in Worker KV */
+          var errMsg = String((result.data && result.data.error) || '');
+          if (
+            result.status === 404 ||
+            /không tồn tại|not found/i.test(errMsg) ||
+            document.querySelector('.post-body .qcx-content-unlock, #qcx-resource')
+          ) {
+            startInlineChallenge(next);
+            return;
+          }
+          setStatus(errMsg || 'Không tạo được phiên.', 'err');
           return;
         }
         var data = result.data.data || {};
@@ -1768,6 +1910,10 @@
         next();
       }).catch(function () {
         state.starting = false;
+        if (document.querySelector('.post-body .qcx-content-unlock, #qcx-resource')) {
+          startInlineChallenge(next);
+          return;
+        }
         setStatus('Lỗi mạng. Thử lại.', 'err');
       });
     }
@@ -2015,21 +2161,31 @@
         }
       }
     }
+    var rescuePainted = !!document.querySelector('.qcx-rescue-single .post-body');
+    var hasVaultMarker =
+      !!(marker && marker.resourceId) ||
+      !!document.getElementById('qcx-resource') ||
+      !!document.querySelector('.post-body .qcx-content-unlock');
     if (!mode) {
+      if (rescuePainted && !hasVaultMarker) {
+        document.documentElement.setAttribute('data-qcx-unlocked', '1');
+        window.__qcxSecureResourceBooted = true;
+        restoreUnlockCommentsChrome();
+        return;
+      }
       scheduleBootRetry();
       return;
     }
-    /* CapCut contract requires #qcx-resource. Labels alone must not invent a lock
+    /* CapCut contract requires #qcx-resource or .qcx-content-unlock. Labels alone must not invent a lock
      * shell on legacy Telegram posts (that blanked the whole body as "preview"). */
-    var hasVaultMarker =
-      !!(marker && marker.resourceId) || !!document.getElementById('qcx-resource');
     if (!hasVaultMarker && !readFreeTokenMatch(slug)) {
-      if (!window.__qcxSecureBootTries || window.__qcxSecureBootTries < 40) {
+      if (!rescuePainted && (!window.__qcxSecureBootTries || window.__qcxSecureBootTries < 40)) {
         scheduleBootRetry();
         return;
       }
       document.documentElement.setAttribute('data-qcx-unlocked', '1');
       window.__qcxSecureResourceBooted = true;
+      restoreUnlockCommentsChrome();
       return;
     }
     if (window.__qcxSecureBootMo) {
