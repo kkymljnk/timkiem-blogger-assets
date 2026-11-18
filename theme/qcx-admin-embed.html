@@ -33,6 +33,7 @@
           <button type="button" data-section="ai">AI</button>
           <button type="button" data-section="body">Nội dung</button>
           <button type="button" data-section="vault">Vault</button>
+          <button type="button" data-section="payos" style="color:#ffd166;">👑 PayOS &amp; VIP</button>
         </nav>
 
         <div class="compose-panes">
@@ -42,7 +43,10 @@
               <input id="title" class="input-sans" type="text" placeholder="Mobile AI Coding Claude Setup Free" />
             </div>
             <div class="field">
-              <label for="slug">Slug / resourceId</label>
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px;">
+                <label for="slug" style="margin:0;">Slug / resourceId</label>
+                <button type="button" class="ghost" id="btnLoadVault" title="Tải thông tin bài viết đã lưu từ Worker KV theo Slug">📥 Nạp từ Vault</button>
+              </div>
               <input id="slug" type="text" placeholder="mobile-claude-setup" />
               <p class="hint">Permalink Blogger = vault id (không .html)</p>
             </div>
@@ -56,6 +60,13 @@
                 </div>
                 <div id="itemPriceRow" style="display:none;margin-top:8px;">
                   <input type="number" id="inpItemPrice" placeholder="Giá VNĐ (VD: 300000)" step="10000" min="10000" style="width:100%;padding:6px 10px;background:#0d150e;border:1px solid #1d2a1f;color:#e6f5ec;border-radius:6px;font-family:inherit;font-size:13px;"/>
+                  <div class="label-chips price-presets" id="itemPricePresets" style="margin-top:6px;">
+                    <button type="button" data-preset-price="100000">100k</button>
+                    <button type="button" data-preset-price="200000">200k</button>
+                    <button type="button" data-preset-price="300000">300k</button>
+                    <button type="button" data-preset-price="500000">500k</button>
+                    <button type="button" data-preset-price="1000000">1M</button>
+                  </div>
                 </div>
               </div>
               <div class="field" id="priceField" hidden>
@@ -147,8 +158,71 @@
 
           <div class="card card-vault hidden" data-section-pane="vault" hidden>
             <div class="field">
-              <label for="driveUrl">Drive URL (vault only)</label>
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px;">
+                <label for="driveUrl" style="margin:0;">Drive URL (vault only)</label>
+                <button type="button" class="ghost" id="btnLoadVault2" title="Tải thông tin bài viết đã lưu từ Worker KV theo Slug">📥 Nạp từ Vault</button>
+              </div>
               <input id="driveUrl" type="url" placeholder="https://drive.google.com/..." />
+            </div>
+          </div>
+
+          <div class="card card-payos hidden" data-section-pane="payos" hidden>
+            <div class="panel-head tight">
+              <h2>👑 Quản trị PayOS · VIP 500k &amp; Bài Giá Riêng</h2>
+            </div>
+
+            <!-- Block 1: Lookup -->
+            <div class="field" style="padding-bottom:12px;border-bottom:1px solid #1d2a1f;">
+              <label for="inpPayosLookup">1. Tra cứu Đơn hàng / Quyền khách hàng</label>
+              <div style="display:flex;gap:8px;align-items:center;">
+                <input id="inpPayosLookup" type="text" placeholder="Nhập SĐT, Email hoặc mã OrderCode (VD: 0912345678 / 1763500...)" style="flex:1;" />
+                <button type="button" class="primary" id="btnPayosLookup" style="white-space:nowrap;">🔍 Tra cứu</button>
+              </div>
+              <div id="outPayosLookup" class="status hidden" hidden style="margin-top:8px;"></div>
+            </div>
+
+            <!-- Block 2: Manual Grant -->
+            <div class="field" style="padding:10px 0 12px;border-bottom:1px solid #1d2a1f;">
+              <label>2. Cấp VIP 30 ngày / Mở khóa Bài Giá Riêng (1 chạm)</label>
+              <div class="row" style="margin-top:6px;">
+                <div>
+                  <label for="inpGrantContact">SĐT hoặc Email khách nhận</label>
+                  <input id="inpGrantContact" type="text" placeholder="0988xxxxxx hoặc khach@gmail.com" />
+                </div>
+                <div>
+                  <label for="selGrantScope">Loại quyền cấp</label>
+                  <select id="selGrantScope">
+                    <option value="vip">👑 Gói VIP Full (500.000đ / 30 ngày)</option>
+                    <option value="item">💎 Mở khóa 1 Bài Giá Riêng (Vĩnh viễn)</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row" style="margin-top:8px;">
+                <div id="grantSlugWrap">
+                  <label for="inpGrantSlug">Slug bài Giá Riêng <span class="opt">(để trống = lấy Slug đang soạn)</span></label>
+                  <input id="inpGrantSlug" type="text" placeholder="VD: source-bot-telegram-pro" />
+                </div>
+                <div id="grantDaysWrap">
+                  <label for="inpGrantDays">Số ngày VIP</label>
+                  <input id="inpGrantDays" type="number" value="30" min="1" max="3650" />
+                </div>
+              </div>
+              <div class="actions" style="margin-top:8px;">
+                <button type="button" class="primary" id="btnPayosGrant" style="background:linear-gradient(135deg,#ffd166,#f4a261);color:#140e02;border-color:#ffd166;">⚡ Cấp quyền ngay &amp; Tạo mã khôi phục</button>
+              </div>
+              <div id="outPayosGrant" class="status hidden" hidden style="margin-top:8px;"></div>
+            </div>
+
+            <!-- Block 3: Live PayOS Test QR 2.000đ -->
+            <div class="field" style="padding-top:10px;margin-bottom:0;">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
+                <div>
+                  <label style="margin:0;">3. Kiểm tra kết nối PayOS Live (VietQR 2.000đ)</label>
+                  <p class="hint" style="margin:2px 0 0;">Tạo đơn test 2.000đ thật qua kênh CONGCU.AI và tự động kiểm tra trạng thái PAID mỗi 2.2 giây.</p>
+                </div>
+                <button type="button" id="btnPayosTestQr" style="border-color:#00f2fe;color:#00f2fe;">🧪 Tạo QR Test 2.000đ</button>
+              </div>
+              <div id="outPayosTestQr" class="status hidden" hidden style="margin-top:8px;"></div>
             </div>
           </div>
         </div>
@@ -229,17 +303,29 @@ Chúc các bạn thành công!"></textarea>
     s.type='text/css';
     (document.head||document.documentElement).appendChild(s);
   }
-  s.textContent="/* qcx-admin-ui */\n/* MMO Admin \u2014 dense cockpit (PC + mobile) */\n    #qcx-admin-root, #qcx-admin-root * { box-sizing: border-box; }\n    #qcx-admin-root {\n      --qcx-admin-radius: 8px;\n      --qcx-admin-ok: #7dcea0;\n      --qcx-admin-warn: #e0b35a;\n      --qcx-admin-fill: #141a16;\n      --qcx-admin-hover: #1c2420;\n      --qcx-admin-mint: #7dcea0;\n      --qcx-admin-mint-ink: #06110a;\n      --qcx-admin-input: #0b120c;\n      --sans: 'IBM Plex Sans', 'Segoe UI', sans-serif;\n      --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;\n      margin: 0 auto;\n      min-height: 0;\n      padding: 0 0 24px;\n      color: var(--fg, #e6f5ec);\n      font: 13px/1.4 var(--sans);\n      -webkit-font-smoothing: antialiased;\n      background: transparent;\n      width: 100%;\n      max-width: 1120px;\n    }\n    #qcx-admin-root .wrap {\n      max-width: 1120px;\n      margin: 0 auto;\n      padding: 6px 12px 24px;\n      width: 100%;\n    }\n\n    /* Login gate: compact card, slightly above center */\n    #qcx-admin-root:has(.gate:not(.hidden)) {\n      min-height: calc(100vh - 64px);\n      display: flex;\n      align-items: center;\n      justify-content: center;\n      padding: 12px 10px 28px;\n      max-width: none;\n    }\n    #qcx-admin-root:has(.gate:not(.hidden)) .wrap {\n      width: 100%;\n      max-width: 300px;\n      margin: -10vh auto 0;\n      padding: 0;\n      display: flex;\n      flex-direction: column;\n      align-items: center;\n    }\n    #qcx-admin-root:has(.gate:not(.hidden)) > .wrap > header,\n    #qcx-admin-root:has(.gate:not(.hidden)) #btnLogout {\n      display: none !important;\n    }\n    #qcx-admin-root:has(.gate:not(.hidden)) .gate {\n      width: 100%;\n      max-width: 300px;\n      margin: 0 auto;\n      padding: 10px 12px;\n    }\n    #qcx-admin-root .gate h2 {\n      margin: 0 0 8px;\n      font: 700 10px/1.2 var(--mono);\n      letter-spacing: 0.1em;\n    }\n    #qcx-admin-root .gate .field { margin-bottom: 8px; }\n    #qcx-admin-root .gate .actions {\n      display: flex;\n      width: 100%;\n      margin-top: 8px;\n      padding-top: 0;\n    }\n    #qcx-admin-root .gate .actions .primary,\n    #qcx-admin-root .gate button.primary {\n      width: 100%;\n      flex: 1 1 auto;\n    }\n    /* Hide login hint; gate status only when not .hidden */\n    #qcx-admin-root .gate > .hint,\n    #qcx-admin-root #gateStatus.hidden {\n      display: none !important;\n    }\n\n    /* Beat theme header kill: display:none + height:0 + overflow:hidden */\n    #qcx-admin-root header {\n      display: flex !important;\n      position: relative !important;\n      height: auto !important;\n      min-height: 0 !important;\n      max-height: none !important;\n      overflow: visible !important;\n      visibility: visible !important;\n      opacity: 1 !important;\n      background: transparent !important;\n      flex-wrap: nowrap;\n      gap: 8px 12px;\n      align-items: center;\n      justify-content: space-between;\n      margin: 0 0 8px !important;\n      padding: 2px 0 6px !important;\n      border: 0 !important;\n      border-bottom: 1px solid var(--line, #1d2a1f) !important;\n    }\n    #qcx-admin-root header h1,\n    #qcx-admin-root header button {\n      position: static !important;\n      height: auto !important;\n      overflow: visible !important;\n      visibility: visible !important;\n      opacity: 1 !important;\n    }\n    #qcx-admin-root header h1 {\n      margin: 0;\n      font: 700 13px/1.2 var(--mono);\n      letter-spacing: 0.04em;\n      text-transform: uppercase;\n      color: var(--fg, #e6f5ec);\n    }\n    #qcx-admin-root header h1 span { color: var(--qcx-admin-mint); }\n    #qcx-admin-root header p { display: none !important; }\n    #qcx-admin-root #btnLogout {\n      min-height: 28px;\n      padding: 4px 10px;\n      font: 600 10px/1 var(--mono);\n      letter-spacing: 0.06em;\n      text-transform: uppercase;\n      flex: 0 0 auto;\n      white-space: nowrap;\n    }\n\n    #qcx-admin-root .gate, #qcx-admin-root .panel {\n      background: linear-gradient(180deg, #101a12 0%, var(--card, #0e170f) 100%);\n      border: 1px solid var(--line, #1d2a1f);\n      border-radius: var(--qcx-admin-radius);\n      padding: 12px;\n      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22);\n    }\n    #qcx-admin-root .gate {\n      max-width: 300px; width: 100%; margin: 0 auto;\n      animation: qcx-admin-rise 0.35s ease-out both;\n      padding: 10px 12px;\n    }\n    #qcx-admin-root .gate h2,\n    #qcx-admin-root .panel h2,\n    #qcx-admin-root .compose-title h2,\n    #qcx-admin-root .card h2 {\n      margin: 0 0 4px;\n      font: 700 11px/1.2 var(--mono);\n      letter-spacing: 0.1em;\n      text-transform: uppercase;\n      color: var(--qcx-admin-mint);\n    }\n    #qcx-admin-root .panel-head {\n      display: flex; align-items: baseline; justify-content: space-between;\n      gap: 8px; margin-bottom: 8px; padding-bottom: 6px;\n      border-bottom: 1px solid var(--line, #1d2a1f);\n    }\n    #qcx-admin-root .panel-head h2 { margin: 0; }\n\n    /* Beat theme `.grid{grid-template-columns:repeat(4,1fr)!important}` */\n    #qcx-admin-root .grid {\n      display: grid !important;\n      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) !important;\n      gap: 14px !important;\n      animation: qcx-admin-rise 0.35s ease-out both;\n      width: 100%;\n      max-width: 1120px;\n      margin: 0 auto;\n      align-items: start;\n    }\n    #qcx-admin-root .grid.hidden,\n    #qcx-admin-root .hidden { display: none !important; }\n    @media (max-width: 900px) {\n      #qcx-admin-root .grid { grid-template-columns: 1fr !important; }\n    }\n\n    #qcx-admin-root .compose-col {\n      display: flex;\n      flex-direction: column;\n      gap: 12px;\n      min-width: 0;\n      overflow: visible;\n    }\n    #qcx-admin-root .compose-title {\n      margin: 0;\n      padding-bottom: 4px;\n      border-bottom: 0;\n      align-items: center;\n    }\n    #qcx-admin-root input[type='file'].hidden,\n    #qcx-admin-root input[type='file'][hidden] {\n      display: none !important;\n    }\n    #qcx-admin-root .compose-nav {\n      position: sticky;\n      top: 8px;\n      z-index: 6;\n      display: grid;\n      grid-template-columns: repeat(4, minmax(0, 1fr));\n      gap: 6px;\n      padding: 6px;\n      border: 1px solid #2a3830;\n      border-radius: var(--qcx-admin-radius);\n      background: rgba(12, 18, 14, 0.94);\n      backdrop-filter: blur(10px);\n    }\n    #qcx-admin-root .compose-nav button {\n      min-height: 32px;\n      width: 100%;\n      border-color: transparent;\n      background: transparent;\n      color: var(--fg-dim, #8aa596);\n      font-size: 10px;\n      letter-spacing: 0.04em;\n      text-transform: uppercase;\n    }\n    #qcx-admin-root .compose-nav button:hover {\n      color: var(--fg, #e6f5ec);\n      background: rgba(125, 206, 160, 0.06);\n      border-color: transparent;\n    }\n    #qcx-admin-root .compose-nav button.active {\n      background: rgba(125, 206, 160, 0.16);\n      color: var(--qcx-admin-mint);\n      box-shadow: inset 0 -2px 0 var(--qcx-admin-mint);\n    }\n    #qcx-admin-root .compose-panes {\n      min-width: 0;\n    }\n    #qcx-admin-root .compose-panes > [data-section-pane][hidden],\n    #qcx-admin-root .compose-panes > [data-section-pane].hidden {\n      display: none !important;\n    }\n    #qcx-admin-root .compose-actions {\n      position: sticky;\n      bottom: 8px;\n      z-index: 5;\n      margin: 0;\n      padding: 10px 12px;\n      border: 1px solid #2a3830;\n      border-radius: var(--qcx-admin-radius);\n      background: rgba(12, 18, 14, 0.94);\n      backdrop-filter: blur(10px);\n    }\n    #qcx-admin-root .card {\n      margin: 0;\n      padding: 14px;\n      border: 1px solid var(--line, #1d2a1f);\n      border-radius: var(--qcx-admin-radius);\n      background: rgba(14, 20, 16, 0.72);\n    }\n    #qcx-admin-root .card .field { margin-bottom: 10px; }\n    #qcx-admin-root .card .field:last-child { margin-bottom: 0; }\n    #qcx-admin-root .panel-head.tight {\n      margin-bottom: 10px;\n      padding-bottom: 6px;\n    }\n\n    #qcx-admin-root label {\n      display: block; margin: 0 0 4px;\n      color: var(--fg-dim, #8aa596);\n      font: 600 10px/1.15 var(--mono);\n      letter-spacing: 0.06em; text-transform: uppercase;\n    }\n    #qcx-admin-root .field { margin-bottom: 10px; }\n    #qcx-admin-root .row {\n      display: grid !important;\n      grid-template-columns: 1fr 1fr !important;\n      gap: 12px;\n    }\n    #qcx-admin-root .row.row-meta {\n      grid-template-columns: auto 1fr 1.2fr !important;\n      gap: 12px;\n      align-items: end;\n    }\n    #qcx-admin-root .row.row-meta #priceField[hidden],\n    #qcx-admin-root .row.row-meta #priceField.hidden {\n      display: none !important;\n    }\n    #qcx-admin-root .row.row-meta:not(:has(#priceField:not([hidden]))) {\n      grid-template-columns: auto 1.2fr !important;\n    }\n    @media (max-width: 560px) {\n      #qcx-admin-root .row,\n      #qcx-admin-root .row.row-meta { grid-template-columns: 1fr !important; }\n    }\n\n    #qcx-admin-root .card-ai {\n      padding: 10px 12px;\n      border-color: rgba(125, 206, 160, 0.28);\n      background: rgba(125, 206, 160, 0.05);\n    }\n    #qcx-admin-root .ai-strip {\n      display: grid;\n      grid-template-columns: auto minmax(0, 1fr) auto;\n      gap: 8px;\n      align-items: center;\n    }\n    #qcx-admin-root .ai-strip select {\n      min-height: 32px;\n      font-size: 11px;\n    }\n    #qcx-admin-root .ai-brief-wrap {\n      margin-top: 10px;\n      padding-top: 10px;\n      border-top: 1px solid rgba(125, 206, 160, 0.18);\n    }\n    #qcx-admin-root .ai-brief-wrap[hidden],\n    #qcx-admin-root .ai-brief-wrap.hidden { display: none !important; }\n    #qcx-admin-root .ai-brief-wrap textarea {\n      min-height: 72px;\n      font-family: var(--sans);\n    }\n    #qcx-admin-root .input-sans { font-family: var(--sans) !important; font-weight: 600; }\n    #qcx-admin-root .field-optional { opacity: 0.88; }\n    #qcx-admin-root .field-optional .opt {\n      text-transform: none;\n      letter-spacing: 0;\n      font-weight: 500;\n      color: #6f8576;\n    }\n\n    #qcx-admin-root .body-tabs { margin-bottom: 0; }\n    #qcx-admin-root .body-tab-seg { margin-bottom: 8px; }\n    #qcx-admin-root .body-pane.hidden { display: none !important; }\n    #qcx-admin-root .body-pane { margin-bottom: 0; }\n    #qcx-admin-root .body-pane textarea.tall { min-height: 260px; }\n\n    #qcx-admin-root .card-vault {\n      border-color: #2a3830;\n    }\n    #qcx-admin-root .vault-actions {\n      margin-top: 0;\n      display: grid;\n      grid-template-columns: 1.4fr 1fr 1fr auto;\n      gap: 8px;\n    }\n    #qcx-admin-root .vault-actions button { width: 100%; }\n    #qcx-admin-root .more-menu {\n      display: flex;\n      flex-wrap: wrap;\n      gap: 6px;\n      margin-top: 8px;\n    }\n    #qcx-admin-root .more-menu[hidden],\n    #qcx-admin-root .more-menu.hidden { display: none !important; }\n    #qcx-admin-root .compose-actions .status {\n      margin-top: 8px;\n      padding: 6px 8px;\n      font-size: 10.5px;\n    }\n    #qcx-admin-root .body-pane textarea.tall { min-height: 280px; }\n\n    #qcx-admin-root .panel-rail {\n      position: sticky;\n      top: 10px;\n      padding: 14px;\n    }\n    #qcx-admin-root .checklist {\n      list-style: none;\n      margin: 0 0 10px;\n      padding: 0;\n      display: flex;\n      flex-direction: column;\n      gap: 6px;\n    }\n    #qcx-admin-root .checklist .check {\n      display: grid;\n      grid-template-columns: 18px minmax(0, 1fr) auto;\n      gap: 8px;\n      align-items: baseline;\n      padding: 7px 9px;\n      border-radius: 7px;\n      border: 1px solid var(--line, #1d2a1f);\n      background: rgba(0, 0, 0, 0.18);\n      font: 500 11px/1.3 var(--mono);\n    }\n    #qcx-admin-root .checklist .check.pass {\n      border-color: rgba(125, 206, 160, 0.35);\n      color: var(--qcx-admin-ok);\n    }\n    #qcx-admin-root .checklist .check.fail {\n      border-color: rgba(255, 84, 112, 0.35);\n      color: var(--danger, #ff5470);\n    }\n    #qcx-admin-root .checklist .tick { font-weight: 700; }\n    #qcx-admin-root .checklist .check-label { color: inherit; }\n    #qcx-admin-root .checklist .check-detail {\n      color: var(--fg-dim, #8aa596);\n      font-size: 10px;\n      max-width: 46%;\n      overflow: hidden;\n      text-overflow: ellipsis;\n      white-space: nowrap;\n      text-align: right;\n    }\n    #qcx-admin-root .html-out.collapsed,\n    #qcx-admin-root .html-out.hidden,\n    #qcx-admin-root .html-out[hidden] {\n      display: none !important;\n    }\n    #qcx-admin-root .panel-head .ghost { margin-left: auto; }\n    #qcx-admin-root .ghost-hint {\n      opacity: 0.65;\n      cursor: help;\n      font-size: 10px;\n    }\n\n    #qcx-admin-root input,\n    #qcx-admin-root select,\n    #qcx-admin-root textarea {\n      width: 100%;\n      min-height: 34px;\n      background: var(--qcx-admin-input);\n      border: 1px solid #243328;\n      border-radius: 7px;\n      color: var(--fg, #e6f5ec);\n      padding: 7px 10px;\n      font: 500 12.5px/1.35 var(--mono);\n      transition: border-color 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;\n    }\n    #qcx-admin-root textarea { min-height: 72px; resize: vertical; padding-top: 8px; }\n    #qcx-admin-root textarea.tall { min-height: 120px; }\n    #qcx-admin-root input::placeholder,\n    #qcx-admin-root textarea::placeholder {\n      color: #6f8576; opacity: 1; font-weight: 400;\n    }\n    #qcx-admin-root input:hover,\n    #qcx-admin-root select:hover,\n    #qcx-admin-root textarea:hover { border-color: #334539; }\n    #qcx-admin-root input:focus,\n    #qcx-admin-root select:focus,\n    #qcx-admin-root textarea:focus {\n      outline: none;\n      border-color: var(--qcx-admin-mint);\n      box-shadow: 0 0 0 2px rgba(125, 206, 160, 0.16);\n      background: #0d1610;\n    }\n    #qcx-admin-root input:disabled,\n    #qcx-admin-root textarea:disabled {\n      opacity: 0.45; cursor: not-allowed; background: #0a100b;\n    }\n\n    #qcx-admin-root .actions {\n      display: flex; flex-wrap: wrap; gap: 6px;\n      margin-top: 10px; padding-top: 2px;\n    }\n    #qcx-admin-root button,\n    #qcx-admin-root .btn {\n      appearance: none;\n      display: inline-flex; align-items: center; justify-content: center;\n      gap: 6px;\n      min-height: 34px;\n      border: 1px solid #2a3830;\n      background: var(--qcx-admin-fill);\n      color: #e8efe9;\n      border-radius: 7px;\n      padding: 6px 11px;\n      font: 700 11px/1 var(--mono);\n      letter-spacing: 0.03em;\n      cursor: pointer;\n      transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;\n    }\n    #qcx-admin-root button:hover {\n      background: var(--qcx-admin-hover);\n      border-color: #3a4a40;\n    }\n    #qcx-admin-root button:active { transform: none; }\n    #qcx-admin-root button.primary {\n      background: var(--qcx-admin-mint);\n      color: var(--qcx-admin-mint-ink);\n      border-color: var(--qcx-admin-mint);\n      box-shadow: none;\n    }\n    #qcx-admin-root button.primary:hover {\n      background: #93dbb2;\n      border-color: #93dbb2;\n      color: var(--qcx-admin-mint-ink);\n    }\n    #qcx-admin-root button.ghost {\n      background: transparent;\n      border-color: #2a3830;\n      color: var(--fg-dim, #8aa596);\n      box-shadow: none;\n      min-height: 30px;\n      padding: 4px 9px;\n      font-size: 10px;\n    }\n    #qcx-admin-root button.ghost:hover {\n      color: var(--fg, #e6f5ec);\n      border-color: var(--qcx-admin-mint);\n      background: rgba(125, 206, 160, 0.06);\n    }\n    #qcx-admin-root button:disabled {\n      opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none;\n    }\n\n    #qcx-admin-root .status {\n      margin-top: 8px; padding: 7px 10px; border-radius: 7px;\n      border: 1px solid var(--line, #1d2a1f);\n      color: var(--fg-dim, #8aa596);\n      font: 11px/1.4 var(--mono);\n      white-space: pre-wrap;\n      background: rgba(10, 15, 10, 0.7);\n    }\n    #qcx-admin-root .status.ok { border-color: rgba(125,206,160,.45); color: var(--qcx-admin-ok); background: rgba(125,206,160,.06); }\n    #qcx-admin-root .status.err { border-color: rgba(255,84,112,.45); color: var(--danger, #ff5470); background: rgba(255,84,112,.06); }\n    #qcx-admin-root .status.warn { border-color: rgba(224,179,90,.45); color: var(--qcx-admin-warn); background: rgba(224,179,90,.06); }\n\n    #qcx-admin-root .html-out {\n      margin: 0; max-height: 360px; overflow: auto;\n      background: #080d08; border: 1px solid var(--line, #1d2a1f);\n      border-radius: 7px; padding: 10px;\n      font: 11px/1.4 var(--mono);\n      white-space: pre-wrap; word-break: break-word; color: #9bb5a4;\n    }\n    #qcx-admin-root .hint {\n      color: var(--fg-dim, #8aa596); font-size: 11px;\n      margin: 3px 0 0; line-height: 1.35;\n    }\n    #qcx-admin-root .hint.publish {\n      margin-top: 8px;\n    }\n    #qcx-admin-root code {\n      font-family: var(--mono);\n      color: var(--qcx-admin-mint);\n      font-size: 0.92em;\n    }\n\n    #qcx-admin-root .seg {\n      display: inline-flex; width: 100%;\n      border: 1px solid #243328; border-radius: 7px;\n      overflow: hidden; background: var(--qcx-admin-input); min-height: 34px;\n    }\n    #qcx-admin-root .seg button {\n      flex: 1; border: 0; border-radius: 0; min-height: 34px;\n      background: transparent; padding: 6px 8px;\n      color: var(--fg-dim, #8aa596); box-shadow: none; transform: none;\n      font-size: 10px;\n    }\n    #qcx-admin-root .seg button:hover {\n      background: rgba(125, 206, 160, 0.06); color: var(--fg, #e6f5ec); transform: none;\n    }\n    #qcx-admin-root .seg button.active {\n      background: rgba(125, 206, 160, 0.16);\n      color: var(--qcx-admin-mint);\n      box-shadow: inset 0 -2px 0 var(--qcx-admin-mint);\n    }\n\n    /* Sticky vault + stacked rail on small screens */\n    @media (max-width: 700px) {\n      #qcx-admin-root {\n        max-width: none;\n        width: 100%;\n        padding-bottom: 16px;\n      }\n      #qcx-admin-root .wrap {\n        padding: 8px 10px 88px;\n        max-width: none;\n        width: 100%;\n      }\n      #qcx-admin-root .grid {\n        max-width: none !important;\n        width: 100% !important;\n        gap: 12px !important;\n      }\n      #qcx-admin-root header {\n        gap: 8px;\n        margin-bottom: 6px !important;\n        padding-bottom: 5px !important;\n      }\n      #qcx-admin-root .panel,\n      #qcx-admin-root .card { padding: 12px; width: 100%; }\n      #qcx-admin-root .panel-rail { position: static; order: 2; }\n      #qcx-admin-root .compose-col { order: 1; }\n      #qcx-admin-root .gate { padding: 12px; max-width: 100%; }\n      #qcx-admin-root:has(.gate:not(.hidden)) .wrap,\n      #qcx-admin-root:has(.gate:not(.hidden)) .gate { max-width: 100%; }\n      #qcx-admin-root textarea { min-height: 64px; }\n      #qcx-admin-root textarea.tall { min-height: 180px; }\n      #qcx-admin-root .html-out { max-height: 220px; }\n      #qcx-admin-root .hint.publish { display: none; }\n      #qcx-admin-root .ai-strip {\n        grid-template-columns: 1fr;\n      }\n      #qcx-admin-root .compose-nav {\n        top: 4px;\n        grid-template-columns: repeat(4, minmax(0, 1fr));\n        gap: 4px;\n        padding: 4px;\n      }\n      #qcx-admin-root .compose-nav button {\n        min-height: 30px;\n        padding: 4px 2px;\n        font-size: 9px;\n      }\n      #qcx-admin-root .vault-actions {\n        grid-template-columns: 1fr 1fr;\n      }\n      #qcx-admin-root .vault-actions .primary {\n        grid-column: 1 / -1;\n      }\n      #qcx-admin-root .compose-actions {\n        position: sticky;\n        bottom: 6px;\n        z-index: 5;\n      }\n      #qcx-admin-root .body-pane textarea.tall { min-height: 200px; }\n      #qcx-admin-root .checklist .check {\n        grid-template-columns: 18px minmax(0, 1fr);\n      }\n      #qcx-admin-root .checklist .check-detail {\n        grid-column: 2;\n        max-width: none;\n        text-align: left;\n      }\n    }\n\n    @keyframes qcx-admin-rise {\n      from { opacity: 0; transform: translateY(6px); }\n      to { opacity: 1; transform: translateY(0); }\n    }\n    #qcx-admin-root .label-chips {\n      display: flex;\n      flex-wrap: wrap;\n      gap: 4px;\n      margin-top: 6px;\n    }\n    #qcx-admin-root .label-chips button {\n      min-height: 22px;\n      padding: 2px 8px;\n      font: 600 10px/1.2 var(--mono);\n      border-radius: 999px;\n      background: var(--qcx-admin-fill);\n      border: 1px solid var(--line, #1d2a1f);\n      color: #a9c4b3;\n      cursor: pointer;\n    }\n    #qcx-admin-root .label-chips button.active {\n      background: rgba(125, 206, 160, 0.16);\n      border-color: var(--qcx-admin-mint);\n      color: var(--qcx-admin-mint);\n    }\n    @media (prefers-reduced-motion: reduce) {\n      #qcx-admin-root .gate, #qcx-admin-root .grid { animation: none; }\n      #qcx-admin-root button { transition: none; }\n    }\n\n    html.qcx-admin-standalone, html.qcx-admin-standalone body {\n      margin: 0; min-height: 100%;\n      background:\n        radial-gradient(900px 420px at 12% -8%, rgba(125, 206, 160, 0.08), transparent 55%),\n        linear-gradient(180deg, #0d1410, var(--bg, #0a0f0a));\n      color: var(--fg, #e6f5ec);\n      font-family: var(--sans);\n    }\n    body:has(#qcx-admin-root) .post-header,\n    body:has(#qcx-admin-root) .qcx-read-time,\n    body:has(#qcx-admin-root) #qcx-sidebar-rail-rescue,\n    body:has(#qcx-admin-root) .qcx-sidebar-rail,\n    body:has(#qcx-admin-root) .sidebar-wrapper,\n    body:has(#qcx-admin-root) #sidebar,\n    body:has(#qcx-admin-root) .sidebar,\n    body:has(#qcx-admin-root) .widget.BlogArchive,\n    body:has(#qcx-admin-root) .widget.FollowByEmail,\n    body:has(#qcx-admin-root) .FollowByEmail,\n    body:has(#qcx-admin-root) .qcx-follow-cta,\n    body:has(#qcx-admin-root) .follow-by-email,\n    body:has(#qcx-admin-root) #qcx-admin-root .mac-frame,\n    body:has(#qcx-admin-root) #qcx-admin-boot { display: none !important; }\n\n    /* Collapse Blogspot chrome so admin sits in true page center */\n    body:has(#qcx-admin-root) .main-wrapper,\n    body:has(#qcx-admin-root) .centered-bottom,\n    body:has(#qcx-admin-root) .centered-top,\n    body:has(#qcx-admin-root) .blog-posts,\n    body:has(#qcx-admin-root) .the-article,\n    body:has(#qcx-admin-root) .post-body,\n    body:has(#qcx-admin-root) #main,\n    body:has(#qcx-admin-root) .main {\n      max-width: none !important;\n      width: 100% !important;\n      margin-left: auto !important;\n      margin-right: auto !important;\n      float: none !important;\n      grid-template-columns: 1fr !important;\n      display: block !important;\n    }\n    body:has(#qcx-admin-root) .main-wrapper,\n    body:has(#qcx-admin-root) .centered-bottom {\n      padding-left: 0 !important;\n      padding-right: 0 !important;\n    }\n    body:has(#qcx-admin-root) .content-outer,\n    body:has(#qcx-admin-root) .content-inner,\n    body:has(#qcx-admin-root) .column-center-outer,\n    body:has(#qcx-admin-root) .column-center-inner,\n    body:has(#qcx-admin-root) .main-inner,\n    body:has(#qcx-admin-root) #page_body,\n    body:has(#qcx-admin-root) .page {\n      max-width: none !important;\n      width: 100% !important;\n      margin-left: 0 !important;\n      margin-right: 0 !important;\n      float: none !important;\n      padding-left: 0 !important;\n      padding-right: 0 !important;\n    }\n    body:has(#qcx-admin-root:has(.gate:not(.hidden))) .qcx-follow-strip,\n    body:has(#qcx-admin-root:has(.gate:not(.hidden))) [class*='follow'],\n    body:has(#qcx-admin-root:has(.gate:not(.hidden))) .widget.Profile,\n    body:has(#qcx-admin-root:has(.gate:not(.hidden))) .widget.Attribution {\n      display: none !important;\n    }\n\n    /* Modal: Smart Format Crawl */\n    .modal-overlay {\n      position: fixed;\n      inset: 0;\n      z-index: 99999;\n      background: rgba(0, 0, 0, 0.78);\n      backdrop-filter: blur(8px);\n      display: flex;\n      align-items: center;\n      justify-content: center;\n      padding: 16px;\n    }\n    .modal-overlay.hidden, .modal-overlay[hidden] {\n      display: none !important;\n    }\n    .modal-card {\n      background: #09100c;\n      border: 1px solid rgba(125, 206, 160, 0.35);\n      border-radius: 12px;\n      width: 100%;\n      max-width: 680px;\n      max-height: 90vh;\n      display: flex;\n      flex-direction: column;\n      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.7), 0 0 24px rgba(0, 242, 254, 0.2);\n      color: #e6f5ec;\n      font-family: var(--sans);\n      overflow: hidden;\n    }\n    .modal-header {\n      display: flex;\n      align-items: center;\n      justify-content: space-between;\n      padding: 14px 18px;\n      border-bottom: 1px solid rgba(125, 206, 160, 0.2);\n      background: rgba(11, 18, 12, 0.95);\n    }\n    .modal-header h3 {\n      margin: 0;\n      font-size: 15px;\n      font-weight: 700;\n      color: #00f2fe;\n      display: flex;\n      align-items: center;\n      gap: 8px;\n    }\n    .modal-close {\n      background: transparent;\n      border: 0;\n      color: #8fa398;\n      font-size: 24px;\n      cursor: pointer;\n      line-height: 1;\n      padding: 0 4px;\n    }\n    .modal-close:hover { color: #fff; }\n    .modal-body {\n      padding: 16px 18px;\n      overflow-y: auto;\n      display: flex;\n      flex-direction: column;\n      gap: 14px;\n    }\n    .modal-body label {\n      font-size: 12px;\n      font-weight: 600;\n      color: #8fb39f;\n      display: block;\n      margin-bottom: 4px;\n    }\n    .modal-body textarea {\n      width: 100%;\n      min-height: 200px;\n      background: #050a07;\n      border: 1px solid rgba(125, 206, 160, 0.25);\n      border-radius: 8px;\n      padding: 10px 12px;\n      color: #fff;\n      font-family: var(--mono);\n      font-size: 12px;\n      line-height: 1.45;\n      resize: vertical;\n      box-sizing: border-box;\n    }\n    .modal-body textarea:focus, .modal-body input[type=\u0022text\u0022]:focus {\n      outline: none;\n      border-color: #00f2fe;\n      box-shadow: 0 0 10px rgba(0, 242, 254, 0.25);\n    }\n    .modal-body input[type=\u0022text\u0022] {\n      width: 100%;\n      background: #050a07;\n      border: 1px solid rgba(125, 206, 160, 0.25);\n      border-radius: 8px;\n      padding: 8px 12px;\n      color: #fff;\n      font-size: 13px;\n      box-sizing: border-box;\n    }\n    .modal-footer {\n      display: flex;\n      align-items: center;\n      justify-content: flex-end;\n      gap: 10px;\n      padding: 12px 18px;\n      border-top: 1px solid rgba(125, 206, 160, 0.2);\n      background: rgba(4, 8, 5, 0.85);\n    }";
+  s.textContent="/* qcx-admin-ui */\n/* MMO Admin \u2014 dense cockpit (PC + mobile) */\n    #qcx-admin-root, #qcx-admin-root * { box-sizing: border-box; }\n    #qcx-admin-root {\n      --qcx-admin-radius: 8px;\n      --qcx-admin-ok: #7dcea0;\n      --qcx-admin-warn: #e0b35a;\n      --qcx-admin-fill: #141a16;\n      --qcx-admin-hover: #1c2420;\n      --qcx-admin-mint: #7dcea0;\n      --qcx-admin-mint-ink: #06110a;\n      --qcx-admin-input: #0b120c;\n      --sans: 'IBM Plex Sans', 'Segoe UI', sans-serif;\n      --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;\n      margin: 0 auto;\n      min-height: 0;\n      padding: 0 0 24px;\n      color: var(--fg, #e6f5ec);\n      font: 13px/1.4 var(--sans);\n      -webkit-font-smoothing: antialiased;\n      background: transparent;\n      width: 100%;\n      max-width: 1120px;\n    }\n    #qcx-admin-root .wrap {\n      max-width: 1120px;\n      margin: 0 auto;\n      padding: 6px 12px 24px;\n      width: 100%;\n    }\n\n    /* Login gate: compact card, slightly above center */\n    #qcx-admin-root:has(.gate:not(.hidden)) {\n      min-height: calc(100vh - 64px);\n      display: flex;\n      align-items: center;\n      justify-content: center;\n      padding: 12px 10px 28px;\n      max-width: none;\n    }\n    #qcx-admin-root:has(.gate:not(.hidden)) .wrap {\n      width: 100%;\n      max-width: 300px;\n      margin: -10vh auto 0;\n      padding: 0;\n      display: flex;\n      flex-direction: column;\n      align-items: center;\n    }\n    #qcx-admin-root:has(.gate:not(.hidden)) > .wrap > header,\n    #qcx-admin-root:has(.gate:not(.hidden)) #btnLogout {\n      display: none !important;\n    }\n    #qcx-admin-root:has(.gate:not(.hidden)) .gate {\n      width: 100%;\n      max-width: 300px;\n      margin: 0 auto;\n      padding: 10px 12px;\n    }\n    #qcx-admin-root .gate h2 {\n      margin: 0 0 8px;\n      font: 700 10px/1.2 var(--mono);\n      letter-spacing: 0.1em;\n    }\n    #qcx-admin-root .gate .field { margin-bottom: 8px; }\n    #qcx-admin-root .gate .actions {\n      display: flex;\n      width: 100%;\n      margin-top: 8px;\n      padding-top: 0;\n    }\n    #qcx-admin-root .gate .actions .primary,\n    #qcx-admin-root .gate button.primary {\n      width: 100%;\n      flex: 1 1 auto;\n    }\n    /* Hide login hint; gate status only when not .hidden */\n    #qcx-admin-root .gate > .hint,\n    #qcx-admin-root #gateStatus.hidden {\n      display: none !important;\n    }\n\n    /* Beat theme header kill: display:none + height:0 + overflow:hidden */\n    #qcx-admin-root header {\n      display: flex !important;\n      position: relative !important;\n      height: auto !important;\n      min-height: 0 !important;\n      max-height: none !important;\n      overflow: visible !important;\n      visibility: visible !important;\n      opacity: 1 !important;\n      background: transparent !important;\n      flex-wrap: nowrap;\n      gap: 8px 12px;\n      align-items: center;\n      justify-content: space-between;\n      margin: 0 0 8px !important;\n      padding: 2px 0 6px !important;\n      border: 0 !important;\n      border-bottom: 1px solid var(--line, #1d2a1f) !important;\n    }\n    #qcx-admin-root header h1,\n    #qcx-admin-root header button {\n      position: static !important;\n      height: auto !important;\n      overflow: visible !important;\n      visibility: visible !important;\n      opacity: 1 !important;\n    }\n    #qcx-admin-root header h1 {\n      margin: 0;\n      font: 700 13px/1.2 var(--mono);\n      letter-spacing: 0.04em;\n      text-transform: uppercase;\n      color: var(--fg, #e6f5ec);\n    }\n    #qcx-admin-root header h1 span { color: var(--qcx-admin-mint); }\n    #qcx-admin-root header p { display: none !important; }\n    #qcx-admin-root #btnLogout {\n      min-height: 28px;\n      padding: 4px 10px;\n      font: 600 10px/1 var(--mono);\n      letter-spacing: 0.06em;\n      text-transform: uppercase;\n      flex: 0 0 auto;\n      white-space: nowrap;\n    }\n\n    #qcx-admin-root .gate, #qcx-admin-root .panel {\n      background: linear-gradient(180deg, #101a12 0%, var(--card, #0e170f) 100%);\n      border: 1px solid var(--line, #1d2a1f);\n      border-radius: var(--qcx-admin-radius);\n      padding: 12px;\n      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22);\n    }\n    #qcx-admin-root .gate {\n      max-width: 300px; width: 100%; margin: 0 auto;\n      animation: qcx-admin-rise 0.35s ease-out both;\n      padding: 10px 12px;\n    }\n    #qcx-admin-root .gate h2,\n    #qcx-admin-root .panel h2,\n    #qcx-admin-root .compose-title h2,\n    #qcx-admin-root .card h2 {\n      margin: 0 0 4px;\n      font: 700 11px/1.2 var(--mono);\n      letter-spacing: 0.1em;\n      text-transform: uppercase;\n      color: var(--qcx-admin-mint);\n    }\n    #qcx-admin-root .panel-head {\n      display: flex; align-items: baseline; justify-content: space-between;\n      gap: 8px; margin-bottom: 8px; padding-bottom: 6px;\n      border-bottom: 1px solid var(--line, #1d2a1f);\n    }\n    #qcx-admin-root .panel-head h2 { margin: 0; }\n\n    /* Beat theme `.grid{grid-template-columns:repeat(4,1fr)!important}` */\n    #qcx-admin-root .grid {\n      display: grid !important;\n      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) !important;\n      gap: 14px !important;\n      animation: qcx-admin-rise 0.35s ease-out both;\n      width: 100%;\n      max-width: 1120px;\n      margin: 0 auto;\n      align-items: start;\n    }\n    #qcx-admin-root .grid.hidden,\n    #qcx-admin-root .hidden { display: none !important; }\n    @media (max-width: 900px) {\n      #qcx-admin-root .grid { grid-template-columns: 1fr !important; }\n    }\n\n    #qcx-admin-root .compose-col {\n      display: flex;\n      flex-direction: column;\n      gap: 12px;\n      min-width: 0;\n      overflow: visible;\n    }\n    #qcx-admin-root .compose-title {\n      margin: 0;\n      padding-bottom: 4px;\n      border-bottom: 0;\n      align-items: center;\n    }\n    #qcx-admin-root input[type='file'].hidden,\n    #qcx-admin-root input[type='file'][hidden] {\n      display: none !important;\n    }\n    #qcx-admin-root .compose-nav {\n      position: sticky;\n      top: 8px;\n      z-index: 6;\n      display: grid;\n      grid-template-columns: repeat(5, minmax(0, 1fr));\n      gap: 6px;\n      padding: 6px;\n      border: 1px solid #2a3830;\n      border-radius: var(--qcx-admin-radius);\n      background: rgba(12, 18, 14, 0.94);\n      backdrop-filter: blur(10px);\n    }\n    #qcx-admin-root .compose-nav button {\n      min-height: 32px;\n      width: 100%;\n      border-color: transparent;\n      background: transparent;\n      color: var(--fg-dim, #8aa596);\n      font-size: 10px;\n      letter-spacing: 0.04em;\n      text-transform: uppercase;\n    }\n    #qcx-admin-root .compose-nav button:hover {\n      color: var(--fg, #e6f5ec);\n      background: rgba(125, 206, 160, 0.06);\n      border-color: transparent;\n    }\n    #qcx-admin-root .compose-nav button.active {\n      background: rgba(125, 206, 160, 0.16);\n      color: var(--qcx-admin-mint);\n      box-shadow: inset 0 -2px 0 var(--qcx-admin-mint);\n    }\n    #qcx-admin-root .compose-panes {\n      min-width: 0;\n    }\n    #qcx-admin-root .compose-panes > [data-section-pane][hidden],\n    #qcx-admin-root .compose-panes > [data-section-pane].hidden {\n      display: none !important;\n    }\n    #qcx-admin-root .compose-actions {\n      position: sticky;\n      bottom: 8px;\n      z-index: 5;\n      margin: 0;\n      padding: 10px 12px;\n      border: 1px solid #2a3830;\n      border-radius: var(--qcx-admin-radius);\n      background: rgba(12, 18, 14, 0.94);\n      backdrop-filter: blur(10px);\n    }\n    #qcx-admin-root .card {\n      margin: 0;\n      padding: 14px;\n      border: 1px solid var(--line, #1d2a1f);\n      border-radius: var(--qcx-admin-radius);\n      background: rgba(14, 20, 16, 0.72);\n    }\n    #qcx-admin-root .card .field { margin-bottom: 10px; }\n    #qcx-admin-root .card .field:last-child { margin-bottom: 0; }\n    #qcx-admin-root .panel-head.tight {\n      margin-bottom: 10px;\n      padding-bottom: 6px;\n    }\n\n    #qcx-admin-root label {\n      display: block; margin: 0 0 4px;\n      color: var(--fg-dim, #8aa596);\n      font: 600 10px/1.15 var(--mono);\n      letter-spacing: 0.06em; text-transform: uppercase;\n    }\n    #qcx-admin-root .field { margin-bottom: 10px; }\n    #qcx-admin-root .row {\n      display: grid !important;\n      grid-template-columns: 1fr 1fr !important;\n      gap: 12px;\n    }\n    #qcx-admin-root .row.row-meta {\n      grid-template-columns: auto 1fr 1.2fr !important;\n      gap: 12px;\n      align-items: end;\n    }\n    #qcx-admin-root .row.row-meta #priceField[hidden],\n    #qcx-admin-root .row.row-meta #priceField.hidden {\n      display: none !important;\n    }\n    #qcx-admin-root .row.row-meta:not(:has(#priceField:not([hidden]))) {\n      grid-template-columns: auto 1.2fr !important;\n    }\n    @media (max-width: 560px) {\n      #qcx-admin-root .row,\n      #qcx-admin-root .row.row-meta { grid-template-columns: 1fr !important; }\n    }\n\n    #qcx-admin-root .card-ai {\n      padding: 10px 12px;\n      border-color: rgba(125, 206, 160, 0.28);\n      background: rgba(125, 206, 160, 0.05);\n    }\n    #qcx-admin-root .ai-strip {\n      display: grid;\n      grid-template-columns: auto minmax(0, 1fr) auto;\n      gap: 8px;\n      align-items: center;\n    }\n    #qcx-admin-root .ai-strip select {\n      min-height: 32px;\n      font-size: 11px;\n    }\n    #qcx-admin-root .ai-brief-wrap {\n      margin-top: 10px;\n      padding-top: 10px;\n      border-top: 1px solid rgba(125, 206, 160, 0.18);\n    }\n    #qcx-admin-root .ai-brief-wrap[hidden],\n    #qcx-admin-root .ai-brief-wrap.hidden { display: none !important; }\n    #qcx-admin-root .ai-brief-wrap textarea {\n      min-height: 72px;\n      font-family: var(--sans);\n    }\n    #qcx-admin-root .input-sans { font-family: var(--sans) !important; font-weight: 600; }\n    #qcx-admin-root .field-optional { opacity: 0.88; }\n    #qcx-admin-root .field-optional .opt {\n      text-transform: none;\n      letter-spacing: 0;\n      font-weight: 500;\n      color: #6f8576;\n    }\n\n    #qcx-admin-root .body-tabs { margin-bottom: 0; }\n    #qcx-admin-root .body-tab-seg { margin-bottom: 8px; }\n    #qcx-admin-root .body-pane.hidden { display: none !important; }\n    #qcx-admin-root .body-pane { margin-bottom: 0; }\n    #qcx-admin-root .body-pane textarea.tall { min-height: 260px; }\n\n    #qcx-admin-root .card-vault {\n      border-color: #2a3830;\n    }\n    #qcx-admin-root .vault-actions {\n      margin-top: 0;\n      display: grid;\n      grid-template-columns: 1.4fr 1fr 1fr auto;\n      gap: 8px;\n    }\n    #qcx-admin-root .vault-actions button { width: 100%; }\n    #qcx-admin-root .more-menu {\n      display: flex;\n      flex-wrap: wrap;\n      gap: 6px;\n      margin-top: 8px;\n    }\n    #qcx-admin-root .more-menu[hidden],\n    #qcx-admin-root .more-menu.hidden { display: none !important; }\n    #qcx-admin-root .compose-actions .status {\n      margin-top: 8px;\n      padding: 6px 8px;\n      font-size: 10.5px;\n    }\n    #qcx-admin-root .body-pane textarea.tall { min-height: 280px; }\n\n    #qcx-admin-root .panel-rail {\n      position: sticky;\n      top: 10px;\n      padding: 14px;\n    }\n    #qcx-admin-root .checklist {\n      list-style: none;\n      margin: 0 0 10px;\n      padding: 0;\n      display: flex;\n      flex-direction: column;\n      gap: 6px;\n    }\n    #qcx-admin-root .checklist .check {\n      display: grid;\n      grid-template-columns: 18px minmax(0, 1fr) auto;\n      gap: 8px;\n      align-items: baseline;\n      padding: 7px 9px;\n      border-radius: 7px;\n      border: 1px solid var(--line, #1d2a1f);\n      background: rgba(0, 0, 0, 0.18);\n      font: 500 11px/1.3 var(--mono);\n    }\n    #qcx-admin-root .checklist .check.pass {\n      border-color: rgba(125, 206, 160, 0.35);\n      color: var(--qcx-admin-ok);\n    }\n    #qcx-admin-root .checklist .check.fail {\n      border-color: rgba(255, 84, 112, 0.35);\n      color: var(--danger, #ff5470);\n    }\n    #qcx-admin-root .checklist .tick { font-weight: 700; }\n    #qcx-admin-root .checklist .check-label { color: inherit; }\n    #qcx-admin-root .checklist .check-detail {\n      color: var(--fg-dim, #8aa596);\n      font-size: 10px;\n      max-width: 46%;\n      overflow: hidden;\n      text-overflow: ellipsis;\n      white-space: nowrap;\n      text-align: right;\n    }\n    #qcx-admin-root .html-out.collapsed,\n    #qcx-admin-root .html-out.hidden,\n    #qcx-admin-root .html-out[hidden] {\n      display: none !important;\n    }\n    #qcx-admin-root .panel-head .ghost { margin-left: auto; }\n    #qcx-admin-root .ghost-hint {\n      opacity: 0.65;\n      cursor: help;\n      font-size: 10px;\n    }\n\n    #qcx-admin-root input,\n    #qcx-admin-root select,\n    #qcx-admin-root textarea {\n      width: 100%;\n      min-height: 34px;\n      background: var(--qcx-admin-input);\n      border: 1px solid #243328;\n      border-radius: 7px;\n      color: var(--fg, #e6f5ec);\n      padding: 7px 10px;\n      font: 500 12.5px/1.35 var(--mono);\n      transition: border-color 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;\n    }\n    #qcx-admin-root textarea { min-height: 72px; resize: vertical; padding-top: 8px; }\n    #qcx-admin-root textarea.tall { min-height: 120px; }\n    #qcx-admin-root input::placeholder,\n    #qcx-admin-root textarea::placeholder {\n      color: #6f8576; opacity: 1; font-weight: 400;\n    }\n    #qcx-admin-root input:hover,\n    #qcx-admin-root select:hover,\n    #qcx-admin-root textarea:hover { border-color: #334539; }\n    #qcx-admin-root input:focus,\n    #qcx-admin-root select:focus,\n    #qcx-admin-root textarea:focus {\n      outline: none;\n      border-color: var(--qcx-admin-mint);\n      box-shadow: 0 0 0 2px rgba(125, 206, 160, 0.16);\n      background: #0d1610;\n    }\n    #qcx-admin-root input:disabled,\n    #qcx-admin-root textarea:disabled {\n      opacity: 0.45; cursor: not-allowed; background: #0a100b;\n    }\n\n    #qcx-admin-root .actions {\n      display: flex; flex-wrap: wrap; gap: 6px;\n      margin-top: 10px; padding-top: 2px;\n    }\n    #qcx-admin-root button,\n    #qcx-admin-root .btn {\n      appearance: none;\n      display: inline-flex; align-items: center; justify-content: center;\n      gap: 6px;\n      min-height: 34px;\n      border: 1px solid #2a3830;\n      background: var(--qcx-admin-fill);\n      color: #e8efe9;\n      border-radius: 7px;\n      padding: 6px 11px;\n      font: 700 11px/1 var(--mono);\n      letter-spacing: 0.03em;\n      cursor: pointer;\n      transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;\n    }\n    #qcx-admin-root button:hover {\n      background: var(--qcx-admin-hover);\n      border-color: #3a4a40;\n    }\n    #qcx-admin-root button:active { transform: none; }\n    #qcx-admin-root button.primary {\n      background: var(--qcx-admin-mint);\n      color: var(--qcx-admin-mint-ink);\n      border-color: var(--qcx-admin-mint);\n      box-shadow: none;\n    }\n    #qcx-admin-root button.primary:hover {\n      background: #93dbb2;\n      border-color: #93dbb2;\n      color: var(--qcx-admin-mint-ink);\n    }\n    #qcx-admin-root button.ghost {\n      background: transparent;\n      border-color: #2a3830;\n      color: var(--fg-dim, #8aa596);\n      box-shadow: none;\n      min-height: 30px;\n      padding: 4px 9px;\n      font-size: 10px;\n    }\n    #qcx-admin-root button.ghost:hover {\n      color: var(--fg, #e6f5ec);\n      border-color: var(--qcx-admin-mint);\n      background: rgba(125, 206, 160, 0.06);\n    }\n    #qcx-admin-root button:disabled {\n      opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none;\n    }\n\n    #qcx-admin-root .status {\n      margin-top: 8px; padding: 7px 10px; border-radius: 7px;\n      border: 1px solid var(--line, #1d2a1f);\n      color: var(--fg-dim, #8aa596);\n      font: 11px/1.4 var(--mono);\n      white-space: pre-wrap;\n      background: rgba(10, 15, 10, 0.7);\n    }\n    #qcx-admin-root .status.ok { border-color: rgba(125,206,160,.45); color: var(--qcx-admin-ok); background: rgba(125,206,160,.06); }\n    #qcx-admin-root .status.err { border-color: rgba(255,84,112,.45); color: var(--danger, #ff5470); background: rgba(255,84,112,.06); }\n    #qcx-admin-root .status.warn { border-color: rgba(224,179,90,.45); color: var(--qcx-admin-warn); background: rgba(224,179,90,.06); }\n\n    #qcx-admin-root .html-out {\n      margin: 0; max-height: 360px; overflow: auto;\n      background: #080d08; border: 1px solid var(--line, #1d2a1f);\n      border-radius: 7px; padding: 10px;\n      font: 11px/1.4 var(--mono);\n      white-space: pre-wrap; word-break: break-word; color: #9bb5a4;\n    }\n    #qcx-admin-root .hint {\n      color: var(--fg-dim, #8aa596); font-size: 11px;\n      margin: 3px 0 0; line-height: 1.35;\n    }\n    #qcx-admin-root .hint.publish {\n      margin-top: 8px;\n    }\n    #qcx-admin-root code {\n      font-family: var(--mono);\n      color: var(--qcx-admin-mint);\n      font-size: 0.92em;\n    }\n\n    #qcx-admin-root .seg {\n      display: inline-flex; width: 100%;\n      border: 1px solid #243328; border-radius: 7px;\n      overflow: hidden; background: var(--qcx-admin-input); min-height: 34px;\n    }\n    #qcx-admin-root .seg button {\n      flex: 1; border: 0; border-radius: 0; min-height: 34px;\n      background: transparent; padding: 6px 8px;\n      color: var(--fg-dim, #8aa596); box-shadow: none; transform: none;\n      font-size: 10px;\n    }\n    #qcx-admin-root .seg button:hover {\n      background: rgba(125, 206, 160, 0.06); color: var(--fg, #e6f5ec); transform: none;\n    }\n    #qcx-admin-root .seg button.active {\n      background: rgba(125, 206, 160, 0.16);\n      color: var(--qcx-admin-mint);\n      box-shadow: inset 0 -2px 0 var(--qcx-admin-mint);\n    }\n\n    /* Sticky vault + stacked rail on small screens */\n    @media (max-width: 700px) {\n      #qcx-admin-root {\n        max-width: none;\n        width: 100%;\n        padding-bottom: 16px;\n      }\n      #qcx-admin-root .wrap {\n        padding: 8px 10px 88px;\n        max-width: none;\n        width: 100%;\n      }\n      #qcx-admin-root .grid {\n        max-width: none !important;\n        width: 100% !important;\n        gap: 12px !important;\n      }\n      #qcx-admin-root header {\n        gap: 8px;\n        margin-bottom: 6px !important;\n        padding-bottom: 5px !important;\n      }\n      #qcx-admin-root .panel,\n      #qcx-admin-root .card { padding: 12px; width: 100%; }\n      #qcx-admin-root .panel-rail { position: static; order: 2; }\n      #qcx-admin-root .compose-col { order: 1; }\n      #qcx-admin-root .gate { padding: 12px; max-width: 100%; }\n      #qcx-admin-root:has(.gate:not(.hidden)) .wrap,\n      #qcx-admin-root:has(.gate:not(.hidden)) .gate { max-width: 100%; }\n      #qcx-admin-root textarea { min-height: 64px; }\n      #qcx-admin-root textarea.tall { min-height: 180px; }\n      #qcx-admin-root .html-out { max-height: 220px; }\n      #qcx-admin-root .hint.publish { display: none; }\n      #qcx-admin-root .ai-strip {\n        grid-template-columns: 1fr;\n      }\n      #qcx-admin-root .compose-nav {\n        top: 4px;\n        grid-template-columns: repeat(5, minmax(0, 1fr));\n        gap: 4px;\n        padding: 4px;\n      }\n      #qcx-admin-root .compose-nav button {\n        min-height: 30px;\n        padding: 4px 2px;\n        font-size: 9px;\n      }\n      #qcx-admin-root .vault-actions {\n        grid-template-columns: 1fr 1fr;\n      }\n      #qcx-admin-root .vault-actions .primary {\n        grid-column: 1 / -1;\n      }\n      #qcx-admin-root .compose-actions {\n        position: sticky;\n        bottom: 6px;\n        z-index: 5;\n      }\n      #qcx-admin-root .body-pane textarea.tall { min-height: 200px; }\n      #qcx-admin-root .checklist .check {\n        grid-template-columns: 18px minmax(0, 1fr);\n      }\n      #qcx-admin-root .checklist .check-detail {\n        grid-column: 2;\n        max-width: none;\n        text-align: left;\n      }\n    }\n\n    @keyframes qcx-admin-rise {\n      from { opacity: 0; transform: translateY(6px); }\n      to { opacity: 1; transform: translateY(0); }\n    }\n    #qcx-admin-root .label-chips {\n      display: flex;\n      flex-wrap: wrap;\n      gap: 4px;\n      margin-top: 6px;\n    }\n    #qcx-admin-root .label-chips button {\n      min-height: 22px;\n      padding: 2px 8px;\n      font: 600 10px/1.2 var(--mono);\n      border-radius: 999px;\n      background: var(--qcx-admin-fill);\n      border: 1px solid var(--line, #1d2a1f);\n      color: #a9c4b3;\n      cursor: pointer;\n    }\n    #qcx-admin-root .label-chips button.active {\n      background: rgba(125, 206, 160, 0.16);\n      border-color: var(--qcx-admin-mint);\n      color: var(--qcx-admin-mint);\n    }\n    @media (prefers-reduced-motion: reduce) {\n      #qcx-admin-root .gate, #qcx-admin-root .grid { animation: none; }\n      #qcx-admin-root button { transition: none; }\n    }\n\n    html.qcx-admin-standalone, html.qcx-admin-standalone body {\n      margin: 0; min-height: 100%;\n      background:\n        radial-gradient(900px 420px at 12% -8%, rgba(125, 206, 160, 0.08), transparent 55%),\n        linear-gradient(180deg, #0d1410, var(--bg, #0a0f0a));\n      color: var(--fg, #e6f5ec);\n      font-family: var(--sans);\n    }\n    body:has(#qcx-admin-root) .post-header,\n    body:has(#qcx-admin-root) .qcx-read-time,\n    body:has(#qcx-admin-root) #qcx-sidebar-rail-rescue,\n    body:has(#qcx-admin-root) .qcx-sidebar-rail,\n    body:has(#qcx-admin-root) .sidebar-wrapper,\n    body:has(#qcx-admin-root) #sidebar,\n    body:has(#qcx-admin-root) .sidebar,\n    body:has(#qcx-admin-root) .widget.BlogArchive,\n    body:has(#qcx-admin-root) .widget.FollowByEmail,\n    body:has(#qcx-admin-root) .FollowByEmail,\n    body:has(#qcx-admin-root) .qcx-follow-cta,\n    body:has(#qcx-admin-root) .follow-by-email,\n    body:has(#qcx-admin-root) #qcx-admin-root .mac-frame,\n    body:has(#qcx-admin-root) #qcx-admin-boot { display: none !important; }\n\n    /* Collapse Blogspot chrome so admin sits in true page center */\n    body:has(#qcx-admin-root) .main-wrapper,\n    body:has(#qcx-admin-root) .centered-bottom,\n    body:has(#qcx-admin-root) .centered-top,\n    body:has(#qcx-admin-root) .blog-posts,\n    body:has(#qcx-admin-root) .the-article,\n    body:has(#qcx-admin-root) .post-body,\n    body:has(#qcx-admin-root) #main,\n    body:has(#qcx-admin-root) .main {\n      max-width: none !important;\n      width: 100% !important;\n      margin-left: auto !important;\n      margin-right: auto !important;\n      float: none !important;\n      grid-template-columns: 1fr !important;\n      display: block !important;\n    }\n    body:has(#qcx-admin-root) .main-wrapper,\n    body:has(#qcx-admin-root) .centered-bottom {\n      padding-left: 0 !important;\n      padding-right: 0 !important;\n    }\n    body:has(#qcx-admin-root) .content-outer,\n    body:has(#qcx-admin-root) .content-inner,\n    body:has(#qcx-admin-root) .column-center-outer,\n    body:has(#qcx-admin-root) .column-center-inner,\n    body:has(#qcx-admin-root) .main-inner,\n    body:has(#qcx-admin-root) #page_body,\n    body:has(#qcx-admin-root) .page {\n      max-width: none !important;\n      width: 100% !important;\n      margin-left: 0 !important;\n      margin-right: 0 !important;\n      float: none !important;\n      padding-left: 0 !important;\n      padding-right: 0 !important;\n    }\n    body:has(#qcx-admin-root:has(.gate:not(.hidden))) .qcx-follow-strip,\n    body:has(#qcx-admin-root:has(.gate:not(.hidden))) [class*='follow'],\n    body:has(#qcx-admin-root:has(.gate:not(.hidden))) .widget.Profile,\n    body:has(#qcx-admin-root:has(.gate:not(.hidden))) .widget.Attribution {\n      display: none !important;\n    }\n\n    /* Modal: Smart Format Crawl */\n    .modal-overlay {\n      position: fixed;\n      inset: 0;\n      z-index: 99999;\n      background: rgba(0, 0, 0, 0.78);\n      backdrop-filter: blur(8px);\n      display: flex;\n      align-items: center;\n      justify-content: center;\n      padding: 16px;\n    }\n    .modal-overlay.hidden, .modal-overlay[hidden] {\n      display: none !important;\n    }\n    .modal-card {\n      background: #09100c;\n      border: 1px solid rgba(125, 206, 160, 0.35);\n      border-radius: 12px;\n      width: 100%;\n      max-width: 680px;\n      max-height: 90vh;\n      display: flex;\n      flex-direction: column;\n      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.7), 0 0 24px rgba(0, 242, 254, 0.2);\n      color: #e6f5ec;\n      font-family: var(--sans);\n      overflow: hidden;\n    }\n    .modal-header {\n      display: flex;\n      align-items: center;\n      justify-content: space-between;\n      padding: 14px 18px;\n      border-bottom: 1px solid rgba(125, 206, 160, 0.2);\n      background: rgba(11, 18, 12, 0.95);\n    }\n    .modal-header h3 {\n      margin: 0;\n      font-size: 15px;\n      font-weight: 700;\n      color: #00f2fe;\n      display: flex;\n      align-items: center;\n      gap: 8px;\n    }\n    .modal-close {\n      background: transparent;\n      border: 0;\n      color: #8fa398;\n      font-size: 24px;\n      cursor: pointer;\n      line-height: 1;\n      padding: 0 4px;\n    }\n    .modal-close:hover { color: #fff; }\n    .modal-body {\n      padding: 16px 18px;\n      overflow-y: auto;\n      display: flex;\n      flex-direction: column;\n      gap: 14px;\n    }\n    .modal-body label {\n      font-size: 12px;\n      font-weight: 600;\n      color: #8fb39f;\n      display: block;\n      margin-bottom: 4px;\n    }\n    .modal-body textarea {\n      width: 100%;\n      min-height: 200px;\n      background: #050a07;\n      border: 1px solid rgba(125, 206, 160, 0.25);\n      border-radius: 8px;\n      padding: 10px 12px;\n      color: #fff;\n      font-family: var(--mono);\n      font-size: 12px;\n      line-height: 1.45;\n      resize: vertical;\n      box-sizing: border-box;\n    }\n    .modal-body textarea:focus, .modal-body input[type=\u0022text\u0022]:focus {\n      outline: none;\n      border-color: #00f2fe;\n      box-shadow: 0 0 10px rgba(0, 242, 254, 0.25);\n    }\n    .modal-body input[type=\u0022text\u0022] {\n      width: 100%;\n      background: #050a07;\n      border: 1px solid rgba(125, 206, 160, 0.25);\n      border-radius: 8px;\n      padding: 8px 12px;\n      color: #fff;\n      font-size: 13px;\n      box-sizing: border-box;\n    }\n    .modal-footer {\n      display: flex;\n      align-items: center;\n      justify-content: flex-end;\n      gap: 10px;\n      padding: 12px 18px;\n      border-top: 1px solid rgba(125, 206, 160, 0.2);\n      background: rgba(4, 8, 5, 0.85);\n    }";
 })();
 
 (function () {
   'use strict';
 
   var API_BASE = 'https://api.mmo.wiki';
+  var API_FALLBACK = 'https://timkiem-store-api.kkymljnk.workers.dev';
   var TOKEN_KEY = 'qcx_admin_token_v1';
   var DRAFT_KEY = 'qcx_admin_draft_v1';
   var BLOG_ID = '5252547691219049876';
   var mode = 'free';
+
+  function adminFetch(path, opts) {
+    return fetch(API_BASE + path, opts).then(function (r) {
+      if (r.status === 502 || r.status === 503 || r.status === 521 || r.status === 522 || r.status === 523 || r.status === 530) {
+        return fetch(API_FALLBACK + path, opts);
+      }
+      return r;
+    }).catch(function () {
+      return fetch(API_FALLBACK + path, opts);
+    });
+  }
 
   var gate = document.getElementById('gate');
   var app = document.getElementById('app');
@@ -284,6 +370,7 @@ Chúc các bạn thành công!"></textarea>
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;');
   }
+  var escapeHtml = escapeAttr;
 
   /** Blogger/Google image CDN hosts used by Blogspot posts. */
   function isBloggerImageHost(url) {
@@ -688,7 +775,7 @@ Chúc các bạn thành công!"></textarea>
     btn.disabled = true;
     gateStatus.removeAttribute('hidden');
     setStatus(gateStatus, 'Đang xác thực…', 'warn');
-    fetch(API_BASE + '/api/admin/login', {
+    adminFetch('/api/admin/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ password: password })
@@ -707,7 +794,7 @@ Chúc các bạn thành công!"></textarea>
       })
       .catch(function () {
         btn.disabled = false;
-        setStatus(gateStatus, 'Không kết nối được api.mmo.wiki.', 'err');
+        setStatus(gateStatus, 'Không kết nối được Worker API (api.mmo.wiki / fallback).', 'err');
       });
   });
 
@@ -715,6 +802,19 @@ Chúc các bạn thành công!"></textarea>
 
   Array.prototype.forEach.call(document.querySelectorAll('#modeSeg button'), function (btn) {
     btn.addEventListener('click', function () { setMode(btn.getAttribute('data-mode')); persistDraft(); renderPreview(); });
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll('#itemPricePresets [data-preset-price]'), function (btn) {
+    btn.addEventListener('click', function () {
+      var val = btn.getAttribute('data-preset-price') || '';
+      var inp = document.getElementById('inpItemPrice');
+      if (inp) inp.value = val;
+      Array.prototype.forEach.call(document.querySelectorAll('#itemPricePresets [data-preset-price]'), function (b) {
+        b.classList.toggle('active', b === btn);
+      });
+      persistDraft();
+      renderPreview();
+    });
   });
 
   function setBodyTab(tab) {
@@ -735,7 +835,7 @@ Chúc các bạn thành công!"></textarea>
   var SECTION_KEY = 'qcx_admin_section_v1';
   function setComposeSection(section) {
     var next = section || 'meta';
-    if (['meta', 'ai', 'body', 'vault'].indexOf(next) < 0) next = 'meta';
+    if (['meta', 'ai', 'body', 'vault', 'payos'].indexOf(next) < 0) next = 'meta';
     Array.prototype.forEach.call(document.querySelectorAll('#composeNav [data-section]'), function (btn) {
       btn.classList.toggle('active', btn.getAttribute('data-section') === next);
     });
@@ -764,7 +864,7 @@ Chúc các bạn thành công!"></textarea>
     previewTimer = setTimeout(function () { renderPreview(); }, 280);
   }
 
-  ['title', 'slug', 'labels', 'hero', 'videoUrl', 'teaser', 'locked', 'driveUrl', 'notesHtml', 'price'].forEach(function (id) {
+  ['title', 'slug', 'labels', 'hero', 'videoUrl', 'teaser', 'locked', 'driveUrl', 'notesHtml', 'price', 'inpItemPrice'].forEach(function (id) {
     var el = document.getElementById(id);
     if (!el) return;
     el.addEventListener('input', function () {
@@ -772,6 +872,12 @@ Chúc các bạn thành công!"></textarea>
         document.getElementById('slug').value = slugify(document.getElementById('title').value);
       }
       if (id === 'labels') syncLabelChips();
+      if (id === 'inpItemPrice') {
+        var curVal = el.value.trim();
+        Array.prototype.forEach.call(document.querySelectorAll('#itemPricePresets [data-preset-price]'), function (b) {
+          b.classList.toggle('active', b.getAttribute('data-preset-price') === curVal);
+        });
+      }
       persistDraft();
       schedulePreview();
     });
@@ -861,7 +967,7 @@ Chúc các bạn thành công!"></textarea>
     var model = document.getElementById('aiModel').value;
     btn.disabled = true;
     setStatus(appStatus, 'AI đang gen (' + model + ')…', 'warn');
-    fetch(API_BASE + '/api/admin/generate', {
+    adminFetch('/api/admin/generate', {
       method: 'POST',
       headers: {
         'Authorization': 'Bearer ' + token,
@@ -925,6 +1031,56 @@ Chúc các bạn thành công!"></textarea>
     });
   });
 
+  function loadFromVault() {
+    var slugEl = document.getElementById('slug');
+    var slugVal = (slugEl && slugEl.value || '').trim() || slugify(document.getElementById('title').value);
+    if (!slugVal) {
+      setComposeSection('meta');
+      setStatus(appStatus, 'Nhập Slug / resourceId trước khi Nạp từ Vault.', 'err');
+      return;
+    }
+    var token = readToken();
+    if (!token) { showGate(); return; }
+    setStatus(appStatus, 'Đang nạp từ Vault: ' + slugVal + '…', 'warn');
+    adminFetch('/api/admin/resources/' + encodeURIComponent(slugVal), {
+      method: 'GET',
+      headers: { 'Authorization': 'Bearer ' + token }
+    }).then(function (r) {
+      return r.json().then(function (j) { return { ok: r.ok, status: r.status, j: j }; });
+    }).then(function (res) {
+      if (!res.ok || !res.j || !res.j.ok || !res.j.data) {
+        setStatus(appStatus, (res.j && res.j.error) || ('Không tìm thấy "' + slugVal + '" trong Vault.'), 'err');
+        return;
+      }
+      var d = res.j.data;
+      if (d.title) document.getElementById('title').value = d.title;
+      slugEl.value = d.resourceId || slugVal;
+      slugEl.dataset.touched = '1';
+      if (d.driveUrl) document.getElementById('driveUrl').value = d.driveUrl;
+      if (d.notesHtml) document.getElementById('notesHtml').value = d.notesHtml;
+      var loadedMode = (d.accessType || d.mode || 'free').toLowerCase();
+      if (loadedMode === 'paid') loadedMode = 'vip';
+      var rawPrice = String(d.priceVnd || d.price || '').replace(/[^0-9]/g, '');
+      var itemInp = document.getElementById('inpItemPrice');
+      if (itemInp && rawPrice) itemInp.value = rawPrice;
+      if (priceEl && rawPrice) priceEl.value = rawPrice;
+      setMode(loadedMode === 'item' ? 'item' : (loadedMode === 'vip' ? 'vip' : 'free'));
+      Array.prototype.forEach.call(document.querySelectorAll('#itemPricePresets [data-preset-price]'), function (b) {
+        b.classList.toggle('active', b.getAttribute('data-preset-price') === rawPrice);
+      });
+      persistDraft();
+      renderPreview();
+      setStatus(appStatus, '📥 Đã nạp từ Vault: ' + slugVal + ' (' + loadedMode.toUpperCase() + (rawPrice ? ' · ' + Number(rawPrice).toLocaleString('vi-VN') + 'đ' : '') + ')', 'ok');
+    }).catch(function (err) {
+      setStatus(appStatus, 'Lỗi nạp Vault: ' + (err && err.message ? err.message : err), 'err');
+    });
+  }
+
+  var btnLoadVault = document.getElementById('btnLoadVault');
+  var btnLoadVault2 = document.getElementById('btnLoadVault2');
+  if (btnLoadVault) btnLoadVault.addEventListener('click', loadFromVault);
+  if (btnLoadVault2) btnLoadVault2.addEventListener('click', loadFromVault);
+
   document.getElementById('btnVault').addEventListener('click', function () {
     var data = collectForm();
     var check = validate(data, true);
@@ -965,7 +1121,7 @@ Chúc các bạn thành công!"></textarea>
     }
 
     setStatus(appStatus, 'Đang PUT vault…');
-    fetch(API_BASE + '/api/admin/resources/' + encodeURIComponent(data.resourceId), {
+    adminFetch('/api/admin/resources/' + encodeURIComponent(data.resourceId), {
       method: 'PUT',
       headers: {
         'Authorization': 'Bearer ' + token,
@@ -985,6 +1141,191 @@ Chúc các bạn thành công!"></textarea>
       setStatus(appStatus, 'Vault lỗi: ' + (err && err.message ? err.message : err), 'err');
     });
   });
+
+  /* ── PayOS & VIP Admin Tab Handlers ── */
+  var btnPayosLookup = document.getElementById('btnPayosLookup');
+  var outPayosLookup = document.getElementById('outPayosLookup');
+  if (btnPayosLookup && outPayosLookup) {
+    btnPayosLookup.addEventListener('click', function () {
+      var q = (document.getElementById('inpPayosLookup').value || '').trim();
+      if (!q) {
+        outPayosLookup.removeAttribute('hidden');
+        setStatus(outPayosLookup, 'Vui lòng nhập SĐT, Email hoặc mã OrderCode cần tra cứu.', 'err');
+        return;
+      }
+      var token = readToken();
+      if (!token) { showGate(); return; }
+      btnPayosLookup.disabled = true;
+      outPayosLookup.removeAttribute('hidden');
+      setStatus(outPayosLookup, 'Đang tra cứu trên Worker KV & PayOS…', 'warn');
+      adminFetch('/api/admin/payos/lookup?q=' + encodeURIComponent(q), {
+        method: 'GET',
+        headers: { 'Authorization': 'Bearer ' + token }
+      }).then(function (r) {
+        return r.json().then(function (j) { return { ok: r.ok, j: j }; });
+      }).then(function (res) {
+        btnPayosLookup.disabled = false;
+        if (!res.ok || !res.j || !res.j.ok) {
+          setStatus(outPayosLookup, (res.j && res.j.error) || 'Không tìm thấy đơn hàng hoặc quyền tương ứng.', 'err');
+          return;
+        }
+        var j = res.j;
+        var lines = [];
+        if (j.order) {
+          lines.push('📦 ĐƠN HÀNG #' + j.order.orderCode + ': ' + j.order.status +
+            ' · Gói: ' + String(j.order.scope || '').toUpperCase() +
+            (j.order.resourceId ? ' (' + j.order.resourceId + ')' : '') +
+            ' · ' + Number(j.order.amount || 0).toLocaleString('vi-VN') + 'đ');
+        }
+        if (j.entitlement) {
+          var ent = j.entitlement;
+          var vipActive = ent.vipUntil && ent.vipUntil > Date.now();
+          var vipStr = vipActive
+            ? ('ĐANG HOẠT ĐỘNG (đến ' + new Date(ent.vipUntil).toLocaleString('vi-VN') + ')')
+            : 'Chưa kích hoạt / Đã hết hạn';
+          var items = Object.keys(ent.unlockedItems || {});
+          lines.push('👑 GÓI VIP FULL: ' + vipStr);
+          lines.push('💎 BÀI GIÁ RIÊNG ĐÃ MỞ (' + items.length + '): ' + (items.length ? items.join(', ') : 'Chưa có'));
+          if (j.sessionToken) {
+            lines.push('🔑 Session Token: ' + j.sessionToken);
+          }
+        }
+        setStatus(outPayosLookup, lines.join('\n'), 'ok');
+      }).catch(function (err) {
+        btnPayosLookup.disabled = false;
+        setStatus(outPayosLookup, 'Lỗi tra cứu: ' + (err && err.message ? err.message : err), 'err');
+      });
+    });
+  }
+
+  var selGrantScope = document.getElementById('selGrantScope');
+  if (selGrantScope) {
+    selGrantScope.addEventListener('change', function () {
+      var isVip = selGrantScope.value === 'vip';
+      var daysWrap = document.getElementById('grantDaysWrap');
+      if (daysWrap) daysWrap.style.opacity = isVip ? '1' : '0.45';
+    });
+  }
+
+  var btnPayosGrant = document.getElementById('btnPayosGrant');
+  var outPayosGrant = document.getElementById('outPayosGrant');
+  if (btnPayosGrant && outPayosGrant) {
+    btnPayosGrant.addEventListener('click', function () {
+      var contact = (document.getElementById('inpGrantContact').value || '').trim();
+      var scope = (document.getElementById('selGrantScope').value || 'vip').trim();
+      var slugVal = (document.getElementById('inpGrantSlug').value || '').trim() ||
+        (document.getElementById('slug').value || '').trim();
+      var days = Number((document.getElementById('inpGrantDays').value || '30').trim()) || 30;
+      if (!contact) {
+        outPayosGrant.removeAttribute('hidden');
+        setStatus(outPayosGrant, 'Vui lòng nhập SĐT hoặc Email của khách hàng nhận quyền.', 'err');
+        return;
+      }
+      if (scope === 'item' && !slugVal) {
+        outPayosGrant.removeAttribute('hidden');
+        setStatus(outPayosGrant, 'Cấp quyền Bài Giá Riêng cần nhập Slug bài viết.', 'err');
+        return;
+      }
+      var token = readToken();
+      if (!token) { showGate(); return; }
+      btnPayosGrant.disabled = true;
+      outPayosGrant.removeAttribute('hidden');
+      setStatus(outPayosGrant, 'Đang cấp quyền vào Worker KV…', 'warn');
+      adminFetch('/api/admin/payos/grant', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + token,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          contact: contact,
+          scope: scope,
+          resourceId: slugVal,
+          days: days
+        })
+      }).then(function (r) {
+        return r.json().then(function (j) { return { ok: r.ok, j: j }; });
+      }).then(function (res) {
+        btnPayosGrant.disabled = false;
+        if (!res.ok || !res.j || !res.j.ok) {
+          setStatus(outPayosGrant, (res.j && res.j.error) || 'Cấp quyền thất bại.', 'err');
+          return;
+        }
+        var j = res.j;
+        var msg = '✅ ĐÃ CẤP QUYỀN THÀNH CÔNG!\n' +
+          '• Khách hàng: ' + contact + '\n' +
+          '• Quyền: ' + (scope === 'vip' ? ('VIP FULL (' + days + ' ngày)') : ('Bài Giá Riêng "' + slugVal + '" (Vĩnh viễn)')) + '\n' +
+          '• Mã đơn khôi phục (OrderCode): ' + j.orderCode + '\n' +
+          '👉 Hướng dẫn gửi khách: Nhập "' + contact + '" hoặc mã "' + j.orderCode + '" vào ô Khôi phục trên bài viết là mở khóa ngay!';
+        setStatus(outPayosGrant, msg, 'ok');
+      }).catch(function (err) {
+        btnPayosGrant.disabled = false;
+        setStatus(outPayosGrant, 'Lỗi cấp quyền: ' + (err && err.message ? err.message : err), 'err');
+      });
+    });
+  }
+
+  var btnPayosTestQr = document.getElementById('btnPayosTestQr');
+  var outPayosTestQr = document.getElementById('outPayosTestQr');
+  var testQrPollTimer = null;
+  if (btnPayosTestQr && outPayosTestQr) {
+    btnPayosTestQr.addEventListener('click', function () {
+      var token = readToken();
+      if (!token) { showGate(); return; }
+      if (testQrPollTimer) { clearInterval(testQrPollTimer); testQrPollTimer = null; }
+      btnPayosTestQr.disabled = true;
+      outPayosTestQr.removeAttribute('hidden');
+      setStatus(outPayosTestQr, 'Đang gọi PayOS kênh CONGCU.AI tạo đơn test 2.000đ…', 'warn');
+      adminFetch('/api/admin/payos/test-qr', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + token,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({})
+      }).then(function (r) {
+        return r.json().then(function (j) { return { ok: r.ok, j: j }; });
+      }).then(function (res) {
+        btnPayosTestQr.disabled = false;
+        if (!res.ok || !res.j || !res.j.ok) {
+          setStatus(outPayosTestQr, (res.j && res.j.error) || 'Không tạo được QR test PayOS.', 'err');
+          return;
+        }
+        var j = res.j;
+        outPayosTestQr.className = 'status ok';
+        outPayosTestQr.innerHTML =
+          '<div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;">' +
+            (j.qrImageUrl ? '<img src="' + escapeAttr(j.qrImageUrl) + '" alt="VietQR Test 2000d" style="width:140px;height:140px;border-radius:8px;background:#fff;padding:6px;"/>' : '') +
+            '<div style="flex:1;min-width:200px;">' +
+              '<div style="font-weight:700;color:#7dcea0;margin-bottom:4px;">✅ Kết nối PayOS (CONGCU.AI) OK!</div>' +
+              '<div>• OrderCode: <code>' + escapeAttr(j.orderCode) + '</code> · Số tiền: <strong>2.000 VNĐ</strong></div>' +
+              '<div>• STK: <code>' + escapeAttr(j.accountNumber || '') + '</code> (' + escapeAttr(j.accountName || '') + ')</div>' +
+              '<div>• Nội dung CK: <code>' + escapeAttr(j.description || '') + '</code></div>' +
+              '<div id="testQrLiveState" style="margin-top:6px;color:#ffd166;">⏳ Đang tự động kiểm tra trạng thái thanh toán mỗi 2.2 giây…</div>' +
+            '</div>' +
+          '</div>';
+        testQrPollTimer = setInterval(function () {
+          adminFetch('/api/check-order?orderCode=' + encodeURIComponent(j.orderCode))
+            .then(function (r) { return r.json(); })
+            .then(function (st) {
+              if (st && st.paid) {
+                clearInterval(testQrPollTimer);
+                testQrPollTimer = null;
+                var liveEl = document.getElementById('testQrLiveState');
+                if (liveEl) {
+                  liveEl.style.color = '#00f5a0';
+                  liveEl.style.fontWeight = '700';
+                  liveEl.textContent = '🎉 ĐÃ NHẬN 2.000Đ THÀNH CÔNG! Auto-Check PayOS hoạt động 100%!';
+                }
+              }
+            }).catch(function () {});
+        }, 2200);
+      }).catch(function (err) {
+        btnPayosTestQr.disabled = false;
+        setStatus(outPayosTestQr, 'Lỗi gọi PayOS Test QR: ' + (err && err.message ? err.message : err), 'err');
+      });
+    });
+  }
 
   function buildPayload() {
     var data = collectForm();
