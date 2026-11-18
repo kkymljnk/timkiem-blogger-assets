@@ -2490,12 +2490,124 @@ a.qcx-sc-btn:not(.qcx-sc-btn-outline) {
   overflow: hidden !important;
 }
 
-/* Code copy chip — thumb-friendly on mobile. */
+/* Code copy chip — thumb-friendly on mobile & PC. */
+.qcx-code-wrap {
+  position: relative !important;
+  display: block !important;
+}
+.qcx-copy-btn,
+button.qcx-copy-btn,
+.mac-frame-header .qcx-copy-btn {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  box-sizing: border-box !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 5px !important;
+  height: 26px !important;
+  min-height: 26px !important;
+  max-height: 26px !important;
+  padding: 0 9px !important;
+  margin: 0 !important;
+  border-radius: 6px !important;
+  background: rgba(14, 23, 18, 0.85) !important;
+  border: 1px solid rgba(0, 240, 163, 0.25) !important;
+  color: #b8ded0 !important;
+  font: 600 11px/1 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+  letter-spacing: 0.02em !important;
+  cursor: pointer !important;
+  outline: none !important;
+  z-index: 20 !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35) !important;
+  text-transform: none !important;
+  text-decoration: none !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+.qcx-code-wrap .qcx-copy-btn {
+  position: absolute !important;
+  top: 8px !important;
+  right: 8px !important;
+}
+.mac-frame-header {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+}
+.mac-frame-header .qcx-copy-btn {
+  position: absolute !important;
+  top: 50% !important;
+  right: 12px !important;
+  transform: translateY(-50%) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.16) !important;
+}
+.qcx-copy-btn:hover,
+.mac-frame-header .qcx-copy-btn:hover {
+  background: rgba(0, 240, 163, 0.15) !important;
+  border-color: rgba(0, 240, 163, 0.6) !important;
+  color: #00ff9c !important;
+  box-shadow: 0 0 12px rgba(0, 240, 163, 0.3) !important;
+}
+.qcx-copy-btn:active,
+.mac-frame-header .qcx-copy-btn:active {
+  transform: scale(0.95) !important;
+}
+.mac-frame-header .qcx-copy-btn:active {
+  transform: translateY(-50%) scale(0.95) !important;
+}
+.qcx-copy-btn.copied,
+.mac-frame-header .qcx-copy-btn.copied {
+  background: rgba(0, 240, 163, 0.22) !important;
+  border-color: #00ff9c !important;
+  color: #00ff9c !important;
+  box-shadow: 0 0 14px rgba(0, 240, 163, 0.4) !important;
+}
+.qcx-copy-btn svg {
+  display: inline-block !important;
+  flex-shrink: 0 !important;
+  width: 13px !important;
+  height: 13px !important;
+  pointer-events: none !important;
+}
+.qcx-copy-btn .qcx-check-svg {
+  display: none !important;
+}
+.qcx-copy-btn.copied .qcx-copy-svg {
+  display: none !important;
+}
+.qcx-copy-btn.copied .qcx-check-svg {
+  display: inline-block !important;
+}
 @media (max-width: 680px) {
-  .qcx-copy-btn {
+  .qcx-copy-btn,
+  button.qcx-copy-btn,
+  .mac-frame-header .qcx-copy-btn {
+    height: 25px !important;
+    min-height: 25px !important;
+    max-height: 25px !important;
+    padding: 0 7px !important;
+    font-size: 10px !important;
+    gap: 4px !important;
     opacity: 1 !important;
-    min-height: 36px;
-    min-width: 64px;
+  }
+  .qcx-code-wrap .qcx-copy-btn {
+    top: 6px !important;
+    right: 6px !important;
+  }
+}
+@media (max-width: 440px) {
+  .mac-frame-header .qcx-copy-txt {
+    display: none !important;
+  }
+  .mac-frame-header .qcx-copy-btn {
+    padding: 0 6px !important;
+    min-width: 25px !important;
+    right: 8px !important;
   }
 }
 
