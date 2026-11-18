@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.25/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.26/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -814,7 +814,12 @@
       '.qcx-code-wrap .qcx-copy-btn svg{width:13px!important;height:13px!important}' +
       '.qcx-code-wrap .qcx-copy-btn .qcx-copy-txt{display:none!important}' +
       /* Padding-right only for plain code-wrap pre (not mac-frame since btn is in header) */
-      '.qcx-code-wrap pre{padding-right:44px!important}';
+      '.qcx-code-wrap pre{padding-right:44px!important}' +
+      /* Hide any legacy or duplicate copy button inside pre or mac-frame-content */
+      'html body pre>button,html body .post-body pre>button,' +
+      'html body .mac-frame-content button,html body .mac-frame-content .qcx-copy-btn,' +
+      'html body .qcx-code-wrap .mac-frame~.qcx-copy-btn,html body .qcx-code-wrap:has(.mac-frame)>.qcx-copy-btn{' +
+      'display:none!important;visibility:hidden!important;width:0!important;height:0!important;opacity:0!important;pointer-events:none!important}';
     if (style.textContent !== css) style.textContent = css;
   }
   function ensureSubscribeCardPanel() { ensureRaisedChrome(); }

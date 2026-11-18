@@ -720,8 +720,36 @@
     var copySvg = '<svg class="qcx-copy-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>';
     var checkSvg = '<svg class="qcx-check-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#00ff9c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>';
 
+    if (typeof window.qcxBootMacFrames === 'function') {
+      try { window.qcxBootMacFrames(); } catch (ignoreFrameErr) {}
+    }
+
     article.querySelectorAll('pre').forEach(function(pre) {
-      if (pre.getAttribute('data-copy-ready') === 'true') return;
+      /* Remove any legacy button inside <pre> itself */
+      pre.querySelectorAll('button').forEach(function(b) {
+        try { b.remove(); } catch (ignoreRm) {}
+      });
+      var frame = pre.closest ? pre.closest('.mac-frame') : null;
+      if (frame) {
+        /* Remove any stray copy button inside content area or outer code-wrap */
+        frame.querySelectorAll('.mac-frame-content button, .mac-frame-content .qcx-copy-btn').forEach(function(b) {
+          try { b.remove(); } catch (ignoreRm2) {}
+        });
+        var outerWrap = frame.closest ? frame.closest('.qcx-code-wrap') : null;
+        if (outerWrap) {
+          Array.prototype.slice.call(outerWrap.children).forEach(function(ch) {
+            if (ch.tagName === 'BUTTON' || (ch.classList && ch.classList.contains('qcx-copy-btn'))) {
+              try { ch.remove(); } catch (ignoreRm3) {}
+            }
+          });
+        }
+        if (frame.querySelector('.mac-frame-header .qcx-copy-btn')) {
+          pre.setAttribute('data-copy-ready', 'true');
+          return;
+        }
+      } else if (pre.getAttribute('data-copy-ready') === 'true') {
+        return;
+      }
       pre.setAttribute('data-copy-ready', 'true');
       var button = document.createElement('button');
       button.type = 'button';
@@ -729,7 +757,6 @@
       button.setAttribute('aria-label', 'Sao chép mã');
       button.setAttribute('title', 'Sao chép mã');
       button.innerHTML = copySvg + checkSvg + '<span class="qcx-copy-txt">Sao chép</span>';
-      var frame = pre.closest ? pre.closest('.mac-frame') : null;
       var host;
       if (frame) {
         /* Place copy btn in header bar (right of mac-dots), not in content */
