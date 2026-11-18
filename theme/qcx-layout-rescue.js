@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.9/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.10/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -904,7 +904,7 @@
       'min-height:28px!important;padding:0 10px!important;border:1px solid rgba(255,255,255,.08)!important;' +
       'border-radius:999px!important;background:rgba(255,255,255,.03)!important;color:rgba(210,230,216,.88)!important;' +
       'font-size:11px!important;font-weight:600!important;text-decoration:none!important;white-space:nowrap!important}' +
-      '#qcx-menu-footer{display:none!important}' + '.qcx-footer-widget,.qcx-footer-widget .widget-content{width:100%!important;float:none!important;padding:0!important;margin:0!important}' + '.footer .widget.qcx-footer-widget{width:100%!important;max-width:100%!important;display:block!important;float:none!important}' + '.footer .widget:nth-of-type(1).qcx-footer-widget,.footer .widget:nth-child(1).qcx-footer-widget{width:100%!important}' + '.qcx-footer-social{padding:32px 24px;text-align:center;border-top:1px solid rgba(76,175,130,0.2);background:#080f0a;width:100%!important;box-sizing:border-box}' + '.qcx-footer-brand{margin-bottom:12px}' + '.qcx-footer-brand strong{display:block!important;font-size:16px!important;color:#6dd9a4!important;letter-spacing:.08em!important;font-weight:700!important;text-transform:uppercase!important}' + '.qcx-footer-links{display:flex!important;flex-wrap:wrap!important;gap:10px!important;justify-content:center!important;margin:16px 0!important}' + '.qcx-footer-links a{color:#e8efe9!important;font-size:13px!important;text-decoration:none!important;padding:6px 18px!important;border:1px solid rgba(255,255,255,0.35)!important;border-radius:999px!important;background:rgba(255,255,255,0.06)!important;transition:color .2s,border-color .2s!important;-webkit-text-fill-color:#e8efe9!important}' + '.qcx-footer-links a:hover{color:#fff!important;border-color:rgba(76,175,130,0.8)!important;background:rgba(76,175,130,0.12)!important}' + '.qcx-footer-copy{font-size:12px;color:#aaa;margin-top:8px}' +
+      '#qcx-menu-footer{display:none!important}' + 'html[data-page-type="post"] #footer,' +'html[data-page-type="post"] footer.footer,' +'html[data-page-type="page"] #footer,' +'html[data-page-type="page"] footer.footer,' +'html[data-page-item="single"] #footer,' +'html[data-page-item="single"] footer.footer{display:none!important}' +'html:not(#layout) body{min-height:100vh!important;display:flex!important;flex-direction:column!important}' +'html:not(#layout) body > *{flex-shrink:0!important}' +'#footer,footer.footer{margin-top:auto!important;padding-bottom:0!important}' +'.qcx-footer-widget,.qcx-footer-widget .widget-content{width:100%!important;float:none!important;padding:0!important;margin:0!important}' + '.footer .widget.qcx-footer-widget{width:100%!important;max-width:100%!important;display:block!important;float:none!important}' + '.footer .widget:nth-of-type(1).qcx-footer-widget,.footer .widget:nth-child(1).qcx-footer-widget{width:100%!important}' + '.qcx-footer-social{padding:32px 24px;text-align:center;border-top:1px solid rgba(76,175,130,0.2);background:#080f0a;width:100%!important;box-sizing:border-box}' + '.qcx-footer-brand{margin-bottom:12px}' + '.qcx-footer-brand strong{display:block!important;font-size:16px!important;color:#6dd9a4!important;letter-spacing:.08em!important;font-weight:700!important;text-transform:uppercase!important}' + '.qcx-footer-links{display:flex!important;flex-wrap:wrap!important;gap:10px!important;justify-content:center!important;margin:16px 0!important}' + '.qcx-footer-links a{color:#e8efe9!important;font-size:13px!important;text-decoration:none!important;padding:6px 18px!important;border:1px solid rgba(255,255,255,0.35)!important;border-radius:999px!important;background:rgba(255,255,255,0.06)!important;transition:color .2s,border-color .2s!important;-webkit-text-fill-color:#e8efe9!important}' + '.qcx-footer-links a:hover{color:#fff!important;border-color:rgba(76,175,130,0.8)!important;background:rgba(76,175,130,0.12)!important}' + '.qcx-footer-copy{font-size:12px;color:#aaa;margin-top:8px}' +
       '#qcx-menu-nav{padding-bottom:calc(14px + env(safe-area-inset-bottom,0px))!important}' +
       '#qcx-menu .qcx-mobile-menu-hidden{display:none!important}' +
       'body.qcx-menu-open{overflow:hidden!important}' +
@@ -2932,9 +2932,21 @@
 
   function ensureSiteFooter() {
     if (isAdminPath()) return;
-    /* v2: MMO TEAM footer — no subscribe card */
+    /* v3: MMO TEAM footer — homepage only */
+    var pageType = document.documentElement.getAttribute('data-page-type') || '';
+    var pageItem = document.documentElement.getAttribute('data-page-item') || '';
+    var path = location.pathname;
+    var isHome = pageType === 'homepage' ||
+                 (path === '/' && pageItem !== 'single') ||
+                 (pageType === 'index' && path === '/');
     var footerSection = document.getElementById('footer') || document.querySelector('footer.footer');
     if (!footerSection) return;
+    if (!isHome) {
+      /* Non-homepage: hide entire footer section */
+      footerSection.style.setProperty('display', 'none', 'important');
+      footerSection.setAttribute('data-qcx-footer-hidden', '1');
+      return;
+    }
     if (footerSection.querySelector('.qcx-footer-social, #HTML5')) return;
     var widget = el('div', 'widget HTML qcx-footer-widget');
     widget.id = 'HTML5';
