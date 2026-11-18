@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.18/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.19/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -1602,6 +1602,18 @@
       if (node === rail) return;
       try { if (node.parentNode) node.parentNode.removeChild(node); } catch (ignoreDup) {}
     });
+    /* Bug#3 fix: on desktop, if rescue rail is active AND it is NOT #HTML4,
+       remove any leftover #HTML4 to prevent duplicate Tutorial blocks. */
+    try {
+      if (!mobileRail && rail && rail.id !== 'HTML4') {
+        var html4Dup = document.getElementById('HTML4');
+        if (html4Dup && html4Dup !== rail && html4Dup.parentNode) {
+          html4Dup.style.setProperty('display', 'none', 'important');
+          html4Dup.setAttribute('aria-hidden', 'true');
+          html4Dup.setAttribute('hidden', 'hidden');
+        }
+      }
+    } catch (ignoreDedupHTML4) {}
     /* Normalize related heading/aria (Tutorial legacy + title-case → uppercase). */
     document.querySelectorAll('.qcx-related-heading').forEach(function(node){
       var cur = text(node.textContent);
@@ -1976,6 +1988,20 @@
     main.appendChild(shell);
     updateMacPath(fullTitle);
     document.title = fullTitle;
+
+    /* Bug#2 fix: inject #comments shell after article so Blogger comment iframe can mount.
+       Only inject if no existing #comments already in DOM. */
+    if (!isAdmin && !document.getElementById('comments')) {
+      try {
+        var commentsShell = document.createElement('div');
+        commentsShell.id = 'comments';
+        commentsShell.className = 'comments embed threaded qcx-comments-shell';
+        commentsShell.setAttribute('data-qcx-unlock-chrome', '1');
+        commentsShell.innerHTML = '<div class="commentForm spinner hidden"></div>';
+        article.appendChild(commentsShell);
+      } catch (ignoreCmt) {}
+    }
+
     if (isAdmin) {
       try {
         document.documentElement.setAttribute('data-qcx-admin', '1');
