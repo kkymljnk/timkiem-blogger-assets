@@ -746,7 +746,7 @@
       '<div class="qcx-comment-list-head" style="display:flex!important;align-items:center!important;justify-content:space-between!important;gap:8px!important;margin:0 0 8px!important">' +
       '<strong style="font:700 12px/1.2 ui-monospace,monospace!important;color:#e6f5ec!important">Bình luận gần đây</strong>' +
       '<span class="qcx-comment-list-state" style="font:600 11px/1 ui-monospace,monospace!important;color:#8fb39f!important">Đang tải…</span></div>' +
-      '<ul class="qcx-comment-list-items" style="list-style:none!important;margin:0!important;padding:0!important;display:flex!important;flex-direction:column!important;gap:2px!important;max-height:min(42vh,280px)!important;overflow-y:auto!important;overflow-x:hidden!important"></ul>';
+      '<ul class="qcx-comment-list-items" style="list-style:none!important;margin:0!important;padding:0!important;display:flex!important;flex-direction:column!important;gap:2px!important;overflow-x:hidden!important"></ul>';
     var form = box.querySelector('.comment-form');
     var gate = box.querySelector('.qcx-inline-gate');
     if (gate && gate.parentNode === box) box.insertBefore(list, gate.nextSibling);
@@ -983,6 +983,8 @@
     });
   }
 
+  var QCX_COMMENT_PREVIEW_MAX = 5;
+
   function renderCommentList(listEl, comments, stateText) {
     if (!listEl) return;
     var stateEl = listEl.querySelector('.qcx-comment-list-state');
@@ -993,7 +995,9 @@
       itemsEl.innerHTML = '<li class="qcx-comment-empty">Chưa có bình luận công khai.</li>';
       return;
     }
-    itemsEl.innerHTML = comments.map(function (c) {
+    var overflow = comments.length > QCX_COMMENT_PREVIEW_MAX;
+    var visible = overflow ? comments.slice(0, QCX_COMMENT_PREVIEW_MAX) : comments;
+    itemsEl.innerHTML = visible.map(function (c) {
       var avatarUrl = String(c.avatar || '').replace(/"/g, '');
       var avatar = avatarUrl
         ? '<img class="qcx-comment-avatar" src="' + avatarUrl + '" alt="" width="24" height="24" loading="lazy" referrerpolicy="no-referrer" style="width:24px!important;height:24px!important;max-width:24px!important;border-radius:50%!important;object-fit:cover!important;display:block!important">'
@@ -1016,6 +1020,47 @@
         '</div></li>'
       );
     }).join('');
+    /* "Xem thêm X bình luận" link when overflow */
+    if (overflow) {
+      var remaining = comments.length - QCX_COMMENT_PREVIEW_MAX;
+      var moreId = 'qcx-more-cmts-' + (Math.random() * 9999 | 0);
+      itemsEl.insertAdjacentHTML('afterend',
+        '<div id="' + moreId + '" style="margin:6px 0 0!important;text-align:right!important">' +
+        '<button type="button" style="background:transparent!important;border:0!important;padding:0!important;cursor:pointer!important;' +
+        'font:600 11px/1.2 ui-monospace,monospace!important;color:#00f0a3!important;text-decoration:underline!important">' +
+        'Xem thêm ' + remaining + ' bình luận ↓</button></div>'
+      );
+      var moreBtn = listEl.querySelector('#' + moreId + ' button');
+      if (moreBtn) {
+        moreBtn.addEventListener('click', function () {
+          itemsEl.innerHTML += comments.slice(QCX_COMMENT_PREVIEW_MAX).map(function (c) {
+            var avatarUrl = String(c.avatar || '').replace(/"/g, '');
+            var avatar = avatarUrl
+              ? '<img class="qcx-comment-avatar" src="' + avatarUrl + '" alt="" width="24" height="24" loading="lazy" referrerpolicy="no-referrer" style="width:24px!important;height:24px!important;max-width:24px!important;border-radius:50%!important;object-fit:cover!important;display:block!important">'
+              : '<span class="qcx-comment-avatar is-fallback" aria-hidden="true" style="width:24px!important;height:24px!important;border-radius:50%!important;display:block!important"></span>';
+            var name = String(c.name || 'Ẩn danh').replace(/</g, '&lt;');
+            var isAdmin = String(c.name || '').trim() === "K'";
+            var nameColor = isAdmin ? '#ff3b3b' : '#eaf7f0';
+            var nameClass = isAdmin ? ' class="is-admin"' : '';
+            var time = c.published ? formatCommentTime(c.published) : '';
+            var text = String(c.text || '').replace(/</g, '&lt;');
+            return (
+              '<li class="qcx-comment-item" data-id="' + String(c.id).replace(/"/g, '') + '" style="display:flex!important;align-items:flex-start!important;gap:6px!important;margin:0!important;padding:4px 0!important;list-style:none!important">' +
+              avatar +
+              '<div class="qcx-comment-body" style="min-width:0!important;flex:1 1 auto!important">' +
+              '<div class="qcx-comment-meta" style="display:flex!important;flex-wrap:nowrap!important;align-items:baseline!important;justify-content:space-between!important;width:100%!important;gap:4px 8px!important">' +
+              '<b' + nameClass + ' style="font:800 13px/1.25 system-ui,-apple-system,sans-serif!important;color:' + nameColor + '!important">' + name + '</b>' +
+              (time ? '<time style="font:600 11px/1.2 ui-monospace,monospace!important;color:#8fb39f!important;margin-left:auto!important;white-space:nowrap!important">' + time + '</time>' : '') +
+              '</div>' +
+              '<p style="margin:2px 0 0!important;color:#d7ebe0!important;font:500 12px/1.35 system-ui,sans-serif!important;word-break:break-word!important">' + text + '</p>' +
+              '</div></li>'
+            );
+          }).join('');
+          try { listEl.querySelector('#' + moreId).remove(); } catch (ignoreRm) {}
+          itemsEl.style.setProperty('max-height', 'none', 'important');
+        });
+      }
+    }
   }
 
   function fetchCommentFeed(meta) {
@@ -1169,14 +1214,29 @@
   function scrollToComments(meta) {
     var comments = ensureCommentsMount(meta) || document.getElementById('comments');
     window.setTimeout(function () {
-      if (comments) {
-        try {
-          comments.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        } catch (ignore) {
-          location.hash = 'comments';
+      if (!comments) return;
+      try {
+        /* If comments was moved into rail, scroll to the rail container instead */
+        var scrollTarget = comments;
+        if (comments.getAttribute('data-qcx-in-rail') === '1') {
+          var rail = comments.closest('#qcx-sidebar-rail-rescue, .qcx-sidebar-rail, .qcx-tutorial-inline');
+          if (rail) scrollTarget = rail;
         }
+        scrollTarget.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        /* Animate reveal */
+        comments.style.setProperty('opacity', '0', 'important');
+        comments.style.setProperty('transform', 'translateY(8px)', 'important');
+        comments.style.setProperty('transition', 'opacity .35s ease, transform .35s ease', 'important');
+        window.requestAnimationFrame(function () {
+          window.setTimeout(function () {
+            comments.style.setProperty('opacity', '1', 'important');
+            comments.style.setProperty('transform', 'translateY(0)', 'important');
+          }, 40);
+        });
+      } catch (ignore) {
+        try { location.hash = 'comments'; } catch (ignore2) {}
       }
-    }, 60);
+    }, 80);
     return comments;
   }
 
