@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.30/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.31/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -989,6 +989,23 @@
 
   window.__qcxEnsureMenuDrawer = ensureMenuDrawer;
 
+  function setMenuFocusable(menu, focusable) {
+    /* When menu is hidden (aria-hidden=true), remove all focusable descendants from tab order */
+    try {
+      var focusEls = menu.querySelectorAll('a,button,input,select,textarea,[tabindex]');
+      Array.prototype.forEach.call(focusEls, function(el) {
+        if (focusable) {
+          var saved = el.getAttribute('data-qcx-saved-tabindex');
+          if (saved !== null) { el.setAttribute('tabindex', saved); el.removeAttribute('data-qcx-saved-tabindex'); }
+          else el.removeAttribute('tabindex');
+        } else {
+          var current = el.getAttribute('tabindex');
+          if (current !== '-1') { el.setAttribute('data-qcx-saved-tabindex', current || '0'); el.setAttribute('tabindex', '-1'); }
+        }
+      });
+    } catch (ignore) {}
+  }
+
   function setMenuOpenState(open) {
     var menu = document.getElementById('qcx-menu');
     var backdrop = document.getElementById('qcx-menu-backdrop');
@@ -997,6 +1014,7 @@
     if (open) {
       menu.classList.add('open');
       menu.setAttribute('aria-hidden', 'false');
+      setMenuFocusable(menu, true);
       if (backdrop) {
         backdrop.classList.add('open');
         backdrop.setAttribute('aria-hidden', 'false');
@@ -1006,6 +1024,7 @@
     } else {
       menu.classList.remove('open');
       menu.setAttribute('aria-hidden', 'true');
+      setMenuFocusable(menu, false);
       if (backdrop) {
         backdrop.classList.remove('open');
         backdrop.setAttribute('aria-hidden', 'true');
