@@ -9556,13 +9556,13 @@ html body .scroll--top:hover {
       if(!node)return {mode:'free',resourceId:slug,price:500000};
       var mode=(node.getAttribute('data-mode')||'').toLowerCase();
       var rid=(node.getAttribute('data-resource-id')||node.getAttribute('data-resource')||slug).toLowerCase();
-      var price=Number(node.getAttribute('data-price')||0);
+      var price=Number(String(node.getAttribute('data-price')||'').replace(/[^0-9]/g,''))||0;
       if(!mode){
         try{
           var j=JSON.parse(node.textContent||'{}');
           if(j.mode)mode=String(j.mode).toLowerCase();
           if(j.resourceId)rid=String(j.resourceId).toLowerCase();
-          if(j.price)price=Number(j.price);
+          if(j.price)price=Number(String(j.price).replace(/[^0-9]/g,''))||0;
         }catch(e){}
       }
       if(mode==='paid')mode='vip';

@@ -364,20 +364,28 @@ Chúc các bạn thành công!"></textarea>
     if (LABEL_ALLOWLIST.aliases[key]) return LABEL_ALLOWLIST.aliases[key];
     var hit = LABEL_ALLOWLIST.topics.find(function (t) { return t.toLowerCase() === raw.toLowerCase(); });
     if (hit) return hit;
-    if (/^(free|vip|tutorial)$/i.test(raw)) {
-      return raw.charAt(0).toUpperCase() + raw.slice(1).toLowerCase();
-    }
-    if (/^\d{1,3}([.,]\d{3})*$/.test(raw)) return raw; /* price label */
+    if (/^free$/i.test(raw)) return 'FREE';
+    if (/^vip$/i.test(raw)) return 'VIP';
+    if (/^tutorial$/i.test(raw)) return 'Tutorial';
+    if (/^gi[aá]\s*ri[eê]ng$/i.test(raw)) return 'VIP';
+    if (/^\d+(?:[.,]\d{3})*$/.test(raw)) return raw; /* price label */
     return raw;
   }
 
   function parseLabels(raw, currentMode, price) {
+    var isPaidMode = currentMode === 'vip' || currentMode === 'item' || currentMode === 'paid';
     var parts = String(raw || '').split(',').map(function (s) { return canonicalizeLabel(s); }).filter(Boolean);
-    var need = currentMode === 'paid' ? 'VIP' : 'FREE';
+    /* Remove opposite mode tag */
+    parts = parts.filter(function (p) {
+      if (isPaidMode && /^free$/i.test(p)) return false;
+      if (!isPaidMode && (/^vip$/i.test(p) || /^\d+(?:[.,]\d{3})*$/.test(p))) return false;
+      return true;
+    });
+    var need = isPaidMode ? 'VIP' : 'FREE';
     var hasNeed = parts.some(function (p) { return p.toUpperCase() === need; });
     if (!hasNeed) parts.unshift(need);
     if (!parts.some(function (p) { return /^tutorial$/i.test(p); })) parts.push('Tutorial');
-    if (currentMode === 'paid' && price) {
+    if (currentMode === 'item' && price) {
       var hasPrice = parts.some(function (p) { return p === price; });
       if (!hasPrice) parts.push(price);
     }
@@ -393,7 +401,7 @@ Chúc các bạn thành công!"></textarea>
 
   function topicLabelsOf(labels) {
     return (labels || []).filter(function (p) {
-      return !/^(free|vip|tutorial)$/i.test(p) && !/^\d{1,3}([.,]\d{3})*$/.test(p);
+      return !/^(free|vip|tutorial|gi[aá]\s*ri[eê]ng)$/i.test(p) && !/^\d+(?:[.,]\d{3})*$/.test(p);
     });
   }
 
@@ -506,7 +514,9 @@ Chúc các bạn thành công!"></textarea>
     var allow = labelsAllowlistOk(data.labels || []);
     if (!allow.ok) errors.push('Labels: ' + allow.detail);
     if (forVault && !data.driveUrl) errors.push('Thiếu driveUrl cho vault');
-    if (data.mode === 'paid' && !data.price) errors.push('Paid cần price');
+    if ((data.mode === 'paid' || data.mode === 'vip' || data.mode === 'item') && !data.price) {
+      errors.push('Cần nhập giá cho bài VIP / Giá riêng');
+    }
     if (!forVault) {
       if (!data.hero) errors.push('Thiếu hero CDN (bắt buộc live publish)');
       else if (!data.heroIsCdn) errors.push('Hero phải là Blogspot CDN');
@@ -549,7 +559,7 @@ Chúc các bạn thành công!"></textarea>
     var noDriveInHtml = !/drive\.google\.com/i.test(check.html) &&
       !/drive\.google\.com/i.test(data.teaser + data.locked);
     var modeDetail = data.mode.toUpperCase() +
-      (data.mode === 'paid' ? (data.price ? ' · ' + data.price : ' · thiếu giá') : '');
+      (data.mode !== 'free' ? (data.price ? ' · ' + data.price : ' · thiếu giá') : '');
     var items = [
       checkItem(titleOk, 'Title', titleOk ? data.title.slice(0, 48) : 'Thiếu'),
       checkItem(slugOk, 'Slug', slugOk ? data.resourceId : (data.resourceId || '—')),
@@ -609,14 +619,17 @@ Chúc các bạn thành công!"></textarea>
       document.getElementById('locked').value = d.locked || '';
       document.getElementById('driveUrl').value = d.driveUrl || '';
       document.getElementById('notesHtml').value = d.notesHtml || '';
-      priceEl.value = d.price || '';
-      setMode(d.mode === 'paid' ? 'paid' : 'free');
+      if (priceEl) priceEl.value = d.price || '';
+      var itemPriceInp = document.getElementById('inpItemPrice');
+      if (itemPriceInp && d.price) itemPriceInp.value = d.price;
+      var restoredMode = d.mode === 'item' ? 'item' : (d.mode === 'vip' || d.mode === 'paid' ? 'vip' : 'free');
+      setMode(restoredMode);
       syncLabelChips();
     } catch (e) {}
   }
 
   function setMode(next) {
-    mode = next;
+    mode = next === 'paid' ? 'vip' : next;
     Array.prototype.forEach.call(document.querySelectorAll('#modeSeg button'), function (btn) {
       btn.classList.toggle('active', btn.getAttribute('data-mode') === mode);
     });
@@ -629,14 +642,10 @@ Chúc các bạn thành công!"></textarea>
       if (!/FREE/i.test(labels.value)) {
         labels.value = labels.value ? ('FREE, ' + labels.value.replace(/^\s*(VIP|GIÁ RIÊNG)\s*,?\s*/i, '')) : 'FREE';
       }
-    } else if (mode === 'vip') {
-      labels.value = labels.value ? ('VIP, ' + labels.value.replace(/^\s*(FREE|GIÁ RIÊNG)\s*,?\s*/i, '')) : 'VIP';
-    } else if (mode === 'item') {
-      labels.value = labels.value ? ('GIÁ RIÊNG, ' + labels.value.replace(/^\s*(FREE|VIP)\s*,?\s*/i, '')) : 'GIÁ RIÊNG';
-    }
-    }
-    if (mode === 'paid' && !/VIP/i.test(labels.value)) {
-      labels.value = labels.value ? ('VIP, ' + labels.value.replace(/^\s*FREE\s*,?\s*/i, '')) : 'VIP';
+    } else if (mode === 'vip' || mode === 'item') {
+      if (!/VIP/i.test(labels.value)) {
+        labels.value = labels.value ? ('VIP, ' + labels.value.replace(/^\s*(FREE|GIÁ RIÊNG)\s*,?\s*/i, '')) : 'VIP';
+      }
     }
   }
 
@@ -945,11 +954,15 @@ Chúc các bạn thành công!"></textarea>
     }
     var body = {
       mode: data.mode,
+      accessType: data.mode === 'paid' ? 'vip' : data.mode,
       title: data.title,
       driveUrl: vaultDriveUrl,
       notesHtml: vaultNotesHtml || undefined
     };
-    if (data.mode === 'paid') body.price = data.price;
+    if (data.mode === 'paid' || data.mode === 'vip' || data.mode === 'item') {
+      body.price = data.price;
+      body.priceVnd = Number(String(data.price || '').replace(/[^0-9]/g, '')) || (data.mode === 'item' ? 300000 : 500000);
+    }
 
     setStatus(appStatus, 'Đang PUT vault…');
     fetch(API_BASE + '/api/admin/resources/' + encodeURIComponent(data.resourceId), {
@@ -1042,7 +1055,8 @@ Chúc các bạn thành công!"></textarea>
       return false;
     }
     var parts = extractPartsFromHtml(j.html || '');
-    var nextMode = ((j.mode || parts.mode || 'free') + '').toLowerCase() === 'paid' ? 'paid' : 'free';
+    var rawMode = ((j.mode || parts.mode || 'free') + '').toLowerCase();
+    var nextMode = rawMode === 'item' ? 'item' : (rawMode === 'vip' || rawMode === 'paid' ? 'vip' : 'free');
     var nextTitle = (j.title || parts.title || '').trim();
     var nextSlug = (j.resourceId || j.customSlug || j.slug || parts.resourceId || '').trim();
     var nextLabels = Array.isArray(j.labels) ? j.labels.join(', ') : (j.labelsCsv || j.labels || '');
@@ -1065,7 +1079,9 @@ Chúc các bạn thành công!"></textarea>
     document.getElementById('locked').value = nextLocked;
     document.getElementById('driveUrl').value = nextDrive;
     document.getElementById('notesHtml').value = nextNotes;
-    priceEl.value = nextPrice;
+    if (priceEl) priceEl.value = nextPrice;
+    var itemPriceInp = document.getElementById('inpItemPrice');
+    if (itemPriceInp && nextPrice) itemPriceInp.value = nextPrice;
     setMode(nextMode);
     persistDraft();
     var check = renderPreview();
