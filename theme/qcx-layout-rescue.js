@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.29/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.30/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -476,7 +476,7 @@
       '<img class="qcx-brand-raster" src="' + src1 + '" srcset="' + src1 + ' 1x, ' + src2 + ' 2x" ' +
       'width="64" height="64" decoding="async" alt="MMO"/>' +
       '<svg xmlns="http://www.w3.org/2000/svg" class="qcx-brand-mark qcx-brand-svg qcx-brand-eyes-only" ' +
-      'viewBox="0 0 512 512" width="300" height="300" role="img" aria-hidden="true" tabindex="0">' +
+      'viewBox="0 0 512 512" width="300" height="300" role="img" aria-hidden="true">' +
       '<g class="qcx-ghost-eyes">' +
       '<circle class="qcx-eye-socket" cx="230.6" cy="189.9" r="16.5" fill="#f2f2f2"/>' +
       '<circle class="qcx-eye qcx-eye-l" cx="230.6" cy="189.9" r="13.2" fill="#0a0a0a"/>' +
