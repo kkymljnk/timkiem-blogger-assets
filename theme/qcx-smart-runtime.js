@@ -717,30 +717,52 @@
     article.querySelectorAll('.qcx-toc').forEach(function(node) { try { node.remove(); } catch (ignore) {} });
 
     /* Modern copy buttons for code blocks. */
+    var copySvg = '<svg class="qcx-copy-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>';
+    var checkSvg = '<svg class="qcx-check-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#00ff9c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+
     article.querySelectorAll('pre').forEach(function(pre) {
       if (pre.getAttribute('data-copy-ready') === 'true') return;
       pre.setAttribute('data-copy-ready', 'true');
       var button = document.createElement('button');
       button.type = 'button';
       button.className = 'qcx-copy-btn';
-      button.textContent = 'copy';
       button.setAttribute('aria-label', 'Sao chép mã');
+      button.setAttribute('title', 'Sao chép mã');
+      button.innerHTML = copySvg + checkSvg + '<span class="qcx-copy-txt">Sao chép</span>';
       var frame = pre.closest ? pre.closest('.mac-frame') : null;
-      var host = frame ? frame.querySelector('.mac-frame-header') : null;
-      if (!host) {
-        var wrap = document.createElement('div');
-        wrap.className = 'qcx-code-wrap';
-        pre.parentNode.insertBefore(wrap, pre);
-        wrap.appendChild(pre);
+      var host;
+      if (frame) {
+        /* Place copy btn in content area (bottom-right), not in header */
+        host = frame.querySelector('.mac-frame-content') || frame.querySelector('.mac-frame-header');
+      } else {
+        var wrap = pre.closest ? pre.closest('.qcx-code-wrap') : null;
+        if (!wrap) {
+          wrap = document.createElement('div');
+          wrap.className = 'qcx-code-wrap';
+          pre.parentNode.insertBefore(wrap, pre);
+          wrap.appendChild(pre);
+        }
         host = wrap;
       }
       host.appendChild(button);
-      button.addEventListener('click', function() {
-        copyText(pre.innerText || pre.textContent || '').then(function() {
-          button.textContent = 'copied';
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        var txtSpan = button.querySelector('.qcx-copy-txt');
+        var codeEl = pre.querySelector('code') || pre;
+        var textToCopy = (codeEl.innerText || codeEl.textContent || '').trim();
+        copyText(textToCopy).then(function() {
           button.classList.add('copied');
-          setTimeout(function() { button.textContent = 'copy'; button.classList.remove('copied'); }, 1600);
-        }).catch(function() { button.textContent = 'error'; });
+          if (txtSpan) txtSpan.textContent = 'Đã chép';
+          setTimeout(function() {
+            button.classList.remove('copied');
+            if (txtSpan) txtSpan.textContent = 'Sao chép';
+          }, 1800);
+        }).catch(function() {
+          if (txtSpan) txtSpan.textContent = 'Lỗi';
+          setTimeout(function() {
+            if (txtSpan) txtSpan.textContent = 'Sao chép';
+          }, 1800);
+        });
       });
     });
 
