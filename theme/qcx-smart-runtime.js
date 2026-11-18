@@ -732,8 +732,8 @@
       var frame = pre.closest ? pre.closest('.mac-frame') : null;
       var host;
       if (frame) {
-        /* Place copy btn in content area (bottom-right), not in header */
-        host = frame.querySelector('.mac-frame-content') || frame.querySelector('.mac-frame-header');
+        /* Place copy btn in header bar (right of mac-dots), not in content */
+        host = frame.querySelector('.mac-frame-header') || frame.querySelector('.mac-frame-content');
       } else {
         var wrap = pre.closest ? pre.closest('.qcx-code-wrap') : null;
         if (!wrap) {

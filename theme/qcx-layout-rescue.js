@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.24/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.25/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -785,27 +785,36 @@
       'html[data-qcx-admin=\"1\"] .qcx-read-time{display:none!important}' +
       /* Hide code block title text — keep mac-dots + copy button only */
       '.mac-title{display:none!important}' +
-      /* Hide any copy btn in mac-frame-header */
-      '.mac-frame-header .qcx-copy-btn{display:none!important}' +
-      /* mac-frame-content and qcx-code-wrap need position:relative for absolute copy btn */
+      /* mac-frame-header: flex row, copy btn pushed to the right via margin-left:auto */
+      '.mac-frame-header{display:flex!important;align-items:center!important;flex-wrap:nowrap!important}' +
+      /* Copy btn in header: inline-flex, margin-left:auto pushes it right */
+      '.mac-frame-header .qcx-copy-btn{' +
+      'margin-left:auto!important;position:static!important;' +
+      'width:28px!important;height:28px!important;min-width:28px!important;min-height:28px!important;' +
+      'padding:0!important;border-radius:7px!important;' +
+      'background:rgba(0,240,163,0.1)!important;border:1px solid rgba(0,240,163,0.25)!important;' +
+      'display:inline-flex!important;align-items:center!important;justify-content:center!important;' +
+      'opacity:0.65!important;transition:opacity .15s ease,background .15s ease!important;cursor:pointer!important}' +
+      '.mac-frame:hover .mac-frame-header .qcx-copy-btn{opacity:1!important;background:rgba(0,240,163,0.18)!important}' +
+      '.mac-frame-header .qcx-copy-btn.copied{background:rgba(0,240,163,0.28)!important;border-color:rgba(0,240,163,0.6)!important;opacity:1!important}' +
+      '.mac-frame-header .qcx-copy-btn svg{width:13px!important;height:13px!important}' +
+      '.mac-frame-header .qcx-copy-btn .qcx-copy-txt{display:none!important}' +
+      /* Plain code-wrap (no mac-frame): position:relative + absolute copy btn */
       '.mac-frame-content{position:relative!important}' +
       '.qcx-code-wrap{position:relative!important;display:block!important}' +
-      /* Copy btn: absolute top-right — covers mac-frame, mac-frame-pre, and plain code-wrap */
-      '.mac-frame .qcx-copy-btn,' +
-      '.mac-frame-pre .qcx-copy-btn,' +
       '.qcx-code-wrap .qcx-copy-btn{' +
       'position:absolute!important;top:8px!important;right:8px!important;z-index:3!important;' +
-      'width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important;' +
+      'width:28px!important;height:28px!important;min-width:28px!important;min-height:28px!important;' +
       'padding:0!important;border-radius:7px!important;' +
-      'background:rgba(0,240,163,0.12)!important;border:1px solid rgba(0,240,163,0.28)!important;' +
+      'background:rgba(0,240,163,0.1)!important;border:1px solid rgba(0,240,163,0.25)!important;' +
       'display:inline-flex!important;align-items:center!important;justify-content:center!important;' +
       'opacity:0.65!important;transition:opacity .15s ease,background .15s ease!important}' +
-      '.mac-frame:hover .qcx-copy-btn,.qcx-code-wrap:hover .qcx-copy-btn{opacity:1!important;background:rgba(0,240,163,0.18)!important}' +
-      '.mac-frame .qcx-copy-btn.copied,.qcx-code-wrap .qcx-copy-btn.copied{background:rgba(0,240,163,0.28)!important;border-color:rgba(0,240,163,0.6)!important;opacity:1!important}' +
-      '.mac-frame .qcx-copy-btn svg,.mac-frame-pre .qcx-copy-btn svg,.qcx-code-wrap .qcx-copy-btn svg{width:14px!important;height:14px!important}' +
-      '.mac-frame .qcx-copy-btn .qcx-copy-txt,.qcx-code-wrap .qcx-copy-btn .qcx-copy-txt{display:none!important}' +
-      /* Ensure pre code doesn't go under the copy btn */
-      '.mac-frame-content pre,.qcx-code-wrap pre{padding-right:46px!important}';
+      '.qcx-code-wrap:hover .qcx-copy-btn{opacity:1!important;background:rgba(0,240,163,0.18)!important}' +
+      '.qcx-code-wrap .qcx-copy-btn.copied{background:rgba(0,240,163,0.28)!important;border-color:rgba(0,240,163,0.6)!important;opacity:1!important}' +
+      '.qcx-code-wrap .qcx-copy-btn svg{width:13px!important;height:13px!important}' +
+      '.qcx-code-wrap .qcx-copy-btn .qcx-copy-txt{display:none!important}' +
+      /* Padding-right only for plain code-wrap pre (not mac-frame since btn is in header) */
+      '.qcx-code-wrap pre{padding-right:44px!important}';
     if (style.textContent !== css) style.textContent = css;
   }
   function ensureSubscribeCardPanel() { ensureRaisedChrome(); }
