@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.16/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.17/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -784,7 +784,17 @@
       'opacity:1!important;font-weight:700!important}' +
       'html[data-qcx-admin=\"1\"] .qcx-read-time{display:none!important}' +
       /* Hide code block title text — keep mac-dots + copy button only */
-      '.mac-title{display:none!important}';
+      '.mac-title{display:none!important}' +
+      /* Hide smart-runtime copy btn injected into mac-frame-header; keep only the post's own copy btn */
+      '.mac-frame-header .qcx-copy-btn{display:none!important}' +
+      /* Make post copy button (floating bottom-right) bigger and more prominent */
+      '.mac-frame .qcx-copy-btn:not(.mac-frame-header .qcx-copy-btn),' +
+      '.mac-frame-pre .qcx-copy-btn{' +
+      'width:36px!important;height:36px!important;min-width:36px!important;min-height:36px!important;' +
+      'padding:0!important;border-radius:8px!important;' +
+      'background:rgba(0,240,163,0.12)!important;border:1px solid rgba(0,240,163,0.3)!important;' +
+      'display:inline-flex!important;align-items:center!important;justify-content:center!important}' +
+      '.mac-frame .qcx-copy-btn svg,.mac-frame-pre .qcx-copy-btn svg{width:16px!important;height:16px!important}';
     if (style.textContent !== css) style.textContent = css;
   }
   function ensureSubscribeCardPanel() { ensureRaisedChrome(); }
