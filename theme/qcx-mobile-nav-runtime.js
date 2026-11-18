@@ -428,12 +428,12 @@
     var grid1 = el('div', 'qcx-menu-card-grid');
     var path = location.pathname || '/';
     var cardsPrimary = [
-      { title: 'Trang chủ', desc: 'Home', href: '/', icon: 'home', current: path === '/' || path === '' },
-      { title: 'Bài viết', desc: 'Mới nhất', href: '/search', icon: 'posts' },
-      { title: 'Skill & Prompt', desc: 'AI', href: '/search/label/AI?max-results=12', icon: 'skill' },
-      { title: 'Mã nguồn', desc: 'Dev & API', href: '/search/label/Developer?max-results=12', icon: 'code' },
-      { title: 'Tools', desc: 'Tool & App', href: '/search/label/Tools?max-results=12', icon: 'tools' },
-      { title: 'Telegram', desc: 'Hỗ trợ', href: 'https://t.me/superkhung', icon: 'telegram', external: true }
+      { title: 'Trang chủ', desc: 'Bài mới nhất', href: '/', icon: 'home', current: path === '/' || path === '' },
+      { title: 'Miễn phí', desc: 'Tool & tài khoản', href: '/search/label/FREE?max-results=12', icon: 'label' },
+      { title: 'Tutorial', desc: 'Hướng dẫn thực chiến', href: '/search/label/Tutorial?max-results=12', icon: 'skill' },
+      { title: 'API', desc: 'Key & endpoint free', href: '/search/label/API?max-results=12', icon: 'code' },
+      { title: 'Student', desc: 'Ưu đãi sinh viên', href: '/search/label/STUDENT?max-results=12', icon: 'posts' },
+      { title: 'Telegram', desc: 'Chat cộng đồng', href: 'https://t.me/superkhung', icon: 'telegram', external: true }
     ];
     cardsPrimary.forEach(function (item) { addCard(grid1, item); });
     if (/\/p\/admin\.html/i.test(path) || document.documentElement.getAttribute('data-qcx-admin') === '1') {
