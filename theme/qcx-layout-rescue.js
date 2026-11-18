@@ -1381,6 +1381,9 @@
     /* Desktop: no PC menu FAB — strip leftover button if present. */
     ensureDesktopMenuButton();
     bindMenuCloseControls();
+    if (typeof window.__qcxRenderAuthSlots === 'function') {
+      try { window.__qcxRenderAuthSlots(); } catch (ignoreAuth) {}
+    }
   }
 
   function ensureDesktopMenuButton() {

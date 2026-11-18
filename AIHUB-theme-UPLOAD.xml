@@ -7059,6 +7059,18 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
       <span class='qcx-mt-path'>mmo/article</span>
     </div>
     <div class='qcx-mt-right'>
+      <div class='qcx-auth-slot qcx-auth-slot--topbar' data-qcx-auth-slot='topbar'>
+        <button aria-label='Đăng nhập bằng Gmail' class='qcx-signal-x qcx-auth-login-btn' type='button'>
+          <svg aria-hidden='true' class='qcx-google-ico' height='14' viewBox='0 0 24 24' width='14'><path d='M21.35 11.1h-9.17v2.73h6.51c-.33 1.81-1.5 3.34-3.2 4.37v3.62h5.18c3.03-2.79 4.78-6.9 4.78-11.82 0-.8-.08-1.57-.23-2.3z' fill='#4285F4'/><path d='M12.18 22c4.32 0 7.95-1.43 10.6-3.88l-5.18-3.62c-1.43.96-3.26 1.53-5.42 1.53-4.17 0-7.7-2.81-8.96-6.6H-2.1v3.73C.54 18.4 5.94 22 12.18 22z' fill='#34A853'/><path d='M3.22 13.43a5.85 5.85 0 0 1 0-3.76V5.94H-2.1a9.99 9.99 0 0 0 0 8.95l5.32-3.73z' fill='#FBBC05'/><path d='M12.18 5.98c2.35 0 4.46.81 6.12 2.4l4.59-4.59C20.12 1.19 16.5 0 12.18 0 5.94 0 .54 3.6-2.1 8.84l5.32 3.73c1.26-3.79 4.79-6.59 8.96-6.59z' fill='#EA4335'/></svg>
+          <span class='qcx-signal-x-label'>Đăng nhập</span>
+          <span aria-hidden='true' class='qcx-signal-x-arrow'>&#8594;</span>
+        </button>
+        <button aria-expanded='false' aria-haspopup='menu' class='qcx-user-chip' data-role='member' hidden='hidden' type='button'>
+          <img alt='' class='qcx-user-avatar' decoding='async' height='22' loading='lazy' width='22'/>
+          <span class='qcx-user-name'/>
+          <span class='qcx-user-role-badge'>MEMBER</span>
+        </button>
+      </div>
       <a class='qcx-mt-back' href='/'>../ back to home</a>
     </div>
   </div>
@@ -7067,7 +7079,18 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
     <div class='qcx-signal-inner'>
       <div class='qcx-signal-row'>
         <a aria-label='Về trang chủ MMO' class='qcx-signal-status' href='/'><span aria-hidden='true' class='qcx-signal-dot'/>signal / online</a>
-        <a aria-label='Liên hệ Telegram @superkhung' class='qcx-signal-x' href='https://t.me/superkhung' rel='noopener noreferrer' target='_blank'><span class='qcx-signal-x-label'>@superkhung</span><span aria-hidden='true' class='qcx-signal-x-arrow'>&#8594;</span></a>
+        <div class='qcx-auth-slot' data-qcx-auth-slot='header'>
+          <button aria-label='Đăng nhập bằng Gmail' class='qcx-signal-x qcx-auth-login-btn' type='button'>
+            <svg aria-hidden='true' class='qcx-google-ico' height='14' viewBox='0 0 24 24' width='14'><path d='M21.35 11.1h-9.17v2.73h6.51c-.33 1.81-1.5 3.34-3.2 4.37v3.62h5.18c3.03-2.79 4.78-6.9 4.78-11.82 0-.8-.08-1.57-.23-2.3z' fill='#4285F4'/><path d='M12.18 22c4.32 0 7.95-1.43 10.6-3.88l-5.18-3.62c-1.43.96-3.26 1.53-5.42 1.53-4.17 0-7.7-2.81-8.96-6.6H-2.1v3.73C.54 18.4 5.94 22 12.18 22z' fill='#34A853'/><path d='M3.22 13.43a5.85 5.85 0 0 1 0-3.76V5.94H-2.1a9.99 9.99 0 0 0 0 8.95l5.32-3.73z' fill='#FBBC05'/><path d='M12.18 5.98c2.35 0 4.46.81 6.12 2.4l4.59-4.59C20.12 1.19 16.5 0 12.18 0 5.94 0 .54 3.6-2.1 8.84l5.32 3.73c1.26-3.79 4.79-6.59 8.96-6.59z' fill='#EA4335'/></svg>
+            <span class='qcx-signal-x-label'>Đăng nhập</span>
+            <span aria-hidden='true' class='qcx-signal-x-arrow'>&#8594;</span>
+          </button>
+          <button aria-expanded='false' aria-haspopup='menu' class='qcx-user-chip' data-role='member' hidden='hidden' type='button'>
+            <img alt='' class='qcx-user-avatar' decoding='async' height='22' loading='lazy' width='22'/>
+            <span class='qcx-user-name'/>
+            <span class='qcx-user-role-badge'>MEMBER</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -9460,6 +9483,54 @@ html body .scroll--top:hover {
 }
 /* ── Touch target a11y (Mobile 100/100) ── */
 .card-content .qcx-card-labels,.qcx-card-labels a[rel=tag],.card-content a[rel=tag],a[rel=tag],.qcx-footer-links a{min-height:40px!important;min-width:44px!important;padding:8px 14px!important;margin:0 4px 6px 0!important;align-items:center!important;display:inline-flex!important;box-sizing:border-box!important}
+/* ── Gmail Auth Slot, 4-Tier Role Color &amp; Account Dropdown ── */
+.qcx-auth-slot{display:inline-flex;align-items:center;position:relative;z-index:120}
+.qcx-mac-topbar .qcx-mt-right{display:inline-flex!important;align-items:center!important;gap:10px!important}
+.qcx-auth-login-btn{appearance:none;border:1px solid rgba(52,230,160,0.32)!important;background:rgba(9,20,14,0.88)!important;color:#e6f5ec!important;cursor:pointer!important;font:600 12px/1 var(--qcx-article-mono,monospace)!important;display:inline-flex!important;align-items:center!important;gap:7px!important;height:36px!important;padding:0 14px!important;border-radius:999px!important;transition:border-color .18s,background .18s,transform .18s!important}
+.qcx-auth-login-btn:hover{border-color:#34e6a0!important;background:rgba(52,230,160,0.14)!important;transform:translateY(-1px)}
+.qcx-auth-login-btn[hidden],.qcx-user-chip[hidden]{display:none!important}
+.qcx-google-ico{flex:0 0 auto;display:block}
+.qcx-user-chip{appearance:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 11px 0 5px;border-radius:999px;border:1px solid rgba(52,230,160,0.35);background:rgba(10,22,16,0.92);color:#e8fff2;font:600 12.5px/1 var(--qcx-article-sans,system-ui,sans-serif);transition:all .18s ease;max-width:260px}
+.qcx-user-avatar{width:24px;height:24px;border-radius:50%;object-fit:cover;flex:0 0 auto;border:1.5px solid #34e6a0;background:#07120c}
+.qcx-user-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:135px;font-weight:600}
+.qcx-user-role-badge{display:inline-flex;align-items:center;padding:2px 7px;border-radius:999px;font:800 9.5px/1.1 var(--qcx-article-mono,monospace);letter-spacing:.05em;text-transform:uppercase;flex:0 0 auto}
+/* Role 1: MEMBER (Cyber Mint) */
+.qcx-user-chip[data-role='member']{border-color:rgba(52,230,160,0.36);background:rgba(52,230,160,0.08)}
+.qcx-user-chip[data-role='member'] .qcx-user-avatar{border-color:#34e6a0}
+.qcx-user-chip[data-role='member'] .qcx-user-name{color:#d9fbee}
+.qcx-user-chip[data-role='member'] .qcx-user-role-badge{background:rgba(52,230,160,0.18);color:#34e6a0}
+/* Role 2: PRO / Buyer (Electric Cyan) */
+.qcx-user-chip[data-role='pro']{border-color:rgba(56,189,248,0.48);background:rgba(56,189,248,0.10);box-shadow:0 0 14px rgba(56,189,248,0.12)}
+.qcx-user-chip[data-role='pro'] .qcx-user-avatar{border-color:#38bdf8}
+.qcx-user-chip[data-role='pro'] .qcx-user-name{color:#bae6fd;font-weight:700}
+.qcx-user-chip[data-role='pro'] .qcx-user-role-badge{background:rgba(56,189,248,0.22);color:#38bdf8}
+/* Role 3: VIP 30 Days (Royal Gold) */
+.qcx-user-chip[data-role='vip']{border-color:rgba(255,209,102,0.58);background:linear-gradient(135deg,rgba(255,209,102,0.16),rgba(245,158,11,0.08));box-shadow:0 0 18px rgba(255,209,102,0.18)}
+.qcx-user-chip[data-role='vip'] .qcx-user-avatar{border-color:#ffd166}
+.qcx-user-chip[data-role='vip'] .qcx-user-name{color:#ffe599;font-weight:700}
+.qcx-user-chip[data-role='vip'] .qcx-user-role-badge{background:linear-gradient(135deg,#ffd166,#f59e0b);color:#140d00}
+/* Role 4: ADMIN (Crimson Gold) */
+.qcx-user-chip[data-role='admin']{border-color:rgba(255,107,107,0.62);background:linear-gradient(135deg,rgba(255,95,86,0.18),rgba(255,189,46,0.10));box-shadow:0 0 20px rgba(255,95,86,0.22)}
+.qcx-user-chip[data-role='admin'] .qcx-user-avatar{border-color:#ff6b6b}
+.qcx-user-chip[data-role='admin'] .qcx-user-name{color:#ffb4ae;font-weight:700}
+.qcx-user-chip[data-role='admin'] .qcx-user-role-badge{background:linear-gradient(135deg,#ff5f56,#ffbd2e);color:#1a0500}
+/* User Account Dropdown &amp; Google Auth Popup */
+#qcx-user-dropdown{position:fixed;z-index:999998;min-width:270px;max-width:310px;border-radius:14px;border:1px solid rgba(76,175,130,0.38);background:#09140e;color:#e6f5ec;box-shadow:0 20px 50px rgba(0,0,0,0.75);padding:14px;display:none;font-family:var(--qcx-article-sans,system-ui,sans-serif)}
+#qcx-user-dropdown.is-open{display:block}
+.qcx-ud-head{display:flex;align-items:center;gap:10px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:10px}
+.qcx-ud-head img{width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid #34e6a0}
+.qcx-ud-name{font-size:14px;font-weight:700;color:#fff;margin:0}
+.qcx-ud-email{font-size:11.5px;color:#8fb6a1;margin:2px 0 0;word-break:break-all}
+.qcx-ud-status{font-size:12px;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,0.04);margin-bottom:10px;color:#bde3ce}
+.qcx-ud-btn{width:100%;text-align:left;padding:8px 10px;border-radius:8px;border:0;background:transparent;color:#d8efe2;font:600 12.5px/1.3 var(--qcx-article-sans,system-ui,sans-serif);cursor:pointer;display:flex;align-items:center;gap:8px}
+.qcx-ud-btn:hover{background:rgba(52,230,160,0.12);color:#fff}
+.qcx-ud-btn.is-danger{color:#ff9b94}
+.qcx-ud-btn.is-danger:hover{background:rgba(255,95,86,0.14)}
+#qcx-google-auth-modal{position:fixed;inset:0;z-index:999999;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(3,9,6,0.84);backdrop-filter:blur(8px)}
+#qcx-google-auth-modal.is-open{display:flex}
+.qcx-google-oauth-btn{width:100%;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,0.18);background:#fff;color:#111;font:700 13.5px/1.2 var(--qcx-article-sans,system-ui,sans-serif);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:12px}
+.qcx-google-oauth-btn:hover{background:#f2f6f4}
+.qcx-po-gmail-locked{display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:8px;background:rgba(52,230,160,0.10);border:1px solid rgba(52,230,160,0.35);color:#bdf5d8;font-size:12.5px;margin-bottom:10px}
 /* ── PayOS 3-Tier VietQR Modal &amp; Smart Tier Banner ── */
 .qcx-payos-vip-banner{margin:10px 0 0;padding:10px 14px;border-radius:10px;border:1px solid rgba(224,179,90,0.45);background:rgba(224,179,90,0.09);color:#f5dca2;font:500 12.5px/1.45 var(--qcx-article-sans,system-ui,sans-serif)}
 .qcx-payos-vip-banner strong{color:#ffd678;font-weight:700}
@@ -9516,11 +9587,15 @@ html body .scroll--top:hover {
     document.addEventListener('DOMContentLoaded',function(){rIC(function(){qcxFixAriaHiddenTabindex();qcxOptimizeMobileBrandMark();qcxObserveFooterClearance();});},{once:true});
     window.addEventListener('load',function(){rIC(function(){qcxFixAriaHiddenTabindex();qcxOptimizeMobileBrandMark();});},{once:true});
 
-    /* ── MMO TEAM PayOS 3-Tier Auto-Check & Self-Healing Engine ── */
+    /* ── MMO TEAM PayOS 3-Tier & Gmail Auth Role Engine ── */
     var API_BASE='https://timkiem-store-api.kkymljnk.workers.dev';
     var ENT_KEY='qcx_payos_entitlement_v1';
     var PEND_KEY='qcx_payos_pending_v1';
     var pollTimer=0;
+    var googleClientId='';
+    var gsiTokenClient=null;
+    var gsiScriptLoading=false;
+    var pendingPayosCfgAfterLogin=null;
 
     function fmtVnd(n){
       var v=Number(n)||0;
@@ -9534,18 +9609,362 @@ html body .scroll--top:hover {
         var cur=readEnt();
         var merged={
           sessionToken:next.sessionToken||cur.sessionToken||'',
-          vipExpiresAt:next.vipExpiresAt||cur.vipExpiresAt||null,
-          unlockedItems:cur.unlockedItems||{}
+          vipExpiresAt:next.vipExpiresAt||(next.user&&next.user.vipExpiresAt)||cur.vipExpiresAt||null,
+          unlockedItems:cur.unlockedItems||{},
+          user:next.user||cur.user||null
         };
         if(Array.isArray(next.unlockedItems)){
           next.unlockedItems.forEach(function(id){merged.unlockedItems[id]=true;});
         }else if(next.unlockedItem){
           merged.unlockedItems[next.unlockedItem]=true;
         }
+        if(next.user && Array.isArray(next.user.items)){
+          next.user.items.forEach(function(id){merged.unlockedItems[id]=true;});
+        }
+        if(merged.user){
+          if(merged.vipExpiresAt && new Date(merged.vipExpiresAt).getTime()>Date.now() && merged.user.role!=='admin'){
+            merged.user.role='vip';
+          }else if(Object.keys(merged.unlockedItems).length>0 && merged.user.role==='member'){
+            merged.user.role='pro';
+          }
+        }
         localStorage.setItem(ENT_KEY,JSON.stringify(merged));
+        renderAuthSlots();
         return merged;
       }catch(e){return next;}
     }
+    function clearEnt(){
+      try{localStorage.removeItem(ENT_KEY);}catch(e){}
+      renderAuthSlots();
+    }
+    function roleBadgeText(role){
+      if(role==='admin')return '⚡ ADMIN';
+      if(role==='vip')return '👑 VIP';
+      if(role==='pro')return '💎 PRO';
+      return 'MEMBER';
+    }
+    function renderAuthSlots(){
+      var ent=readEnt();
+      var u=ent && ent.user && ent.user.email ? ent.user : null;
+      var mh=document.getElementById('qcx-menu-header');
+      if(mh && !mh.querySelector('.qcx-auth-slot')){
+        var mSlot=document.createElement('div');
+        mSlot.className='qcx-auth-slot qcx-auth-slot--menu';
+        mSlot.setAttribute('data-qcx-auth-slot','menu');
+        mSlot.style.cssText='margin-left:auto;margin-right:8px;';
+        mSlot.innerHTML='<button aria-label="Đăng nhập bằng Gmail" class="qcx-signal-x qcx-auth-login-btn" type="button"><svg aria-hidden="true" class="qcx-google-ico" height="14" viewBox="0 0 24 24" width="14"><path d="M21.35 11.1h-9.17v2.73h6.51c-.33 1.81-1.5 3.34-3.2 4.37v3.62h5.18c3.03-2.79 4.78-6.9 4.78-11.82 0-.8-.08-1.57-.23-2.3z" fill="#4285F4"></path><path d="M12.18 22c4.32 0 7.95-1.43 10.6-3.88l-5.18-3.62c-1.43.96-3.26 1.53-5.42 1.53-4.17 0-7.7-2.81-8.96-6.6H-2.1v3.73C.54 18.4 5.94 22 12.18 22z" fill="#34A853"></path><path d="M3.22 13.43a5.85 5.85 0 0 1 0-3.76V5.94H-2.1a9.99 9.99 0 0 0 0 8.95l5.32-3.73z" fill="#FBBC05"></path><path d="M12.18 5.98c2.35 0 4.46.81 6.12 2.4l4.59-4.59C20.12 1.19 16.5 0 12.18 0 5.94 0 .54 3.6-2.1 8.84l5.32 3.73c1.26-3.79 4.79-6.59 8.96-6.59z" fill="#EA4335"></path></svg><span class="qcx-signal-x-label">Đăng nhập</span><span aria-hidden="true" class="qcx-signal-x-arrow">&#8594;</span></button><button aria-expanded="false" aria-haspopup="menu" class="qcx-user-chip" data-role="member" hidden="hidden" type="button"><img alt="" class="qcx-user-avatar" decoding="async" height="22" loading="lazy" width="22"/><span class="qcx-user-name"></span><span class="qcx-user-role-badge">MEMBER</span></button>';
+        var closeBtn=document.getElementById('qcx-menu-close');
+        if(closeBtn && closeBtn.parentNode===mh)mh.insertBefore(mSlot,closeBtn);
+        else mh.appendChild(mSlot);
+      }
+      var slots=document.querySelectorAll('.qcx-auth-slot');
+      for(var i=0;i<slots.length;i++){
+        var slot=slots[i];
+        var loginBtn=slot.querySelector('.qcx-auth-login-btn');
+        var chip=slot.querySelector('.qcx-user-chip');
+        if(!loginBtn || !chip)continue;
+        if(!loginBtn.getAttribute('data-qcx-bound')){
+          loginBtn.setAttribute('data-qcx-bound','1');
+          loginBtn.addEventListener('click',function(ev){
+            ev.preventDefault();
+            ev.stopPropagation();
+            triggerGoogleSignIn(null);
+          });
+        }
+        if(!chip.getAttribute('data-qcx-bound')){
+          chip.setAttribute('data-qcx-bound','1');
+          chip.addEventListener('click',function(ev){
+            ev.preventDefault();
+            ev.stopPropagation();
+            toggleUserDropdown(this);
+          });
+        }
+        if(u){
+          loginBtn.hidden=true;
+          chip.hidden=false;
+          var r=(u.role||'member').toLowerCase();
+          chip.setAttribute('data-role',r);
+          var av=chip.querySelector('.qcx-user-avatar');
+          var nm=chip.querySelector('.qcx-user-name');
+          var bg=chip.querySelector('.qcx-user-role-badge');
+          if(av){
+            av.src=u.picture||('https://ui-avatars.com/api/?name='+encodeURIComponent(u.name||u.email)+'&background=0d261a&color=34e6a0&bold=true&size=96');
+            av.alt=u.name||u.email;
+          }
+          if(nm)nm.textContent=u.name||u.email.split('@')[0];
+          if(bg)bg.textContent=roleBadgeText(r);
+        }else{
+          loginBtn.hidden=false;
+          chip.hidden=true;
+        }
+      }
+    }
+    window.__qcxRenderAuthSlots=renderAuthSlots;
+
+    function loadGsiScript(cb){
+      if(window.google && window.google.accounts && window.google.accounts.oauth2){
+        if(cb)cb();
+        return;
+      }
+      if(gsiScriptLoading){
+        if(cb)setTimeout(cb,450);
+        return;
+      }
+      gsiScriptLoading=true;
+      var s=document.createElement('script');
+      s.src='https://accounts.google.com/gsi/client';
+      s.async=true;
+      s.defer=true;
+      s.onload=function(){if(cb)cb();};
+      (document.head||document.documentElement).appendChild(s);
+    }
+
+    function fetchAuthConfig(){
+      return fetch(API_BASE+'/api/auth/config',{method:'GET'}).then(function(r){return r.json();}).then(function(res){
+        if(res && res.googleClientId)googleClientId=String(res.googleClientId).trim();
+        return googleClientId;
+      }).catch(function(){return '';});
+    }
+
+    function handleAuthSuccess(res){
+      if(!res || !res.ok || !res.sessionToken)return;
+      saveEnt(res);
+      var gm=document.getElementById('qcx-google-auth-modal');
+      if(gm)gm.classList.remove('is-open');
+      var cfg=getResourceConfig();
+      if(cfg.mode==='vip' || cfg.mode==='item'){
+        tryAutoDelivery(cfg).then(function(unlocked){
+          if(!unlocked && pendingPayosCfgAfterLogin){
+            var nextCfg=pendingPayosCfgAfterLogin;
+            pendingPayosCfgAfterLogin=null;
+            openPayosModal(nextCfg,false);
+          }else{
+            pendingPayosCfgAfterLogin=null;
+          }
+        });
+      }else if(pendingPayosCfgAfterLogin){
+        var nextCfg2=pendingPayosCfgAfterLogin;
+        pendingPayosCfgAfterLogin=null;
+        openPayosModal(nextCfg2,false);
+      }
+    }
+
+    function startGoogleOAuthPopup(statusEl){
+      if(!googleClientId){
+        if(statusEl){
+          statusEl.textContent='Đang dùng chế độ Đăng nhập Gmail trực tiếp bên dưới.';
+        }
+        var inp=document.getElementById('qcx-ga-email');
+        if(inp)inp.focus();
+        return;
+      }
+      loadGsiScript(function(){
+        if(!(window.google && window.google.accounts && window.google.accounts.oauth2)){
+          if(statusEl)statusEl.textContent='Trình duyệt chặn popup Google, vui lòng điền Gmail bên dưới.';
+          return;
+        }
+        try{
+          gsiTokenClient=window.google.accounts.oauth2.initTokenClient({
+            client_id:googleClientId,
+            scope:'openid email profile',
+            prompt:'select_account',
+            callback:function(tokenRes){
+              if(!tokenRes || !tokenRes.access_token){
+                if(statusEl){statusEl.textContent='Bạn đã đóng cửa sổ chọn tài khoản Google.';statusEl.classList.add('is-err');}
+                return;
+              }
+              if(statusEl){statusEl.classList.remove('is-err');statusEl.textContent='Đang xác thực tài khoản Google...';}
+              fetch(API_BASE+'/api/auth/google',{
+                method:'POST',
+                headers:{'Content-Type':'application/json'},
+                body:JSON.stringify({accessToken:tokenRes.access_token})
+              }).then(function(r){return r.json();}).then(function(res){
+                if(res && res.ok){
+                  handleAuthSuccess(res);
+                }else if(statusEl){
+                  statusEl.textContent=(res && res.error)||'Xác thực Google thất bại.';
+                  statusEl.classList.add('is-err');
+                }
+              });
+            }
+          });
+          gsiTokenClient.requestAccessToken({prompt:'select_account'});
+        }catch(e){
+          if(statusEl)statusEl.textContent='Vui lòng nhập Gmail trực tiếp bên dưới.';
+        }
+      });
+    }
+
+    function ensureGoogleAuthModal(){
+      var m=document.getElementById('qcx-google-auth-modal');
+      if(m)return m;
+      m=document.createElement('div');
+      m.id='qcx-google-auth-modal';
+      m.setAttribute('role','dialog');
+      m.setAttribute('aria-modal','true');
+      m.innerHTML=
+        '<div class="qcx-payos-dialog">' +
+          '<div class="qcx-payos-head">' +
+            '<div><span class="qcx-payos-badge">GOOGLE IDENTITY</span><h3 class="qcx-payos-title">Đăng nhập tài khoản Gmail</h3></div>' +
+            '<button type="button" class="qcx-payos-close" id="qcx-ga-close" aria-label="Đóng">&#215;</button>' +
+          '</div>' +
+          '<div id="qcx-ga-payos-notice" class="qcx-payos-vip-banner" style="display:none;margin-bottom:12px"></div>' +
+          '<button type="button" class="qcx-google-oauth-btn" id="qcx-ga-popup-btn">' +
+            '<svg width="18" height="18" viewBox="0 0 24 24"><path d="M21.35 11.1h-9.17v2.73h6.51c-.33 1.81-1.5 3.34-3.2 4.37v3.62h5.18c3.03-2.79 4.78-6.9 4.78-11.82 0-.8-.08-1.57-.23-2.3z" fill="#4285F4"/><path d="M12.18 22c4.32 0 7.95-1.43 10.6-3.88l-5.18-3.62c-1.43.96-3.26 1.53-5.42 1.53-4.17 0-7.7-2.81-8.96-6.6H-2.1v3.73C.54 18.4 5.94 22 12.18 22z" fill="#34A853"/><path d="M3.22 13.43a5.85 5.85 0 0 1 0-3.76V5.94H-2.1a9.99 9.99 0 0 0 0 8.95l5.32-3.73z" fill="#FBBC05"/><path d="M12.18 5.98c2.35 0 4.46.81 6.12 2.4l4.59-4.59C20.12 1.19 16.5 0 12.18 0 5.94 0 .54 3.6-2.1 8.84l5.32 3.73c1.26-3.79 4.79-6.59 8.96-6.59z" fill="#EA4335"/></svg>' +
+            '<span>Chọn tài khoản Google (Popup)</span>' +
+          '</button>' +
+          '<div style="text-align:center;font-size:11.5px;color:#7ca690;margin:8px 0 10px">— hoặc nhập nhanh Họ tên &amp; Gmail của bạn —</div>' +
+          '<input type="text" class="qcx-payos-input" id="qcx-ga-name" placeholder="Họ và tên hiển thị (VD: Nguyễn Văn A)"/>' +
+          '<input type="email" class="qcx-payos-input" id="qcx-ga-email" placeholder="Địa chỉ Gmail của bạn (VD: tenban@gmail.com)"/>' +
+          '<button type="button" class="qcx-payos-btn" id="qcx-ga-submit">Đăng nhập &amp; Đồng bộ quyền VIP</button>' +
+          '<div class="qcx-payos-status" id="qcx-ga-status">Tự động khôi phục gói VIP &amp; bài viết đã mua theo Gmail trên mọi thiết bị</div>' +
+        '</div>';
+      document.body.appendChild(m);
+      document.getElementById('qcx-ga-close').addEventListener('click',function(){
+        pendingPayosCfgAfterLogin=null;
+        m.classList.remove('is-open');
+      });
+      document.getElementById('qcx-ga-popup-btn').addEventListener('click',function(){
+        var st=document.getElementById('qcx-ga-status');
+        startGoogleOAuthPopup(st);
+      });
+      document.getElementById('qcx-ga-submit').addEventListener('click',function(){
+        var name=(document.getElementById('qcx-ga-name').value||'').trim();
+        var email=(document.getElementById('qcx-ga-email').value||'').trim().toLowerCase();
+        var st=document.getElementById('qcx-ga-status');
+        if(!email || email.indexOf('@')===-1){
+          st.textContent='Vui lòng nhập đúng địa chỉ Gmail của bạn!';
+          st.classList.add('is-err');
+          return;
+        }
+        st.classList.remove('is-err');
+        st.textContent='Đang kết nối Gmail & đồng bộ quyền...';
+        fetch(API_BASE+'/api/auth/google',{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({fallbackProfile:{email:email,name:name||email.split('@')[0]}})
+        }).then(function(r){return r.json();}).then(function(res){
+          if(res && res.ok){
+            handleAuthSuccess(res);
+          }else{
+            st.textContent=(res && res.error)||'Không thể đăng nhập lúc này.';
+            st.classList.add('is-err');
+          }
+        }).catch(function(){
+          st.textContent='Lỗi kết nối mạng.';
+          st.classList.add('is-err');
+        });
+      });
+      return m;
+    }
+
+    function triggerGoogleSignIn(afterLoginPayosCfg){
+      pendingPayosCfgAfterLogin=afterLoginPayosCfg||null;
+      var m=ensureGoogleAuthModal();
+      var notice=document.getElementById('qcx-ga-payos-notice');
+      if(notice){
+        if(afterLoginPayosCfg){
+          notice.style.display='block';
+          notice.innerHTML='<strong>🔐 Bước 1/2 — Đăng nhập Gmail trước khi thanh toán:</strong> Hệ thống sẽ gắn chặt mã VietQR và quyền mở khóa vào đúng Gmail của bạn (đổi máy vẫn tự mở khóa 100%).';
+        }else{
+          notice.style.display='none';
+        }
+      }
+      m.classList.add('is-open');
+      if(googleClientId){
+        startGoogleOAuthPopup(document.getElementById('qcx-ga-status'));
+      }else{
+        fetchAuthConfig().then(function(cid){
+          if(cid)startGoogleOAuthPopup(document.getElementById('qcx-ga-status'));
+        });
+      }
+    }
+    window.__qcxTriggerGoogleSignIn=triggerGoogleSignIn;
+
+    function toggleUserDropdown(anchorBtn){
+      var dd=document.getElementById('qcx-user-dropdown');
+      if(!dd){
+        dd=document.createElement('div');
+        dd.id='qcx-user-dropdown';
+        document.body.appendChild(dd);
+        document.addEventListener('click',function(ev){
+          if(!dd.classList.contains('is-open'))return;
+          if(dd.contains(ev.target) || (ev.target.closest && ev.target.closest('.qcx-user-chip')))return;
+          dd.classList.remove('is-open');
+        });
+      }
+      if(dd.classList.contains('is-open')){
+        dd.classList.remove('is-open');
+        return;
+      }
+      var ent=readEnt();
+      var u=(ent && ent.user)||null;
+      if(!u)return;
+      var role=(u.role||'member').toLowerCase();
+      var statusText='Hạng: Thành viên (Chưa kích hoạt VIP)';
+      if(role==='admin'){
+        statusText='⚡ Quản trị viên hệ thống (Mở khóa toàn bộ)';
+      }else if(role==='vip'){
+        var daysLeft=u.vipUntil?Math.max(1,Math.ceil((u.vipUntil-Date.now())/86400000)):30;
+        statusText='👑 Thành viên VIP — Còn '+daysLeft+' ngày sử dụng';
+      }else if(role==='pro'){
+        var cnt=(u.items && u.items.length)||Object.keys(ent.unlockedItems||{}).length||1;
+        statusText='💎 Thành viên PRO — Đã sở hữu '+cnt+' bài viết';
+      }
+      var avUrl=u.picture||('https://ui-avatars.com/api/?name='+encodeURIComponent(u.name||u.email)+'&background=0d261a&color=34e6a0&bold=true&size=96');
+      dd.innerHTML=
+        '<div class="qcx-ud-head">' +
+          '<img src="'+avUrl+'" alt=""/>' +
+          '<div><p class="qcx-ud-name">'+(u.name||u.email)+'</p><p class="qcx-ud-email">'+u.email+'</p></div>' +
+        '</div>' +
+        '<div class="qcx-ud-status">'+statusText+'</div>' +
+        '<button type="button" class="qcx-ud-btn" id="qcx-ud-vip">👑 Nâng cấp / Gia hạn VIP 30 ngày</button>' +
+        '<button type="button" class="qcx-ud-btn" id="qcx-ud-sync">🔄 Đồng bộ quyền mở khóa ngay</button>' +
+        (role==='admin'?'<a class="qcx-ud-btn" href="/p/admin.html" style="text-decoration:none">⚙️ Mở trang Quản trị Admin</a>':'') +
+        '<button type="button" class="qcx-ud-btn is-danger" id="qcx-ud-logout">🚪 Đăng xuất tài khoản</button>';
+      var rect=anchorBtn.getBoundingClientRect();
+      dd.style.top=Math.min(window.innerHeight-240,Math.max(8,rect.bottom+8))+'px';
+      dd.style.left=Math.min(window.innerWidth-290,Math.max(8,rect.right-270))+'px';
+      dd.classList.add('is-open');
+
+      document.getElementById('qcx-ud-vip').onclick=function(){
+        dd.classList.remove('is-open');
+        openPayosModal({mode:'vip',resourceId:'vip-30-days',price:500000},false);
+      };
+      document.getElementById('qcx-ud-sync').onclick=function(){
+        var btnSync=this;
+        btnSync.textContent='⏳ Đang đồng bộ từ Vault...';
+        syncAuthSessionFromServer().then(function(){
+          btnSync.textContent='✅ Đã đồng bộ thành công!';
+          setTimeout(function(){dd.classList.remove('is-open');},700);
+        });
+      };
+      document.getElementById('qcx-ud-logout').onclick=function(){
+        dd.classList.remove('is-open');
+        clearEnt();
+      };
+    }
+
+    function syncAuthSessionFromServer(){
+      var ent=readEnt();
+      if(!ent.sessionToken && !(ent.user && ent.user.email))return Promise.resolve(false);
+      var q=ent.user && ent.user.email ? ('?email='+encodeURIComponent(ent.user.email)) : '';
+      return fetch(API_BASE+'/api/auth/me'+q,{
+        method:'GET',
+        headers:ent.sessionToken?{'Authorization':'Bearer '+ent.sessionToken}:{}
+      }).then(function(r){return r.json();}).then(function(res){
+        if(res && res.ok && res.user){
+          saveEnt(res);
+          var cfg=getResourceConfig();
+          if(cfg.mode==='vip' || cfg.mode==='item'){
+            tryAutoDelivery(cfg);
+          }
+          return true;
+        }
+        return false;
+      }).catch(function(){return false;});
+    }
+
     function isVipActive(ent){
       ent=ent||readEnt();
       return !!(ent.vipExpiresAt && new Date(ent.vipExpiresAt).getTime()>Date.now());
@@ -9619,6 +10038,7 @@ html body .scroll--top:hover {
             '<button type="button" class="qcx-payos-close" id="qcx-po-close" aria-label="Đóng">&#215;</button>' +
           '</div>' +
           '<div id="qcx-po-checkout-view">' +
+            '<div class="qcx-po-gmail-locked" id="qcx-po-gmail-locked" style="display:none"></div>' +
             '<input type="text" class="qcx-payos-input" id="qcx-po-contact" placeholder="Nhập SĐT hoặc Email (để khôi phục trên máy khác)"/>' +
             '<div class="qcx-payos-qr-box" id="qcx-po-qr-wrap" style="display:none"><img id="qcx-po-qr-img" alt="Mã VietQR PayOS"/></div>' +
             '<div class="qcx-payos-meta" id="qcx-po-meta" style="display:none">' +
@@ -9691,10 +10111,11 @@ html body .scroll--top:hover {
           saveEnt({
             sessionToken:res.sessionToken,
             vipExpiresAt:res.vipExpiresAt,
-            unlockedItem:res.scope==='item'?res.resourceId:null
+            unlockedItem:res.scope==='item'?res.resourceId:null,
+            user:res.user||null
           });
           var st=document.getElementById('qcx-po-status');
-          if(st){st.classList.remove('is-err');st.textContent='Thanh toán thành công! Đang mở khóa...';}
+          if(st){st.classList.remove('is-err');st.textContent='Thanh toán thành công! Đã nâng cấp Role & đang mở khóa...';}
           return tryAutoDelivery(cfg);
         }
         return false;
@@ -9702,6 +10123,12 @@ html body .scroll--top:hover {
     }
 
     function openPayosModal(cfg, startRecover){
+      var ent=readEnt();
+      var loggedUser=ent && ent.user && ent.user.email ? ent.user : null;
+      if(!startRecover && !loggedUser){
+        triggerGoogleSignIn(cfg);
+        return;
+      }
       var m=ensurePayosModal();
       var badge=document.getElementById('qcx-po-badge');
       var title=document.getElementById('qcx-po-title');
@@ -9709,6 +10136,18 @@ html body .scroll--top:hover {
       var st=document.getElementById('qcx-po-status');
       var qrWrap=document.getElementById('qcx-po-qr-wrap');
       var metaBox=document.getElementById('qcx-po-meta');
+      var contactInp=document.getElementById('qcx-po-contact');
+      var gmailLocked=document.getElementById('qcx-po-gmail-locked');
+
+      if(loggedUser && contactInp && gmailLocked){
+        contactInp.value=loggedUser.email;
+        contactInp.style.display='none';
+        gmailLocked.style.display='flex';
+        gmailLocked.innerHTML='<span>✅ Gắn với Gmail: <strong>'+loggedUser.name+'</strong> ('+loggedUser.email+')</span>';
+      }else if(contactInp && gmailLocked){
+        contactInp.style.display='block';
+        gmailLocked.style.display='none';
+      }
 
       if(cfg.mode==='item'){
         badge.textContent='SOURCE GIÁ RIÊNG · VĨNH VIỄN';
@@ -9736,7 +10175,7 @@ html body .scroll--top:hover {
         btn.disabled=true;
         st.classList.remove('is-err');
         st.textContent='Đang khởi tạo mã VietQR PayOS...';
-        var contact=(document.getElementById('qcx-po-contact').value||'').trim();
+        var contact=(loggedUser && loggedUser.email) || (document.getElementById('qcx-po-contact').value||'').trim();
         fetch(API_BASE+'/api/checkout',{
           method:'POST',
           headers:{'Content-Type':'application/json'},
@@ -9841,6 +10280,7 @@ html body .scroll--top:hover {
     }
 
     function bootPayosAutoCheck(){
+      renderAuthSlots();
       var cfg=getResourceConfig();
       if(cfg.mode!=='vip' && cfg.mode!=='item')return;
       enhanceThreeTierPanel();
@@ -9865,11 +10305,18 @@ html body .scroll--top:hover {
       }catch(e){}
     });
 
+    renderAuthSlots();
     document.addEventListener('DOMContentLoaded',function(){
+      renderAuthSlots();
       setTimeout(bootPayosAutoCheck,250);
       setTimeout(bootPayosAutoCheck,1200);
+      rIC(function(){
+        fetchAuthConfig();
+        syncAuthSessionFromServer();
+      });
     },{once:true});
     window.addEventListener('load',function(){
+      renderAuthSlots();
       setTimeout(bootPayosAutoCheck,300);
     },{once:true});
   })();

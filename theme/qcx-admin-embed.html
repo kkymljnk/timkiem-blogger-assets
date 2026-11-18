@@ -214,7 +214,7 @@
             </div>
 
             <!-- Block 3: Live PayOS Test QR 2.000đ -->
-            <div class="field" style="padding-top:10px;margin-bottom:0;">
+            <div class="field" style="padding:10px 0 12px;border-bottom:1px solid #1d2a1f;">
               <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
                 <div>
                   <label style="margin:0;">3. Kiểm tra kết nối PayOS Live (VietQR 2.000đ)</label>
@@ -223,6 +223,26 @@
                 <button type="button" id="btnPayosTestQr" style="border-color:#00f2fe;color:#00f2fe;">🧪 Tạo QR Test 2.000đ</button>
               </div>
               <div id="outPayosTestQr" class="status hidden" hidden style="margin-top:8px;"></div>
+            </div>
+
+            <!-- Block 4: Google Login OAuth & 4-Tier Role Admin Config -->
+            <div class="field" style="padding-top:10px;margin-bottom:0;">
+              <label>4. Cấu hình Đăng nhập Gmail (Google Identity API) &amp; Role Color</label>
+              <p class="hint" style="margin:2px 0 8px;">Khi điền Google OAuth Client ID, nút <code>Đăng nhập →</code> trên Header sẽ mở Popup chọn tài khoản Google chính chủ và tự động phân màu Role (<code>MEMBER</code> / <code>💎 PRO</code> / <code>👑 VIP</code> / <code>⚡ ADMIN</code>).</p>
+              <div class="row">
+                <div>
+                  <label for="payosGoogleClientId">Google OAuth Client ID <span class="opt">(.apps.googleusercontent.com)</span></label>
+                  <input id="payosGoogleClientId" type="text" placeholder="1234567890-abcdef.apps.googleusercontent.com" />
+                </div>
+                <div>
+                  <label for="payosAdminEmails">Email Admin <span class="opt">(Role ⚡ ADMIN · mở khóa mọi bài)</span></label>
+                  <input id="payosAdminEmails" type="text" placeholder="admin@gmail.com, superkhung@gmail.com" />
+                </div>
+              </div>
+              <div class="actions" style="margin-top:8px;">
+                <button type="button" class="primary" id="btnSaveGoogleAuth">💾 Lưu cấu hình Google Login &amp; Admin Role</button>
+              </div>
+              <div id="outGoogleAuth" class="status hidden" hidden style="margin-top:8px;"></div>
             </div>
           </div>
         </div>
@@ -745,6 +765,7 @@ Chúc các bạn thành công!"></textarea>
     app.style.display = '';
     restoreDraft();
     renderPreview();
+    if (typeof loadGoogleAuthConfig === 'function') loadGoogleAuthConfig();
   }
 
   function showGate() {
@@ -1326,6 +1347,68 @@ Chúc các bạn thành công!"></textarea>
       });
     });
   }
+
+  function loadGoogleAuthConfig() {
+    var token = readToken();
+    if (!token) return;
+    adminFetch('/api/admin/auth-config', {
+      method: 'GET',
+      headers: { 'Authorization': 'Bearer ' + token }
+    }).then(function (r) {
+      return r.json();
+    }).then(function (j) {
+      if (!j || !j.ok) return;
+      var cidInp = document.getElementById('payosGoogleClientId');
+      var admInp = document.getElementById('payosAdminEmails');
+      if (cidInp && typeof j.googleClientId === 'string') cidInp.value = j.googleClientId;
+      if (admInp && Array.isArray(j.adminEmails)) admInp.value = j.adminEmails.join(', ');
+    }).catch(function () {});
+  }
+
+  var btnSaveGoogleAuth = document.getElementById('btnSaveGoogleAuth');
+  var outGoogleAuth = document.getElementById('outGoogleAuth');
+  if (btnSaveGoogleAuth && outGoogleAuth) {
+    btnSaveGoogleAuth.addEventListener('click', function () {
+      var token = readToken();
+      if (!token) { showGate(); return; }
+      var cid = (document.getElementById('payosGoogleClientId').value || '').trim();
+      var adm = (document.getElementById('payosAdminEmails').value || '').trim();
+      btnSaveGoogleAuth.disabled = true;
+      outGoogleAuth.removeAttribute('hidden');
+      setStatus(outGoogleAuth, 'Đang lưu cấu hình Google Login vào Worker KV…', 'warn');
+      adminFetch('/api/admin/auth-config', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + token,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          googleClientId: cid,
+          adminEmails: adm
+        })
+      }).then(function (r) {
+        return r.json().then(function (j) { return { ok: r.ok, j: j }; });
+      }).then(function (res) {
+        btnSaveGoogleAuth.disabled = false;
+        if (!res.ok || !res.j || !res.j.ok) {
+          setStatus(outGoogleAuth, (res.j && res.j.error) || 'Không lưu được cấu hình Google Login.', 'err');
+          return;
+        }
+        var j = res.j;
+        setStatus(
+          outGoogleAuth,
+          '✅ Đã lưu cấu hình Google Login!\n' +
+          '• Google Client ID: ' + (j.googleClientId || '(Đang dùng chế độ nhập Gmail trực tiếp)') + '\n' +
+          '• Admin Emails (⚡ ADMIN): ' + ((j.adminEmails && j.adminEmails.length) ? j.adminEmails.join(', ') : '(Chưa đặt)'),
+          'ok'
+        );
+      }).catch(function (err) {
+        btnSaveGoogleAuth.disabled = false;
+        setStatus(outGoogleAuth, 'Lỗi lưu cấu hình Google Login: ' + (err && err.message ? err.message : err), 'err');
+      });
+    });
+  }
+  loadGoogleAuthConfig();
 
   function buildPayload() {
     var data = collectForm();
