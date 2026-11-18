@@ -507,7 +507,7 @@
       comments.style.setProperty('display', 'block', 'important');
       comments.style.setProperty('visibility', 'visible', 'important');
       comments.style.setProperty('height', 'auto', 'important');
-      comments.style.setProperty('min-height', '480px', 'important');
+      comments.style.setProperty('min-height', '120px', 'important');
       comments.style.setProperty('max-height', 'none', 'important');
       comments.style.setProperty('overflow', 'visible', 'important');
       comments.style.removeProperty('overflow-x');
