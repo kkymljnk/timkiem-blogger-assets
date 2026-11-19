@@ -3207,14 +3207,19 @@
       '.qcx-auth-login-btn:hover{border-color:#34e6a0!important;background:rgba(52,230,160,0.14)!important;transform:translateY(-1px)}' +
       '.qcx-auth-login-btn[hidden],.qcx-user-chip[hidden]{display:none!important}' +
       '.qcx-google-ico{flex:0 0 auto;display:block;width:12px!important;height:12px!important}' +
-      '.qcx-user-chip{appearance:none;cursor:pointer;display:inline-flex!important;align-items:center!important;gap:5px!important;height:28px!important;padding:0 7px 0 3px!important;border-radius:999px!important;border:1px solid rgba(52,230,160,0.35)!important;background:rgba(10,22,16,0.92)!important;color:#e8fff2!important;font:600 11.5px/1 var(--qcx-article-sans,system-ui,sans-serif)!important;transition:all .18s ease!important;max-width:215px!important}' +
-      '.qcx-auth-slot--topbar .qcx-user-chip{height:26px!important;padding:0 6px 0 2.5px!important;gap:4.5px!important;font-size:11px!important;max-width:205px!important}' +
-      '.qcx-user-avatar{width:20px!important;height:20px!important;border-radius:50%!important;object-fit:cover!important;flex:0 0 auto!important;border:1.5px solid #34e6a0!important;background:#07120c!important;display:block!important}' +
-      '.qcx-auth-slot--topbar .qcx-user-avatar{width:19px!important;height:19px!important}' +
-      '.qcx-user-name{white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;max-width:112px!important;font-weight:600!important;letter-spacing:-0.01em!important}' +
-      '.qcx-auth-slot--topbar .qcx-user-name{max-width:104px!important;font-size:11px!important}' +
-      '.qcx-user-role-badge{display:inline-flex!important;align-items:center!important;padding:1.5px 5px!important;border-radius:999px!important;font:800 8.5px/1 var(--qcx-article-mono,monospace)!important;letter-spacing:.03em!important;text-transform:uppercase!important;flex:0 0 auto!important}' +
-      '.qcx-auth-slot--topbar .qcx-user-role-badge{padding:1.5px 4.5px!important;font-size:8px!important}' +
+      '.qcx-user-chip{appearance:none;box-sizing:border-box!important;cursor:pointer;display:inline-flex!important;align-items:center!important;gap:6px!important;height:28px!important;padding:0 3px!important;border-radius:999px!important;border:1px solid rgba(52,230,160,0.35)!important;background:rgba(10,22,16,0.92)!important;color:#e8fff2!important;font:600 11.5px/1 var(--qcx-article-sans,system-ui,sans-serif)!important;transition:all .18s ease!important;max-width:225px!important}' +
+      '.qcx-auth-slot--topbar .qcx-user-chip{height:26px!important;padding:0 3px!important;gap:5.5px!important;font-size:11px!important;max-width:215px!important}' +
+      '.qcx-user-avatar{box-sizing:border-box!important;width:20px!important;height:20px!important;border-radius:50%!important;object-fit:cover!important;flex:0 0 auto!important;border:1.5px solid #34e6a0!important;background:#07120c!important;display:block!important}' +
+      '.qcx-auth-slot--topbar .qcx-user-avatar{width:18px!important;height:18px!important;border-width:1.5px!important}' +
+      '.qcx-user-name{display:inline-block!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;max-width:116px!important;font-weight:600!important;line-height:1.25!important;letter-spacing:-0.01em!important}' +
+      '.qcx-auth-slot--topbar .qcx-user-name{max-width:108px!important;font-size:11px!important}' +
+      '.qcx-user-role-badge{box-sizing:border-box!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:3px!important;height:20px!important;padding:0 7.5px 0 6px!important;border-radius:999px!important;font:800 9.5px/1 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif!important;letter-spacing:.04em!important;text-transform:uppercase!important;flex:0 0 auto!important;-webkit-font-smoothing:antialiased!important}' +
+      '.qcx-auth-slot--topbar .qcx-user-role-badge{height:18px!important;padding:0 6.5px 0 5.5px!important;font-size:8.5px!important;gap:2.5px!important}' +
+      '.qcx-user-chip[data-role="member"] .qcx-user-role-badge{padding:0 7px!important}' +
+      '.qcx-urb-ico{display:block!important;flex:0 0 auto!important;width:10px!important;height:10px!important;fill:currentColor!important;stroke:none!important}' +
+      '.qcx-auth-slot--topbar .qcx-urb-ico{width:9.5px!important;height:9.5px!important}' +
+      '.qcx-urb-ico path{fill:currentColor!important;stroke:none!important}' +
+      '.qcx-urb-txt{display:inline-block!important;line-height:1!important;margin:0!important;padding:0!important;transform:translateY(0.2px)!important}' +
       '.qcx-user-chip[data-role="member"]{border-color:rgba(52,230,160,0.36)!important;background:rgba(52,230,160,0.08)!important}' +
       '.qcx-user-chip[data-role="member"] .qcx-user-avatar{border-color:#34e6a0!important}' +
       '.qcx-user-chip[data-role="member"] .qcx-user-name{color:#d9fbee!important}' +
@@ -3494,11 +3499,17 @@
         function readEnt() {
           try { return JSON.parse(localStorage.getItem(ENT_KEY) || '{}') || {}; } catch (e) { return {}; }
         }
-        function roleBadgeText(role) {
-          if (role === 'admin') return '⚡ ADMIN';
-          if (role === 'vip') return '👑 VIP';
-          if (role === 'pro') return '💎 PRO';
-          return 'MEMBER';
+        function roleBadgeHtml(role) {
+          if (role === 'admin') {
+            return '<svg class="qcx-urb-ico" viewBox="0 0 16 16" width="10" height="10" fill="currentColor" aria-hidden="true"><path d="M9.8 1L2.6 9.3h4.5L6.1 15l7.3-8.3H8.9L9.8 1z"/></svg><span class="qcx-urb-txt">ADMIN</span>';
+          }
+          if (role === 'vip') {
+            return '<svg class="qcx-urb-ico" viewBox="0 0 16 16" width="9" height="9" fill="currentColor" aria-hidden="true"><path d="M2 12.2h12v1.6H2v-1.6zm0-8l3 3.1L8 3l3 4.3 3-3.1-1 6.8H3L2 4.2z"/></svg><span class="qcx-urb-txt">VIP</span>';
+          }
+          if (role === 'pro') {
+            return '<svg class="qcx-urb-ico" viewBox="0 0 16 16" width="9" height="9" fill="currentColor" aria-hidden="true"><path d="M4.2 2.4h7.6l2.7 3.8L8 14 1.5 6.2l2.7-3.8z"/></svg><span class="qcx-urb-txt">PRO</span>';
+          }
+          return '<span class="qcx-urb-txt">MEMBER</span>';
         }
         function computeClientRole(email, vipExp, items) {
           if (isClientAdminEmail(email)) return 'admin';
@@ -3591,7 +3602,7 @@
                 av.alt = u.name || u.email;
               }
               if (nm) nm.textContent = u.name || u.email.split('@')[0];
-              if (bg) bg.textContent = roleBadgeText(r);
+              if (bg) bg.innerHTML = roleBadgeHtml(r);
             } else {
               loginBtn.hidden = false;
               chip.hidden = true;
