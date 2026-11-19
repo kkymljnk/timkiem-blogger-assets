@@ -3149,7 +3149,67 @@
     return;
   }
 
+  function healLiveUtf8Mojibake() {
+    try {
+      var rx = /[\u0393\u251c\u00df\u255e\u252c\u2500]/;
+      var homeTitle = 'MMO TEAM \u2013 C\u00f4ng c\u1ee5 AI \u00b7 H\u01b0\u1edbng d\u1eabn th\u1ef1c chi\u1ebfn \u00b7 T\u00e0i nguy\u00ean mi\u1ec5n ph\u00ed';
+      var homeDesc = 'MMO TEAM \u2014 Kho c\u00f4ng c\u1ee5 AI, h\u01b0\u1edbng d\u1eabn th\u1ef1c chi\u1ebfn v\u00e0 t\u00e0i nguy\u00ean mi\u1ec5n ph\u00ed cho ng\u01b0\u1eddi Vi\u1ec7t. ChatGPT, Claude, Gemini, VPS mi\u1ec5n ph\u00ed, automation n8n v\u00e0 nhi\u1ec1u h\u01a1n n\u1eef\u0061.';
+      var homeKw = 'c\u00f4ng c\u1ee5 AI mi\u1ec5n ph\u00ed, AI tools Vietnam, ChatGPT mi\u1ec5n ph\u00ed, Claude AI, Gemini AI, VPS mi\u1ec5n ph\u00ed, n8n self-host, t\u1ef1 \u0111\u1ed9ng h\u00f3a AI, t\u00e0i nguy\u00ean AI, th\u1ee7 thu\u1eadt c\u00f4ng ngh\u1ec7, MMO, MMO TEAM';
+      if (rx.test(document.title || '')) {
+        var h1 = document.querySelector('.post-header .post-title, h1.post-title');
+        if (h1 && h1.textContent && h1.textContent.trim()) {
+          document.title = h1.textContent.trim() + ' | MMO TEAM';
+        } else {
+          document.title = homeTitle;
+        }
+      }
+      var metas = document.querySelectorAll('meta[content]');
+      for (var i = 0; i < metas.length; i++) {
+        var m = metas[i];
+        var c = m.getAttribute('content') || '';
+        if (!rx.test(c)) continue;
+        var nm = (m.getAttribute('name') || m.getAttribute('property') || '').toLowerCase();
+        if (nm === 'keywords') {
+          if (c.indexOf('AI tools Vietnam') !== -1) m.setAttribute('content', homeKw);
+          else m.setAttribute('content', c.replace(/h[\s\S]*?mi[\s\S]*?ph[\s\S]*?, MMO TEAM/, 'h\u01b0\u1edbng d\u1eabn AI, c\u00f4ng c\u1ee5 AI mi\u1ec5n ph\u00ed, MMO TEAM'));
+        } else if (nm.indexOf('title') !== -1) {
+          m.setAttribute('content', document.title || homeTitle);
+        } else if (nm.indexOf('description') !== -1) {
+          m.setAttribute('content', homeDesc);
+        }
+      }
+      var skip = document.querySelector('a.qcx-skip-link');
+      if (skip && rx.test(skip.textContent || '')) skip.textContent = 'B\u1ecf qua \u0111\u1ebfn n\u1ed9i dung';
+      var sigStatus = document.querySelector('a.qcx-signal-status');
+      if (sigStatus && rx.test(sigStatus.getAttribute('aria-label') || '')) sigStatus.setAttribute('aria-label', 'V\u1ec1 trang ch\u1ee7 MMO');
+      var sigX = document.querySelector('a.qcx-signal-x');
+      if (sigX && rx.test(sigX.getAttribute('aria-label') || '')) sigX.setAttribute('aria-label', '\u0110\u0103ng nh\u1eadp b\u1eb1ng Gmail');
+      var mobNav = document.querySelector('nav.footer-navigation-bar, #qcx-native-tabbar');
+      if (mobNav && rx.test(mobNav.getAttribute('aria-label') || '')) mobNav.setAttribute('aria-label', '\u0110i\u1ec1u h\u01b0\u1edbng mobile');
+      var scrTop = document.querySelector('a.scroll-top');
+      if (scrTop) {
+        if (rx.test(scrTop.getAttribute('aria-label') || '')) scrTop.setAttribute('aria-label', 'L\u00ean \u0111\u1ea7u trang');
+        if (rx.test(scrTop.getAttribute('title') || '')) scrTop.setAttribute('title', 'L\u00ean \u0111\u1ea7u');
+      }
+      var secMap = {
+        'brand': 'Th\u01b0\u01a1ng hi\u1ec7u MMO',
+        'header': 'T\u00ecm ki\u1ebfm & Header',
+        'menu': 'Menu \u0111i\u1ec1u h\u01b0\u1edbng',
+        'homepage-widgets': 'Th\u00eam banner trang ch\u1ee7',
+        'main': 'B\u00e0i vi\u1ebft ch\u00ednh (Blog)',
+        'sidebar': 'Thanh b\u00ean (B\u00e0i vi\u1ebft)',
+        'below-main': 'Th\u00eam d\u01b0\u1edbi b\u00e0i (H\u1ed7 tr\u1ee3 & C\u1ed9ng \u0111\u1ed3ng)',
+        'footer': 'Th\u00eam footer'
+      };
+      Object.keys(secMap).forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el && el.hasAttribute('name')) el.setAttribute('name', secMap[id]);
+      });
+    } catch (e) {}
+  }
+
   function ensureGmailAuthEngine() {
+    healLiveUtf8Mojibake();
     if (isAdminPath()) return;
     var cssId = 'qcx-gmail-auth-css';
     if (!document.getElementById(cssId)) {
@@ -3195,6 +3255,18 @@
         '.qcx-ud-btn.is-danger:hover{background:rgba(255,95,86,0.14)}' +
         '#qcx-google-auth-modal{position:fixed;inset:0;z-index:999999;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(3,9,6,0.84);backdrop-filter:blur(8px)}' +
         '#qcx-google-auth-modal.is-open{display:flex}' +
+        '.qcx-payos-dialog{width:100%;max-width:440px;border-radius:18px;border:1px solid rgba(52,230,160,0.38);background:linear-gradient(180deg,#0b1912 0%,#06100b 100%);color:#e8fff2;padding:20px;box-shadow:0 24px 64px rgba(0,0,0,0.82);box-sizing:border-box;font-family:var(--qcx-article-sans,system-ui,sans-serif)}' +
+        '.qcx-payos-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}' +
+        '.qcx-payos-badge{display:inline-block;padding:3px 8px;border-radius:999px;background:rgba(52,230,160,0.15);color:#34e6a0;font:800 10px/1.2 var(--qcx-article-mono,monospace);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}' +
+        '.qcx-payos-title{margin:0;font-size:18px;font-weight:800;color:#fff}' +
+        '.qcx-payos-close{appearance:none;width:32px;height:32px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.04);color:#b8d8c8;font-size:20px;line-height:1;cursor:pointer;display:grid;place-items:center}' +
+        '.qcx-payos-close:hover{background:rgba(255,95,86,0.18);color:#ff9b94;border-color:rgba(255,95,86,0.4)}' +
+        '.qcx-payos-input{width:100%;box-sizing:border-box;padding:11px 13px;margin-bottom:10px;border-radius:10px;border:1px solid rgba(76,175,130,0.34);background:#050d09;color:#ecfdf5;font:500 13.5px/1.3 var(--qcx-article-sans,system-ui,sans-serif);outline:none}' +
+        '.qcx-payos-input:focus{border-color:#34e6a0;box-shadow:0 0 0 2px rgba(52,230,160,0.18)}' +
+        '.qcx-payos-btn{width:100%;padding:12px 16px;border-radius:11px;border:0;background:linear-gradient(135deg,#28d28c,#17a368);color:#04120b;font:800 13.5px/1.2 var(--qcx-article-sans,system-ui,sans-serif);cursor:pointer;transition:filter .15s,transform .15s}' +
+        '.qcx-payos-btn:hover{filter:brightness(1.08);transform:translateY(-1px)}' +
+        '.qcx-payos-status{margin-top:10px;font-size:12px;color:#8fb6a1;text-align:center;line-height:1.4}' +
+        '.qcx-payos-status.is-err{color:#ff8780;font-weight:600}' +
         '.qcx-google-oauth-btn{width:100%;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,0.18);background:#fff;color:#111;font:700 13.5px/1.2 var(--qcx-article-sans,system-ui,sans-serif);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:12px}' +
         '.qcx-google-oauth-btn:hover{background:#f2f6f4}';
       (document.head || document.documentElement).appendChild(st);
@@ -3203,10 +3275,10 @@
     var slotMarkup =
       '<button aria-label="Đăng nhập bằng Gmail" class="qcx-signal-x qcx-auth-login-btn" type="button">' +
         '<svg aria-hidden="true" class="qcx-google-ico" height="14" viewBox="0 0 24 24" width="14"><path d="M21.35 11.1h-9.17v2.73h6.51c-.33 1.81-1.5 3.34-3.2 4.37v3.62h5.18c3.03-2.79 4.78-6.9 4.78-11.82 0-.8-.08-1.57-.23-2.3z" fill="#4285F4"></path><path d="M12.18 22c4.32 0 7.95-1.43 10.6-3.88l-5.18-3.62c-1.43.96-3.26 1.53-5.42 1.53-4.17 0-7.7-2.81-8.96-6.6H-2.1v3.73C.54 18.4 5.94 22 12.18 22z" fill="#34A853"></path><path d="M3.22 13.43a5.85 5.85 0 0 1 0-3.76V5.94H-2.1a9.99 9.99 0 0 0 0 8.95l5.32-3.73z" fill="#FBBC05"></path><path d="M12.18 5.98c2.35 0 4.46.81 6.12 2.4l4.59-4.59C20.12 1.19 16.5 0 12.18 0 5.94 0 .54 3.6-2.1 8.84l5.32 3.73c1.26-3.79 4.79-6.59 8.96-6.59z" fill="#EA4335"></path></svg>' +
-        '<span class="qcx-signal-x-label">Đăng nhập</span>' +
+        '<span class="qcx-signal-x-label">Đăng nhập Gmail</span>' +
         '<span aria-hidden="true" class="qcx-signal-x-arrow">&#8594;</span>' +
       '</button>' +
-      '<button aria-expanded="false" aria-haspopup="menu" class="qcx-user-chip" data-role="member" hidden="hidden" type="button">' +
+      '<button aria-expanded="false" aria-haspopup="menu" class="qcx-user-chip" data-role="member" data-tier="MEMBER" hidden="hidden" type="button">' +
         '<img alt="" class="qcx-user-avatar" decoding="async" height="22" loading="lazy" width="22"/>' +
         '<span class="qcx-user-name"></span>' +
         '<span class="qcx-user-role-badge">MEMBER</span>' +
@@ -3217,6 +3289,7 @@
     if (sigRow && !sigRow.querySelector('.qcx-auth-slot')) {
       var oldLink = sigRow.querySelector('a.qcx-signal-x');
       var hSlot = document.createElement('div');
+      hSlot.id = 'qcx-header-auth-slot';
       hSlot.className = 'qcx-auth-slot';
       hSlot.setAttribute('data-qcx-auth-slot', 'header');
       hSlot.innerHTML = slotMarkup;
@@ -3246,6 +3319,45 @@
       var closeBtn = document.getElementById('qcx-menu-close');
       if (closeBtn && closeBtn.parentNode === mh) mh.insertBefore(mSlot, closeBtn);
       else mh.appendChild(mSlot);
+    }
+
+    var sbZone = document.getElementById('sidebar');
+    if (sbZone && !sbZone.querySelector('.qcx-sidebar-vip-card')) {
+      var vipWidget = document.createElement('div');
+      vipWidget.className = 'widget HTML';
+      vipWidget.id = 'HTML8';
+      vipWidget.innerHTML =
+        '<div class="widget-content"><div class="qcx-sidebar-vip-card" style="margin-top:16px;padding:16px;border-radius:14px;border:1px solid rgba(52,230,160,0.28);background:linear-gradient(145deg,rgba(12,28,20,0.95),rgba(7,16,11,0.98))">' +
+          '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px">' +
+            '<span style="font:800 10px/1.2 monospace;letter-spacing:.08em;color:#ffd166;background:rgba(255,209,102,0.14);padding:3px 8px;border-radius:999px">&#128081; VIP PASS &amp; GMAIL SYNC</span>' +
+            '<span style="font:700 10px/1.2 monospace;color:#34e6a0">PayOS 24/7</span>' +
+          '</div>' +
+          '<h4 style="margin:0 0 6px;font-size:14px;font-weight:700;color:#ecfdf5">Mở khóa toàn bộ kho VIP</h4>' +
+          '<p style="margin:0 0 12px;font-size:12px;line-height:1.45;color:#9cc4b0">Đăng nhập Gmail để tự động khôi phục gói VIP/PRO và mở khóa nhanh không cần nhập lại mã trên mọi thiết bị.</p>' +
+          '<div class="qcx-auth-slot qcx-auth-slot--sidebar" data-qcx-auth-slot="sidebar" style="width:100%">' + slotMarkup + '</div>' +
+        '</div></div>';
+      sbZone.appendChild(vipWidget);
+    }
+
+    var belowZone = document.getElementById('below-main');
+    if (belowZone && !belowZone.querySelector('.qcx-community-support')) {
+      belowZone.classList.remove('no-items');
+      var commWidget = document.createElement('div');
+      commWidget.className = 'widget HTML';
+      commWidget.id = 'HTML10';
+      commWidget.innerHTML =
+        '<div class="widget-content"><section aria-label="Hỗ trợ cộng đồng MMO TEAM" class="qcx-community-support" style="max-width:1120px;margin:24px auto 8px;padding:18px 22px;border-radius:16px;border:1px solid rgba(76,175,130,0.24);background:linear-gradient(135deg,rgba(12,26,19,0.92),rgba(7,15,11,0.96));display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;box-sizing:border-box">' +
+          '<div style="min-width:220px;flex:1 1 320px">' +
+            '<div style="font:800 10px/1.2 monospace;letter-spacing:.08em;color:#34e6a0;text-transform:uppercase;margin-bottom:4px">MMO TEAM &#183; HỖ TRỢ TRỰC TUYẾN 24/7</div>' +
+            '<div style="font-size:15px;font-weight:700;color:#ecfdf5;margin-bottom:3px">Cần hỗ trợ kích hoạt VIP, nhận tài nguyên hoặc báo lỗi link?</div>' +
+            '<div style="font-size:12.5px;color:#97bda9">Liên hệ trực tiếp quản trị viên qua Telegram hoặc đăng nhập Gmail để tự động đồng bộ quyền truy cập.</div>' +
+          '</div>' +
+          '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px">' +
+            '<a href="https://t.me/superkhung" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:999px;background:#28d28c;color:#05140d;font:700 12.5px/1.2 system-ui,sans-serif;text-decoration:none" target="_blank">Chat Telegram @superkhung</a>' +
+            '<button class="qcx-community-login-trigger" data-qcx-google-login="1" style="appearance:none;display:inline-flex;align-items:center;gap:7px;padding:9px 15px;border-radius:999px;border:1px solid rgba(52,230,160,0.38);background:rgba(52,230,160,0.1);color:#d8f8e8;font:600 12.5px/1.2 system-ui,sans-serif;cursor:pointer" type="button">Đồng bộ Gmail</button>' +
+          '</div>' +
+        '</section></div>';
+      belowZone.appendChild(commWidget);
     }
 
     if (typeof window.__qcxRenderAuthSlots !== 'function') {
@@ -3357,6 +3469,7 @@
               chip.hidden = false;
               var r = (u.role || 'member').toLowerCase();
               chip.setAttribute('data-role', r);
+              chip.setAttribute('data-tier', r.toUpperCase());
               var av = chip.querySelector('.qcx-user-avatar');
               var nm = chip.querySelector('.qcx-user-name');
               var bg = chip.querySelector('.qcx-user-role-badge');
@@ -3529,14 +3642,13 @@
         function renderSavedAccountsPicker() {
           var box = document.getElementById('qcx-ga-saved-list');
           if (!box) return;
-          var list = getSavedGoogleAccounts();
-          if (!list.length) {
-            box.style.display = 'none';
-            box.innerHTML = '';
-            return;
+          var list = getSavedGoogleAccounts().slice();
+          var hasOwner = list.some(function (a) { return a && String(a.email || '').toLowerCase() === 'kkymljnk@gmail.com'; });
+          if (!hasOwner) {
+            list.push({ email: 'kkymljnk@gmail.com', name: 'Nguyễn Văn Cần', role: 'admin' });
           }
           box.style.display = 'block';
-          var html = '<div style="font-size:11px;color:#7ca690;margin:0 0 6px;font-weight:700;letter-spacing:.04em;text-transform:uppercase">Tài khoản Google đã lưu trên trình duyệt</div>';
+          var html = '<div style="font-size:11px;color:#7ca690;margin:0 0 6px;font-weight:700;letter-spacing:.04em;text-transform:uppercase">Tài khoản Google gợi ý / đã lưu</div>';
           list.forEach(function (acc, idx) {
             var fallbackAv = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(acc.name || acc.email) + '&background=0d261a&color=34e6a0&bold=true&size=96';
             var av = acc.picture || ('https://unavatar.io/google/' + encodeURIComponent(acc.email) + '?fallback=' + encodeURIComponent(fallbackAv));
