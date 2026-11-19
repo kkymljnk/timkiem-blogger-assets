@@ -9593,12 +9593,12 @@ html body .scroll--top:hover {
 .qcx-auth-login-btn:hover{border-color:#34e6a0!important;background:rgba(52,230,160,0.14)!important;transform:translateY(-1px)}
 .qcx-auth-login-btn[hidden],.qcx-user-chip[hidden]{display:none!important}
 .qcx-google-ico{flex:0 0 auto;display:block;width:12px!important;height:12px!important}
-.qcx-user-chip{appearance:none;cursor:pointer;display:inline-flex!important;align-items:center!important;gap:5px!important;height:28px!important;padding:0 7px 0 3px!important;border-radius:999px!important;border:1px solid rgba(52,230,160,0.35)!important;background:rgba(10,22,16,0.92)!important;color:#e8fff2!important;font:600 11.5px/1 var(--qcx-article-sans,system-ui,sans-serif)!important;transition:all .18s ease!important;max-width:205px!important}
-.qcx-auth-slot--topbar .qcx-user-chip{height:26px!important;padding:0 6px 0 2.5px!important;gap:4.5px!important;font-size:11px!important;max-width:190px!important}
+.qcx-user-chip{appearance:none;cursor:pointer;display:inline-flex!important;align-items:center!important;gap:5px!important;height:28px!important;padding:0 7px 0 3px!important;border-radius:999px!important;border:1px solid rgba(52,230,160,0.35)!important;background:rgba(10,22,16,0.92)!important;color:#e8fff2!important;font:600 11.5px/1 var(--qcx-article-sans,system-ui,sans-serif)!important;transition:all .18s ease!important;max-width:215px!important}
+.qcx-auth-slot--topbar .qcx-user-chip{height:26px!important;padding:0 6px 0 2.5px!important;gap:4.5px!important;font-size:11px!important;max-width:205px!important}
 .qcx-user-avatar{width:20px!important;height:20px!important;border-radius:50%!important;object-fit:cover!important;flex:0 0 auto!important;border:1.5px solid #34e6a0!important;background:#07120c!important;display:block!important}
 .qcx-auth-slot--topbar .qcx-user-avatar{width:19px!important;height:19px!important}
-.qcx-user-name{white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;max-width:96px!important;font-weight:600!important;letter-spacing:-0.01em!important}
-.qcx-auth-slot--topbar .qcx-user-name{max-width:86px!important;font-size:11px!important}
+.qcx-user-name{white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;max-width:112px!important;font-weight:600!important;letter-spacing:-0.01em!important}
+.qcx-auth-slot--topbar .qcx-user-name{max-width:104px!important;font-size:11px!important}
 .qcx-user-role-badge{display:inline-flex!important;align-items:center!important;padding:1.5px 5px!important;border-radius:999px!important;font:800 8.5px/1 var(--qcx-article-mono,monospace)!important;letter-spacing:.03em!important;text-transform:uppercase!important;flex:0 0 auto!important}
 .qcx-auth-slot--topbar .qcx-user-role-badge{padding:1.5px 4.5px!important;font-size:8px!important}
 /* Role 1: MEMBER (Cyber Mint) */
