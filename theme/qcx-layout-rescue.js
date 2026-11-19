@@ -3193,74 +3193,80 @@
     healLiveUtf8Mojibake();
     if (isAdminPath()) return;
     var cssId = 'qcx-gmail-auth-css';
-    if (!document.getElementById(cssId)) {
-      var st = document.createElement('style');
+    var st = document.getElementById(cssId);
+    if (!st) {
+      st = document.createElement('style');
       st.id = cssId;
-      st.textContent =
-        '.qcx-auth-slot{display:inline-flex;align-items:center;position:relative;z-index:120}' +
-        '.qcx-mac-topbar .qcx-mt-right{display:inline-flex!important;align-items:center!important;gap:10px!important}' +
-        '.qcx-auth-login-btn{appearance:none;border:1px solid rgba(52,230,160,0.32)!important;background:rgba(9,20,14,0.88)!important;color:#e6f5ec!important;cursor:pointer!important;font:600 12px/1 var(--qcx-article-mono,monospace)!important;display:inline-flex!important;align-items:center!important;gap:7px!important;height:36px!important;padding:0 14px!important;border-radius:999px!important;transition:border-color .18s,background .18s,transform .18s!important}' +
-        '.qcx-auth-login-btn:hover{border-color:#34e6a0!important;background:rgba(52,230,160,0.14)!important;transform:translateY(-1px)}' +
-        '.qcx-auth-login-btn[hidden],.qcx-user-chip[hidden]{display:none!important}' +
-        '.qcx-google-ico{flex:0 0 auto;display:block}' +
-        '.qcx-user-chip{appearance:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 11px 0 5px;border-radius:999px;border:1px solid rgba(52,230,160,0.35);background:rgba(10,22,16,0.92);color:#e8fff2;font:600 12.5px/1 var(--qcx-article-sans,system-ui,sans-serif);transition:all .18s ease;max-width:260px}' +
-        '.qcx-user-avatar{width:24px;height:24px;border-radius:50%;object-fit:cover;flex:0 0 auto;border:1.5px solid #34e6a0;background:#07120c}' +
-        '.qcx-user-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:135px;font-weight:600}' +
-        '.qcx-user-role-badge{display:inline-flex;align-items:center;padding:2px 7px;border-radius:999px;font:800 9.5px/1.1 var(--qcx-article-mono,monospace);letter-spacing:.05em;text-transform:uppercase;flex:0 0 auto}' +
-        '.qcx-user-chip[data-role="member"]{border-color:rgba(52,230,160,0.36);background:rgba(52,230,160,0.08)}' +
-        '.qcx-user-chip[data-role="member"] .qcx-user-avatar{border-color:#34e6a0}' +
-        '.qcx-user-chip[data-role="member"] .qcx-user-name{color:#d9fbee}' +
-        '.qcx-user-chip[data-role="member"] .qcx-user-role-badge{background:rgba(52,230,160,0.18);color:#34e6a0}' +
-        '.qcx-user-chip[data-role="pro"]{border-color:rgba(56,189,248,0.48);background:rgba(56,189,248,0.10);box-shadow:0 0 14px rgba(56,189,248,0.12)}' +
-        '.qcx-user-chip[data-role="pro"] .qcx-user-avatar{border-color:#38bdf8}' +
-        '.qcx-user-chip[data-role="pro"] .qcx-user-name{color:#bae6fd;font-weight:700}' +
-        '.qcx-user-chip[data-role="pro"] .qcx-user-role-badge{background:rgba(56,189,248,0.22);color:#38bdf8}' +
-        '.qcx-user-chip[data-role="vip"]{border-color:rgba(255,209,102,0.58);background:linear-gradient(135deg,rgba(255,209,102,0.16),rgba(245,158,11,0.08));box-shadow:0 0 18px rgba(255,209,102,0.18)}' +
-        '.qcx-user-chip[data-role="vip"] .qcx-user-avatar{border-color:#ffd166}' +
-        '.qcx-user-chip[data-role="vip"] .qcx-user-name{color:#ffe599;font-weight:700}' +
-        '.qcx-user-chip[data-role="vip"] .qcx-user-role-badge{background:linear-gradient(135deg,#ffd166,#f59e0b);color:#140d00}' +
-        '.qcx-user-chip[data-role="admin"]{border-color:rgba(255,107,107,0.62);background:linear-gradient(135deg,rgba(255,95,86,0.18),rgba(255,189,46,0.10));box-shadow:0 0 20px rgba(255,95,86,0.22)}' +
-        '.qcx-user-chip[data-role="admin"] .qcx-user-avatar{border-color:#ff6b6b}' +
-        '.qcx-user-chip[data-role="admin"] .qcx-user-name{color:#ffb4ae;font-weight:700}' +
-        '.qcx-user-chip[data-role="admin"] .qcx-user-role-badge{background:linear-gradient(135deg,#ff5f56,#ffbd2e);color:#1a0500}' +
-        '#qcx-user-dropdown{position:fixed;z-index:999998;min-width:270px;max-width:310px;border-radius:14px;border:1px solid rgba(76,175,130,0.38);background:#09140e;color:#e6f5ec;box-shadow:0 20px 50px rgba(0,0,0,0.75);padding:14px;display:none;font-family:var(--qcx-article-sans,system-ui,sans-serif)}' +
-        '#qcx-user-dropdown.is-open{display:block}' +
-        '.qcx-ud-head{display:flex;align-items:center;gap:10px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:10px}' +
-        '.qcx-ud-head img{width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid #34e6a0}' +
-        '.qcx-ud-name{font-size:14px;font-weight:700;color:#fff;margin:0}' +
-        '.qcx-ud-email{font-size:11.5px;color:#8fb6a1;margin:2px 0 0;word-break:break-all}' +
-        '.qcx-ud-status{font-size:12px;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,0.04);margin-bottom:10px;color:#bde3ce}' +
-        '.qcx-ud-btn{width:100%;text-align:left;padding:8px 10px;border-radius:8px;border:0;background:transparent;color:#d8efe2;font:600 12.5px/1.3 var(--qcx-article-sans,system-ui,sans-serif);cursor:pointer;display:flex;align-items:center;gap:8px}' +
-        '.qcx-ud-btn:hover{background:rgba(52,230,160,0.12);color:#fff}' +
-        '.qcx-ud-btn.is-danger{color:#ff9b94}' +
-        '.qcx-ud-btn.is-danger:hover{background:rgba(255,95,86,0.14)}' +
-        '#qcx-google-auth-modal{position:fixed;inset:0;z-index:999999;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(3,9,6,0.84);backdrop-filter:blur(8px)}' +
-        '#qcx-google-auth-modal.is-open{display:flex}' +
-        '.qcx-payos-dialog{width:100%;max-width:440px;border-radius:18px;border:1px solid rgba(52,230,160,0.38);background:linear-gradient(180deg,#0b1912 0%,#06100b 100%);color:#e8fff2;padding:20px;box-shadow:0 24px 64px rgba(0,0,0,0.82);box-sizing:border-box;font-family:var(--qcx-article-sans,system-ui,sans-serif)}' +
-        '.qcx-payos-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}' +
-        '.qcx-payos-badge{display:inline-block;padding:3px 8px;border-radius:999px;background:rgba(52,230,160,0.15);color:#34e6a0;font:800 10px/1.2 var(--qcx-article-mono,monospace);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}' +
-        '.qcx-payos-title{margin:0;font-size:18px;font-weight:800;color:#fff}' +
-        '.qcx-payos-close{appearance:none;width:32px;height:32px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.04);color:#b8d8c8;font-size:20px;line-height:1;cursor:pointer;display:grid;place-items:center}' +
-        '.qcx-payos-close:hover{background:rgba(255,95,86,0.18);color:#ff9b94;border-color:rgba(255,95,86,0.4)}' +
-        '.qcx-payos-input{width:100%;box-sizing:border-box;padding:11px 13px;margin-bottom:10px;border-radius:10px;border:1px solid rgba(76,175,130,0.34);background:#050d09;color:#ecfdf5;font:500 13.5px/1.3 var(--qcx-article-sans,system-ui,sans-serif);outline:none}' +
-        '.qcx-payos-input:focus{border-color:#34e6a0;box-shadow:0 0 0 2px rgba(52,230,160,0.18)}' +
-        '.qcx-payos-btn{width:100%;padding:12px 16px;border-radius:11px;border:0;background:linear-gradient(135deg,#28d28c,#17a368);color:#04120b;font:800 13.5px/1.2 var(--qcx-article-sans,system-ui,sans-serif);cursor:pointer;transition:filter .15s,transform .15s}' +
-        '.qcx-payos-btn:hover{filter:brightness(1.08);transform:translateY(-1px)}' +
-        '.qcx-payos-status{margin-top:10px;font-size:12px;color:#8fb6a1;text-align:center;line-height:1.4}' +
-        '.qcx-payos-status.is-err{color:#ff8780;font-weight:600}' +
-        '.qcx-google-oauth-btn{width:100%;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,0.18);background:#fff;color:#111;font:700 13.5px/1.2 var(--qcx-article-sans,system-ui,sans-serif);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:12px}' +
-        '.qcx-google-oauth-btn:hover{background:#f2f6f4}';
       (document.head || document.documentElement).appendChild(st);
     }
+    st.textContent =
+      '.qcx-auth-slot{display:inline-flex!important;align-items:center!important;position:relative!important;z-index:120!important}' +
+      '.qcx-mac-topbar .qcx-mt-right{display:inline-flex!important;align-items:center!important;gap:8px!important}' +
+      '.qcx-auth-login-btn{appearance:none;border:1px solid rgba(52,230,160,0.32)!important;background:rgba(9,20,14,0.88)!important;color:#e6f5ec!important;cursor:pointer!important;font:600 11px/1 var(--qcx-article-mono,monospace)!important;display:inline-flex!important;align-items:center!important;gap:5px!important;height:28px!important;padding:0 10px!important;border-radius:999px!important;transition:border-color .18s,background .18s,transform .18s!important}' +
+      '.qcx-auth-slot--topbar .qcx-auth-login-btn{height:26px!important;padding:0 8px!important;font-size:10.5px!important;gap:4px!important}' +
+      '.qcx-auth-login-btn:hover{border-color:#34e6a0!important;background:rgba(52,230,160,0.14)!important;transform:translateY(-1px)}' +
+      '.qcx-auth-login-btn[hidden],.qcx-user-chip[hidden]{display:none!important}' +
+      '.qcx-google-ico{flex:0 0 auto;display:block;width:12px!important;height:12px!important}' +
+      '.qcx-user-chip{appearance:none;cursor:pointer;display:inline-flex!important;align-items:center!important;gap:5px!important;height:28px!important;padding:0 7px 0 3px!important;border-radius:999px!important;border:1px solid rgba(52,230,160,0.35)!important;background:rgba(10,22,16,0.92)!important;color:#e8fff2!important;font:600 11.5px/1 var(--qcx-article-sans,system-ui,sans-serif)!important;transition:all .18s ease!important;max-width:205px!important}' +
+      '.qcx-auth-slot--topbar .qcx-user-chip{height:26px!important;padding:0 6px 0 2.5px!important;gap:4.5px!important;font-size:11px!important;max-width:190px!important}' +
+      '.qcx-user-avatar{width:20px!important;height:20px!important;border-radius:50%!important;object-fit:cover!important;flex:0 0 auto!important;border:1.5px solid #34e6a0!important;background:#07120c!important;display:block!important}' +
+      '.qcx-auth-slot--topbar .qcx-user-avatar{width:19px!important;height:19px!important}' +
+      '.qcx-user-name{white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;max-width:96px!important;font-weight:600!important;letter-spacing:-0.01em!important}' +
+      '.qcx-auth-slot--topbar .qcx-user-name{max-width:86px!important;font-size:11px!important}' +
+      '.qcx-user-role-badge{display:inline-flex!important;align-items:center!important;padding:1.5px 5px!important;border-radius:999px!important;font:800 8.5px/1 var(--qcx-article-mono,monospace)!important;letter-spacing:.03em!important;text-transform:uppercase!important;flex:0 0 auto!important}' +
+      '.qcx-auth-slot--topbar .qcx-user-role-badge{padding:1.5px 4.5px!important;font-size:8px!important}' +
+      '.qcx-user-chip[data-role="member"]{border-color:rgba(52,230,160,0.36)!important;background:rgba(52,230,160,0.08)!important}' +
+      '.qcx-user-chip[data-role="member"] .qcx-user-avatar{border-color:#34e6a0!important}' +
+      '.qcx-user-chip[data-role="member"] .qcx-user-name{color:#d9fbee!important}' +
+      '.qcx-user-chip[data-role="member"] .qcx-user-role-badge{background:rgba(52,230,160,0.18)!important;color:#34e6a0!important}' +
+      '.qcx-user-chip[data-role="pro"]{border-color:rgba(56,189,248,0.48)!important;background:rgba(56,189,248,0.10)!important;box-shadow:0 0 12px rgba(56,189,248,0.12)!important}' +
+      '.qcx-user-chip[data-role="pro"] .qcx-user-avatar{border-color:#38bdf8!important}' +
+      '.qcx-user-chip[data-role="pro"] .qcx-user-name{color:#bae6fd!important;font-weight:700!important}' +
+      '.qcx-user-chip[data-role="pro"] .qcx-user-role-badge{background:rgba(56,189,248,0.22)!important;color:#38bdf8!important}' +
+      '.qcx-user-chip[data-role="vip"]{border-color:rgba(255,209,102,0.58)!important;background:linear-gradient(135deg,rgba(255,209,102,0.16),rgba(245,158,11,0.08))!important;box-shadow:0 0 14px rgba(255,209,102,0.16)!important}' +
+      '.qcx-user-chip[data-role="vip"] .qcx-user-avatar{border-color:#ffd166!important}' +
+      '.qcx-user-chip[data-role="vip"] .qcx-user-name{color:#ffe599!important;font-weight:700!important}' +
+      '.qcx-user-chip[data-role="vip"] .qcx-user-role-badge{background:linear-gradient(135deg,#ffd166,#f59e0b)!important;color:#140d00!important}' +
+      '.qcx-user-chip[data-role="admin"]{border-color:rgba(255,107,107,0.62)!important;background:linear-gradient(135deg,rgba(255,95,86,0.18),rgba(255,189,46,0.10))!important;box-shadow:0 0 14px rgba(255,95,86,0.20)!important}' +
+      '.qcx-user-chip[data-role="admin"] .qcx-user-avatar{border-color:#ff6b6b!important}' +
+      '.qcx-user-chip[data-role="admin"] .qcx-user-name{color:#ffb4ae!important;font-weight:700!important}' +
+      '.qcx-user-chip[data-role="admin"] .qcx-user-role-badge{background:linear-gradient(135deg,#ff5f56,#ffbd2e)!important;color:#1a0500!important}' +
+      '#qcx-user-dropdown{position:fixed;z-index:999998;min-width:225px;max-width:265px;border-radius:12px;border:1px solid rgba(76,175,130,0.38);background:#09140e;color:#e6f5ec;box-shadow:0 16px 40px rgba(0,0,0,0.78);padding:11px;display:none;font-family:var(--qcx-article-sans,system-ui,sans-serif)}' +
+      '#qcx-user-dropdown.is-open{display:block}' +
+      '.qcx-ud-head{display:flex;align-items:center;gap:9px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:8px}' +
+      '.qcx-ud-head img{width:34px;height:34px;border-radius:50%;object-fit:cover;border:1.5px solid #34e6a0;flex-shrink:0}' +
+      '.qcx-ud-name{font-size:13px;font-weight:700;color:#fff;margin:0;line-height:1.2}' +
+      '.qcx-ud-email{font-size:11px;color:#8fb6a1;margin:2px 0 0;word-break:break-all}' +
+      '.qcx-ud-status{font-size:11px;padding:6px 8px;border-radius:7px;background:rgba(255,255,255,0.04);margin-bottom:8px;color:#bde3ce;line-height:1.35}' +
+      '.qcx-ud-btn{width:100%;text-align:left;padding:6px 8px;border-radius:7px;border:0;background:transparent;color:#d8efe2;font:600 12px/1.25 var(--qcx-article-sans,system-ui,sans-serif);cursor:pointer;display:flex;align-items:center;gap:7px}' +
+      '.qcx-ud-btn:hover{background:rgba(52,230,160,0.12);color:#fff}' +
+      '.qcx-ud-btn.is-danger{color:#ff9b94}' +
+      '.qcx-ud-btn.is-danger:hover{background:rgba(255,95,86,0.14)}' +
+      '#qcx-google-auth-modal{position:fixed;inset:0;z-index:999999;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(3,9,6,0.84);backdrop-filter:blur(8px)}' +
+      '#qcx-google-auth-modal.is-open{display:flex}' +
+      '.qcx-payos-dialog{width:100%;max-width:420px;border-radius:16px;border:1px solid rgba(52,230,160,0.38);background:linear-gradient(180deg,#0b1912 0%,#06100b 100%);color:#e8fff2;padding:18px;box-shadow:0 24px 64px rgba(0,0,0,0.82);box-sizing:border-box;font-family:var(--qcx-article-sans,system-ui,sans-serif)}' +
+      '.qcx-payos-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}' +
+      '.qcx-payos-badge{display:inline-block;padding:2px 7px;border-radius:999px;background:rgba(52,230,160,0.15);color:#34e6a0;font:800 9.5px/1.2 var(--qcx-article-mono,monospace);letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px}' +
+      '.qcx-payos-title{margin:0;font-size:17px;font-weight:800;color:#fff}' +
+      '.qcx-payos-close{appearance:none;width:30px;height:30px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.04);color:#b8d8c8;font-size:18px;line-height:1;cursor:pointer;display:grid;place-items:center}' +
+      '.qcx-payos-close:hover{background:rgba(255,95,86,0.18);color:#ff9b94;border-color:rgba(255,95,86,0.4)}' +
+      '.qcx-payos-input{width:100%;box-sizing:border-box;padding:10px 12px;margin-bottom:9px;border-radius:9px;border:1px solid rgba(76,175,130,0.34);background:#050d09;color:#ecfdf5;font:500 13px/1.3 var(--qcx-article-sans,system-ui,sans-serif);outline:none}' +
+      '.qcx-payos-input:focus{border-color:#34e6a0;box-shadow:0 0 0 2px rgba(52,230,160,0.18)}' +
+      '.qcx-payos-btn{width:100%;padding:11px 15px;border-radius:10px;border:0;background:linear-gradient(135deg,#28d28c,#17a368);color:#04120b;font:800 13px/1.2 var(--qcx-article-sans,system-ui,sans-serif);cursor:pointer;transition:filter .15s,transform .15s}' +
+      '.qcx-payos-btn:hover{filter:brightness(1.08);transform:translateY(-1px)}' +
+      '.qcx-payos-status{margin-top:9px;font-size:11.5px;color:#8fb6a1;text-align:center;line-height:1.4}' +
+      '.qcx-payos-status.is-err{color:#ff8780;font-weight:600}' +
+      '.qcx-google-oauth-btn{width:100%;padding:10px 14px;border-radius:9px;border:1px solid rgba(255,255,255,0.18);background:#fff;color:#111;font:700 13px/1.2 var(--qcx-article-sans,system-ui,sans-serif);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;margin-bottom:10px}' +
+      '.qcx-google-oauth-btn:hover{background:#f2f6f4}';
 
     var slotMarkup =
       '<button aria-label="Đăng nhập bằng Gmail" class="qcx-signal-x qcx-auth-login-btn" type="button">' +
-        '<svg aria-hidden="true" class="qcx-google-ico" height="14" viewBox="0 0 24 24" width="14"><path d="M21.35 11.1h-9.17v2.73h6.51c-.33 1.81-1.5 3.34-3.2 4.37v3.62h5.18c3.03-2.79 4.78-6.9 4.78-11.82 0-.8-.08-1.57-.23-2.3z" fill="#4285F4"></path><path d="M12.18 22c4.32 0 7.95-1.43 10.6-3.88l-5.18-3.62c-1.43.96-3.26 1.53-5.42 1.53-4.17 0-7.7-2.81-8.96-6.6H-2.1v3.73C.54 18.4 5.94 22 12.18 22z" fill="#34A853"></path><path d="M3.22 13.43a5.85 5.85 0 0 1 0-3.76V5.94H-2.1a9.99 9.99 0 0 0 0 8.95l5.32-3.73z" fill="#FBBC05"></path><path d="M12.18 5.98c2.35 0 4.46.81 6.12 2.4l4.59-4.59C20.12 1.19 16.5 0 12.18 0 5.94 0 .54 3.6-2.1 8.84l5.32 3.73c1.26-3.79 4.79-6.59 8.96-6.59z" fill="#EA4335"></path></svg>' +
-        '<span class="qcx-signal-x-label">Đăng nhập Gmail</span>' +
+        '<svg aria-hidden="true" class="qcx-google-ico" height="12" viewBox="0 0 24 24" width="12"><path d="M21.35 11.1h-9.17v2.73h6.51c-.33 1.81-1.5 3.34-3.2 4.37v3.62h5.18c3.03-2.79 4.78-6.9 4.78-11.82 0-.8-.08-1.57-.23-2.3z" fill="#4285F4"></path><path d="M12.18 22c4.32 0 7.95-1.43 10.6-3.88l-5.18-3.62c-1.43.96-3.26 1.53-5.42 1.53-4.17 0-7.7-2.81-8.96-6.6H-2.1v3.73C.54 18.4 5.94 22 12.18 22z" fill="#34A853"></path><path d="M3.22 13.43a5.85 5.85 0 0 1 0-3.76V5.94H-2.1a9.99 9.99 0 0 0 0 8.95l5.32-3.73z" fill="#FBBC05"></path><path d="M12.18 5.98c2.35 0 4.46.81 6.12 2.4l4.59-4.59C20.12 1.19 16.5 0 12.18 0 5.94 0 .54 3.6-2.1 8.84l5.32 3.73c1.26-3.79 4.79-6.59 8.96-6.59z" fill="#EA4335"></path></svg>' +
+        '<span class="qcx-signal-x-label">Đăng nhập</span>' +
         '<span aria-hidden="true" class="qcx-signal-x-arrow">&#8594;</span>' +
       '</button>' +
       '<button aria-expanded="false" aria-haspopup="menu" class="qcx-user-chip" data-role="member" data-tier="MEMBER" hidden="hidden" type="button">' +
-        '<img alt="" class="qcx-user-avatar" decoding="async" height="22" loading="lazy" width="22"/>' +
+        '<img alt="" class="qcx-user-avatar" decoding="async" height="20" loading="lazy" width="20"/>' +
         '<span class="qcx-user-name"></span>' +
         '<span class="qcx-user-role-badge">MEMBER</span>' +
       '</button>';
@@ -3341,15 +3347,125 @@
       belowZone.appendChild(commWidget);
     }
 
-    if (typeof window.__qcxRenderAuthSlots !== 'function') {
+    if (!window.__qcxGmailAuthV3) {
+      window.__qcxGmailAuthV3 = true;
       (function initRescueAuthFallback() {
         var API_BASE = 'https://timkiem-store-api.kkymljnk.workers.dev';
         var ENT_KEY = 'qcx_payos_entitlement_v1';
         var AUTH_CFG_KEY = 'qcx_google_auth_cfg_v1';
+        var AVATAR_CACHE_KEY = 'qcx_google_avatar_cache_v1';
         var DEFAULT_ADMIN_EMAILS = ['kkymljnk@gmail.com', 'superkhung@gmail.com', 'admin@mmo.wiki', 'admin@mmo.team'];
+        var KNOWN_GOOGLE_AVATARS = {
+          'kkymljnk@gmail.com': 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.3/images/avatars/kkymljnk-google.png',
+          'superkhung@gmail.com': 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.3/images/avatars/kkymljnk-google.png'
+        };
         var googleClientId = '';
         var adminEmailsList = DEFAULT_ADMIN_EMAILS.slice();
         var gsiScriptLoading = false;
+        var pendingProbes = {};
+
+        function isPlaceholderAvatar(url) {
+          if (!url) return true;
+          var s = String(url);
+          return s.indexOf('ui-avatars.com') !== -1 ||
+                 s.indexOf('unavatar.io/google/') !== -1 ||
+                 s.indexOf('favicon.svg') !== -1 ||
+                 s.indexOf('b16-rounded.gif') !== -1;
+        }
+        function readAvatarCache() {
+          try { return JSON.parse(localStorage.getItem(AVATAR_CACHE_KEY) || '{}') || {}; } catch (e) { return {}; }
+        }
+        function saveAvatarCache(email, url) {
+          if (!email || !url || isPlaceholderAvatar(url)) return;
+          try {
+            var c = readAvatarCache();
+            c[String(email).trim().toLowerCase()] = url;
+            localStorage.setItem(AVATAR_CACHE_KEY, JSON.stringify(c));
+          } catch (e) {}
+        }
+        function getFallbackInitialsAvatar(name, email, role) {
+          var bgHex = role === 'admin' ? '2b0907' : (role === 'vip' ? '261c05' : (role === 'pro' ? '061d2b' : '0d261a'));
+          var fgHex = role === 'admin' ? 'ff6b6b' : (role === 'vip' ? 'ffd166' : (role === 'pro' ? '38bdf8' : '34e6a0'));
+          return 'https://ui-avatars.com/api/?name=' + encodeURIComponent(name || email || 'U') + '&background=' + bgHex + '&color=' + fgHex + '&bold=true&size=96';
+        }
+        function getPreferredGoogleAvatar(email, name, existingPic, role) {
+          var em = String(email || '').trim().toLowerCase();
+          if (em && KNOWN_GOOGLE_AVATARS[em]) return KNOWN_GOOGLE_AVATARS[em];
+          if (existingPic && !isPlaceholderAvatar(existingPic)) return existingPic;
+          var cache = readAvatarCache();
+          if (em && cache[em] && !isPlaceholderAvatar(cache[em])) return cache[em];
+          return getFallbackInitialsAvatar(name, em, role);
+        }
+        function sha256Hex(str) {
+          if (!(window.crypto && window.crypto.subtle && window.TextEncoder)) return Promise.resolve('');
+          return window.crypto.subtle.digest('SHA-256', new window.TextEncoder().encode(str)).then(function (buf) {
+            return Array.prototype.map.call(new Uint8Array(buf), function (b) { return ('00' + b.toString(16)).slice(-2); }).join('');
+          }).catch(function () { return ''; });
+        }
+        function testImageLoad(url) {
+          return new Promise(function (resolve) {
+            if (!url || isPlaceholderAvatar(url)) { resolve(''); return; }
+            var img = new Image();
+            var done = false;
+            var t = setTimeout(function () { if (!done) { done = true; resolve(''); } }, 3500);
+            img.onload = function () {
+              if (done) return;
+              done = true;
+              clearTimeout(t);
+              resolve(img.naturalWidth > 1 ? url : '');
+            };
+            img.onerror = function () {
+              if (done) return;
+              done = true;
+              clearTimeout(t);
+              resolve('');
+            };
+            img.src = url;
+          });
+        }
+        function probeRealAvatarAsync(email, name, onResolved) {
+          var em = String(email || '').trim().toLowerCase();
+          if (!em || em.indexOf('@') === -1) return;
+          if (KNOWN_GOOGLE_AVATARS[em]) {
+            if (onResolved) onResolved(KNOWN_GOOGLE_AVATARS[em]);
+            return;
+          }
+          var cached = readAvatarCache()[em];
+          if (cached && !isPlaceholderAvatar(cached)) {
+            if (onResolved) onResolved(cached);
+            return;
+          }
+          if (pendingProbes[em]) return;
+          pendingProbes[em] = true;
+          var prefix = em.split('@')[0];
+          sha256Hex(em).then(function (hash) {
+            var gravUrl = hash ? ('https://www.gravatar.com/avatar/' + hash + '?s=96&d=404') : '';
+            return testImageLoad(gravUrl);
+          }).then(function (found) {
+            if (found) return found;
+            return fetch('https://unavatar.io/' + encodeURIComponent(em) + '?json').then(function (r) { return r.json(); }).then(function (j) {
+              return (j && j.url && !isPlaceholderAvatar(j.url)) ? testImageLoad(j.url) : '';
+            }).catch(function () { return ''; });
+          }).then(function (found) {
+            if (found) return found;
+            return fetch('https://unavatar.io/github/' + encodeURIComponent(prefix) + '?json').then(function (r) { return r.json(); }).then(function (j) {
+              return (j && j.url && !isPlaceholderAvatar(j.url)) ? testImageLoad(j.url) : '';
+            }).catch(function () { return ''; });
+          }).then(function (found) {
+            delete pendingProbes[em];
+            if (found && !isPlaceholderAvatar(found)) {
+              saveAvatarCache(em, found);
+              var ent = readEnt();
+              if (ent && ent.user && String(ent.user.email || '').toLowerCase() === em) {
+                ent.user.picture = found;
+                try { localStorage.setItem(ENT_KEY, JSON.stringify(ent)); } catch (e) {}
+                rememberGoogleAccount(ent.user);
+                renderAuthSlots();
+              }
+              if (onResolved) onResolved(found);
+            }
+          });
+        }
 
         function loadLocalAuthCfg() {
           try {
@@ -3405,6 +3521,10 @@
             }
             if (merged.user) {
               merged.user.role = computeClientRole(merged.user.email, merged.vipExpiresAt, merged.unlockedItems);
+              merged.user.picture = getPreferredGoogleAvatar(merged.user.email, merged.user.name, merged.user.picture, merged.user.role);
+              if (!isPlaceholderAvatar(merged.user.picture)) {
+                saveAvatarCache(merged.user.email, merged.user.picture);
+              }
             }
             localStorage.setItem(ENT_KEY, JSON.stringify(merged));
             renderAuthSlots();
@@ -3418,6 +3538,16 @@
         function renderAuthSlots() {
           var ent = readEnt();
           var u = ent && ent.user && ent.user.email ? ent.user : null;
+          if (u) {
+            var bestPic = getPreferredGoogleAvatar(u.email, u.name, u.picture, u.role);
+            if (bestPic !== u.picture) {
+              u.picture = bestPic;
+              try { localStorage.setItem(ENT_KEY, JSON.stringify(ent)); } catch (e) {}
+            }
+            if (isPlaceholderAvatar(u.picture)) {
+              probeRealAvatarAsync(u.email, u.name);
+            }
+          }
           var slots = document.querySelectorAll('.qcx-auth-slot');
           for (var i = 0; i < slots.length; i++) {
             var slot = slots[i];
@@ -3429,6 +3559,8 @@
               chip = slot.querySelector('.qcx-user-chip');
             }
             if (!loginBtn || !chip) continue;
+            var lbl = loginBtn.querySelector('.qcx-signal-x-label');
+            if (lbl && lbl.textContent !== 'Đăng nhập') lbl.textContent = 'Đăng nhập';
             if (!loginBtn.getAttribute('data-qcx-bound')) {
               loginBtn.setAttribute('data-qcx-bound', '1');
               loginBtn.addEventListener('click', function (ev) {
@@ -3455,7 +3587,7 @@
               var nm = chip.querySelector('.qcx-user-name');
               var bg = chip.querySelector('.qcx-user-role-badge');
               if (av) {
-                av.src = u.picture || ('https://ui-avatars.com/api/?name=' + encodeURIComponent(u.name || u.email) + '&background=0d261a&color=34e6a0&bold=true&size=96');
+                av.src = getPreferredGoogleAvatar(u.email, u.name, u.picture, r);
                 av.alt = u.name || u.email;
               }
               if (nm) nm.textContent = u.name || u.email.split('@')[0];
@@ -3488,10 +3620,7 @@
             ? recoverRes.unlockedItems.slice()
             : Object.keys(cur.unlockedItems || {});
           var role = computeClientRole(email, vipExp, itemsArr);
-          var bgHex = role === 'admin' ? '2b0907' : (role === 'vip' ? '261c05' : (role === 'pro' ? '061d2b' : '0d261a'));
-          var fgHex = role === 'admin' ? 'ff6b6b' : (role === 'vip' ? 'ffd166' : (role === 'pro' ? '38bdf8' : '34e6a0'));
-          var fallbackAv = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(name) + '&background=' + bgHex + '&color=' + fgHex + '&bold=true&size=96';
-          var pic = profile.picture || ('https://unavatar.io/google/' + encodeURIComponent(email) + '?fallback=' + encodeURIComponent(fallbackAv));
+          var pic = getPreferredGoogleAvatar(email, name, profile.picture, role);
           var sess = (recoverRes && recoverRes.sessionToken) || cur.sessionToken || ('qcx_gmail_' + encodeURIComponent(email));
           return {
             ok: true,
@@ -3523,11 +3652,13 @@
             var list = getSavedGoogleAccounts().filter(function (a) {
               return a && a.email && a.email.toLowerCase() !== userObj.email.toLowerCase();
             });
+            var role = userObj.role || (isClientAdminEmail(userObj.email) ? 'admin' : 'member');
+            var pic = getPreferredGoogleAvatar(userObj.email, userObj.name, userObj.picture, role);
             list.unshift({
               email: userObj.email,
               name: userObj.name || userObj.email.split('@')[0],
-              picture: userObj.picture || '',
-              role: userObj.role || 'member'
+              picture: pic,
+              role: role
             });
             localStorage.setItem(SAVED_ACCS_KEY, JSON.stringify(list.slice(0, 4)));
           } catch (e) {}
@@ -3536,15 +3667,20 @@
           var email = String((profile && profile.email) || '').trim().toLowerCase();
           var rawName = String((profile && profile.name) || '').trim();
           var name = rawName || (email === 'kkymljnk@gmail.com' ? 'Nguyễn Văn Cần' : (email === 'superkhung@gmail.com' ? 'SuperKhung' : (email.split('@')[0] || '')));
+          var bestPic = getPreferredGoogleAvatar(email, name, profile && profile.picture, isClientAdminEmail(email) ? 'admin' : 'member');
           return fetch(API_BASE + '/api/auth/google', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(accessToken ? { accessToken: accessToken, fallbackProfile: { email: email, name: name, picture: profile && profile.picture } } : { fallbackProfile: { email: email, name: name, picture: profile && profile.picture } })
+            body: JSON.stringify(accessToken ? { accessToken: accessToken, fallbackProfile: { email: email, name: name, picture: bestPic } } : { fallbackProfile: { email: email, name: name, picture: bestPic } })
           }).then(function (r) { return r.json(); }).then(function (res) {
             if (res && res.ok && res.sessionToken) {
               if (isClientAdminEmail(email) && res.user) res.user.role = 'admin';
-              if (res.user) rememberGoogleAccount(res.user);
+              if (res.user) {
+                res.user.picture = getPreferredGoogleAvatar(email, res.user.name || name, res.user.picture, res.user.role);
+                rememberGoogleAccount(res.user);
+              }
               saveEnt(res);
+              probeRealAvatarAsync(email, name);
               var gm = document.getElementById('qcx-google-auth-modal');
               if (gm) gm.classList.remove('is-open');
               return true;
@@ -3556,9 +3692,10 @@
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ query: email })
             }).then(function (r) { return r.json(); }).catch(function () { return null; }).then(function (rec) {
-              var built = buildClientAuthResponse({ email: email, name: name, picture: profile && profile.picture }, rec && rec.ok ? rec : null);
+              var built = buildClientAuthResponse({ email: email, name: name, picture: bestPic }, rec && rec.ok ? rec : null);
               if (built && built.user) rememberGoogleAccount(built.user);
               saveEnt(built);
+              probeRealAvatarAsync(email, name);
               var gm = document.getElementById('qcx-google-auth-modal');
               if (gm) gm.classList.remove('is-open');
               return true;
@@ -3612,6 +3749,7 @@
                   fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
                     headers: { 'Authorization': 'Bearer ' + tokenRes.access_token }
                   }).then(function (r) { return r.json(); }).catch(function () { return {}; }).then(function (gInfo) {
+                    if (gInfo && gInfo.email && gInfo.picture) saveAvatarCache(gInfo.email, gInfo.picture);
                     return authenticateGmailProfile({ email: gInfo.email, name: gInfo.name, picture: gInfo.picture }, tokenRes.access_token);
                   });
                 }
@@ -3626,21 +3764,21 @@
           var list = getSavedGoogleAccounts().slice();
           var hasOwner = list.some(function (a) { return a && String(a.email || '').toLowerCase() === 'kkymljnk@gmail.com'; });
           if (!hasOwner) {
-            list.push({ email: 'kkymljnk@gmail.com', name: 'Nguyễn Văn Cần', role: 'admin' });
+            list.push({ email: 'kkymljnk@gmail.com', name: 'Nguyễn Văn Cần', role: 'admin', picture: KNOWN_GOOGLE_AVATARS['kkymljnk@gmail.com'] });
           }
           box.style.display = 'block';
-          var html = '<div style="font-size:11px;color:#7ca690;margin:0 0 6px;font-weight:700;letter-spacing:.04em;text-transform:uppercase">Tài khoản Google gợi ý / đã lưu</div>';
+          var html = '<div style="font-size:10.5px;color:#7ca690;margin:0 0 6px;font-weight:700;letter-spacing:.04em;text-transform:uppercase">Tài khoản Google gợi ý / đã lưu</div>';
           list.forEach(function (acc, idx) {
-            var fallbackAv = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(acc.name || acc.email) + '&background=0d261a&color=34e6a0&bold=true&size=96';
-            var av = acc.picture || ('https://unavatar.io/google/' + encodeURIComponent(acc.email) + '?fallback=' + encodeURIComponent(fallbackAv));
+            var r = acc.role || (isClientAdminEmail(acc.email) ? 'admin' : 'member');
+            var av = getPreferredGoogleAvatar(acc.email, acc.name, acc.picture, r);
             html +=
-              '<button type="button" class="qcx-ga-saved-item" data-idx="' + idx + '" style="display:flex;align-items:center;gap:10px;width:100%;padding:8px 11px;margin-bottom:7px;border-radius:11px;border:1px solid rgba(52,230,160,.25);background:rgba(12,30,22,.82);color:#ecfdf5;cursor:pointer;text-align:left;transition:all .16s">' +
-                '<img src="' + escapeHtml(av) + '" alt="" style="width:30px;height:30px;border-radius:50%;object-fit:cover;flex-shrink:0;border:1.5px solid #34e6a0"/>' +
+              '<button type="button" class="qcx-ga-saved-item" data-idx="' + idx + '" style="display:flex;align-items:center;gap:9px;width:100%;padding:7px 10px;margin-bottom:6px;border-radius:10px;border:1px solid rgba(52,230,160,.25);background:rgba(12,30,22,.82);color:#ecfdf5;cursor:pointer;text-align:left;transition:all .16s">' +
+                '<img src="' + escapeHtml(av) + '" alt="" style="width:28px;height:28px;border-radius:50%;object-fit:cover;flex-shrink:0;border:1.5px solid #34e6a0"/>' +
                 '<span style="flex:1;min-width:0">' +
-                  '<strong style="display:block;font-size:13px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + escapeHtml(acc.name || acc.email) + '</strong>' +
+                  '<strong style="display:block;font-size:12.5px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + escapeHtml(acc.name || acc.email) + '</strong>' +
                   '<small style="display:block;font-size:11px;color:#8ab8a0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + escapeHtml(acc.email) + '</small>' +
                 '</span>' +
-                '<span style="font-size:10px;font-weight:800;padding:2px 7px;border-radius:999px;background:rgba(52,230,160,.16);color:#34e6a0">1-Click</span>' +
+                '<span style="font-size:9.5px;font-weight:800;padding:2px 6px;border-radius:999px;background:rgba(52,230,160,.16);color:#34e6a0">1-Click</span>' +
               '</button>';
           });
           box.innerHTML = html;
@@ -3658,43 +3796,53 @@
         }
         function ensureGoogleAuthModal() {
           var m = document.getElementById('qcx-google-auth-modal');
-          if (m) return m;
-          m = document.createElement('div');
-          m.id = 'qcx-google-auth-modal';
-          m.setAttribute('role', 'dialog');
-          m.setAttribute('aria-modal', 'true');
+          if (m && m.getAttribute('data-qcx-v3') === '1') return m;
+          if (!m) {
+            m = document.createElement('div');
+            m.id = 'qcx-google-auth-modal';
+            m.setAttribute('role', 'dialog');
+            m.setAttribute('aria-modal', 'true');
+            document.body.appendChild(m);
+          }
+          m.setAttribute('data-qcx-v3', '1');
           m.innerHTML =
             '<div class="qcx-payos-dialog">' +
               '<div class="qcx-payos-head">' +
                 '<div><span class="qcx-payos-badge">GOOGLE IDENTITY</span><h3 class="qcx-payos-title">Đăng nhập bằng Gmail</h3></div>' +
                 '<button type="button" class="qcx-payos-close" id="qcx-ga-close" aria-label="Đóng">&#215;</button>' +
               '</div>' +
-              '<div id="qcx-ga-saved-list" style="display:none;margin-bottom:10px"></div>' +
+              '<div id="qcx-ga-saved-list" style="display:none;margin-bottom:9px"></div>' +
               '<button type="button" class="qcx-google-oauth-btn" id="qcx-ga-popup-btn" style="display:none">' +
-                '<svg width="18" height="18" viewBox="0 0 24 24"><path d="M21.35 11.1h-9.17v2.73h6.51c-.33 1.81-1.5 3.34-3.2 4.37v3.62h5.18c3.03-2.79 4.78-6.9 4.78-11.82 0-.8-.08-1.57-.23-2.3z" fill="#4285F4"/><path d="M12.18 22c4.32 0 7.95-1.43 10.6-3.88l-5.18-3.62c-1.43.96-3.26 1.53-5.42 1.53-4.17 0-7.7-2.81-8.96-6.6H-2.1v3.73C.54 18.4 5.94 22 12.18 22z" fill="#34A853"/><path d="M3.22 13.43a5.85 5.85 0 0 1 0-3.76V5.94H-2.1a9.99 9.99 0 0 0 0 8.95l5.32-3.73z" fill="#FBBC05"/><path d="M12.18 5.98c2.35 0 4.46.81 6.12 2.4l4.59-4.59C20.12 1.19 16.5 0 12.18 0 5.94 0 .54 3.6-2.1 8.84l5.32 3.73c1.26-3.79 4.79-6.59 8.96-6.59z" fill="#EA4335"/></svg>' +
+                '<svg width="16" height="16" viewBox="0 0 24 24"><path d="M21.35 11.1h-9.17v2.73h6.51c-.33 1.81-1.5 3.34-3.2 4.37v3.62h5.18c3.03-2.79 4.78-6.9 4.78-11.82 0-.8-.08-1.57-.23-2.3z" fill="#4285F4"/><path d="M12.18 22c4.32 0 7.95-1.43 10.6-3.88l-5.18-3.62c-1.43.96-3.26 1.53-5.42 1.53-4.17 0-7.7-2.81-8.96-6.6H-2.1v3.73C.54 18.4 5.94 22 12.18 22z" fill="#34A853"/><path d="M3.22 13.43a5.85 5.85 0 0 1 0-3.76V5.94H-2.1a9.99 9.99 0 0 0 0 8.95l5.32-3.73z" fill="#FBBC05"/><path d="M12.18 5.98c2.35 0 4.46.81 6.12 2.4l4.59-4.59C20.12 1.19 16.5 0 12.18 0 5.94 0 .54 3.6-2.1 8.84l5.32 3.73c1.26-3.79 4.79-6.59 8.96-6.59z" fill="#EA4335"/></svg>' +
                 '<span>Mở cửa sổ Google OAuth Popup</span>' +
               '</button>' +
-              '<div style="display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid rgba(52,230,160,.18);margin-bottom:10px">' +
-                '<svg width="18" height="18" viewBox="0 0 24 24" style="flex-shrink:0"><path d="M21.35 11.1h-9.17v2.73h6.51c-.33 1.81-1.5 3.34-3.2 4.37v3.62h5.18c3.03-2.79 4.78-6.9 4.78-11.82 0-.8-.08-1.57-.23-2.3z" fill="#4285F4"/><path d="M12.18 22c4.32 0 7.95-1.43 10.6-3.88l-5.18-3.62c-1.43.96-3.26 1.53-5.42 1.53-4.17 0-7.7-2.81-8.96-6.6H-2.1v3.73C.54 18.4 5.94 22 12.18 22z" fill="#34A853"/><path d="M3.22 13.43a5.85 5.85 0 0 1 0-3.76V5.94H-2.1a9.99 9.99 0 0 0 0 8.95l5.32-3.73z" fill="#FBBC05"/><path d="M12.18 5.98c2.35 0 4.46.81 6.12 2.4l4.59-4.59C20.12 1.19 16.5 0 12.18 0 5.94 0 .54 3.6-2.1 8.84l5.32 3.73c1.26-3.79 4.79-6.59 8.96-6.59z" fill="#EA4335"/></svg>' +
-                '<span style="font-size:12px;color:#cde7d8;line-height:1.35">Nhập <strong>Gmail</strong> của bạn để tự động tải Avatar Google, phân quyền Role Color &amp; khôi phục gói VIP</span>' +
+              '<div style="display:flex;align-items:center;gap:8px;padding:8px 11px;border-radius:9px;background:rgba(255,255,255,.04);border:1px solid rgba(52,230,160,.18);margin-bottom:9px">' +
+                '<img id="qcx-ga-live-av" src="' + KNOWN_GOOGLE_AVATARS['kkymljnk@gmail.com'] + '" alt="" style="width:26px;height:26px;border-radius:50%;object-fit:cover;flex-shrink:0;border:1.5px solid #34e6a0"/>' +
+                '<span style="font-size:11.5px;color:#cde7d8;line-height:1.35">Nhập <strong>Gmail</strong> để tự động tải Avatar Google, phân quyền Role Color &amp; khôi phục VIP</span>' +
               '</div>' +
               '<input type="email" class="qcx-payos-input" id="qcx-ga-email" placeholder="Địa chỉ Gmail của bạn (VD: tenban@gmail.com)" autocomplete="email"/>' +
               '<input type="text" class="qcx-payos-input" id="qcx-ga-name" placeholder="Họ và tên hiển thị (Để trống sẽ tự nhận theo Gmail)" autocomplete="name"/>' +
               '<button type="button" class="qcx-payos-btn" id="qcx-ga-submit">Tiếp tục với Gmail &amp; Đồng bộ Role</button>' +
               '<div class="qcx-payos-status" id="qcx-ga-status">Tự động nhận diện Admin / VIP / PRO / Member &amp; mở khóa bài viết trên mọi thiết bị</div>' +
             '</div>';
-          document.body.appendChild(m);
           document.getElementById('qcx-ga-close').addEventListener('click', function () { m.classList.remove('is-open'); });
           document.getElementById('qcx-ga-popup-btn').addEventListener('click', function () {
             startGoogleOAuthPopup(document.getElementById('qcx-ga-status'));
           });
           var emField = document.getElementById('qcx-ga-email');
           var nmField = document.getElementById('qcx-ga-name');
+          var liveAv = document.getElementById('qcx-ga-live-av');
           if (emField && nmField) {
             emField.addEventListener('input', function () {
               var v = (emField.value || '').trim().toLowerCase();
               if (v === 'kkymljnk@gmail.com' && !nmField.value) nmField.value = 'Nguyễn Văn Cần';
               else if (v === 'superkhung@gmail.com' && !nmField.value) nmField.value = 'SuperKhung';
+              if (liveAv && v.indexOf('@') !== -1) {
+                liveAv.src = getPreferredGoogleAvatar(v, nmField.value || v.split('@')[0], '', isClientAdminEmail(v) ? 'admin' : 'member');
+                probeRealAvatarAsync(v, nmField.value, function (resolvedUrl) {
+                  if (liveAv && resolvedUrl) liveAv.src = resolvedUrl;
+                });
+              }
             });
           }
           function submitDirect() {
@@ -3748,15 +3896,15 @@
           if (!u) return;
           var role = (u.role || 'member').toLowerCase();
           var statusText = role === 'admin' ? '⚡ Quản trị viên hệ thống (Mở khóa toàn bộ)' : (role === 'vip' ? '👑 Thành viên VIP 30 ngày' : (role === 'pro' ? '💎 Thành viên PRO' : 'Hạng: Thành viên (Chưa kích hoạt VIP)'));
-          var avUrl = u.picture || ('https://ui-avatars.com/api/?name=' + encodeURIComponent(u.name || u.email) + '&background=0d261a&color=34e6a0&bold=true&size=96');
+          var avUrl = getPreferredGoogleAvatar(u.email, u.name, u.picture, role);
           dd.innerHTML =
             '<div class="qcx-ud-head"><img src="' + avUrl + '" alt=""/><div><p class="qcx-ud-name">' + (u.name || u.email) + '</p><p class="qcx-ud-email">' + u.email + '</p></div></div>' +
             '<div class="qcx-ud-status">' + statusText + '</div>' +
             (role === 'admin' ? '<a class="qcx-ud-btn" href="/p/admin.html" style="text-decoration:none">⚙️ Mở trang Quản trị Admin</a>' : '') +
             '<button type="button" class="qcx-ud-btn is-danger" id="qcx-ud-logout">🚪 Đăng xuất tài khoản</button>';
           var rect = anchorBtn.getBoundingClientRect();
-          dd.style.top = Math.min(window.innerHeight - 240, Math.max(8, rect.bottom + 8)) + 'px';
-          dd.style.left = Math.min(window.innerWidth - 290, Math.max(8, rect.right - 270)) + 'px';
+          dd.style.top = Math.min(window.innerHeight - 210, Math.max(8, rect.bottom + 6)) + 'px';
+          dd.style.left = Math.min(window.innerWidth - 255, Math.max(8, rect.right - 235)) + 'px';
           dd.classList.add('is-open');
           document.getElementById('qcx-ud-logout').onclick = function () {
             dd.classList.remove('is-open');

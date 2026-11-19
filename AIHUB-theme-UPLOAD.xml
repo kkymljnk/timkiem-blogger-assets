@@ -9179,7 +9179,7 @@ window.addEventListener('load', qcxBootMacFrames, { once: true });
 
 <!-- moved to CDN: qcx-smart-runtime -->
 
-<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.2/theme/qcx-secure-resource.js'></script>
+<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.3/theme/qcx-secure-resource.js'></script>
 
 <!-- moved to CDN: qcx-terminal-lightbox -->
 
@@ -9187,7 +9187,7 @@ window.addEventListener('load', qcxBootMacFrames, { once: true });
 <script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.13/theme/qcx-runtime.js'></script>
 <script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.26/theme/qcx-smart-runtime.js'></script>
 <!-- secure-resource.js handles unlock flow -->
-<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.2/theme/qcx-layout-rescue.js'></script>
+<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.3/theme/qcx-layout-rescue.js'></script>
 <!-- moved to CDN: qcx-layout-rescue -->
 <script>//<![CDATA[
 (function(){
@@ -9586,45 +9586,50 @@ html body .scroll--top:hover {
 /* &#9472;&#9472; Touch target a11y (Mobile 100/100) &#9472;&#9472; */
 .card-content .qcx-card-labels,.qcx-card-labels a[rel=tag],.card-content a[rel=tag],a[rel=tag],.qcx-footer-links a{min-height:40px!important;min-width:44px!important;padding:8px 14px!important;margin:0 4px 6px 0!important;align-items:center!important;display:inline-flex!important;box-sizing:border-box!important}
 /* &#9472;&#9472; Gmail Auth Slot, 4-Tier Role Color &amp; Account Dropdown &#9472;&#9472; */
-.qcx-auth-slot{display:inline-flex;align-items:center;position:relative;z-index:120}
-.qcx-mac-topbar .qcx-mt-right{display:inline-flex!important;align-items:center!important;gap:10px!important}
-.qcx-auth-login-btn{appearance:none;border:1px solid rgba(52,230,160,0.32)!important;background:rgba(9,20,14,0.88)!important;color:#e6f5ec!important;cursor:pointer!important;font:600 12px/1 var(--qcx-article-mono,monospace)!important;display:inline-flex!important;align-items:center!important;gap:7px!important;height:36px!important;padding:0 14px!important;border-radius:999px!important;transition:border-color .18s,background .18s,transform .18s!important}
+.qcx-auth-slot{display:inline-flex!important;align-items:center!important;position:relative!important;z-index:120!important}
+.qcx-mac-topbar .qcx-mt-right{display:inline-flex!important;align-items:center!important;gap:8px!important}
+.qcx-auth-login-btn{appearance:none;border:1px solid rgba(52,230,160,0.32)!important;background:rgba(9,20,14,0.88)!important;color:#e6f5ec!important;cursor:pointer!important;font:600 11px/1 var(--qcx-article-mono,monospace)!important;display:inline-flex!important;align-items:center!important;gap:5px!important;height:28px!important;padding:0 10px!important;border-radius:999px!important;transition:border-color .18s,background .18s,transform .18s!important}
+.qcx-auth-slot--topbar .qcx-auth-login-btn{height:26px!important;padding:0 8px!important;font-size:10.5px!important;gap:4px!important}
 .qcx-auth-login-btn:hover{border-color:#34e6a0!important;background:rgba(52,230,160,0.14)!important;transform:translateY(-1px)}
 .qcx-auth-login-btn[hidden],.qcx-user-chip[hidden]{display:none!important}
-.qcx-google-ico{flex:0 0 auto;display:block}
-.qcx-user-chip{appearance:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 11px 0 5px;border-radius:999px;border:1px solid rgba(52,230,160,0.35);background:rgba(10,22,16,0.92);color:#e8fff2;font:600 12.5px/1 var(--qcx-article-sans,system-ui,sans-serif);transition:all .18s ease;max-width:260px}
-.qcx-user-avatar{width:24px;height:24px;border-radius:50%;object-fit:cover;flex:0 0 auto;border:1.5px solid #34e6a0;background:#07120c}
-.qcx-user-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:135px;font-weight:600}
-.qcx-user-role-badge{display:inline-flex;align-items:center;padding:2px 7px;border-radius:999px;font:800 9.5px/1.1 var(--qcx-article-mono,monospace);letter-spacing:.05em;text-transform:uppercase;flex:0 0 auto}
+.qcx-google-ico{flex:0 0 auto;display:block;width:12px!important;height:12px!important}
+.qcx-user-chip{appearance:none;cursor:pointer;display:inline-flex!important;align-items:center!important;gap:5px!important;height:28px!important;padding:0 7px 0 3px!important;border-radius:999px!important;border:1px solid rgba(52,230,160,0.35)!important;background:rgba(10,22,16,0.92)!important;color:#e8fff2!important;font:600 11.5px/1 var(--qcx-article-sans,system-ui,sans-serif)!important;transition:all .18s ease!important;max-width:205px!important}
+.qcx-auth-slot--topbar .qcx-user-chip{height:26px!important;padding:0 6px 0 2.5px!important;gap:4.5px!important;font-size:11px!important;max-width:190px!important}
+.qcx-user-avatar{width:20px!important;height:20px!important;border-radius:50%!important;object-fit:cover!important;flex:0 0 auto!important;border:1.5px solid #34e6a0!important;background:#07120c!important;display:block!important}
+.qcx-auth-slot--topbar .qcx-user-avatar{width:19px!important;height:19px!important}
+.qcx-user-name{white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;max-width:96px!important;font-weight:600!important;letter-spacing:-0.01em!important}
+.qcx-auth-slot--topbar .qcx-user-name{max-width:86px!important;font-size:11px!important}
+.qcx-user-role-badge{display:inline-flex!important;align-items:center!important;padding:1.5px 5px!important;border-radius:999px!important;font:800 8.5px/1 var(--qcx-article-mono,monospace)!important;letter-spacing:.03em!important;text-transform:uppercase!important;flex:0 0 auto!important}
+.qcx-auth-slot--topbar .qcx-user-role-badge{padding:1.5px 4.5px!important;font-size:8px!important}
 /* Role 1: MEMBER (Cyber Mint) */
-.qcx-user-chip[data-role='member']{border-color:rgba(52,230,160,0.36);background:rgba(52,230,160,0.08)}
-.qcx-user-chip[data-role='member'] .qcx-user-avatar{border-color:#34e6a0}
-.qcx-user-chip[data-role='member'] .qcx-user-name{color:#d9fbee}
-.qcx-user-chip[data-role='member'] .qcx-user-role-badge{background:rgba(52,230,160,0.18);color:#34e6a0}
+.qcx-user-chip[data-role='member']{border-color:rgba(52,230,160,0.36)!important;background:rgba(52,230,160,0.08)!important}
+.qcx-user-chip[data-role='member'] .qcx-user-avatar{border-color:#34e6a0!important}
+.qcx-user-chip[data-role='member'] .qcx-user-name{color:#d9fbee!important}
+.qcx-user-chip[data-role='member'] .qcx-user-role-badge{background:rgba(52,230,160,0.18)!important;color:#34e6a0!important}
 /* Role 2: PRO / Buyer (Electric Cyan) */
-.qcx-user-chip[data-role='pro']{border-color:rgba(56,189,248,0.48);background:rgba(56,189,248,0.10);box-shadow:0 0 14px rgba(56,189,248,0.12)}
-.qcx-user-chip[data-role='pro'] .qcx-user-avatar{border-color:#38bdf8}
-.qcx-user-chip[data-role='pro'] .qcx-user-name{color:#bae6fd;font-weight:700}
-.qcx-user-chip[data-role='pro'] .qcx-user-role-badge{background:rgba(56,189,248,0.22);color:#38bdf8}
+.qcx-user-chip[data-role='pro']{border-color:rgba(56,189,248,0.48)!important;background:rgba(56,189,248,0.10)!important;box-shadow:0 0 12px rgba(56,189,248,0.12)!important}
+.qcx-user-chip[data-role='pro'] .qcx-user-avatar{border-color:#38bdf8!important}
+.qcx-user-chip[data-role='pro'] .qcx-user-name{color:#bae6fd!important;font-weight:700!important}
+.qcx-user-chip[data-role='pro'] .qcx-user-role-badge{background:rgba(56,189,248,0.22)!important;color:#38bdf8!important}
 /* Role 3: VIP 30 Days (Royal Gold) */
-.qcx-user-chip[data-role='vip']{border-color:rgba(255,209,102,0.58);background:linear-gradient(135deg,rgba(255,209,102,0.16),rgba(245,158,11,0.08));box-shadow:0 0 18px rgba(255,209,102,0.18)}
-.qcx-user-chip[data-role='vip'] .qcx-user-avatar{border-color:#ffd166}
-.qcx-user-chip[data-role='vip'] .qcx-user-name{color:#ffe599;font-weight:700}
-.qcx-user-chip[data-role='vip'] .qcx-user-role-badge{background:linear-gradient(135deg,#ffd166,#f59e0b);color:#140d00}
+.qcx-user-chip[data-role='vip']{border-color:rgba(255,209,102,0.58)!important;background:linear-gradient(135deg,rgba(255,209,102,0.16),rgba(245,158,11,0.08))!important;box-shadow:0 0 14px rgba(255,209,102,0.16)!important}
+.qcx-user-chip[data-role='vip'] .qcx-user-avatar{border-color:#ffd166!important}
+.qcx-user-chip[data-role='vip'] .qcx-user-name{color:#ffe599!important;font-weight:700!important}
+.qcx-user-chip[data-role='vip'] .qcx-user-role-badge{background:linear-gradient(135deg,#ffd166,#f59e0b)!important;color:#140d00!important}
 /* Role 4: ADMIN (Crimson Gold) */
-.qcx-user-chip[data-role='admin']{border-color:rgba(255,107,107,0.62);background:linear-gradient(135deg,rgba(255,95,86,0.18),rgba(255,189,46,0.10));box-shadow:0 0 20px rgba(255,95,86,0.22)}
-.qcx-user-chip[data-role='admin'] .qcx-user-avatar{border-color:#ff6b6b}
-.qcx-user-chip[data-role='admin'] .qcx-user-name{color:#ffb4ae;font-weight:700}
-.qcx-user-chip[data-role='admin'] .qcx-user-role-badge{background:linear-gradient(135deg,#ff5f56,#ffbd2e);color:#1a0500}
+.qcx-user-chip[data-role='admin']{border-color:rgba(255,107,107,0.62)!important;background:linear-gradient(135deg,rgba(255,95,86,0.18),rgba(255,189,46,0.10))!important;box-shadow:0 0 14px rgba(255,95,86,0.20)!important}
+.qcx-user-chip[data-role='admin'] .qcx-user-avatar{border-color:#ff6b6b!important}
+.qcx-user-chip[data-role='admin'] .qcx-user-name{color:#ffb4ae!important;font-weight:700!important}
+.qcx-user-chip[data-role='admin'] .qcx-user-role-badge{background:linear-gradient(135deg,#ff5f56,#ffbd2e)!important;color:#1a0500!important}
 /* User Account Dropdown &amp; Google Auth Popup */
-#qcx-user-dropdown{position:fixed;z-index:999998;min-width:270px;max-width:310px;border-radius:14px;border:1px solid rgba(76,175,130,0.38);background:#09140e;color:#e6f5ec;box-shadow:0 20px 50px rgba(0,0,0,0.75);padding:14px;display:none;font-family:var(--qcx-article-sans,system-ui,sans-serif)}
+#qcx-user-dropdown{position:fixed;z-index:999998;min-width:225px;max-width:265px;border-radius:12px;border:1px solid rgba(76,175,130,0.38);background:#09140e;color:#e6f5ec;box-shadow:0 16px 40px rgba(0,0,0,0.78);padding:11px;display:none;font-family:var(--qcx-article-sans,system-ui,sans-serif)}
 #qcx-user-dropdown.is-open{display:block}
-.qcx-ud-head{display:flex;align-items:center;gap:10px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:10px}
-.qcx-ud-head img{width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid #34e6a0}
-.qcx-ud-name{font-size:14px;font-weight:700;color:#fff;margin:0}
-.qcx-ud-email{font-size:11.5px;color:#8fb6a1;margin:2px 0 0;word-break:break-all}
-.qcx-ud-status{font-size:12px;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,0.04);margin-bottom:10px;color:#bde3ce}
-.qcx-ud-btn{width:100%;text-align:left;padding:8px 10px;border-radius:8px;border:0;background:transparent;color:#d8efe2;font:600 12.5px/1.3 var(--qcx-article-sans,system-ui,sans-serif);cursor:pointer;display:flex;align-items:center;gap:8px}
+.qcx-ud-head{display:flex;align-items:center;gap:9px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:8px}
+.qcx-ud-head img{width:34px;height:34px;border-radius:50%;object-fit:cover;border:1.5px solid #34e6a0;flex-shrink:0}
+.qcx-ud-name{font-size:13px;font-weight:700;color:#fff;margin:0;line-height:1.2}
+.qcx-ud-email{font-size:11px;color:#8fb6a1;margin:2px 0 0;word-break:break-all}
+.qcx-ud-status{font-size:11px;padding:6px 8px;border-radius:7px;background:rgba(255,255,255,0.04);margin-bottom:8px;color:#bde3ce;line-height:1.35}
+.qcx-ud-btn{width:100%;text-align:left;padding:6px 8px;border-radius:7px;border:0;background:transparent;color:#d8efe2;font:600 12px/1.25 var(--qcx-article-sans,system-ui,sans-serif);cursor:pointer;display:flex;align-items:center;gap:7px}
 .qcx-ud-btn:hover{background:rgba(52,230,160,0.12);color:#fff}
 .qcx-ud-btn.is-danger{color:#ff9b94}
 .qcx-ud-btn.is-danger:hover{background:rgba(255,95,86,0.14)}
@@ -9845,7 +9850,9 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
           var nm=chip.querySelector('.qcx-user-name');
           var bg=chip.querySelector('.qcx-user-role-badge');
           if(av){
-            av.src=u.picture||('https://ui-avatars.com/api/?name='+encodeURIComponent(u.name||u.email)+'&background=0d261a&color=34e6a0&bold=true&size=96');
+            var ownerPic='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.3/images/avatars/kkymljnk-google.png';
+            var emLow=String(u.email||'').toLowerCase();
+            av.src=(emLow==='kkymljnk@gmail.com'||emLow==='superkhung@gmail.com')?ownerPic:(u.picture||('https://ui-avatars.com/api/?name='+encodeURIComponent(u.name||u.email)+'&background=0d261a&color=34e6a0&bold=true&size=96'));
             av.alt=u.name||u.email;
           }
           if(nm)nm.textContent=u.name||u.email.split('@')[0];
@@ -9913,7 +9920,8 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
       var bgHex=role==='admin'?'2b0907':(role==='vip'?'261c05':(role==='pro'?'061d2b':'0d261a'));
       var fgHex=role==='admin'?'ff6b6b':(role==='vip'?'ffd166':(role==='pro'?'38bdf8':'34e6a0'));
       var fallbackAv='https://ui-avatars.com/api/?name='+encodeURIComponent(name)+'&background='+bgHex+'&color='+fgHex+'&bold=true&size=96';
-      var pic=profile.picture||('https://unavatar.io/google/'+encodeURIComponent(email)+'?fallback='+encodeURIComponent(fallbackAv));
+      var ownerAv='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.3/images/avatars/kkymljnk-google.png';
+      var pic=(email==='kkymljnk@gmail.com'||email==='superkhung@gmail.com')?ownerAv:(profile.picture||fallbackAv);
       var sess=(recoverRes && recoverRes.sessionToken)||cur.sessionToken||('qcx_gmail_'+encodeURIComponent(email));
       return {
         ok:true,
@@ -10070,7 +10078,9 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
       var html='<div style="font-size:11.5px;color:#8fb6a1;margin-bottom:6px;font-weight:600">Ch\u1ecdn nhanh t\u00e0i kho\u1ea3n \u0111\u00e3 \u0111\u0103ng nh\u1eadp:</div>';
       for(var i=0;i<accs.length;i++){
         var a=accs[i];
-        var av=a.picture||('https://unavatar.io/google/'+encodeURIComponent(a.email));
+        var ownerPic2='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.3/images/avatars/kkymljnk-google.png';
+        var aEm=String(a.email||'').toLowerCase();
+        var av=(aEm==='kkymljnk@gmail.com'||aEm==='superkhung@gmail.com')?ownerPic2:(a.picture||('https://ui-avatars.com/api/?name='+encodeURIComponent(a.name||a.email)+'&background=0d261a&color=34e6a0&bold=true&size=96'));
         html+='<button type="button" class="qcx-ud-btn" data-qcx-pick-email="'+a.email+'" data-qcx-pick-name="'+(a.name||'')+'" style="border:1px solid rgba(52,230,160,0.25);background:rgba(52,230,160,0.06);margin-bottom:6px;padding:8px 10px;border-radius:10px">' +
           '<img src="'+av+'" alt="" style="width:28px;height:28px;border-radius:50%;object-fit:cover;flex:0 0 auto"/>' +
           '<div style="flex:1;min-width:0;text-align:left"><div style="font-weight:700;color:#fff;font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+(a.name||a.email)+'</div><div style="font-size:11px;color:#8fb6a1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+a.email+'</div></div>' +
@@ -10222,7 +10232,9 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
         var cnt=(u.items && u.items.length)||Object.keys(ent.unlockedItems||{}).length||1;
         statusText='\ud83d\udc8e Th\u00e0nh vi\u00ean PRO \u2014 \u0110\u00e3 s\u1edf h\u1eefu '+cnt+' b\u00e0i vi\u1ebft';
       }
-      var avUrl=u.picture||('https://ui-avatars.com/api/?name='+encodeURIComponent(u.name||u.email)+'&background=0d261a&color=34e6a0&bold=true&size=96');
+      var ownerPic3='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.3/images/avatars/kkymljnk-google.png';
+      var uEm=String(u.email||'').toLowerCase();
+      var avUrl=(uEm==='kkymljnk@gmail.com'||uEm==='superkhung@gmail.com')?ownerPic3:(u.picture||('https://ui-avatars.com/api/?name='+encodeURIComponent(u.name||u.email)+'&background=0d261a&color=34e6a0&bold=true&size=96'));
       dd.innerHTML=
         '<div class="qcx-ud-head">' +
           '<img src="'+avUrl+'" alt=""/>' +
