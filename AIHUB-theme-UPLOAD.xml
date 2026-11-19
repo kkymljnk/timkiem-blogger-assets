@@ -7079,7 +7079,7 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
     <div class='qcx-signal-inner'>
       <div class='qcx-signal-row'>
         <a aria-label='Về trang chủ MMO' class='qcx-signal-status' href='/'><span aria-hidden='true' class='qcx-signal-dot'/>signal / online</a>
-        <div class='qcx-auth-slot' data-qcx-auth-slot='header' id='qcx-header-auth-slot'>
+        <div class='qcx-auth-slot' data-qcx-auth-slot='header'>
           <button aria-label='Đăng nhập bằng Gmail' class='qcx-signal-x qcx-auth-login-btn' type='button'>
             <svg aria-hidden='true' class='qcx-google-ico' height='14' viewBox='0 0 24 24' width='14'><path d='M21.35 11.1h-9.17v2.73h6.51c-.33 1.81-1.5 3.34-3.2 4.37v3.62h5.18c3.03-2.79 4.78-6.9 4.78-11.82 0-.8-.08-1.57-.23-2.3z' fill='#4285F4'/><path d='M12.18 22c4.32 0 7.95-1.43 10.6-3.88l-5.18-3.62c-1.43.96-3.26 1.53-5.42 1.53-4.17 0-7.7-2.81-8.96-6.6H-2.1v3.73C.54 18.4 5.94 22 12.18 22z' fill='#34A853'/><path d='M3.22 13.43a5.85 5.85 0 0 1 0-3.76V5.94H-2.1a9.99 9.99 0 0 0 0 8.95l5.32-3.73z' fill='#FBBC05'/><path d='M12.18 5.98c2.35 0 4.46.81 6.12 2.4l4.59-4.59C20.12 1.19 16.5 0 12.18 0 5.94 0 .54 3.6-2.1 8.84l5.32 3.73c1.26-3.79 4.79-6.59 8.96-6.59z' fill='#EA4335'/></svg>
             <span class='qcx-signal-x-label'>Đăng nhập</span>
@@ -9612,22 +9612,17 @@ html body .scroll--top:hover {
         }
       }catch(e){}
     }
-    loadLocalAuthCfg();
-
     function isClientAdminEmail(email){
       var em=String(email||'').trim().toLowerCase();
       return !!(em && adminEmailsList.indexOf(em)!==-1);
     }
-    function computeClientRole(email,vipExpiresAt,unlockedItemsMapOrArr){
+    function computeClientRole(email,vipExp,items){
       if(isClientAdminEmail(email))return 'admin';
-      if(vipExpiresAt && new Date(vipExpiresAt).getTime()>Date.now())return 'vip';
-      var cnt=0;
-      if(Array.isArray(unlockedItemsMapOrArr))cnt=unlockedItemsMapOrArr.length;
-      else if(unlockedItemsMapOrArr && typeof unlockedItemsMapOrArr==='object')cnt=Object.keys(unlockedItemsMapOrArr).length;
+      if(vipExp && new Date(vipExp).getTime()>Date.now())return 'vip';
+      var cnt=Array.isArray(items)?items.length:(items && typeof items==='object'?Object.keys(items).length:0);
       if(cnt>0)return 'pro';
       return 'member';
     }
-
     function fmtVnd(n){
       var v=Number(n)||0;
       return v.toString().replace(/\B(?=(\d{3})+(?!\d))/g,'.')+' đ';
@@ -9637,6 +9632,7 @@ html body .scroll--top:hover {
     }
     function saveEnt(next){
       try{
+        loadLocalAuthCfg();
         var cur=readEnt();
         var merged={
           sessionToken:next.sessionToken||cur.sessionToken||'',
@@ -9653,11 +9649,7 @@ html body .scroll--top:hover {
           next.user.items.forEach(function(id){merged.unlockedItems[id]=true;});
         }
         if(merged.user){
-          if(merged.vipExpiresAt && new Date(merged.vipExpiresAt).getTime()>Date.now() && merged.user.role!=='admin'){
-            merged.user.role='vip';
-          }else if(Object.keys(merged.unlockedItems).length>0 && merged.user.role==='member'){
-            merged.user.role='pro';
-          }
+          merged.user.role=computeClientRole(merged.user.email,merged.vipExpiresAt,merged.unlockedItems);
         }
         localStorage.setItem(ENT_KEY,JSON.stringify(merged));
         renderAuthSlots();
@@ -9758,44 +9750,20 @@ html body .scroll--top:hover {
       }).catch(function(){return googleClientId||'';});
     }
 
-    function handleAuthSuccess(res){
-      if(!res || !res.ok || !res.sessionToken)return;
-      saveEnt(res);
-      var gm=document.getElementById('qcx-google-auth-modal');
-      if(gm)gm.classList.remove('is-open');
-      var cfg=getResourceConfig();
-      if(cfg.mode==='vip' || cfg.mode==='item'){
-        tryAutoDelivery(cfg).then(function(unlocked){
-          if(!unlocked && pendingPayosCfgAfterLogin){
-            var nextCfg=pendingPayosCfgAfterLogin;
-            pendingPayosCfgAfterLogin=null;
-            openPayosModal(nextCfg,false);
-          }else{
-            pendingPayosCfgAfterLogin=null;
-          }
-        });
-      }else if(pendingPayosCfgAfterLogin){
-        var nextCfg2=pendingPayosCfgAfterLogin;
-        pendingPayosCfgAfterLogin=null;
-        openPayosModal(nextCfg2,false);
-      }
-    }
-
     function buildClientAuthResponse(profile,recoverRes){
+      loadLocalAuthCfg();
       var cur=readEnt();
       var email=String(profile.email||'').trim().toLowerCase();
       var name=String(profile.name||email.split('@')[0]||'Member').trim();
       var vipExp=(recoverRes && recoverRes.vipExpiresAt)||cur.vipExpiresAt||null;
-      var itemsArr=[];
-      if(recoverRes && Array.isArray(recoverRes.unlockedItems)){
-        itemsArr=recoverRes.unlockedItems.slice();
-      }else if(cur.unlockedItems && typeof cur.unlockedItems==='object'){
-        itemsArr=Object.keys(cur.unlockedItems);
-      }
+      var itemsArr=(recoverRes && Array.isArray(recoverRes.unlockedItems))
+        ?recoverRes.unlockedItems.slice()
+        :Object.keys(cur.unlockedItems||{});
       var role=computeClientRole(email,vipExp,itemsArr);
       var bgHex=role==='admin'?'2b0907':(role==='vip'?'261c05':(role==='pro'?'061d2b':'0d261a'));
       var fgHex=role==='admin'?'ff6b6b':(role==='vip'?'ffd166':(role==='pro'?'38bdf8':'34e6a0'));
-      var pic=profile.picture||('https://ui-avatars.com/api/?name='+encodeURIComponent(name)+'&background='+bgHex+'&color='+fgHex+'&bold=true&size=96');
+      var fallbackAv='https://ui-avatars.com/api/?name='+encodeURIComponent(name)+'&background='+bgHex+'&color='+fgHex+'&bold=true&size=96';
+      var pic=profile.picture||('https://unavatar.io/google/'+encodeURIComponent(email)+'?fallback='+encodeURIComponent(fallbackAv));
       var sess=(recoverRes && recoverRes.sessionToken)||cur.sessionToken||('qcx_gmail_'+encodeURIComponent(email));
       return {
         ok:true,
@@ -9815,28 +9783,59 @@ html body .scroll--top:hover {
       };
     }
 
+    function handleAuthSuccess(res){
+      if(!res || !res.ok || !res.sessionToken)return;
+      var merged=saveEnt(res);
+      var gm=document.getElementById('qcx-google-auth-modal');
+      if(gm)gm.classList.remove('is-open');
+      var cfg=getResourceConfig();
+      if(cfg.mode==='vip' || cfg.mode==='item'){
+        if(merged && merged.user && merged.user.role==='admin'){
+          unlockDomWithDelivery({});
+          pendingPayosCfgAfterLogin=null;
+          return;
+        }
+        tryAutoDelivery(cfg).then(function(unlocked){
+          if(!unlocked && pendingPayosCfgAfterLogin){
+            var nextCfg=pendingPayosCfgAfterLogin;
+            pendingPayosCfgAfterLogin=null;
+            openPayosModal(nextCfg,false);
+          }else{
+            pendingPayosCfgAfterLogin=null;
+          }
+        });
+      }else if(pendingPayosCfgAfterLogin){
+        var nextCfg2=pendingPayosCfgAfterLogin;
+        pendingPayosCfgAfterLogin=null;
+        openPayosModal(nextCfg2,false);
+      }
+    }
+
     function authenticateGmailProfile(profile,accessToken,statusEl){
+      loadLocalAuthCfg();
       var email=String((profile && profile.email)||'').trim().toLowerCase();
       var name=String((profile && profile.name)||email.split('@')[0]||'').trim();
-      var bodyObj=accessToken?{accessToken:accessToken,fallbackProfile:{email:email,name:name,picture:profile&&profile.picture}}:{fallbackProfile:{email:email,name:name,picture:profile&&profile.picture}};
+      var payload=accessToken
+        ?{accessToken:accessToken,fallbackProfile:{email:email,name:name,picture:profile&&profile.picture}}
+        :{fallbackProfile:{email:email,name:name,picture:profile&&profile.picture}};
       return fetch(API_BASE+'/api/auth/google',{
         method:'POST',
         headers:{'Content-Type':'application/json'},
-        body:JSON.stringify(bodyObj)
+        body:JSON.stringify(payload)
       }).then(function(r){return r.json();}).then(function(res){
         if(res && res.ok && res.sessionToken){
           if(isClientAdminEmail(email) && res.user)res.user.role='admin';
           handleAuthSuccess(res);
           return true;
         }
-        return Promise.reject(new Error('FALLBACK_RECOVER'));
+        return Promise.reject(new Error('FALLBACK'));
       }).catch(function(){
         return fetch(API_BASE+'/api/recover',{
           method:'POST',
           headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({query:email})
+          body:JSON.stringify({query:email,contact:email})
         }).then(function(r){return r.json();}).catch(function(){return null;}).then(function(rec){
-          var built=buildClientAuthResponse({email:email,name:name,picture:profile&&profile.picture},rec && rec.ok ? rec : null);
+          var built=buildClientAuthResponse({email:email,name:name,picture:profile&&profile.picture},rec && rec.ok?rec:null);
           handleAuthSuccess(built);
           return true;
         });
@@ -9879,11 +9878,7 @@ html body .scroll--top:hover {
               fetch('https://www.googleapis.com/oauth2/v3/userinfo',{
                 headers:{'Authorization':'Bearer '+tokenRes.access_token}
               }).then(function(r){return r.json();}).catch(function(){return {};}).then(function(gInfo){
-                return authenticateGmailProfile({
-                  email:gInfo && gInfo.email,
-                  name:gInfo && gInfo.name,
-                  picture:gInfo && gInfo.picture
-                },tokenRes.access_token,statusEl);
+                return authenticateGmailProfile({email:gInfo.email,name:gInfo.name,picture:gInfo.picture},tokenRes.access_token,statusEl);
               });
             }
           });
@@ -9965,16 +9960,11 @@ html body .scroll--top:hover {
         }
       }
       m.classList.add('is-open');
-      loadLocalAuthCfg();
       if(googleClientId){
         startGoogleOAuthPopup(document.getElementById('qcx-ga-status'));
       }else{
         fetchAuthConfig().then(function(cid){
           if(cid)startGoogleOAuthPopup(document.getElementById('qcx-ga-status'));
-          else{
-            var nm=document.getElementById('qcx-ga-name');
-            if(nm)nm.focus();
-          }
         });
       }
     }
@@ -10047,14 +10037,12 @@ html body .scroll--top:hover {
     function syncAuthSessionFromServer(){
       var ent=readEnt();
       if(!ent.sessionToken && !(ent.user && ent.user.email))return Promise.resolve(false);
-      var email=(ent.user && ent.user.email)||'';
-      var q=email ? ('?email='+encodeURIComponent(email)) : '';
+      var q=ent.user && ent.user.email ? ('?email='+encodeURIComponent(ent.user.email)) : '';
       return fetch(API_BASE+'/api/auth/me'+q,{
         method:'GET',
         headers:ent.sessionToken?{'Authorization':'Bearer '+ent.sessionToken}:{}
       }).then(function(r){return r.json();}).then(function(res){
         if(res && res.ok && res.user){
-          if(email && isClientAdminEmail(email))res.user.role='admin';
           saveEnt(res);
           var cfg=getResourceConfig();
           if(cfg.mode==='vip' || cfg.mode==='item'){
@@ -10062,19 +10050,19 @@ html body .scroll--top:hover {
           }
           return true;
         }
-        return Promise.reject(new Error('FALLBACK_RECOVER'));
+        return Promise.reject(new Error('FALLBACK'));
       }).catch(function(){
-        if(!email)return false;
+        if(!(ent.user && ent.user.email))return false;
         return fetch(API_BASE+'/api/recover',{
           method:'POST',
           headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({query:email})
+          body:JSON.stringify({query:ent.user.email,contact:ent.user.email})
         }).then(function(r){return r.json();}).catch(function(){return null;}).then(function(rec){
-          var built=buildClientAuthResponse(ent.user||{email:email},rec && rec.ok ? rec : null);
+          var built=buildClientAuthResponse(ent.user,rec && rec.ok?rec:null);
           saveEnt(built);
-          var cfg=getResourceConfig();
-          if(cfg.mode==='vip' || cfg.mode==='item'){
-            tryAutoDelivery(cfg);
+          var cfg2=getResourceConfig();
+          if(cfg2.mode==='vip' || cfg2.mode==='item'){
+            tryAutoDelivery(cfg2);
           }
           return true;
         });
@@ -10128,28 +10116,17 @@ html body .scroll--top:hover {
     }
     function tryAutoDelivery(cfg){
       var ent=readEnt();
-      var isAdmin=!!(ent && ent.user && (ent.user.role==='admin' || isClientAdminEmail(ent.user.email)));
-      if(!ent.sessionToken && !isAdmin)return Promise.resolve(false);
+      if(!ent.sessionToken)return Promise.resolve(false);
       return fetch(API_BASE+'/api/delivery?resourceId='+encodeURIComponent(cfg.resourceId),{
         method:'GET',
-        headers:ent.sessionToken?{'Authorization':'Bearer '+ent.sessionToken}:{}
+        headers:{'Authorization':'Bearer '+ent.sessionToken}
       }).then(function(r){return r.json();}).then(function(res){
         if(res && res.ok && res.data){
           unlockDomWithDelivery(res.data);
           return true;
         }
-        if(isAdmin){
-          unlockDomWithDelivery({});
-          return true;
-        }
         return false;
-      }).catch(function(){
-        if(isAdmin){
-          unlockDomWithDelivery({});
-          return true;
-        }
-        return false;
-      });
+      }).catch(function(){return false;});
     }
     function ensurePayosModal(){
       var m=document.getElementById('qcx-payos-modal');

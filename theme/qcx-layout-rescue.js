@@ -3370,7 +3370,8 @@
           var role = computeClientRole(email, vipExp, itemsArr);
           var bgHex = role === 'admin' ? '2b0907' : (role === 'vip' ? '261c05' : (role === 'pro' ? '061d2b' : '0d261a'));
           var fgHex = role === 'admin' ? 'ff6b6b' : (role === 'vip' ? 'ffd166' : (role === 'pro' ? '38bdf8' : '34e6a0'));
-          var pic = profile.picture || ('https://ui-avatars.com/api/?name=' + encodeURIComponent(name) + '&background=' + bgHex + '&color=' + fgHex + '&bold=true&size=96');
+          var fallbackAv = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(name) + '&background=' + bgHex + '&color=' + fgHex + '&bold=true&size=96';
+          var pic = profile.picture || ('https://unavatar.io/google/' + encodeURIComponent(email) + '?fallback=' + encodeURIComponent(fallbackAv));
           var sess = (recoverRes && recoverRes.sessionToken) || cur.sessionToken || ('qcx_gmail_' + encodeURIComponent(email));
           return {
             ok: true,
