@@ -57,7 +57,7 @@
  */
 ]]></b:skin>
   <b:template-skin><![CDATA[
-/* ── Layout editor (Bố cục) — MMO pro board ── */
+/*    Layout editor (Bo   cu c)   MMO pro board    */
 body#layout{
   background:
     radial-gradient(circle at 12% 0%, rgba(212,175,55,.08), transparent 34%),
@@ -69,7 +69,7 @@ body#layout{
   box-sizing:border-box!important;
 }
 body#layout::before{
-  content:'MMO  ·  Bố cục theme';
+  content:'MMO  \00b7   B\1ed1  c\1ee5 c theme';
   display:block;
   margin:0 0 14px;
   padding:10px 14px;
@@ -94,7 +94,7 @@ body#layout #qcx-mobile-search,
 body#layout #qcx-native-tabbar{display:none!important}
 body#layout header,
 body#layout .main-container{display:block!important;width:100%!important;max-width:none!important;float:none!important;padding:0!important;margin:0!important}
-/* Layout editor: float main left + Thanh bên right (Blogger strips grid-template-columns here). */
+/* Layout editor: float main left + Thanh be n right (Blogger strips grid-template-columns here). */
 body#layout .main-wrapper{
   display:block!important;
   width:100%!important;
@@ -267,7 +267,7 @@ body#layout .qcx-layout-brand span{display:block;color:rgba(230,245,236,.7);font
     &quot;name&quot;: &quot;MMO TEAM&quot;,
     &quot;alternateName&quot;: &quot;MMO&quot;,
     &quot;url&quot;: &quot;<data:blog.canonicalHomepageUrl/>&quot;,
-    &quot;description&quot;: &quot;Kho công cụ AI, tài nguyên công nghệ và hướng dẫn thực chiến miễn phí cho người Việt. Chia sẻ ChatGPT, Claude, Gemini, VPS miễn phí, automation n8n và tài nguyên AI.&quot;,
+    &quot;description&quot;: &quot;Kho c&#244;ng c&#7909; AI, t&#224;i nguy&#234;n c&#244;ng ngh&#7879; v&#224; h&#432;&#7899;ng d&#7851;n th&#7921;c chi&#7871;n mi&#7877;n ph&#237; cho ng&#432;&#7901;i Vi&#7879;t. Chia s&#7867; ChatGPT, Claude, Gemini, VPS mi&#7877;n ph&#237;, automation n8n v&#224; t&#224;i nguy&#234;n AI.&quot;,
     &quot;inLanguage&quot;: &quot;vi-VN&quot;,
     &quot;areaServed&quot;: &quot;VN&quot;,
     &quot;foundingDate&quot;: &quot;2024&quot;,
@@ -330,7 +330,7 @@ body#layout .qcx-layout-brand span{display:block;color:rgba(230,245,236,.7);font
   <meta content='Vietnamese' name='language'/>
   <meta content='MMO TEAM' name='author'/>
   <b:if cond='!data:view.isError'>
-    <!-- Dynamic SEO Title per view (Homepage / Label / Search / Archive / Post / Page) — entity-encoded to prevent clipboard/CP437 mojibake -->
+    <!-- Dynamic SEO Title per view (Homepage / Label / Search / Archive / Post / Page)   entity-encoded to prevent clipboard/CP437 mojibake -->
     <b:if cond='data:view.isHomepage'>
       <title>MMO TEAM &#8211; C&#244;ng c&#7909; AI &#183; H&#432;&#7899;ng d&#7851;n th&#7921;c chi&#7871;n &#183; T&#224;i nguy&#234;n mi&#7877;n ph&#237;</title>
     <b:elseif cond='data:view.search.label'/>
@@ -344,7 +344,7 @@ body#layout .qcx-layout-brand span{display:block;color:rgba(230,245,236,.7);font
     //<![CDATA[
     (function(){
       var HOME_VI_TITLE = "MMO TEAM \u2013 C\u00f4ng c\u1ee5 AI \u00b7 H\u01b0\u1edbng d\u1eabn th\u1ef1c chi\u1ebfn \u00b7 T\u00e0i nguy\u00ean mi\u1ec5n ph\u00ed";
-      if (!document.title || /[Γ├╟┬╞░ß║½▒┐┤Ñ¡]/.test(document.title)) {
+      if (!document.title || /[\u0393\u251c\u255f\u252c\u255e\u2591\u00df\u2551\u00bd\u2592\u2510\u2524\u00d1\u00a1]/.test(document.title)) {
         if (location.pathname === "/" || location.pathname === "/index.html") {
           document.title = HOME_VI_TITLE;
         } else {
@@ -595,7 +595,7 @@ body#layout .qcx-layout-brand span{display:block;color:rgba(230,245,236,.7);font
   }).then(function(r){ return r.json(); }).then(function(full){
     try {
       var entry = full &amp;&amp; full.entry;
-      /* F5: do not repopulate sessionStorage — races rescue reload skip and causes old→new flash. */
+      /* F5: do not repopulate sessionStorage &#8212; races rescue reload skip and causes old&#8594;new flash. */
       if (entry &amp;&amp; path &amp;&amp; !isReloadNav()) {
         sessionStorage.setItem('qcx:post:' + path, JSON.stringify({ t: Date.now(), d: entry }));
       }
@@ -821,7 +821,7 @@ header .header{-webkit-box-flex:1;-ms-flex:1;flex:1;min-height:50px;height:100%;
 [data-view-type=desktop] .card-header>a{transition:transform .5s ease-out .1s}
 [data-view-type=desktop] .card-header:hover a{-webkit-transform:scale(1.05);-moz-transform:scale(1.05);-ms-transform:scale(1.05);-o-transform:scale(1.05);transform:scale(1.05)}
 .card-header>a:after{background:#e9ecef;content:'';position:absolute;top:0;left:0;width:100%;height:100%}
-.card-header>a.no-img:after{-o-object-fit:cover;object-fit:cover;content:'Không có ảnh'!important;display:flex;justify-content:center;align-items:center;text-transform:uppercase;font-size:11px;color:#212529}
+.card-header>a.no-img:after{-o-object-fit:cover;object-fit:cover;content:'Kh&#244;ng c&#243; &#7843;nh'!important;display:flex;justify-content:center;align-items:center;text-transform:uppercase;font-size:11px;color:#212529}
 .card-header img{position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;-o-object-fit:cover;object-fit:cover}
 .card-content .share{margin-left:5px;justify-content:center;width:28px;height:28px;border-radius:50%}
 .card-content .share:hover{background:rgba(60,64,67,0.08)}
@@ -837,7 +837,7 @@ header .header{-webkit-box-flex:1;-ms-flex:1;flex:1;min-height:50px;height:100%;
 .success:before{content:url(https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.4/images/icon-check.png)}
 .processing:after,.success:after{margin-top:35px;color:#fff}
 .processing:after,.success:before,.success:after{top:50%;left:50%;transform:translate(-50%,-50%)}
-.processing:after{content:"Đang gửi..."}.success:after{content:"Đã gửi thành công!"}
+.processing:after{content:"&#272;ang g&#7917;i..."}.success:after{content:"&#272;&#227; g&#7917;i th&#224;nh c&#244;ng!"}
 .background-overlay{background:rgba(0,0,0,.75);position:absolute;top:0;left:0;width:100%;height:100%;z-index:8;overflow:hidden;pointer-events:none;user-select:none;opacity:.8;transition:opacity .25s}
 @keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
 @-webkit-keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
@@ -868,7 +868,7 @@ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/sv
 .item-thumbnail a{display:flex;position:relative;padding-bottom:66.67%;width:100%;height:100%;color:inherit}
 .item-thumbnail a:after{background:#e9ecef;content:'';position:absolute;top:0;left:0;width:100%;height:100%}
 .item-thumbnail.no-img a{border:1px solid #dee2e6}
-.item-thumbnail.no-img a:after{-o-object-fit:cover;object-fit:cover;content:'Không có ảnh'!important;display:flex;justify-content:center;align-items:center;text-transform:uppercase;font-size:11px;color:#212529}
+.item-thumbnail.no-img a:after{-o-object-fit:cover;object-fit:cover;content:'Kh&#244;ng c&#243; &#7843;nh'!important;display:flex;justify-content:center;align-items:center;text-transform:uppercase;font-size:11px;color:#212529}
 [data-view-type=desktop] .item-thumbnail a{transition:transform .5s ease-out .1s}
 [data-view-type=desktop] .item-thumbnail:hover a{-webkit-transform:scale(1.05);-moz-transform:scale(1.05);-ms-transform:scale(1.05);-o-transform:scale(1.05);transform:scale(1.05)}
 .item-thumbnail img{position:absolute;top:0;left:0;z-index:2;width:100%;height:100%;-o-object-fit:cover;object-fit:cover}
@@ -907,7 +907,7 @@ pre:focus,pre>button:focus{outline:none!important;border:1px solid #00aeef}
 .post-body li>a{color:rgba(0,0,0,0.87);color:var(--text-color)}.box_tin:focus,.box_tin li>a:focus{outline:none!important}
 .box_tin.category{margin:0 0 1.3rem 0}.box_tin.category ul{margin-top:10px}
 .box_tin.category p{margin:0;font-size:1.3em}.box_tin.category p>label{font-size:14px;color:#2b6dad;color:var(--text-link);vertical-align:middle}
-.box_tin.category p>label:after{content:'[Ẩn]'}.box_tin.category p>label.show:after{content:'[Hiện]'}
+.box_tin.category p>label:after{content:'[&#7848;n]'}.box_tin.category p>label.show:after{content:'[Hi&#7879;n]'}
 .post-body img{max-width:100%;height:auto}
 .tr-caption-container,.separator{position:relative;clear:both!important;text-align:center!important}
 .tr-caption-container tr:first-child>td{line-height:0}
@@ -1033,7 +1033,7 @@ span.text{padding-right:5px}
 [data-view-type=desktop] .modal--footer button:focus,[data-view-type=desktop] .modal--footer button:active{border:2px solid #03a9f4}
 /* ]]> */</b:tag>
   </b:if>
-  <b:if cond='data:blog.pageName eq &quot;Sơ đồ trang web&quot;'>
+  <b:if cond='data:blog.pageName eq &quot;S&#417; &#273;&#7891; trang web&quot;'>
     <b:tag name='style'>/* <![CDATA[ */
 .post-body ol,.post-body ul{margin:0!important}.post-body{font-size:1rem}.post-body a{color:rgba(0,0,0,0.87)}
 .post-body img:not(.img-first-child){max-width:unset;height:100%;display:unset;margin:0;opacity:unset;border:unset;transition:unset;border-radius:unset}
@@ -1176,7 +1176,7 @@ header,.post-meta,.box-no-padding .demo,.post-footer,.sidebar,footer,#comments,.
 }
   /* ]]> */</b:tag>
 <b:tag name='style'>/* <![CDATA[ */
-/* MMO — dark theme layout v3 */
+/* MMO &#8212; dark theme layout v3 */
 :root {
   color-scheme: dark;
   --bg:       #0a0f0a;
@@ -1207,13 +1207,13 @@ a:focus-visible,button:focus-visible,input:focus-visible,[tabindex]:focus-visibl
   transform:translateY(-160%);
 }
 .qcx-skip-link:focus,.qcx-skip-link:focus-visible{transform:translateY(0);outline:2px solid #fff;outline-offset:2px}
-/* â”€â”€ BASE FONT INHERITANCE â€” replaces 80+ individual font-family declarations â”€â”€ */
+/* &#226;&#8221;&#8364;&#226;&#8221;&#8364; BASE FONT INHERITANCE &#226;&#8364;&#8221; replaces 80+ individual font-family declarations &#226;&#8221;&#8364;&#226;&#8221;&#8364; */
 /* All custom elements inherit mono font from body (set above) */
 [class^="qcx-"], [class*=" qcx-"],
 .card, .card-content, .card-footer,
 .keywords a { font-family: var(--mono); }
 
-/* --- Grid Backdrop + Scanline — EXACT from embed.html lines 94-112 --- */
+/* --- Grid Backdrop + Scanline &#8212; EXACT from embed.html lines 94-112 --- */
 .qcx-backdrop {
   position: fixed; inset: 0; z-index: 0; pointer-events: none;
   background:
@@ -1247,13 +1247,13 @@ body {
   padding-top: 0 !important;
 }
 a { color: inherit; }
-/* Accent is dark brand fill — global link hover must stay readable on dark UI. */
+/* Accent is dark brand fill &#8212; global link hover must stay readable on dark UI. */
 a:hover { color: var(--fg, #e8efe9); }
 /* Form/button elements: inherit mono font (browser UA overrides otherwise) */
 button, input, select, textarea { font-family: inherit; }
 
 /* ==================================================
-   REFERENCE SIGNAL HEADER — static, no topbar
+   REFERENCE SIGNAL HEADER &#8212; static, no topbar
 ================================================== */
 .qcx-signal-header {
   position: relative;
@@ -1370,14 +1370,14 @@ button, input, select, textarea { font-family: inherit; }
   box-shadow: 0 0 18px rgba(28,36,32,.09);
 }
 @media (max-width: 860px) {
-  /* Mobile: bỏ chrome "pro" — dùng tab bar native */
+  /* Mobile: b&#7887; chrome "pro" &#8212; d&#249;ng tab bar native */
   .qcx-signal-header { display: none !important; height: 0 !important; }
 }
 
 
 /* ==================================================
-   HEADER — ẩn chrome Blogger (<header> trắng fixed),
-   nhưng GIỮ header.post-header (tiêu đề bài).
+   HEADER &#8212; &#7849;n chrome Blogger (<header> tr&#7855;ng fixed),
+   nh&#432;ng GI&#7918; header.post-header (ti&#234;u &#273;&#7873; b&#224;i).
 ================================================== */
 header:not(.post-header),
 #header,
@@ -1416,9 +1416,9 @@ header.post-header,
 }
 
 /* ==================================================
-   FIX KHOẢNG TRẮNG DƯỚI FOOTER
-   div.bottom là Blogger "bottom" section render sau </footer>
-   Chứa widget Blogger rỗng có thể tạo khoảng trắng cuối trang
+   FIX KHO&#7842;NG TR&#7854;NG D&#431;&#7898;I FOOTER
+   div.bottom l&#224; Blogger "bottom" section render sau </footer>
+   Ch&#7913;a widget Blogger r&#7895;ng c&#243; th&#7875; t&#7841;o kho&#7843;ng tr&#7855;ng cu&#7889;i trang
 ================================================== */
 div.bottom,
 .bottom-wrapper,
@@ -1430,7 +1430,7 @@ div.bottom,
   padding: 0 !important;
 }
 
-/* Overlay hidden — đảm bảo không chiếm space */
+/* Overlay hidden &#8212; &#273;&#7843;m b&#7843;o kh&#244;ng chi&#7871;m space */
 .overlay,
 .overlay.hidden,
 div.overlay {
@@ -1439,15 +1439,15 @@ div.overlay {
   overflow: hidden !important;
 }
 
-/* scroll--top (native, replaced bởi custom JS) */
+/* scroll--top (native, replaced b&#7903;i custom JS) */
 .scroll--top {
   display: none !important;
 }
 
 /* ==================================================
-   ẨN SHARE MENU (nền trắng nổi trên dark theme)
+   &#7848;N SHARE MENU (n&#7873;n tr&#7855;ng n&#7893;i tr&#234;n dark theme)
    .share-menu = Blogger native share bottom-sheet
-   Hiện ra khi bấm nút share trên bài viết
+   Hi&#7879;n ra khi b&#7845;m n&#250;t share tr&#234;n b&#224;i vi&#7871;t
 ================================================== */
 .footer-navigation-bar .share-menu,
 .footer-navigation-bar .share-menu.visible,
@@ -1457,7 +1457,7 @@ div.overlay {
   pointer-events: none !important;
 }
 
-/* Ẩn nút share nhỏ trên card + bài viết */
+/* &#7848;n n&#250;t share nh&#7887; tr&#234;n card + b&#224;i vi&#7871;t */
 .post-share,
 .card-content .share,
 [aria-label='Share'],
@@ -1473,7 +1473,7 @@ a.share {
 }
 
 /* ==================================================
-   CONTENT WIDTH — match QCXINT .wrap
+   CONTENT WIDTH &#8212; match QCXINT .wrap
    .wrap { max-width:1120px; margin:0 auto; padding:32px 24px 96px }
    Applied to all injected sections so they align with footer
 ================================================== */
@@ -1489,7 +1489,7 @@ a.share {
 }
 
 /* ==================================================
-   HERO SECTION — 2-column: text left, avatar right
+   HERO SECTION &#8212; 2-column: text left, avatar right
 ================================================== */
 .qcx-hero {
   padding: 24px 0 36px;
@@ -1513,9 +1513,9 @@ a.share {
   opacity: .8;
 }
 
-/* ── TITLE: solid color + neon glow (fixes Vietnamese diacritics)
-   background-clip:text clips combining tone marks → marks go invisible
-   Solid color + text-shadow preserves all dấu hỏi/sắc/huyền/ngã/nặng ── */
+/* &#9472;&#9472; TITLE: solid color + neon glow (fixes Vietnamese diacritics)
+   background-clip:text clips combining tone marks &#8594; marks go invisible
+   Solid color + text-shadow preserves all d&#7845;u h&#7887;i/s&#7855;c/huy&#7873;n/ng&#227;/n&#7863;ng &#9472;&#9472; */
 .qcx-hero-title {
   font-size: clamp(48px, 7vw, 86px);
   line-height: 1.05;
@@ -1652,7 +1652,7 @@ body:not(#layout) .qcx-cta-ico svg,
   width: 16px !important;
   height: 16px !important;
 }
-/* Compact layout — keep original hero scale, only trim outer chrome */
+/* Compact layout &#8212; keep original hero scale, only trim outer chrome */
 .qcx-hero {
   padding-top: 20px !important;
   padding-bottom: 16px !important;
@@ -1680,7 +1680,7 @@ footer.footer {
   bottom: 16px !important;
 }
 @media (max-width: 860px) {
-  /* Native mobile hero — avatar + title/bio, CTA full-width dưới */
+  /* Native mobile hero &#8212; avatar + title/bio, CTA full-width d&#432;&#7899;i */
   .qcx-hero {
     display: grid !important;
     grid-template-columns: 80px minmax(0, 1fr) !important;
@@ -1773,7 +1773,7 @@ footer.footer {
     white-space: nowrap !important;
     overflow: hidden !important;
   }
-  /* Secondary matches primary height — ghost, not a short text-link */
+  /* Secondary matches primary height &#8212; ghost, not a short text-link */
   .qcx-hero-cta .qcx-cta-outline {
     height: 48px !important;
     min-height: 48px !important;
@@ -1848,7 +1848,7 @@ footer.footer {
     gap: 20px !important;
   }
 }
-/* Card CTA hidden — title/thumbnail already links to the post. */
+/* Card CTA hidden &#8212; title/thumbnail already links to the post. */
 .qcx-card-cta,
 .card-content .qcx-card-cta,
 .all_posts .qcx-card-cta,
@@ -1902,7 +1902,7 @@ a.qcx-sc-btn.qcx-sc-btn-outline:hover,
   color: #e8efe9 !important;
   -webkit-text-fill-color: #e8efe9 !important;
 }
-/* Subscribe primary — xanh đen (match hero CTA); keep outline accent */
+/* Subscribe primary &#8212; xanh &#273;en (match hero CTA); keep outline accent */
 .qcx-subscribe-card .qcx-sc-btn:not(.qcx-sc-btn-outline),
 a.qcx-sc-btn:not(.qcx-sc-btn-outline) {
   background: #141a16 !important;
@@ -1920,7 +1920,7 @@ a.qcx-sc-btn:not(.qcx-sc-btn-outline):hover {
   box-shadow: none !important;
   transform: none !important;
 }
-/* Custom floating CTA removed — mobile uses native tab bar. */
+/* Custom floating CTA removed &#8212; mobile uses native tab bar. */
 .qcx-mobile-cta { display: none !important; }
 .qcx-404-actions {
   display: flex;
@@ -2127,7 +2127,7 @@ a.qcx-sc-btn:not(.qcx-sc-btn-outline):hover {
 .qcx-rescue-single .post-body a { color: var(--accent) !important; }
 
 /* ============================================================
-   MMO UI REDESIGN — Phase 1+2+3  (v2026.11.18)
+   MMO UI REDESIGN &#8212; Phase 1+2+3  (v2026.11.18)
    Footer full-width, card grid spacing, mobile breathing room
    ============================================================ */
 
@@ -2497,7 +2497,7 @@ html body main.main-container {
 }
 
 /* ==================================================
-   LABEL FILTER — hide h1, keep tabs
+   LABEL FILTER &#8212; hide h1, keep tabs
 ================================================== */
 .label--filter {
   margin-bottom: 0 !important;
@@ -2552,9 +2552,9 @@ html body main.main-container {
   display: none !important;
 }
 
-/* Cards — equal height grid */
+/* Cards &#8212; equal height grid */
 
-/* ── Grid container: auto-fill, equal row height ── */
+/* &#9472;&#9472; Grid container: auto-fill, equal row height &#9472;&#9472; */
 .grid {
   display: grid !important;
   grid-template-columns: repeat(4, 1fr) !important;  /* 4 cols desktop */
@@ -2581,7 +2581,7 @@ html body main.main-container {
   }
 }
 
-/* ── Card shell: hug image + title (no equal-height void) ── */
+/* &#9472;&#9472; Card shell: hug image + title (no equal-height void) &#9472;&#9472; */
 .all_posts > .row,
 .qcx-rescue-blog .row {
   display: grid !important;
@@ -2634,14 +2634,14 @@ html body main.main-container {
   box-shadow: 0 24px 60px rgba(0,0,0,.45), 0 0 0 1px rgba(28,36,32,.08) !important;
 }
 
-/* ── Thumbnail: fixed 16:9, flush into title block ── */
+/* &#9472;&#9472; Thumbnail: fixed 16:9, flush into title block &#9472;&#9472; */
 .card-header {
   border-bottom: 0 !important;
   border-radius: 16px 16px 0 0 !important;
   overflow: hidden !important;
   position: relative !important;
   flex-shrink: 0 !important;
-  aspect-ratio: 16 / 9 !important;   /* ← enforces fixed ratio */
+  aspect-ratio: 16 / 9 !important;   /* &#8592; enforces fixed ratio */
   background: var(--bg-2) !important;
 }
 .card-header > a {
@@ -2664,7 +2664,7 @@ html body main.main-container {
 .card-header > a img {
   width: 100% !important;
   height: 100% !important;
-  object-fit: cover !important;      /* ← crops cleanly, never stretches */
+  object-fit: cover !important;      /* &#8592; crops cleanly, never stretches */
   object-position: center top !important;
   display: block !important;
   position: absolute !important;
@@ -2698,7 +2698,7 @@ html body main.main-container {
   position: static !important;
 }
 
-/* ── Card body: tight under image — no stretch void ── */
+/* &#9472;&#9472; Card body: tight under image &#8212; no stretch void &#9472;&#9472; */
 .card-content {
   padding: 10px 12px 12px !important;
   display: flex !important;
@@ -2708,7 +2708,7 @@ html body main.main-container {
   min-height: 0 !important;
 }
 
-/* ── Title: max 2 lines, compact ── */
+/* &#9472;&#9472; Title: max 2 lines, compact &#9472;&#9472; */
 .card-content .title {
   font-size: 14px !important;
   font-weight: 600 !important;
@@ -2725,20 +2725,20 @@ html body main.main-container {
   color: var(--fg) !important;
   text-decoration: none !important;
 }
-/* Accent is dark brand fill — never use it for title hover on dark cards. */
+/* Accent is dark brand fill &#8212; never use it for title hover on dark cards. */
 .card-content .title a:hover,
 .card-content .title a:focus {
   color: #f2f7f3 !important;
 }
 
-/* ── Meta (date, author): hidden ── */
+/* &#9472;&#9472; Meta (date, author): hidden &#9472;&#9472; */
 .card-content .meta,
 .card-content .date,
 .card-content time,
 .card-content .post-meta,
 .card-content .post-date { display: none !important; }
 
-/* ── Card excerpt: 2-line clamp; hide only scrubbed CSS-leak nodes ── */
+/* &#9472;&#9472; Card excerpt: 2-line clamp; hide only scrubbed CSS-leak nodes &#9472;&#9472; */
 .card-content .post-entry[data-qcx-snippet='hidden'],
 .card-content .post-entry.is-css-leak,
 .all_posts .card-content .post-entry[data-qcx-snippet='hidden'],
@@ -2784,9 +2784,9 @@ html body main.main-container {
   display: none !important;
 }
 
-/* ── Card footer: BLOCK layout (not native flex) ── */
+/* &#9472;&#9472; Card footer: BLOCK layout (not native flex) &#9472;&#9472; */
 .card-footer {
-  display: block !important;   /* ← override native display:flex */
+  display: block !important;   /* &#8592; override native display:flex */
   margin-top: 0 !important;
   flex-shrink: 0 !important;
   padding: 0 !important;
@@ -2796,19 +2796,19 @@ html body main.main-container {
 
 .card-footer > * { display: none !important; }
 
-/* ── Hide read-more / jump buttons ── */
+/* &#9472;&#9472; Hide read-more / jump buttons &#9472;&#9472; */
 .card-footer .jump-link,
 .card-footer .flat-button,
 .card-footer .button { display: none !important; }
 
-/* ── Category label (if shown) ── */
+/* &#9472;&#9472; Category label (if shown) &#9472;&#9472; */
 .card-footer .label-name {
   font-size: 11px !important;
   color: var(--fg-dim) !important;
 }
 .card-footer .label-wrapper a { color: var(--fg-dim) !important; }
 
-/* ── Keywords/tag chips ── */
+/* &#9472;&#9472; Keywords/tag chips &#9472;&#9472; */
 .keywords a {
   font-size: 11px !important;
   letter-spacing: .05em !important;
@@ -2825,7 +2825,7 @@ html body main.main-container {
   color: var(--accent) !important;
 }
 
-/* ── Mobile: single column ── */
+/* &#9472;&#9472; Mobile: single column &#9472;&#9472; */
 @media (max-width: 480px) {
   .grid {
     grid-template-columns: 1fr !important;
@@ -2928,12 +2928,12 @@ html body main.main-container {
 }
 
 /* ==================================================
-   LAYOUT TOÀN TRANG — PC & Mobile
-   Selector thật: main.main-container > div.main-wrapper
-   (verified từ Blogger XML line 3923-3924)
+   LAYOUT TO&#192;N TRANG &#8212; PC & Mobile
+   Selector th&#7853;t: main.main-container > div.main-wrapper
+   (verified t&#7915; Blogger XML line 3923-3924)
 ================================================== */
 
-/* ── Outer page container (bao CẢ 2 cột: main + sidebar) ── */
+/* &#9472;&#9472; Outer page container (bao C&#7842; 2 c&#7897;t: main + sidebar) &#9472;&#9472; */
 main.main-container {
   max-width: 1240px;
   margin-left: auto !important;
@@ -2944,7 +2944,7 @@ main.main-container {
   padding-right: 20px !important;
 }
 
-/* ── Inner content column: grid ổn định khi thêm/xoá gadget ── */
+/* &#9472;&#9472; Inner content column: grid &#7893;n &#273;&#7883;nh khi th&#234;m/xo&#225; gadget &#9472;&#9472; */
 .main-wrapper {
   width: 100% !important;
   float: none !important;
@@ -2981,9 +2981,9 @@ main.main-container {
 [data-page-item='multiple'] .main-wrapper {
   grid-template-columns: minmax(0, 1fr) !important;
 }
-/* Keep post/page right rail available so gadgets in Thanh bên stay beside content. */
+/* Keep post/page right rail available so gadgets in Thanh b&#234;n stay beside content. */
 @media (min-width: 861px) {
-  /* Homepage / feed: no Tutorial rail — keep the full-width card board. */
+  /* Homepage / feed: no Tutorial rail &#8212; keep the full-width card board. */
   [data-page-type='homepage'] #sidebar,
   [data-page-type='index'] #sidebar,
   [data-page-item='multiple'] #sidebar {
@@ -3056,7 +3056,7 @@ main.main-container > .qcx-hero {
   display: none !important;
 }
 
-/* Brand zone: chỉ hiện đầy đủ trong Bố cục; live chỉ dùng logo ở hero */
+/* Brand zone: ch&#7881; hi&#7879;n &#273;&#7847;y &#273;&#7911; trong B&#7889; c&#7909;c; live ch&#7881; d&#249;ng logo &#7903; hero */
 #brand.qcx-brand-zone,
 .qcx-brand-zone {
   display: none !important;
@@ -3129,7 +3129,7 @@ body#layout .qcx-brand-zone {
   font-size: 12px;
 }
 
-/* Addon zones: thêm/sửa/xoá gadget không phá khung */
+/* Addon zones: th&#234;m/s&#7917;a/xo&#225; gadget kh&#244;ng ph&#225; khung */
 .qcx-addon-zone {
   display: grid !important;
   grid-template-columns: minmax(0, 1fr) !important;
@@ -3186,7 +3186,7 @@ body#layout .qcx-brand-zone {
 #sidebar.qcx-addon-zone:not(:has(.widget)) {
   display: none !important;
 }
-/* Right-rail HTML widget (Tổng hợp) */
+/* Right-rail HTML widget (T&#7893;ng h&#7907;p) */
 #sidebar .widget.qcx-sidebar-rail {
   display: block !important;
   width: 100% !important;
@@ -3200,7 +3200,7 @@ body#layout .qcx-brand-zone {
   padding: 0 !important;
 }
 
-/* ── Blog1 widget: full width trong container ── */
+/* &#9472;&#9472; Blog1 widget: full width trong container &#9472;&#9472; */
 .Blog1,
 .Blog1 .widget-content {
   max-width: 100% !important;
@@ -3209,7 +3209,7 @@ body#layout .qcx-brand-zone {
   box-sizing: border-box;
 }
 
-/* ── Post page: các widget con reset padding ── */
+/* &#9472;&#9472; Post page: c&#225;c widget con reset padding &#9472;&#9472; */
 .item-page .Blog1,
 .item-page .Blog1 .widget-content,
 .item-page .post-article {
@@ -3219,7 +3219,7 @@ body#layout .qcx-brand-zone {
   box-sizing: border-box;
 }
 
-/* ── Injected sections: bỏ padding riêng vì main-container đã có ── */
+/* &#9472;&#9472; Injected sections: b&#7887; padding ri&#234;ng v&#236; main-container &#273;&#227; c&#243; &#9472;&#9472; */
 .qcx-hero,
 .qcx-section-head,
 .qcx-rule {
@@ -3228,7 +3228,7 @@ body#layout .qcx-brand-zone {
   max-width: 100%;
 }
 
-/* The article card itself — centered like QCXINT .wrap */
+/* The article card itself &#8212; centered like QCXINT .wrap */
 .the-article {
   background: transparent !important;
   border: none !important;
@@ -3258,7 +3258,7 @@ body#layout .qcx-brand-zone {
   border-bottom: 0 !important;
   margin-bottom: 12px !important;
 }
-/* Post title — wrap when long so the full headline stays readable. */
+/* Post title &#8212; wrap when long so the full headline stays readable. */
 .post-header .post-title {
   font-size: clamp(18px, 2.4vw, 32px) !important;
   font-weight: 800 !important;
@@ -3358,7 +3358,7 @@ pre > button {
   color: var(--fg-dim) !important;
 }
 pre > button:hover { border-color: var(--accent) !important; color: var(--accent) !important; }
-/* Blockquote — QCXINT .bio style */
+/* Blockquote &#8212; QCXINT .bio style */
 .post-body blockquote {
   font-family: var(--mono) !important;
   font-size: 14px !important;
@@ -3412,7 +3412,7 @@ pre > button:hover { border-color: var(--accent) !important; color: var(--accent
 }
 
 /* ==================================================
-   COMMENTS SECTION — "Transmissions" style
+   COMMENTS SECTION &#8212; "Transmissions" style
 ================================================== */
 #comments {
   background: var(--card) !important;
@@ -3491,7 +3491,7 @@ footer.footer {
   box-shadow: none !important;
 }
 
-/* 2. .main-container = QCXINT footer — align với topbar + main column */
+/* 2. .main-container = QCXINT footer &#8212; align v&#7899;i topbar + main column */
 footer.footer > .main-container {
   display: flex !important;
   justify-content: space-between !important;
@@ -3513,7 +3513,7 @@ footer.footer > .main-container {
   width: 100% !important;
 }
 
-/* 3. "QCXINT" brand left — footer .brand { color: var(--fg) } */
+/* 3. "QCXINT" brand left &#8212; footer .brand { color: var(--fg) } */
 footer.footer > .main-container::before {
   content: 'MMO TEAM';
   font-family: var(--mono) !important;
@@ -3525,7 +3525,7 @@ footer.footer > .main-container::before {
 
 /* 4. "// end of transmission" right */
 footer.footer > .main-container::after {
-  content: '© 2026 MMO TEAM';
+  content: '&#169; 2026 MMO TEAM';
   font-family: var(--mono) !important;
   font-size: 11px !important;
   color: #8ab8a0 !important;
@@ -3700,7 +3700,7 @@ footer.footer > .main-container a:hover { color: #4caf82 !important; }
   border-radius: 8px !important;
   font-family: var(--mono) !important;
 }
-/* QCXINT: nút lên đầu trang — xanh đen (desktop) */
+/* QCXINT: n&#250;t l&#234;n &#273;&#7847;u trang &#8212; xanh &#273;en (desktop) */
 .scroll--top {
   display: flex !important;
   width: 44px;
@@ -3754,7 +3754,7 @@ footer.footer > .main-container a:hover { color: #4caf82 !important; }
 .breadcrumbs a { color: var(--accent) !important; font-family: var(--mono) !important; font-size: 12px !important; }
 
 /* ==================================================
-   PAGINATION + "TẢI THÊM" BUTTON
+   PAGINATION + "T&#7842;I TH&#202;M" BUTTON
 ================================================== */
 .nav-pagination a, .blog-pager a {
   color: var(--fg-dim) !important;
@@ -3771,7 +3771,7 @@ footer.footer > .main-container a:hover { color: #4caf82 !important; }
   color: var(--accent) !important;
   box-shadow: 0 0 12px rgba(28,36,32,.15) !important;
 }
-/* "Tải thêm" / load-more button */
+/* "T&#7843;i th&#234;m" / load-more button */
 #blog-pager, .blog-pager {
   text-align: center !important;
   padding: 32px 0 16px !important;
@@ -3794,7 +3794,7 @@ footer.footer > .main-container a:hover { color: #4caf82 !important; }
   box-shadow: 0 0 16px rgba(28,36,32,.2) !important;
 }
 
-/* ── BlogSearch widget: hide old "Search:" widget title ── */
+/* &#9472;&#9472; BlogSearch widget: hide old "Search:" widget title &#9472;&#9472; */
 .BlogSearch .widget-title,
 .BlogSearch .widget-title h3,
 .BlogSearch .widget-title span {
@@ -3824,28 +3824,28 @@ footer.footer > .main-container a:hover { color: #4caf82 !important; }
 }
 
 /* ==================================================
-   MOBILE RESPONSIVE — TỐI ƯU TOÀN DIỆN
-   900px  Tablet lớn: giới hạn grid 2 cột
+   MOBILE RESPONSIVE &#8212; T&#7888;I &#431;U TO&#192;N DI&#7878;N
+   900px  Tablet l&#7899;n: gi&#7899;i h&#7841;n grid 2 c&#7897;t
    780px  Tablet: hero stack, section-head
-   640px  Mobile lớn: 1 cột, form stack, footer stack
-   480px  Mobile nhỏ: topbar compact, spacing tight
-   375px  Mini phone: tất cả gọn nhất
+   640px  Mobile l&#7899;n: 1 c&#7897;t, form stack, footer stack
+   480px  Mobile nh&#7887;: topbar compact, spacing tight
+   375px  Mini phone: t&#7845;t c&#7843; g&#7885;n nh&#7845;t
 ================================================== */
 
-/* ══════════════════════════════════════════════
-   900px — Tablet lớn
-   Card grid giới hạn tối đa 2 cột
-══════════════════════════════════════════════ */
+/* &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
+   900px &#8212; Tablet l&#7899;n
+   Card grid gi&#7899;i h&#7841;n t&#7889;i &#273;a 2 c&#7897;t
+&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552; */
 @media (max-width: 900px) {
   .grid, .card-grid {
     grid-template-columns: repeat(2, 1fr) !important;
   }
 }
 
-/* ══════════════════════════════════════════════
-   780px — Tablet (supplement: hero+follow đã có ở trên)
-   Bổ sung: section-head, topbar, article, bio
-══════════════════════════════════════════════ */
+/* &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
+   780px &#8212; Tablet (supplement: hero+follow &#273;&#227; c&#243; &#7903; tr&#234;n)
+   B&#7893; sung: section-head, topbar, article, bio
+&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552; */
 @media (max-width: 780px) {
   /* Section-head stack */
   .qcx-section-head {
@@ -3855,7 +3855,7 @@ footer.footer > .main-container a:hover { color: #4caf82 !important; }
   }
   .qcx-section-head h2 { font-size: 18px; }
 
-  /* Bio full width — size set by ≤860px compact hero */
+  /* Bio full width &#8212; size set by &#8804;860px compact hero */
   .qcx-bio { max-width: 100%; }
 
   /* Article tighter */
@@ -3863,30 +3863,30 @@ footer.footer > .main-container a:hover { color: #4caf82 !important; }
 
   /* Topbar compact (tablet 641-780px) */
   .qcx-topbar {
-    height: 36px;   /* giữ như desktop */
+    height: 36px;   /* gi&#7919; nh&#432; desktop */
     font-size: 11px;
   }
 }
 
-/* ══════════════════════════════════════════════
-   640px — Mobile lớn (CORE MOBILE RULES)
-   Tất cả layout chuyển về 1 cột
-══════════════════════════════════════════════ */
+/* &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
+   640px &#8212; Mobile l&#7899;n (CORE MOBILE RULES)
+   T&#7845;t c&#7843; layout chuy&#7875;n v&#7873; 1 c&#7897;t
+&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552; */
 @media (max-width: 640px) {
 
-  /* ─ ẨN topbar trên mobile — desktop only ─ */
+  /* &#9472; &#7848;N topbar tr&#234;n mobile &#8212; desktop only &#9472; */
   .qcx-topbar { display: none; }
 
-  /* ─ Body: không cần padding topbar ─ */
+  /* &#9472; Body: kh&#244;ng c&#7847;n padding topbar &#9472; */
   body { padding-top: 0 !important; }
 
-  /* ─ Main container: padding 2 bên 16px ─ */
+  /* &#9472; Main container: padding 2 b&#234;n 16px &#9472; */
   main.main-container {
     padding-left: 16px !important;
     padding-right: 16px !important;
   }
 
-  /* ─ Injected sections: no extra padding (main-container cung cấp) ─ */
+  /* &#9472; Injected sections: no extra padding (main-container cung c&#7845;p) &#9472; */
   .qcx-hero, .qcx-section-head, .qcx-rule {
     padding-left: 0;
     padding-right: 0;
@@ -3895,7 +3895,7 @@ footer.footer > .main-container a:hover { color: #4caf82 !important; }
   .qcx-topbar,
   .qcx-signal-header { display: none !important; }
 
-  /* ─ Card grid: 1 cột ─ */
+  /* &#9472; Card grid: 1 c&#7897;t &#9472; */
   .grid, .card-grid {
     grid-template-columns: 1fr !important;
     gap: 16px !important;
@@ -3908,7 +3908,7 @@ footer.footer > .main-container a:hover { color: #4caf82 !important; }
     -webkit-line-clamp: 2 !important;
   }
 
-  /* ─ Label filter: cuộn ngang ─ */
+  /* &#9472; Label filter: cu&#7897;n ngang &#9472; */
   .label--filter {
     padding-left: 0 !important;
     padding-right: 0 !important;
@@ -3923,21 +3923,21 @@ footer.footer > .main-container a:hover { color: #4caf82 !important; }
   }
   .label--filter ul::-webkit-scrollbar { display: none !important; }
 
-  /* ─ Section-head ─ */
+  /* &#9472; Section-head &#9472; */
   .qcx-section-head { margin-top: 48px; }
   .qcx-section-head h2 { font-size: 20px; }
 
-  /* ─ Post title ─ */
+  /* &#9472; Post title &#9472; */
   .post-header .post-title {
     font-size: clamp(20px, 6vw, 34px) !important;
     line-height: 1.2 !important;
   }
   .post-meta { gap: 8px !important; font-size: 11px !important; }
 
-  /* ─ Article ─ */
+  /* &#9472; Article &#9472; */
   .the-article { padding: 16px !important; }
 
-  /* ─ Post body ─ */
+  /* &#9472; Post body &#9472; */
   .post-body { font-size: 14px !important; line-height: 1.65 !important; }
   .post-body img {
     max-width: 100% !important;
@@ -3965,12 +3965,12 @@ footer.footer > .main-container a:hover { color: #4caf82 !important; }
     overflow-x: auto !important;
   }
 
-  /* ─ Footer ─ */
+  /* &#9472; Footer &#9472; */
   footer.footer {
     margin-top: 0 !important;
     background: var(--bg) !important;
     border-top: 1px dashed var(--line) !important;
-    /* KHÔNG set padding-bottom ở đây — body đã handle 56px nav bar gap */
+    /* KH&#212;NG set padding-bottom &#7903; &#273;&#226;y &#8212; body &#273;&#227; handle 56px nav bar gap */
     padding-bottom: 0 !important;
   }
   footer.footer > .main-container {
@@ -3991,25 +3991,25 @@ footer.footer > .main-container a:hover { color: #4caf82 !important; }
     font-size: 11px !important;
   }
 
-  /* ─ Sidebar: ẩn ─ */
+  /* &#9472; Sidebar: &#7849;n &#9472; */
   .sidebar, aside.sidebar, #sidebar-wrapper,
   .widget-area, #sidebars { display: none !important; }
 
-  /* ─ Pagination ─ */
+  /* &#9472; Pagination &#9472; */
   .blog-pager { display: flex !important; gap: 8px !important; }
   .nav-pagination a, .blog-pager a {
     padding: 7px 14px !important;
     font-size: 12px !important;
   }
 
-  /* ─ Related cards ─ */
+  /* &#9472; Related cards &#9472; */
   .qcx-related .grid {
     grid-template-columns: 1fr;
   }
 }
 
-/* Blogger Page: giữ widget "Trang mới" hiển thị ổn định.
-   Quy tắc này nằm sau mobile rules để không bị .sidebar phía trên ẩn đi. */
+/* Blogger Page: gi&#7919; widget "Trang m&#7899;i" hi&#7875;n th&#7883; &#7893;n &#273;&#7883;nh.
+   Quy t&#7855;c n&#224;y n&#7857;m sau mobile rules &#273;&#7875; kh&#244;ng b&#7883; .sidebar ph&#237;a tr&#234;n &#7849;n &#273;i. */
 html[data-page-type='page'] body #sidebar {
   display: block !important;
   float: none !important;
@@ -4028,38 +4028,38 @@ html[data-page-type='page'] body #sidebar #PopularPosts1 {
   max-width: 100% !important;
 }
 
-/* ══════════════════════════════════════════════
-   480px — Mobile nhỏ
-══════════════════════════════════════════════ */
+/* &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
+   480px &#8212; Mobile nh&#7887;
+&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552; */
 @media (max-width: 480px) {
 
-  /* ─ main-container padding 14px ─ */
+  /* &#9472; main-container padding 14px &#9472; */
   main.main-container {
     padding-left: 14px !important;
     padding-right: 14px !important;
   }
 
-  /* ─ Hero: thêm nhỏ hơn ─ */
+  /* &#9472; Hero: th&#234;m nh&#7887; h&#417;n &#9472; */
 
-  /* ─ Footer ─ */
+  /* &#9472; Footer &#9472; */
   footer.footer > .main-container {
     padding: 10px 14px !important;
   }
 
-  /* ─ Article ─ */
+  /* &#9472; Article &#9472; */
   .the-article { padding: 14px !important; }
   .post-body { font-size: 13px !important; }
   .post-body pre { font-size: 11px !important; }
 
-  /* ─ Card ─ */
+  /* &#9472; Card &#9472; */
   .card-content { padding: 10px 12px 12px !important; }
 }
 
-/* ══════════════════════════════════════════════
-   375px — Mini phones (iPhone SE, Galaxy A)
-══════════════════════════════════════════════ */
+/* &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
+   375px &#8212; Mini phones (iPhone SE, Galaxy A)
+&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552; */
 @media (max-width: 375px) {
-  /* ─ main-container 12px ─ */
+  /* &#9472; main-container 12px &#9472; */
   main.main-container {
     padding-left: 12px !important;
     padding-right: 12px !important;
@@ -4088,7 +4088,7 @@ html[data-page-type='page'] body #sidebar #PopularPosts1 {
 }
 
 /* ==================================================
-   SHOW NATIVE BLOGGER COMMENTS — required for free gate
+   SHOW NATIVE BLOGGER COMMENTS &#8212; required for free gate
 ================================================== */
 #comments,
 #comments.comments,
@@ -4164,7 +4164,7 @@ html[data-page-type='page'] body #sidebar #PopularPosts1 {
   min-height: 120px !important;
   width: 100% !important;
 }
-/* Host shell transparent — inner Blogger composer stays white (cross-origin). */
+/* Host shell transparent &#8212; inner Blogger composer stays white (cross-origin). */
 #comments .comment-form,
 #comments iframe.qcx-blogger-comment-frame,
 #comments iframe.blogger-iframe-colorize,
@@ -4174,10 +4174,10 @@ iframe.qcx-blogger-comment-frame {
   box-shadow: none !important;
 }
 
-/* FOOTER DUPLICATE BLOCK REMOVED — see canonical block above */
+/* FOOTER DUPLICATE BLOCK REMOVED &#8212; see canonical block above */
 
 /* ==================================================
-   SEO & UX ENHANCEMENTS — QCXINT
+   SEO & UX ENHANCEMENTS &#8212; QCXINT
    (JS injected via apply script, CSS here)
 ================================================== */
 
@@ -4358,7 +4358,7 @@ button.qcx-copy-btn,
 /* Smooth scroll */
 html { scroll-behavior: smooth !important; }
 
-/* Table of Contents (auto-generated) — L-border mockup */
+/* Table of Contents (auto-generated) &#8212; L-border mockup */
 .qcx-toc {
   background: rgba(8, 16, 10, .78);
   border: 1px solid rgba(28, 36, 32, .14);
@@ -4414,7 +4414,7 @@ html { scroll-behavior: smooth !important; }
    Vietnamese-aware \u2022 Real-time \u2022 Keyboard nav
 ================================================== */
 
-/* ── Overlay wrapper ── */
+/* &#9472;&#9472; Overlay wrapper &#9472;&#9472; */
 #qcx-search {
   display: none;
   position: fixed;
@@ -4426,7 +4426,7 @@ html { scroll-behavior: smooth !important; }
 }
 #qcx-search.open { display: flex; }
 
-/* ── Backdrop blur ── */
+/* &#9472;&#9472; Backdrop blur &#9472;&#9472; */
 #qcx-search-backdrop {
   position: fixed;
   inset: 0;
@@ -4435,7 +4435,7 @@ html { scroll-behavior: smooth !important; }
   -webkit-backdrop-filter: blur(14px);
 }
 
-/* ── Search box ── */
+/* &#9472;&#9472; Search box &#9472;&#9472; */
 @keyframes qcx-search-in {
   from { opacity: 0; transform: translateY(-10px) scale(.975); }
   to   { opacity: 1; transform: none; }
@@ -4457,7 +4457,7 @@ html { scroll-behavior: smooth !important; }
   animation: qcx-search-in .18s cubic-bezier(0,0,.2,1);
 }
 
-/* ── Header: icon + input + esc ── */
+/* &#9472;&#9472; Header: icon + input + esc &#9472;&#9472; */
 #qcx-search-header {
   display: flex;
   align-items: center;
@@ -4505,7 +4505,7 @@ html { scroll-behavior: smooth !important; }
 }
 #qcx-search-esc:hover { background: rgba(255,255,255,.1); color: var(--fg); }
 
-/* ── Results scrollable area ── */
+/* &#9472;&#9472; Results scrollable area &#9472;&#9472; */
 #qcx-search-results {
   overflow-y: auto;
   flex: 1;
@@ -4516,7 +4516,7 @@ html { scroll-behavior: smooth !important; }
 #qcx-search-results::-webkit-scrollbar-track { background: transparent; }
 #qcx-search-results::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
 
-/* ── Shortcut chips (empty state) ── */
+/* &#9472;&#9472; Shortcut chips (empty state) &#9472;&#9472; */
 .qcx-search-shortcuts {
   padding: 20px 22px 6px;
 }
@@ -4551,7 +4551,7 @@ html { scroll-behavior: smooth !important; }
   border-color: var(--accent);
 }
 
-/* ── Keyboard hints footer ── */
+/* &#9472;&#9472; Keyboard hints footer &#9472;&#9472; */
 .qcx-shortcut-footer {
   display: flex;
   align-items: center;
@@ -4571,7 +4571,7 @@ html { scroll-behavior: smooth !important; }
 }
 .qcx-hint-right { margin-left: auto; }
 
-/* ── Result count header ── */
+/* &#9472;&#9472; Result count header &#9472;&#9472; */
 .qcx-result-count {
   padding: 12px 22px 4px;
   font-size: 10px;
@@ -4580,7 +4580,7 @@ html { scroll-behavior: smooth !important; }
   opacity: .75;
 }
 
-/* ── Empty / loading ── */
+/* &#9472;&#9472; Empty / loading &#9472;&#9472; */
 .qcx-search-empty,
 .qcx-search-loading {
   padding: 36px 22px;
@@ -4591,7 +4591,7 @@ html { scroll-behavior: smooth !important; }
 }
 .qcx-search-empty em { color: var(--accent); font-style: normal; }
 
-/* ── Result item ── */
+/* &#9472;&#9472; Result item &#9472;&#9472; */
 .qcx-result-item a {
   display: flex;
   gap: 14px;
@@ -4604,7 +4604,7 @@ html { scroll-behavior: smooth !important; }
 .qcx-result-item.active a,
 .qcx-result-item a:hover { background: rgba(255,255,255,.04); }
 
-/* ── Thumbnail ── */
+/* &#9472;&#9472; Thumbnail &#9472;&#9472; */
 .qcx-result-thumb {
   width: 80px;
   height: 62px;
@@ -4620,7 +4620,7 @@ html { scroll-behavior: smooth !important; }
   background: linear-gradient(135deg, var(--bg-2) 0%, rgba(28,36,32,.06) 100%);
 }
 
-/* ── Result text ── */
+/* &#9472;&#9472; Result text &#9472;&#9472; */
 .qcx-result-body { flex: 1; min-width: 0; }
 .qcx-result-title {
   font-size: 14px;
@@ -4650,7 +4650,7 @@ html { scroll-behavior: smooth !important; }
   line-height: 1.6;
 }
 
-/* ── Label tag ── */
+/* &#9472;&#9472; Label tag &#9472;&#9472; */
 .qcx-label {
   background: var(--bg);
   border: 1px solid var(--line);
@@ -4662,7 +4662,7 @@ html { scroll-behavior: smooth !important; }
   text-transform: uppercase;
 }
 
-/* ── Highlighted text ── */
+/* &#9472;&#9472; Highlighted text &#9472;&#9472; */
 .qcx-result-title mark,
 .qcx-result-snippet mark {
   background: rgba(28,36,32,.18);
@@ -4671,10 +4671,10 @@ html { scroll-behavior: smooth !important; }
   padding: 0 1px;
 }
 
-/* ── Prevent body scroll when open ── */
+/* &#9472;&#9472; Prevent body scroll when open &#9472;&#9472; */
 body.qcx-search-open { overflow: hidden; }
 
-/* ── MOBILE: bottom-sheet slide-up ── */
+/* &#9472;&#9472; MOBILE: bottom-sheet slide-up &#9472;&#9472; */
 @keyframes qcx-search-slide-up {
   from { transform: translateY(100%); opacity: .7; }
   to   { transform: translateY(0);    opacity: 1; }
@@ -4719,7 +4719,7 @@ body.qcx-search-open { overflow: hidden; }
    HIDE LIVE PREVIEW BUTTON + HOVER OVERLAY
 ================================================== */
 
-/* Nút "Live Preview" trong card bài viết */
+/* N&#250;t "Live Preview" trong card b&#224;i vi&#7871;t */
 .demo,
 .demo a,
 a.preview.has-svg-icon,
@@ -4731,7 +4731,7 @@ a[title='Live Preview'],
   display: none !important;
 }
 
-/* Ẩn overlay live preview khi hover vào thumbnail */
+/* &#7848;n overlay live preview khi hover v&#224;o thumbnail */
 .item-preview-img > a::after,
 .item-preview-img > a:hover::after,
 [data-view-type=desktop] .item-preview-img > a:hover::after {
@@ -4740,7 +4740,7 @@ a[title='Live Preview'],
   background: none !important;
 }
 
-/* Đảm bảo thumbnail hover không có cursor zoom-in nữa (tuỳ chọn) */
+/* &#272;&#7843;m b&#7843;o thumbnail hover kh&#244;ng c&#243; cursor zoom-in n&#7919;a (tu&#7923; ch&#7885;n) */
 [data-view-type=desktop] .item-preview-img > a:hover {
   cursor: default !important;
 }
@@ -4786,7 +4786,7 @@ a[title='Live Preview'],
 }
 
 /* ==================================================
-   CUSTOM SLIDE-OUT MENU — native mobile drawer
+   CUSTOM SLIDE-OUT MENU &#8212; native mobile drawer
 ================================================== */
 
 #qcx-menu-backdrop {
@@ -5025,7 +5025,7 @@ body.qcx-menu-open { overflow: hidden; }
 
 .qcx-menu-link-text { flex: 1; }
 
-/* Same menu copy on PC + mobile (hide "Bài viết mới") */
+/* Same menu copy on PC + mobile (hide "B&#224;i vi&#7871;t m&#7899;i") */
 #qcx-menu .qcx-mobile-menu-hidden {
   display: none !important;
 }
@@ -5075,7 +5075,7 @@ body.qcx-menu-open { overflow: hidden; }
   font-size: 13px !important;
   font-weight: 500 !important;
 }
-/* Menu hover/current — neutral, no neon green */
+/* Menu hover/current &#8212; neutral, no neon green */
 #qcx-menu .qcx-menu-link:hover,
 #qcx-menu .qcx-menu-link.qcx-menu-current,
 #qcx-menu .qcx-menu-link:focus-visible {
@@ -5146,9 +5146,9 @@ body::before {
   content: '' !important; /* override any Blogger injected ::before */
 }
 
-/* ── Hide ALL Blogger Label widgets ── */
+/* &#9472;&#9472; Hide ALL Blogger Label widgets &#9472;&#9472; */
 /* Old seller labels (500.000, seo-friendly, drop-down-menu, etc.) */
-/* must NOT appear anywhere — disabled in XML AND hidden via CSS    */
+/* must NOT appear anywhere &#8212; disabled in XML AND hidden via CSS    */
 #Label1,
 .widget.Label,
 .widget-Label,
@@ -5160,7 +5160,7 @@ body::before {
 #Label1 .widget-content,
 .widget-content .label-list { display: none !important; }
 
-/* ── QCX Subscribe Card ── */
+/* &#9472;&#9472; QCX Subscribe Card &#9472;&#9472; */
 .qcx-subscribe-card {
   max-width: 800px;
   margin: 64px auto 32px;
@@ -5326,7 +5326,7 @@ a.qcx-sc-btn.qcx-sc-btn-outline:hover,
     text-align: center;
   }
 }
-/* ── QCX Mac Topbar (Single Post) ── */
+/* &#9472;&#9472; QCX Mac Topbar (Single Post) &#9472;&#9472; */
 .qcx-mac-topbar {
   display: flex;
   align-items: center;
@@ -5378,7 +5378,7 @@ a.qcx-sc-btn.qcx-sc-btn-outline:hover,
   color: var(--fg);
 }
 
-/* ── Inline launcher mirrors Command Space palette ── */
+/* &#9472;&#9472; Inline launcher mirrors Command Space palette &#9472;&#9472; */
 .qcx-inline-search {
   display: flex;
   align-items: center;
@@ -5484,7 +5484,7 @@ a.qcx-sc-btn.qcx-sc-btn-outline:hover,
   .qcx-results-search { margin-bottom: 22px !important; }
 }
 
-/* ── QCX Utilities (SaaS Cards & Post Content) ── */
+/* &#9472;&#9472; QCX Utilities (SaaS Cards & Post Content) &#9472;&#9472; */
 .qcx-card {
   background: var(--card);
   border: 1px solid rgba(28, 36, 32, 0.15);
@@ -5608,7 +5608,7 @@ a.qcx-sc-btn.qcx-sc-btn-outline:hover,
   max-width: 100%;
 }
 
-/* ── Project Sync: Breadcrumbs & Load More Button ── */
+/* &#9472;&#9472; Project Sync: Breadcrumbs & Load More Button &#9472;&#9472; */
 .breadcrumbs {
   margin: 32px 0 24px !important;
   padding-bottom: 12px !important;
@@ -5673,12 +5673,12 @@ a.qcx-sc-btn.qcx-sc-btn-outline:hover,
   <section class='error_page'>
     <article class='message'>
       <h1><span>404</span></h1>
-      <h3>Rất tiếc, không tìm được trang này.</h3>
-      <p>Trang có thể đã chuyển, bị xoá hoặc URL chưa chính xác.</p>
+      <h3>R&#7845;t ti&#7871;c, kh&#244;ng t&#236;m &#273;&#432;&#7907;c trang n&#224;y.</h3>
+      <p>Trang c&#243; th&#7875; &#273;&#227; chuy&#7875;n, b&#7883; xo&#225; ho&#7863;c URL ch&#432;a ch&#237;nh x&#225;c.</p>
       <div class='qcx-404-actions'>
-        <a expr:href='data:blog.homepageUrl' expr:title='data:messages.home'>Về trang chủ</a>
-        <a href='/search' title='Tìm kiếm'>Tìm kiếm</a>
-        <a href='https://t.me/superkhung' rel='noopener noreferrer' target='_blank'>Hỗ trợ Telegram</a>
+        <a expr:href='data:blog.homepageUrl' expr:title='data:messages.home'>V&#7873; trang ch&#7911;</a>
+        <a href='/search' title='T&#236;m ki&#7871;m'>T&#236;m ki&#7871;m</a>
+        <a href='https://t.me/superkhung' rel='noopener noreferrer' target='_blank'>H&#7895; tr&#7907; Telegram</a>
       </div>
     </article>
   </section> 
@@ -5715,8 +5715,8 @@ a.qcx-sc-btn.qcx-sc-btn-outline:hover,
         linkCopiedToClipboard:&quot;<data:messages.linkCopiedToClipboard/>&quot;,
         readMore:&quot;<data:messages.readMore/>&quot;,showMore:&quot;<data:messages.showMore/>&quot;,
         loading:&quot;<data:messages.loading/>&quot;,noResultsFound:&quot;<data:messages.noResultsFound/>&quot;,
-        share:&quot;<data:messages.share/>&quot;,shareheader:&quot;Chia sẻ nội dung này qua&quot;,
-        copy:&quot;Sao chép liên kết&quot;,linkedin:&quot;Chia sẻ với Linkedin&quot;,close:&quot;Đóng&quot;,loadMore:&quot;Tải thêm&quot;,
+        share:&quot;<data:messages.share/>&quot;,shareheader:&quot;Chia s&#7867; n&#7897;i dung n&#224;y qua&quot;,
+        copy:&quot;Sao ch&#233;p li&#234;n k&#7871;t&quot;,linkedin:&quot;Chia s&#7867; v&#7899;i Linkedin&quot;,close:&quot;&#272;&#243;ng&quot;,loadMore:&quot;T&#7843;i th&#234;m&quot;,
         facebook:&quot;<b:eval expr='data:blog.sharing.platforms[1].shareMessage'/>&quot;,
         twitter:&quot;<b:eval expr='data:blog.sharing.platforms[3].shareMessage'/>&quot;,
         pinterest:&quot;<b:eval expr='data:blog.sharing.platforms[4].shareMessage'/>&quot;  
@@ -5941,12 +5941,12 @@ a.qcx-sc-btn.qcx-sc-btn-outline:hover,
         d.removeAttribute('aria-busy')
       }
       function f(){setTimeout(function(){
-        state('Đã tải hết','disabled')
+        state('\u0110\u00e3 t\u1ea3i h\u1ebft','disabled')
         d.setAttribute('aria-disabled','true')
         d.removeAttribute('href')
       },350)}
       function m(){setTimeout(function(){state(data.messages.loadMore,'')},250)}
-      function x(){setTimeout(function(){state('Thử lại','is-error')},250)}
+      function x(){setTimeout(function(){state('Th\u1eed l\u1ea1i','is-error')},250)}
       function n(v){
         v.preventDefault()
         if(d.classList.contains('disabled')||d.classList.contains('is-loading'))return
@@ -6106,10 +6106,10 @@ a.qcx-sc-btn.qcx-sc-btn-outline:hover,
         for(var i=0;i<th.length;i++){
           var ti=th[i].textContent,ch='text-content-'+(i+1)
           th[i].setAttribute('id',ch)
-          th[i].setAttribute('title','Lên đầu trang')
+          th[i].setAttribute('title','L\u00ean \u0111\u1ea7u trang')
           list_arr[i]='<li><a href="#'+ch+'" title="'+escapeHtml(ti)+'">'+escapeHtml(ti)+'</a></li>'
         }
-        $('.box_tin.category').html('<p class="text-center">Nội dung chính <label data-hover=""></label></p><ul class="chapter">'+ list_arr.join('') +'</ul>')
+        $('.box_tin.category').html('<p class="text-center">N\u1ed9i dung ch\u00ednh <label data-hover=""></label></p><ul class="chapter">'+ list_arr.join('') +'</ul>')
       }else{$('.box_tin.category').remove()}
       $(function(){
         var name_more=$('.post-body a[name=more]')
@@ -6210,7 +6210,7 @@ a.qcx-sc-btn.qcx-sc-btn-outline:hover,
             $('#comment-editor').attr('src',l)
             $this.parent().hide()
             if(elem){ $(elem).appendTo($('#'+li+'>.comment-replybox-single')); elem.scrollIntoView({behavior:'smooth'}); }
-            $('#'+li+'>.comment-replybox-single').append('<div class="calcel-reply"><button class="theme-button blue has-hover" type="button">Hủy</button></div>')
+            $('#'+li+'>.comment-replybox-single').append('<div class="calcel-reply"><button class="theme-button blue has-hover" type="button">H\u1ee7y</button></div>')
             $('.calcel-reply').click(function(){
               $(this).remove()
               $('.comment-actions').removeAttr('style')
@@ -6509,7 +6509,7 @@ h1.post-title.entry-title::after, .header .title::after {
   margin-left: 4px;
   animation: qcx-blink 1s step-end infinite;
 }
-/* qcx-blink defined above at L4964 — no duplicate needed */
+/* qcx-blink defined above at L4964 &#8212; no duplicate needed */
 
 /* Hide original sku 018 */
 
@@ -6963,7 +6963,7 @@ img.lazyload.qcx-card-media {
 .qcx-nav-logo {
   min-height: 64px !important;
 }
-/* Final Copy Button Lock — single centered icon on PC and Mobile */
+/* Final Copy Button Lock &#8212; single centered icon on PC and Mobile */
 .post-body .mac-frame-header,
 .mac-frame-header {
   position: relative !important;
@@ -7031,7 +7031,7 @@ img.lazyload.qcx-card-media {
     height: 14px !important;
   }
 }
-/* Copy btn lives in mac-frame-header — push to right via margin-left:auto */
+/* Copy btn lives in mac-frame-header &#8212; push to right via margin-left:auto */
 html body .mac-frame-header .qcx-copy-btn,
 html body .post-body .mac-frame-header .qcx-copy-btn {
   display: inline-flex !important;
@@ -7063,7 +7063,7 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
 </style>
 </head>
 <body>
-<a class='qcx-skip-link' href='#main'>Bỏ qua đến nội dung</a>
+<a class='qcx-skip-link' href='#main'>B&#7887; qua &#273;&#7871;n n&#7897;i dung</a>
 <div aria-hidden='true' class='qcx-backdrop'/>
 <div aria-hidden='true' class='qcx-scanline'/>
 <b:if cond='data:view.isPost'>
@@ -7076,9 +7076,9 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
     </div>
     <div class='qcx-mt-right'>
       <div class='qcx-auth-slot qcx-auth-slot--topbar' data-qcx-auth-slot='topbar'>
-        <button aria-label='Đăng nhập bằng Gmail' class='qcx-signal-x qcx-auth-login-btn' type='button'>
+        <button aria-label='&#272;&#259;ng nh&#7853;p b&#7857;ng Gmail' class='qcx-signal-x qcx-auth-login-btn' type='button'>
           <svg aria-hidden='true' class='qcx-google-ico' height='14' viewBox='0 0 24 24' width='14'><path d='M21.35 11.1h-9.17v2.73h6.51c-.33 1.81-1.5 3.34-3.2 4.37v3.62h5.18c3.03-2.79 4.78-6.9 4.78-11.82 0-.8-.08-1.57-.23-2.3z' fill='#4285F4'/><path d='M12.18 22c4.32 0 7.95-1.43 10.6-3.88l-5.18-3.62c-1.43.96-3.26 1.53-5.42 1.53-4.17 0-7.7-2.81-8.96-6.6H-2.1v3.73C.54 18.4 5.94 22 12.18 22z' fill='#34A853'/><path d='M3.22 13.43a5.85 5.85 0 0 1 0-3.76V5.94H-2.1a9.99 9.99 0 0 0 0 8.95l5.32-3.73z' fill='#FBBC05'/><path d='M12.18 5.98c2.35 0 4.46.81 6.12 2.4l4.59-4.59C20.12 1.19 16.5 0 12.18 0 5.94 0 .54 3.6-2.1 8.84l5.32 3.73c1.26-3.79 4.79-6.59 8.96-6.59z' fill='#EA4335'/></svg>
-          <span class='qcx-signal-x-label'>Đăng nhập</span>
+          <span class='qcx-signal-x-label'>&#272;&#259;ng nh&#7853;p</span>
           <span aria-hidden='true' class='qcx-signal-x-arrow'>&#8594;</span>
         </button>
         <button aria-expanded='false' aria-haspopup='menu' class='qcx-user-chip' data-role='member' hidden='hidden' type='button'>
@@ -7094,11 +7094,11 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
   <div class='qcx-signal-header' role='banner'>
     <div class='qcx-signal-inner'>
       <div class='qcx-signal-row'>
-        <a aria-label='Về trang chủ MMO' class='qcx-signal-status' href='/'><span aria-hidden='true' class='qcx-signal-dot'/>signal / online</a>
+        <a aria-label='V&#7873; trang ch&#7911; MMO' class='qcx-signal-status' href='/'><span aria-hidden='true' class='qcx-signal-dot'/>signal / online</a>
         <div class='qcx-auth-slot' data-qcx-auth-slot='header' id='qcx-header-auth-slot'>
-          <button aria-label='Đăng nhập bằng Gmail' class='qcx-signal-x qcx-auth-login-btn' type='button'>
+          <button aria-label='&#272;&#259;ng nh&#7853;p b&#7857;ng Gmail' class='qcx-signal-x qcx-auth-login-btn' type='button'>
             <svg aria-hidden='true' class='qcx-google-ico' height='14' viewBox='0 0 24 24' width='14'><path d='M21.35 11.1h-9.17v2.73h6.51c-.33 1.81-1.5 3.34-3.2 4.37v3.62h5.18c3.03-2.79 4.78-6.9 4.78-11.82 0-.8-.08-1.57-.23-2.3z' fill='#4285F4'/><path d='M12.18 22c4.32 0 7.95-1.43 10.6-3.88l-5.18-3.62c-1.43.96-3.26 1.53-5.42 1.53-4.17 0-7.7-2.81-8.96-6.6H-2.1v3.73C.54 18.4 5.94 22 12.18 22z' fill='#34A853'/><path d='M3.22 13.43a5.85 5.85 0 0 1 0-3.76V5.94H-2.1a9.99 9.99 0 0 0 0 8.95l5.32-3.73z' fill='#FBBC05'/><path d='M12.18 5.98c2.35 0 4.46.81 6.12 2.4l4.59-4.59C20.12 1.19 16.5 0 12.18 0 5.94 0 .54 3.6-2.1 8.84l5.32 3.73c1.26-3.79 4.79-6.59 8.96-6.59z' fill='#EA4335'/></svg>
-            <span class='qcx-signal-x-label'>Đăng nhập</span>
+            <span class='qcx-signal-x-label'>&#272;&#259;ng nh&#7853;p</span>
             <span aria-hidden='true' class='qcx-signal-x-arrow'>&#8594;</span>
           </button>
           <button aria-expanded='false' aria-haspopup='menu' class='qcx-user-chip' data-role='member' hidden='hidden' type='button'>
@@ -7118,7 +7118,7 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
         <b:section class='qcx-brand-zone' id='brand' maxwidgets='5' name='Th&#432;&#417;ng hi&#7879;u MMO' showaddelement='true'>
           <b:widget id='HTML3' locked='false' title='Logo MMO' type='HTML' version='2' visible='true'>
             <b:widget-settings>
-              <b:widget-setting name='content'><![CDATA[<div class="qcx-layout-brand"><img alt="MMO" height="72" src="https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.4/theme/qcx-brand-mark.png" width="72"/><div><strong>MMO</strong><span>MMO TEAM · Layout &amp; branding</span></div></div>]]></b:widget-setting>
+              <b:widget-setting name='content'><![CDATA[<div class="qcx-layout-brand"><img alt="MMO" height="72" src="https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.4/theme/qcx-brand-mark.png" width="72"/><div><strong>MMO</strong><span>MMO TEAM &#183; Layout &amp; branding</span></div></div>]]></b:widget-setting>
             </b:widget-settings>
             <b:includable id='main'>
   <b:attr name='class' value='widget qcx-brand-widget'/>
@@ -7126,7 +7126,7 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
     <span class="qcx-avatar qcx-layout-avatar" aria-label="MMO" style="display:inline-block;position:relative;width:72px;height:72px"><img alt="MMO" class="qcx-brand-raster" decoding="async" loading="eager" height="72" src="https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.4/theme/qcx-brand-mark.png" width="72"/><svg xmlns="http://www.w3.org/2000/svg" class="qcx-brand-mark qcx-brand-svg qcx-brand-eyes-only" viewBox="0 0 512 512" width="72" height="72" role="img" aria-hidden="true" tabindex="-1"><g class="qcx-ghost-eyes"><circle class="qcx-eye-socket" cx="230.6" cy="189.9" r="16.5" fill="#f2f2f2"/><circle class="qcx-eye qcx-eye-l" cx="230.6" cy="189.9" r="13.2" fill="#0a0a0a"/><circle class="qcx-eye-socket" cx="294.1" cy="183.5" r="16" fill="#f2f2f2"/><circle class="qcx-eye qcx-eye-r" cx="294.1" cy="183.5" r="12.8" fill="#0a0a0a"/></g></svg></span>
     <div>
       <strong>MMO</strong>
-      <span>MMO TEAM · branding</span>
+      <span>MMO TEAM &#183; branding</span>
     </div>
   </div>
 </b:includable>
@@ -7146,7 +7146,7 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
             <b:includable id='searchForm'>
   <form expr:action='data:blog.searchUrl' method='get' role='search'>
     <b:include name='searchSubmit'/>
-    <input autocomplete='off' expr:aria-label='data:messages.search' name='q' placeholder='Tìm bài viết' required='' spellcheck='false' type='search'/>
+    <input autocomplete='off' expr:aria-label='data:messages.search' name='q' placeholder='T&#236;m b&#224;i vi&#7871;t' required='' spellcheck='false' type='search'/>
     <button aria-label='reset' class='reset hidden has-hover has-svg-icon' type='reset'/>
     <div class='results-content hidden'>
       <div class='dropdown'/>
@@ -7154,10 +7154,10 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
         <ul class='results'>
           <li data-search='AI' tabindex='0'>AI agents</li>
           <li data-search='automation' tabindex='0'>automation workflows</li>
-          <li data-search='tools' tabindex='0'>tools và utilities</li>
+          <li data-search='tools' tabindex='0'>tools v&#224; utilities</li>
           <li data-search='dev' tabindex='0'>developer resources</li>
-          <li data-search='security' tabindex='0'>security và privacy</li>
-          <li data-search='tips' tabindex='0'>tips và tutorials</li>
+          <li data-search='security' tabindex='0'>security v&#224; privacy</li>
+          <li data-search='tips' tabindex='0'>tips v&#224; tutorials</li>
         </ul>
       </div>
     </div>
@@ -7169,11 +7169,11 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
           </b:widget>
           <b:widget id='HTML6' locked='false' title='&#272;&#259;ng nh&#7853;p Gmail &amp; Role VIP' type='HTML' version='2' visible='true'>
             <b:widget-settings>
-              <b:widget-setting name='content'><![CDATA[<div class="qcx-layout-auth-config" data-admin-emails="kkymljnk@gmail.com,superkhung@gmail.com,admin@mmo.wiki,admin@mmo.team" data-login-label="Đăng nhập">Google Identity · 4-Tier Role Color (ADMIN / VIP / PRO / MEMBER)</div>]]></b:widget-setting>
+              <b:widget-setting name='content'><![CDATA[<div class="qcx-layout-auth-config" data-admin-emails="kkymljnk@gmail.com,superkhung@gmail.com,admin@mmo.wiki,admin@mmo.team" data-login-label="&#272;&#259;ng nh&#7853;p">Google Identity &#183; 4-Tier Role Color (ADMIN / VIP / PRO / MEMBER)</div>]]></b:widget-setting>
             </b:widget-settings>
             <b:includable id='main'>
   <b:attr name='class' value='widget HTML qcx-auth-config-widget'/>
-  <div class='qcx-layout-auth-config' data-admin-emails='kkymljnk@gmail.com,superkhung@gmail.com,admin@mmo.wiki,admin@mmo.team' data-login-label='Đăng nhập' style='font-size:12px;color:#8ab8a0'>Google Identity · 4-Tier Role (⚡ ADMIN / 👑 VIP / 💎 PRO / 🌱 MEMBER)</div>
+  <div class='qcx-layout-auth-config' data-admin-emails='kkymljnk@gmail.com,superkhung@gmail.com,admin@mmo.wiki,admin@mmo.team' data-login-label='&#272;&#259;ng nh&#7853;p' style='font-size:12px;color:#8ab8a0'>Google Identity &#183; 4-Tier Role (&#9889; ADMIN / &#128081; VIP / &#128142; PRO / &#127793; MEMBER)</div>
 </b:includable>
           </b:widget>
           <b:widget id='HTML1' locked='false' title='N&#250;t m&#7903; Menu' type='HTML' version='2' visible='true'>
@@ -7201,7 +7201,7 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
           <b:widget id='PageList1' locked='false' title='Danh s&#225;ch Trang &amp; Chuy&#234;n m&#7909;c' type='PageList' version='2' visible='true'>
             <b:widget-settings>
               <b:widget-setting name='pageListJson'>{}</b:widget-setting>
-              <b:widget-setting name='homeTitle'>Trang chủ</b:widget-setting>
+              <b:widget-setting name='homeTitle'>Trang ch&#7911;</b:widget-setting>
             </b:widget-settings>
             <b:includable id='main'>
   <div class='title has-hover'><data:title/></div>
@@ -7238,7 +7238,7 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
             <b:includable id='pageList'>
   <ul>
     <b:class cond='data:pageListClass' expr:name='data:pageListClass'/>
-    <li><a expr:href='!data:blog.isMobileRequest ? &quot;/search/label/blog&quot; : &quot;/search/label/blog?m=1&quot;' title='Bài đăng trên Blog'>Bài đăng trên Blog</a></li>
+    <li><a expr:href='!data:blog.isMobileRequest ? &quot;/search/label/blog&quot; : &quot;/search/label/blog?m=1&quot;' title='B&#224;i &#273;&#259;ng tr&#234;n Blog'>B&#224;i &#273;&#259;ng tr&#234;n Blog</a></li>
     <b:loop values='data:links' var='link'>
       <b:include name='pageLink'/>
     </b:loop>
@@ -7252,13 +7252,13 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
       <b:section class='qcx-addon-zone qcx-homepage-widgets' cond='data:view.isLayoutMode or data:view.isHomepage' id='homepage-widgets' maxwidgets='3' name='Th&#234;m banner trang ch&#7911;' showaddelement='true'>
         <b:widget id='HTML7' locked='false' title='Th&#244;ng b&#225;o nhanh &amp; S&#7921; ki&#7879;n (Banner)' type='HTML' version='2' visible='true'>
           <b:widget-settings>
-            <b:widget-setting name='content'><![CDATA[<div class="qcx-home-notice-bar" data-active="false"><span>⚡ Hệ thống đã tích hợp Đăng nhập Gmail &amp; Tự động đồng bộ quyền VIP PayOS trên mọi thiết bị</span></div>]]></b:widget-setting>
+            <b:widget-setting name='content'><![CDATA[<div class="qcx-home-notice-bar" data-active="false"><span>&#9889; H&#7879; th&#7889;ng &#273;&#227; t&#237;ch h&#7907;p &#272;&#259;ng nh&#7853;p Gmail &amp; T&#7921; &#273;&#7897;ng &#273;&#7891;ng b&#7897; quy&#7873;n VIP PayOS tr&#234;n m&#7885;i thi&#7871;t b&#7883;</span></div>]]></b:widget-setting>
           </b:widget-settings>
           <b:includable id='main'>
   <b:attr name='class' value='widget HTML qcx-homepage-banner-widget'/>
   <div class='widget-content'>
     <div class='qcx-home-notice-bar' data-active='false'>
-      <span>⚡ Hệ thống tích hợp Đăng nhập Gmail &amp; Tự động đồng bộ quyền VIP PayOS</span>
+      <span>&#9889; H&#7879; th&#7889;ng t&#237;ch h&#7907;p &#272;&#259;ng nh&#7853;p Gmail &amp; T&#7921; &#273;&#7897;ng &#273;&#7891;ng b&#7897; quy&#7873;n VIP PayOS</span>
     </div>
   </div>
 </b:includable>
@@ -7271,11 +7271,11 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
               <b:widget-setting name='showDateHeader'>false</b:widget-setting>
               <b:widget-setting name='commentLabel'>Questions</b:widget-setting>
               <b:widget-setting name='showShareButtons'>true</b:widget-setting>
-              <b:widget-setting name='authorLabel'>Bởi</b:widget-setting>
+              <b:widget-setting name='authorLabel'>B&#7903;i</b:widget-setting>
               <b:widget-setting name='showCommentLink'>true</b:widget-setting>
               <b:widget-setting name='showAuthor'>true</b:widget-setting>
               <b:widget-setting name='style.unittype'>TextAndImage</b:widget-setting>
-              <b:widget-setting name='timestampLabel'>vào</b:widget-setting>
+              <b:widget-setting name='timestampLabel'>v&#224;o</b:widget-setting>
               <b:widget-setting name='reactionsLabel'/>
               <b:widget-setting name='showAuthorProfile'>false</b:widget-setting>
               <b:widget-setting name='style.layout'>1x1</b:widget-setting>
@@ -7338,7 +7338,7 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
             <b:includable id='aboutPostAuthor'>
       <p class='aboutme'><data:post.author.aboutMe/></p>
 	  <p class='social'>
-		<a href='https://t.me/superkhung' rel='noopener noreferrer' target='_blank' title='Liên hệ Telegram MMO'>Telegram</a>
+		<a href='https://t.me/superkhung' rel='noopener noreferrer' target='_blank' title='Li&#234;n h&#7879; Telegram MMO'>Telegram</a>
 	  </p>
 </b:includable>
             <b:includable id='addComments'>
@@ -7348,8 +7348,8 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
   <b:if cond='data:widgets.Blog.first.allBylineItems.backlinks.label'>
     <div id='ad-middle'>
       <div class='widget-content'>
-        <a href='/' style='display: flex' title='Liên hệ quảng cáo'>
-          <img alt='Liên hệ quảng cáo' height='110' src='https://i.imgur.com/q7mlvLu.png' style='height:110px;width:100%;display:block;object-fit:cover' width='768'/>
+        <a href='/' style='display: flex' title='Li&#234;n h&#7879; qu&#7843;ng c&#225;o'>
+          <img alt='Li&#234;n h&#7879; qu&#7843;ng c&#225;o' height='110' src='https://i.imgur.com/q7mlvLu.png' style='height:110px;width:100%;display:block;object-fit:cover' width='768'/>
         </a>
       </div>
     </div>
@@ -7368,10 +7368,10 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
   <div class='qcx-hero-inner'>
     <h1 class='qcx-hero-title' data-enter='title'>MMO TEAM</h1>
     <div class='qcx-hero-divider'/>
-    <p class='qcx-bio' data-enter='bio'>Khám phá những giới hạn mới của nhiếp ảnh AI, nghệ thuật kể chuyện bằng hình ảnh, công nghệ, thủ thuật Windows và sáng tạo mã nguồn mở.</p>
+    <p class='qcx-bio' data-enter='bio'>Kh&#225;m ph&#225; nh&#7919;ng gi&#7899;i h&#7841;n m&#7899;i c&#7911;a nhi&#7871;p &#7843;nh AI, ngh&#7879; thu&#7853;t k&#7875; chuy&#7879;n b&#7857;ng h&#236;nh &#7843;nh, c&#244;ng ngh&#7879;, th&#7911; thu&#7853;t Windows v&#224; s&#225;ng t&#7841;o m&#227; ngu&#7891;n m&#7903;.</p>
     <div class='qcx-hero-cta qcx-hero-cta--pro' data-enter='cta' data-qcx-cta-pro='1'>
-      <a class='qcx-cta-btn' href='/search/label/AI'><span class='qcx-cta-label'>Khám phá AI</span><span class='qcx-cta-ico' aria-hidden='true'><svg viewBox='0 0 24 24' fill='none'><path d='M5 12h12M13 6l6 6-6 6' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg></span></a>
-      <a class='qcx-cta-btn qcx-cta-outline' href='https://t.me/superkhung' rel='noopener noreferrer' target='_blank'><span class='qcx-cta-ico' aria-hidden='true'><svg viewBox='0 0 24 24' fill='currentColor'><path d='M21.8 4.2 2.9 11.5c-.9.35-.9 1.62.05 1.9l4.7 1.45 1.8 5.55c.28.87 1.4 1.1 2.02.42l2.55-2.8 4.85 3.55c.78.57 1.88.17 2.12-.78L22.9 5.3c.25-1-.75-1.8-1.7-1.4z'/></svg></span><span class='qcx-cta-label'>Hỗ trợ Telegram</span></a>
+      <a class='qcx-cta-btn' href='/search/label/AI'><span class='qcx-cta-label'>Kh&#225;m ph&#225; AI</span><span class='qcx-cta-ico' aria-hidden='true'><svg viewBox='0 0 24 24' fill='none'><path d='M5 12h12M13 6l6 6-6 6' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg></span></a>
+      <a class='qcx-cta-btn qcx-cta-outline' href='https://t.me/superkhung' rel='noopener noreferrer' target='_blank'><span class='qcx-cta-ico' aria-hidden='true'><svg viewBox='0 0 24 24' fill='currentColor'><path d='M21.8 4.2 2.9 11.5c-.9.35-.9 1.62.05 1.9l4.7 1.45 1.8 5.55c.28.87 1.4 1.1 2.02.42l2.55-2.8 4.85 3.55c.78.57 1.88.17 2.12-.78L22.9 5.3c.25-1-.75-1.8-1.7-1.4z'/></svg></span><span class='qcx-cta-label'>H&#7895; tr&#7907; Telegram</span></a>
     </div>
   </div>
   <div class='qcx-avatar-wrap'>
@@ -7388,7 +7388,7 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
 <div class='qcx-rule'/>
   </b:if> 
   <b:if cond='data:view.isSearch and !data:view.search.label and !data:view.search.query'>
-    <div class='breadcrumbs qcx-results-heading'><h3><span>Bài viết mới</span></h3></div>
+    <div class='breadcrumbs qcx-results-heading'><h3><span>B&#224;i vi&#7871;t m&#7899;i</span></h3></div>
   </b:if>
   <b:if cond='data:view.search.label'>
     <div class='breadcrumbs qcx-results-heading'><h1><span><b:if cond='data:view.search.label'><data:view.search.label/><b:else/><data:blog.pageName/></b:if></span></h1></div>
@@ -7397,15 +7397,15 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
     <div class='breadcrumbs qcx-results-heading'><h3><span><data:blog.pageName/></span></h3></div>
   </b:if>
   <b:if cond='data:blog.searchQuery'>
-    <div class='breadcrumbs qcx-results-heading'><h1><span>Kết quả: <data:blog.searchQuery/></span></h1></div>
+    <div class='breadcrumbs qcx-results-heading'><h1><span>K&#7871;t qu&#7843;: <data:blog.searchQuery/></span></h1></div>
   </b:if>
   <b:if cond='data:view.isSearch'>
-    <div aria-label='Mở tìm kiếm bài viết' class='qcx-inline-search qcx-results-search' role='button' tabindex='0'>
+    <div aria-label='M&#7903; t&#236;m ki&#7871;m b&#224;i vi&#7871;t' class='qcx-inline-search qcx-results-search' role='button' tabindex='0'>
       <svg class='qcx-search-icon' fill='none' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'>
         <circle cx='11' cy='11' r='8' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='2'/>
         <line stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' x1='21' x2='16.65' y1='21' y2='16.65'/>
       </svg>
-      <span class='qcx-search-text'>Tìm kiếm bài viết khác...</span>
+      <span class='qcx-search-text'>T&#236;m ki&#7871;m b&#224;i vi&#7871;t kh&#225;c...</span>
       <span class='qcx-search-shortcut'>Ctrl K</span>
     </div>
   </b:if>
@@ -7526,7 +7526,7 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
     <b:else/>
       <div class='thread-locked-alert'>
         <svg height='24px' viewBox='0 0 24 24' width='24px'><path d='M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z'/></svg>
-        <font> Nhận xét đã bị vô hiệu hóa.</font>
+        <font> Nh&#7853;n x&#233;t &#273;&#227; b&#7883; v&#244; hi&#7879;u h&#243;a.</font>
       </div>
     </b:if>
     <b:if cond='data:showCmtPopup'>
@@ -7673,12 +7673,12 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
             <b:includable id='noContentPlaceholder'>
   <b:if cond='data:posts.empty'>
     <section aria-live='polite' class='qcx-empty-state' role='status'>
-      <div class='qcx-empty-kicker'>// 0 kết quả</div>
-      <h2>Chưa có bài viết trong chuyên mục này</h2>
-      <p>Thử xem bài viết mới hoặc quay lại trang chủ để khám phá nội dung khác.</p>
+      <div class='qcx-empty-kicker'>// 0 k&#7871;t qu&#7843;</div>
+      <h2>Ch&#432;a c&#243; b&#224;i vi&#7871;t trong chuy&#234;n m&#7909;c n&#224;y</h2>
+      <p>Th&#7917; xem b&#224;i vi&#7871;t m&#7899;i ho&#7863;c quay l&#7841;i trang ch&#7911; &#273;&#7875; kh&#225;m ph&#225; n&#7897;i dung kh&#225;c.</p>
       <div class='qcx-empty-actions'>
-        <a class='qcx-empty-primary' expr:href='data:blog.homepageUrl + &quot;search?max-results=12&quot;'>Xem bài mới</a>
-        <a expr:href='data:blog.homepageUrl'>Trang chủ</a>
+        <a class='qcx-empty-primary' expr:href='data:blog.homepageUrl + &quot;search?max-results=12&quot;'>Xem b&#224;i m&#7899;i</a>
+        <a expr:href='data:blog.homepageUrl'>Trang ch&#7911;</a>
       </div>
     </section>
   </b:if>
@@ -7711,7 +7711,7 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
           <b:include data='post' name='postBody'/>
 	      <b:include data='post' name='postFooter'/>
         </div>
-        <!-- Native Blogger comments — always embed for free unlock gate -->
+        <!-- Native Blogger comments   always embed for free unlock gate -->
         <div class='comments embed threaded qcx-comments-shell' data-embed='true' expr:data-allow-comments='data:post.allowNewComments ? &quot;true&quot; : &quot;false&quot;' expr:data-num-comments='data:post.numberOfComments' id='comments'>
           <h4 class='postAComment'><b:if cond='data:post.numberOfComments eq 0'><data:messages.postAComment/><b:else/><data:post.numberOfComments/> <data:messages.comments/></b:if></h4>
           <div class='comment-form'>
@@ -7777,7 +7777,7 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
               <img class='lazyload qcx-card-media' decoding='async' expr:alt='data:post.title' expr:data-src='resizeImage(data:post.featuredImage, 720, &quot;16:9&quot;)' height='405' loading='lazy' onerror='this.hidden=true;this.parentNode.classList.add(&quot;no-img&quot;)' src='data:image/png;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=' width='720'/>
             </b:if>
           <b:else/>
-            <span class='qcx-card-noimg' aria-hidden='true'>Không có ảnh</span>
+            <span class='qcx-card-noimg' aria-hidden='true'>Kh&#244;ng c&#243; &#7843;nh</span>
           </b:if>
 	    </a>
         <div class='qcx-card-labels'>
@@ -7797,7 +7797,7 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
           <b:include cond='data:widgets.Blog.first.allBylineItems.labels' name='headerByline'/>
           <span class='date'><b:eval expr='data:post.date format &quot;dd MMM, yyyy&quot; '/></span>
           <b:if cond='data:post.allowComments'>
-            <span class='cmt-num' expr:data-num-comments='data:post.numberOfComments'><a expr:href='data:post.url + &quot;#comments&quot;' expr:title='data:messages.postAComment'><data:post.numberOfComments/> đánh giá</a></span>
+            <span class='cmt-num' expr:data-num-comments='data:post.numberOfComments'><a expr:href='data:post.url + &quot;#comments&quot;' expr:title='data:messages.postAComment'><data:post.numberOfComments/> &#273;&#225;nh gi&#225;</a></span>
           </b:if>
           <b:if cond='data:widgets.Blog.first.allBylineItems.share'>
             <span class='share flex-align has-hover has-svg-icon' expr:aria-label='data:messages.share' expr:title='data:messages.share' role='button' tabindex='0'/>
@@ -7823,7 +7823,7 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
               <img class='lazyload qcx-card-media' decoding='async' expr:alt='data:post.title' expr:data-src='resizeImage(data:post.featuredImage, 720, &quot;16:9&quot;)' height='405' loading='lazy' onerror='this.hidden=true;this.parentNode.classList.add(&quot;no-img&quot;)' src='data:image/png;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=' width='720'/>
             </b:if>
           <b:else/>
-            <span class='qcx-card-noimg' aria-hidden='true'>Không có ảnh</span>
+            <span class='qcx-card-noimg' aria-hidden='true'>Kh&#244;ng c&#243; &#7843;nh</span>
           </b:if>
 	    </a>
         <div class='qcx-card-labels'>
@@ -7876,7 +7876,7 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
 	    <img expr:alt='data:post.author.name' src='https://lh3.googleusercontent.com/-iRVl7_i8as4/AAAAAAAAAAI/AAAAAAAAAAA/AGDgw-gcU5klLwHU-W-hN9mjIJH2f7nZVA/s72-c-mo/photo.jpg' alt=''/>
         <p class='name'>
         <span><data:post.author.name/></span>
-        <span data-tooltip='Đã xác minh'>
+        <span data-tooltip='&#272;&#227; x&#225;c minh'>
 		  <svg focusable='false' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path d='M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z'/></svg>
 		</span>
         </p>
@@ -7885,7 +7885,7 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
       <b:else/>
   	  <p class='name'>
 		<a expr:href='data:post.author.profileUrl' expr:title='data:post.author.name' rel='nofollow' target='_blank'><data:post.author.name/></a>
-		<span data-tooltip='Đã xác minh'>
+		<span data-tooltip='&#272;&#227; x&#225;c minh'>
 		  <svg focusable='false' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path d='M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z'/></svg>
 		</span>
 	  </p>
@@ -7978,10 +7978,10 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
   <div class='nav-pagination qcx-pager'>
     <div class='blog-pager'>
       <b:if cond='data:newerPageUrl'>
-        <a class='newer-link theme-button' expr:href='data:newerPageUrl' role='button' title='Trang trước'>← Mới hơn</a>
+        <a class='newer-link theme-button' expr:href='data:newerPageUrl' role='button' title='Trang tr&#432;&#7899;c'>&#8592; M&#7899;i h&#417;n</a>
       </b:if>
       <b:if cond='data:olderPageUrl'>
-        <a class='older-link theme-button' expr:href='data:olderPageUrl' role='button' title='Trang sau'>Cũ hơn →</a>
+        <a class='older-link theme-button' expr:href='data:olderPageUrl' role='button' title='Trang sau'>C&#361; h&#417;n &#8594;</a>
       </b:if>
     </div>
   </div>
@@ -8040,21 +8040,21 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
           <div class='_3em'/>
           <div class='modal--content'>
             <div class='modal--header'>
-              <div class='_mht'>Chia sẻ nội dung này qua</div>
+              <div class='_mht'>Chia s&#7867; n&#7897;i dung n&#224;y qua</div>
               <div aria-label='close' class='_mhc modal--icon has-svg-icon has-hover modal--close' role='button' tabindex='0'/>
             </div>
             <div class='modal--body'>
               <div>
                 <ul class='dd-menu'>
-                  <li><span class='copy has-svg-icon has-hover' tabindex='0' title='Sao chép liên kết'>Sao chép liên kết</span></li>
+                  <li><span class='copy has-svg-icon has-hover' tabindex='0' title='Sao ch&#233;p li&#234;n k&#7871;t'>Sao ch&#233;p li&#234;n k&#7871;t</span></li>
                   <li><span class='social-wrapper has-svg-icon has-hover fb' expr:data-href='&quot;https://www.facebook.com/sharer/sharer.php?u=&quot; + data:post.url' tabindex='0'><b:eval expr='data:blog.sharing.platforms[1].shareMessage'/></span></li>
                   <li><span class='social-wrapper has-svg-icon has-hover tw' expr:data-href='&quot;https://twitter.com/intent/tweet?url=&quot; + data:post.url + &quot;&amp;text=&quot; + data:post.snippets.short' tabindex='0'><b:eval expr='data:blog.sharing.platforms[3].shareMessage'/></span></li>
                   <li><span class='social-wrapper has-svg-icon has-hover pi' expr:data-href='&quot;https://www.pinterest.com/pin/create/button/?url=&quot; + data:post.url + &quot;&amp;description=&quot; + data:view.description + &quot;&amp;media=&quot; + resizeImage(data:post.featuredImage, 1200, &quot;1200:630&quot;)' tabindex='0'><b:eval expr='data:blog.sharing.platforms[4].shareMessage'/></span></li>
-                  <li><span class='social-wrapper has-svg-icon has-hover li' expr:data-href='&quot;https://www.linkedin.com/sharing/share-offsite/?url=&quot; + data:post.url' tabindex='0'>Chia sẻ với Linkedin</span></li>
+                  <li><span class='social-wrapper has-svg-icon has-hover li' expr:data-href='&quot;https://www.linkedin.com/sharing/share-offsite/?url=&quot; + data:post.url' tabindex='0'>Chia s&#7867; v&#7899;i Linkedin</span></li>
                 </ul>
               </div>
             </div>
-            <div class='modal--footer'><button aria-label='close' class='primary has-hover modal--close' type='button'>Đóng</button></div>
+            <div class='modal--footer'><button aria-label='close' class='primary has-hover modal--close' type='button'>&#272;&#243;ng</button></div>
           </div>
           <div class='_3em'/>
         </div>
@@ -8127,8 +8127,8 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
                 <span><data:firstlevel.body/></span>
               </div>
               <div class='comment-actions'>
-                <a class='comment-reply' expr:data-comment-id='data:firstlevel.id' expr:href='&quot;#&quot; + data:firstlevel.id' rel='nofollow' target='_self' title='Trả lời'>Trả lời</a>
-                <span expr:class='data:firstlevel.adminClass'><a expr:href='data:firstlevel.deleteUrl' expr:title='data:messages.deleteComment' rel='nofollow' target='_self'>Xóa</a></span>
+                <a class='comment-reply' expr:data-comment-id='data:firstlevel.id' expr:href='&quot;#&quot; + data:firstlevel.id' rel='nofollow' target='_self' title='Tr&#7843; l&#7901;i'>Tr&#7843; l&#7901;i</a>
+                <span expr:class='data:firstlevel.adminClass'><a expr:href='data:firstlevel.deleteUrl' expr:title='data:messages.deleteComment' rel='nofollow' target='_self'>X&#243;a</a></span>
                 <span class='date-time'>
                   <a expr:href='data:firstlevel.url' expr:title='data:firstlevel.timestamp' rel='nofollow' target='_self'><data:firstlevel.timestamp/></a>
                 </span>
@@ -8156,8 +8156,8 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
                             <span><data:secondlevel.body/></span>
                           </div>
                           <div class='comment-actions'>
-                            <a class='comment-reply' expr:data-comment-id='data:secondlevel.id' expr:href='&quot;#&quot; + data:secondlevel.id' rel='nofollow' target='_self' title='Trả lời'>Trả lời</a>
-                            <span expr:class='data:secondlevel.adminClass'><a expr:href='data:secondlevel.deleteUrl' expr:title='data:messages.deleteComment' rel='nofollow' target='_self'>Xóa</a></span>
+                            <a class='comment-reply' expr:data-comment-id='data:secondlevel.id' expr:href='&quot;#&quot; + data:secondlevel.id' rel='nofollow' target='_self' title='Tr&#7843; l&#7901;i'>Tr&#7843; l&#7901;i</a>
+                            <span expr:class='data:secondlevel.adminClass'><a expr:href='data:secondlevel.deleteUrl' expr:title='data:messages.deleteComment' rel='nofollow' target='_self'>X&#243;a</a></span>
                             <span class='date-time'><a expr:href='data:secondlevel.url' expr:title='data:secondlevel.timestamp' rel='nofollow' target='_self'><data:secondlevel.timestamp/></a></span>
                           </div>
                         </div>
@@ -8183,7 +8183,7 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
                                         <span><data:thirdlevel.body/></span>
                                       </div>
                                       <div class='comment-actions'>
-                                        <span expr:class='data:thirdlevel.adminClass'><a expr:href='data:thirdlevel.deleteUrl' expr:title='data:messages.deleteComment' rel='nofollow' target='_self'>Xóa</a></span>
+                                        <span expr:class='data:thirdlevel.adminClass'><a expr:href='data:thirdlevel.deleteUrl' expr:title='data:messages.deleteComment' rel='nofollow' target='_self'>X&#243;a</a></span>
                                         <span class='date-time'><a expr:href='data:thirdlevel.url' expr:title='data:thirdlevel.timestamp' rel='nofollow' target='_self'><data:thirdlevel.timestamp/></a></span>
                                       </div>
                                     </div>
@@ -8206,7 +8206,7 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
       </b:loop>
     </ol>
     <div class='loadmore hidden' expr:data-post-id='data:post.id'><a expr:title='data:messages.showMore' href='#loadmore' rel='nofollow' role='button' target='_self'><data:messages.showMore/></a></div>
-    <div class='showless hidden'><a href='#showless' rel='nofollow' role='button' target='_self' title='Thu gọn'>Thu gọn</a></div>
+    <div class='showless hidden'><a href='#showless' rel='nofollow' role='button' target='_self' title='Thu g&#7885;n'>Thu g&#7885;n</a></div>
   </div>
 </b:includable>
             <b:includable id='threadedComments' var='post'>
@@ -8276,31 +8276,31 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
         <b:section class='sidebar qcx-addon-zone' cond='data:view.isLayoutMode or data:view.isSingleItem' id='sidebar' maxwidgets='5' name='Thanh b&#234;n (B&#224;i vi&#7871;t)' showaddelement='true'>
           <b:widget id='HTML4' locked='false' title='B&#224;i vi&#7871;t li&#234;n quan (Tutorial)' type='HTML' version='2' visible='true'>
             <b:widget-settings>
-              <b:widget-setting name='content'><![CDATA[<div class="qcx-related-heading" role="heading" aria-level="2">Bài Viết liên quan</div><ul class="qcx-latest-list" aria-busy="true" aria-label="Bài Viết liên quan"></ul>]]></b:widget-setting>
+              <b:widget-setting name='content'><![CDATA[<div class="qcx-related-heading" role="heading" aria-level="2">B&#224;i Vi&#7871;t li&#234;n quan</div><ul class="qcx-latest-list" aria-busy="true" aria-label="B&#224;i Vi&#7871;t li&#234;n quan"></ul>]]></b:widget-setting>
             </b:widget-settings>
             <b:includable id='main'>
   <b:attr name='class' value='widget HTML qcx-sidebar-rail'/>
   <div class='widget-content'>
-    <div aria-level='2' class='qcx-related-heading' role='heading'>Bài Viết liên quan</div>
-    <ul aria-busy='true' aria-label='Bài Viết liên quan' class='qcx-latest-list'></ul>
+    <div aria-level='2' class='qcx-related-heading' role='heading'>B&#224;i Vi&#7871;t li&#234;n quan</div>
+    <ul aria-busy='true' aria-label='B&#224;i Vi&#7871;t li&#234;n quan' class='qcx-latest-list'></ul>
   </div>
 </b:includable>
           </b:widget>
           <b:widget id='HTML8' locked='false' title='Th&#7867; Th&#224;nh Vi&#234;n VIP &amp; &#272;&#7891;ng B&#7897; Gmail' type='HTML' version='2' visible='true'>
             <b:widget-settings>
-              <b:widget-setting name='content'><![CDATA[<div class="qcx-sidebar-vip-box"><div class="qcx-svb-badge">GOOGLE IDENTITY · PAYOS</div><div class="qcx-svb-title">Đồng bộ Tài khoản &amp; Quyền VIP</div><p class="qcx-svb-desc">Đăng nhập bằng Gmail để tự động hiển thị Role Color (Admin / VIP / PRO / Member) và khôi phục toàn bộ bài viết đã mua.</p><div class="qcx-auth-slot qcx-auth-slot--sidebar"></div></div>]]></b:widget-setting>
+              <b:widget-setting name='content'><![CDATA[<div class="qcx-sidebar-vip-box"><div class="qcx-svb-badge">GOOGLE IDENTITY &#183; PAYOS</div><div class="qcx-svb-title">&#272;&#7891;ng b&#7897; T&#224;i kho&#7843;n &amp; Quy&#7873;n VIP</div><p class="qcx-svb-desc">&#272;&#259;ng nh&#7853;p b&#7857;ng Gmail &#273;&#7875; t&#7921; &#273;&#7897;ng hi&#7875;n th&#7883; Role Color (Admin / VIP / PRO / Member) v&#224; kh&#244;i ph&#7909;c to&#224;n b&#7897; b&#224;i vi&#7871;t &#273;&#227; mua.</p><div class="qcx-auth-slot qcx-auth-slot--sidebar"></div></div>]]></b:widget-setting>
             </b:widget-settings>
             <b:includable id='main'>
   <b:attr name='class' value='widget HTML qcx-sidebar-vip-widget'/>
   <div class='widget-content'>
     <div class='qcx-sidebar-vip-box'>
-      <div class='qcx-svb-badge'>GOOGLE IDENTITY · PAYOS</div>
-      <div class='qcx-svb-title'>Đồng bộ Tài khoản &amp; Quyền VIP</div>
-      <p class='qcx-svb-desc'>Đăng nhập bằng Gmail để tự động nhận diện Role Color và mở khóa tài nguyên VIP trên mọi thiết bị.</p>
+      <div class='qcx-svb-badge'>GOOGLE IDENTITY &#183; PAYOS</div>
+      <div class='qcx-svb-title'>&#272;&#7891;ng b&#7897; T&#224;i kho&#7843;n &amp; Quy&#7873;n VIP</div>
+      <p class='qcx-svb-desc'>&#272;&#259;ng nh&#7853;p b&#7857;ng Gmail &#273;&#7875; t&#7921; &#273;&#7897;ng nh&#7853;n di&#7879;n Role Color v&#224; m&#7903; kh&#243;a t&#224;i nguy&#234;n VIP tr&#234;n m&#7885;i thi&#7871;t b&#7883;.</p>
       <div class='qcx-auth-slot qcx-auth-slot--sidebar'>
-        <button aria-label='Đăng nhập bằng tài khoản Gmail' class='qcx-google-login-btn' data-qcx-google-login='1' type='button'>
+        <button aria-label='&#272;&#259;ng nh&#7853;p b&#7857;ng t&#224;i kho&#7843;n Gmail' class='qcx-google-login-btn' data-qcx-google-login='1' type='button'>
           <span class='qcx-g-icon' aria-hidden='true'><svg viewBox='0 0 24 24' width='14' height='14'><path d='M21.35 11.1h-9.17v2.73h6.51c-.33 1.81-1.5 3.34-3.2 4.37v3.62h5.18c3.03-2.79 4.78-6.9 4.78-11.82 0-.8-.08-1.57-.23-2.3z' fill='#4285F4'/><path d='M12.18 22c4.32 0 7.95-1.43 10.6-3.88l-5.18-3.62c-1.43.96-3.26 1.53-5.42 1.53-4.17 0-7.7-2.81-8.96-6.6H-2.1v3.73C.54 18.4 5.94 22 12.18 22z' fill='#34A853'/><path d='M3.22 13.43a5.85 5.85 0 0 1 0-3.76V5.94H-2.1a9.99 9.99 0 0 0 0 8.95l5.32-3.73z' fill='#FBBC05'/><path d='M12.18 5.98c2.35 0 4.46.81 6.12 2.4l4.59-4.59C20.12 1.19 16.5 0 12.18 0 5.94 0 .54 3.6-2.1 8.84l5.32 3.73c1.26-3.79 4.79-6.59 8.96-6.59z' fill='#EA4335'/></svg></span>
-          <span class='qcx-g-label'>Đăng nhập Gmail</span>
+          <span class='qcx-g-label'>&#272;&#259;ng nh&#7853;p Gmail</span>
         </button>
       </div>
     </div>
@@ -8309,20 +8309,20 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
           </b:widget>
           <b:widget id='HTML9' locked='false' title='Chuy&#234;n m&#7909;c AI &amp; T&#224;i nguy&#234;n (Topics)' type='HTML' version='2' visible='true'>
             <b:widget-settings>
-              <b:widget-setting name='content'><![CDATA[<div class="qcx-sidebar-topics-box"><div class="qcx-related-heading" role="heading" aria-level="2">Chuyên mục nổi bật</div><div class="qcx-topics-pills"><a href="/search/label/Tutorial">📚 Tutorial</a><a href="/search/label/FREE">🎁 Tài nguyên FREE</a><a href="/search/label/AI">🤖 Công cụ AI</a><a href="/search/label/Automation">⚡ Automation</a><a href="/search/label/VPS">☁️ Cloud &amp; VPS</a><a href="/search/label/Antigravity">🚀 Antigravity</a></div></div>]]></b:widget-setting>
+              <b:widget-setting name='content'><![CDATA[<div class="qcx-sidebar-topics-box"><div class="qcx-related-heading" role="heading" aria-level="2">Chuy&#234;n m&#7909;c n&#7893;i b&#7853;t</div><div class="qcx-topics-pills"><a href="/search/label/Tutorial">&#128218; Tutorial</a><a href="/search/label/FREE">&#127873; T&#224;i nguy&#234;n FREE</a><a href="/search/label/AI">&#129302; C&#244;ng c&#7909; AI</a><a href="/search/label/Automation">&#9889; Automation</a><a href="/search/label/VPS">&#9729;&#65039; Cloud &amp; VPS</a><a href="/search/label/Antigravity">&#128640; Antigravity</a></div></div>]]></b:widget-setting>
             </b:widget-settings>
             <b:includable id='main'>
   <b:attr name='class' value='widget HTML qcx-sidebar-topics-widget'/>
   <div class='widget-content'>
     <div class='qcx-sidebar-topics-box'>
-      <div aria-level='2' class='qcx-related-heading' role='heading'>Chuyên mục nổi bật</div>
+      <div aria-level='2' class='qcx-related-heading' role='heading'>Chuy&#234;n m&#7909;c n&#7893;i b&#7853;t</div>
       <div class='qcx-topics-pills'>
-        <a href='/search/label/Tutorial'>📚 Tutorial</a>
-        <a href='/search/label/FREE'>🎁 Tài nguyên FREE</a>
-        <a href='/search/label/AI'>🤖 Công cụ AI</a>
-        <a href='/search/label/Automation'>⚡ Automation</a>
-        <a href='/search/label/VPS'>☁️ Cloud &amp; VPS</a>
-        <a href='/search/label/Antigravity'>🚀 Antigravity</a>
+        <a href='/search/label/Tutorial'>&#128218; Tutorial</a>
+        <a href='/search/label/FREE'>&#127873; T&#224;i nguy&#234;n FREE</a>
+        <a href='/search/label/AI'>&#129302; C&#244;ng c&#7909; AI</a>
+        <a href='/search/label/Automation'>&#9889; Automation</a>
+        <a href='/search/label/VPS'>&#9729;&#65039; Cloud &amp; VPS</a>
+        <a href='/search/label/Antigravity'>&#128640; Antigravity</a>
       </div>
     </div>
   </div>
@@ -8332,19 +8332,19 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
         <b:section class='qcx-addon-zone' cond='data:view.isLayoutMode or data:view.isPost' id='below-main' maxwidgets='4' name='Th&#234;m d&#432;&#7899;i b&#224;i (H&#7895; tr&#7907; &amp; C&#7897;ng &#273;&#7891;ng)' showaddelement='true'>
           <b:widget id='HTML10' locked='false' title='C&#7897;ng &#273;&#7891;ng MMO TEAM &amp; H&#7895; tr&#7907; 24/7' type='HTML' version='2' visible='true'>
             <b:widget-settings>
-              <b:widget-setting name='content'><![CDATA[<div class="qcx-below-support-bar"><div class="qcx-bsb-text"><strong>Cần hỗ trợ cài đặt hoặc khôi phục quyền VIP?</strong><span>Tham gia nhóm Telegram MMO TEAM hoặc bấm Đồng bộ Gmail để tự động mở khóa tài nguyên.</span></div><div class="qcx-bsb-actions"><a href="https://t.me/superkhung" target="_blank" rel="noopener noreferrer" class="qcx-bsb-btn qcx-bsb-btn--tg">💬 Hỗ trợ Telegram</a><button type="button" class="qcx-bsb-btn qcx-bsb-btn--auth" data-qcx-google-login="1">🔑 Đồng bộ Gmail</button></div></div>]]></b:widget-setting>
+              <b:widget-setting name='content'><![CDATA[<div class="qcx-below-support-bar"><div class="qcx-bsb-text"><strong>C&#7847;n h&#7895; tr&#7907; c&#224;i &#273;&#7863;t ho&#7863;c kh&#244;i ph&#7909;c quy&#7873;n VIP?</strong><span>Tham gia nh&#243;m Telegram MMO TEAM ho&#7863;c b&#7845;m &#272;&#7891;ng b&#7897; Gmail &#273;&#7875; t&#7921; &#273;&#7897;ng m&#7903; kh&#243;a t&#224;i nguy&#234;n.</span></div><div class="qcx-bsb-actions"><a href="https://t.me/superkhung" target="_blank" rel="noopener noreferrer" class="qcx-bsb-btn qcx-bsb-btn--tg">&#128172; H&#7895; tr&#7907; Telegram</a><button type="button" class="qcx-bsb-btn qcx-bsb-btn--auth" data-qcx-google-login="1">&#128273; &#272;&#7891;ng b&#7897; Gmail</button></div></div>]]></b:widget-setting>
             </b:widget-settings>
             <b:includable id='main'>
   <b:attr name='class' value='widget HTML qcx-below-support-widget'/>
   <div class='widget-content'>
     <div class='qcx-below-support-bar'>
       <div class='qcx-bsb-text'>
-        <strong>Cần hỗ trợ cài đặt hoặc khôi phục quyền VIP?</strong>
-        <span>Tham gia nhóm Telegram MMO TEAM hoặc đồng bộ Gmail để tự động mở khóa tài nguyên.</span>
+        <strong>C&#7847;n h&#7895; tr&#7907; c&#224;i &#273;&#7863;t ho&#7863;c kh&#244;i ph&#7909;c quy&#7873;n VIP?</strong>
+        <span>Tham gia nh&#243;m Telegram MMO TEAM ho&#7863;c &#273;&#7891;ng b&#7897; Gmail &#273;&#7875; t&#7921; &#273;&#7897;ng m&#7903; kh&#243;a t&#224;i nguy&#234;n.</span>
       </div>
       <div class='qcx-bsb-actions'>
-        <a class='qcx-bsb-btn qcx-bsb-btn--tg' href='https://t.me/superkhung' rel='noopener noreferrer' target='_blank'>💬 Hỗ trợ Telegram</a>
-        <button class='qcx-bsb-btn qcx-bsb-btn--auth' data-qcx-google-login='1' type='button'>🔑 Đồng bộ Gmail</button>
+        <a class='qcx-bsb-btn qcx-bsb-btn--tg' href='https://t.me/superkhung' rel='noopener noreferrer' target='_blank'>&#128172; H&#7895; tr&#7907; Telegram</a>
+        <button class='qcx-bsb-btn qcx-bsb-btn--auth' data-qcx-google-login='1' type='button'>&#128273; &#272;&#7891;ng b&#7897; Gmail</button>
       </div>
     </div>
   </div>
@@ -8358,26 +8358,26 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
       <b:section class='qcx-addon-zone qcx-footer-gadgets' id='footer' maxwidgets='6' name='Th&#234;m footer' showaddelement='true'>
         <b:widget id='HTML5' locked='false' title='MMO Footer Social' type='HTML' version='2' visible='true'>
           <b:widget-settings>
-            <b:widget-setting name='content'><![CDATA[<div class="qcx-footer-social"><div class="qcx-footer-brand"><strong>MMO TEAM</strong><span>Công cụ AI &amp; Tài nguyên miễn phí</span></div><div class="qcx-footer-links"><a href="https://t.me/superkhung" target="_blank" rel="noopener noreferrer">📱 Telegram</a><a href="https://www.mmo.team/search/label/Tutorial" rel="noopener">📚 Tutorial</a><a href="https://www.mmo.team/search/label/FREE" rel="noopener">🎁 FREE</a></div><p class="qcx-footer-copy">© 2026 MMO TEAM · <a href="https://www.mmo.team/" rel="home">mmo.team</a></p></div>]]></b:widget-setting>
+            <b:widget-setting name='content'><![CDATA[<div class="qcx-footer-social"><div class="qcx-footer-brand"><strong>MMO TEAM</strong><span>C&#244;ng c&#7909; AI &amp; T&#224;i nguy&#234;n mi&#7877;n ph&#237;</span></div><div class="qcx-footer-links"><a href="https://t.me/superkhung" target="_blank" rel="noopener noreferrer">&#128241; Telegram</a><a href="https://www.mmo.team/search/label/Tutorial" rel="noopener">&#128218; Tutorial</a><a href="https://www.mmo.team/search/label/FREE" rel="noopener">&#127873; FREE</a></div><p class="qcx-footer-copy">&#169; 2026 MMO TEAM &#183; <a href="https://www.mmo.team/" rel="home">mmo.team</a></p></div>]]></b:widget-setting>
           </b:widget-settings>
           <b:includable id='main'>
   <b:attr name='class' value='widget HTML qcx-footer-widget'/>
   <div class='widget-content'>
     <div class='qcx-footer-social'>
-      <div class='qcx-footer-brand'><strong>MMO TEAM</strong><span>Công cụ AI &amp; Tài nguyên miễn phí</span></div>
+      <div class='qcx-footer-brand'><strong>MMO TEAM</strong><span>C&#244;ng c&#7909; AI &amp; T&#224;i nguy&#234;n mi&#7877;n ph&#237;</span></div>
       <div class='qcx-footer-links'>
-        <a href='https://t.me/superkhung' target='_blank' rel='noopener noreferrer'>📱 Telegram</a>
-        <a href='https://www.mmo.team/search/label/Tutorial' rel='noopener'>📚 Tutorial</a>
-        <a href='https://www.mmo.team/search/label/FREE' rel='noopener'>🎁 FREE</a>
+        <a href='https://t.me/superkhung' target='_blank' rel='noopener noreferrer'>&#128241; Telegram</a>
+        <a href='https://www.mmo.team/search/label/Tutorial' rel='noopener'>&#128218; Tutorial</a>
+        <a href='https://www.mmo.team/search/label/FREE' rel='noopener'>&#127873; FREE</a>
       </div>
-      <p class='qcx-footer-copy'>© 2026 MMO TEAM · <a href='https://www.mmo.team/' rel='home'>mmo.team</a></p>
+      <p class='qcx-footer-copy'>&#169; 2026 MMO TEAM &#183; <a href='https://www.mmo.team/' rel='home'>mmo.team</a></p>
     </div>
   </div>
 </b:includable>
         </b:widget>
       </b:section>
     </footer>
-    <nav aria-label='Điều hướng mobile' class='footer-navigation-bar qcx-native-tabbar' id='qcx-native-tabbar'>
+    <nav aria-label='&#272;i&#7873;u h&#432;&#7899;ng mobile' class='footer-navigation-bar qcx-native-tabbar' id='qcx-native-tabbar'>
       <div>
         <ul>
           <li>
@@ -8389,10 +8389,10 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
           </li>
           <li><a aria-label='Menu' class='open-menu' href='javascript:void(0)' role='button' title='Menu'><div class='icon'><svg height='24' viewBox='0 0 24 24' width='24'><path d='M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z'/></svg></div><div class='title'>Menu</div></a></li>
           <b:if cond='data:view.isPost or data:view.isPage'>
-            <li><a aria-label='Chia sẻ' class='share-post' expr:data-share-url='data:view.url.canonical' href='javascript:void(0)' role='button' title='Chia sẻ'><div class='icon'><svg height='22' viewBox='0 0 24 24' width='22'><path d='M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z'/></svg></div><div class='title'>Share</div></a></li>
+            <li><a aria-label='Chia s&#7867;' class='share-post' expr:data-share-url='data:view.url.canonical' href='javascript:void(0)' role='button' title='Chia s&#7867;'><div class='icon'><svg height='22' viewBox='0 0 24 24' width='22'><path d='M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z'/></svg></div><div class='title'>Share</div></a></li>
             <li><a aria-label='Telegram' href='https://t.me/superkhung' rel='noopener noreferrer' target='_blank' title='Telegram'><div class='icon'><svg height='22' viewBox='0 0 24 24' width='22'><path d='M9.78,18.65L10.06,14.42L17.74,7.5C18.08,7.19 17.67,7.04 17.22,7.31L7.74,13.3L3.64,12C2.76,11.75 2.75,11.14 3.84,10.7L19.81,4.54C20.54,4.21 21.24,4.72 20.96,5.84L18.24,18.65C18.05,19.56 17.5,19.78 16.74,19.36L12.6,16.3L10.61,18.23C10.38,18.46 10.19,18.65 9.78,18.65Z'/></svg></div><div class='title'>Chat</div></a></li>
           <b:else/>
-            <li><a aria-label='Lên đầu trang' class='scroll-top' href='javascript:void(0)' role='button' title='Lên đầu'><div class='icon'><svg height='24' viewBox='0 0 24 24' width='24'><path d='M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92,12.08L18.5,13.5L13,8V20Z'/></svg></div><div class='title'>Top</div></a></li>
+            <li><a aria-label='L&#234;n &#273;&#7847;u trang' class='scroll-top' href='javascript:void(0)' role='button' title='L&#234;n &#273;&#7847;u'><div class='icon'><svg height='24' viewBox='0 0 24 24' width='24'><path d='M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92,12.08L18.5,13.5L13,8V20Z'/></svg></div><div class='title'>Top</div></a></li>
             <li><a aria-label='Telegram' href='https://t.me/superkhung' rel='noopener noreferrer' target='_blank' title='Telegram'><div class='icon'><svg height='22' viewBox='0 0 24 24' width='22'><path d='M9.78,18.65L10.06,14.42L17.74,7.5C18.08,7.19 17.67,7.04 17.22,7.31L7.74,13.3L3.64,12C2.76,11.75 2.75,11.14 3.84,10.7L19.81,4.54C20.54,4.21 21.24,4.72 20.96,5.84L18.24,18.65C18.05,19.56 17.5,19.78 16.74,19.36L12.6,16.3L10.61,18.23C10.38,18.46 10.19,18.65 9.78,18.65Z'/></svg></div><div class='title'>Chat</div></a></li>
           </b:if>
         </ul>
@@ -8403,7 +8403,7 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
 <!-- moved to CDN: qcx-smart-media -->
 <!-- CSS links live in head (all-head); keep admin UI inline for F5 -->
 <style id='qcx-admin-ui' type='text/css'>
-/* ── QCX Footer Social Widget ── */
+/* &#9472;&#9472; QCX Footer Social Widget &#9472;&#9472; */
 .qcx-footer-social { padding: 28px 24px 20px; text-align: center; border-top: 1px solid rgba(76,175,130,0.25); margin-top: 0; background: #0a150c !important; }
 .qcx-footer-brand { margin-bottom: 10px; }
 .qcx-footer-brand strong { display: block; font-size: 15px; color: #4caf82; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; }
@@ -8419,9 +8419,9 @@ footer.footer #footer .qcx-footer-widget .widget-content,
 .qcx-footer-gadgets .qcx-footer-widget,
 .qcx-footer-gadgets .qcx-footer-widget .widget-content { width:100%!important; float:none!important; padding:0!important; margin:0!important; }
 footer.footer, #footer, .qcx-footer-gadgets { background: #0a150c !important; }
-/* ── END Footer Social Widget ── */
+/* &#9472;&#9472; END Footer Social Widget &#9472;&#9472; */
 /* qcx-admin-ui */
-/* MMO Admin — dense cockpit (PC + mobile) */
+/* MMO Admin &#8212; dense cockpit (PC + mobile) */
     #qcx-admin-root, #qcx-admin-root * { box-sizing: border-box; }
     #qcx-admin-root {
       --qcx-admin-radius: 8px;
@@ -8562,7 +8562,7 @@ footer.footer, #footer, .qcx-footer-gadgets { background: #0a150c !important; }
       animation: qcx-admin-rise 0.35s ease-out both;
       padding: 10px 12px;
     }
-    /* Beat theme `.post-body h2{margin-top:36px!important}` above Soạn bài / Preview */
+    /* Beat theme `.post-body h2{margin-top:36px!important}` above So&#7841;n b&#224;i / Preview */
     body .post-body #qcx-admin-root h2,
     body .post-body #qcx-admin-root .panel h2,
     body .post-body #qcx-admin-root .panel-head h2,
@@ -9045,7 +9045,7 @@ function qcxBootMacFrames() {
 
   function upgradeBloggerImageUrl(url) {
     if (!url) return url;
-    /* Cap display size — s0 full originals make Tutorial→post navigation feel slow. */
+    /* Cap display size   s0 full originals make Tutorial post navigation feel slow. */
     return String(url)
       .replace(/\/[swh]\d{2,4}(-[a-z0-9]+)?\//gi, '/w1280/')
       .replace(/=[swh]\d{2,4}(-[a-z0-9]+)?/gi, '=w1280');
@@ -9072,7 +9072,7 @@ function qcxBootMacFrames() {
       else maxH = hFromW;
       return { w: Math.round(maxW), h: Math.round(maxH), ratio: ratio };
     }
-    /* Compact portrait frame sized to the image — desktop pulls it toward the
+    /* Compact portrait frame sized to the image   desktop pulls it toward the
        right rail via CSS so the void between phone shot and sidebar shrinks. */
     var maxWp = mobile ? Math.min(availW * 0.92, 360) : Math.min(availW * 0.72, 400);
     var maxHp = mobile ? Math.min(vh * 0.68, 640) : Math.min(vh * 0.78, 740);
@@ -9183,7 +9183,7 @@ window.addEventListener('load', qcxBootMacFrames, { once: true });
 
 <!-- moved to CDN: qcx-terminal-lightbox -->
 
-<!-- Rescue: nếu Layout mất Blog widget, tự dựng homepage/cards hoặc single post từ feed. -->
+<!-- Rescue: ne  u Layout ma  t Blog widget, tu   du  ng homepage/cards hoa  c single post tu   feed. -->
 <script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.13/theme/qcx-runtime.js'></script>
 <script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.26/theme/qcx-smart-runtime.js'></script>
 <!-- secure-resource.js handles unlock flow -->
@@ -9282,9 +9282,9 @@ window.addEventListener('load', qcxBootMacFrames, { once: true });
       var btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'qcx-copy-btn';
-      btn.setAttribute('aria-label', 'Sao chép mã');
-      btn.setAttribute('title', 'Sao chép mã');
-      btn.innerHTML = copySvg + checkSvg + '<span class="qcx-copy-txt">Sao chép</span>';
+      btn.setAttribute('aria-label', 'Sao ch\u00e9p m\u00e3');
+      btn.setAttribute('title', 'Sao ch\u00e9p m\u00e3');
+      btn.innerHTML = copySvg + checkSvg + '<span class="qcx-copy-txt">Sao ch\u00e9p</span>';
 
       if (header) {
         /* btn goes into header bar, right of mac-dots */
@@ -9319,16 +9319,16 @@ window.addEventListener('load', qcxBootMacFrames, { once: true });
         copyFn.then(function() {
           btn.classList.add('copied');
           var txt = btn.querySelector('.qcx-copy-txt');
-          if (txt) txt.textContent = 'Đã chép';
+          if (txt) txt.textContent = '\u0110\u00e3 ch\u00e9p';
           setTimeout(function() {
             btn.classList.remove('copied');
-            if (txt) txt.textContent = 'Sao chép';
+            if (txt) txt.textContent = 'Sao ch\u00e9p';
           }, 1800);
         }).catch(function() {
           var txt = btn.querySelector('.qcx-copy-txt');
-          if (txt) txt.textContent = 'Lỗi';
+          if (txt) txt.textContent = 'L\u1ed7i';
           setTimeout(function() {
-            if (txt) txt.textContent = 'Sao chép';
+            if (txt) txt.textContent = 'Sao ch\u00e9p';
           }, 1800);
         });
       });
@@ -9354,7 +9354,7 @@ window.addEventListener('load', qcxBootMacFrames, { once: true });
 </script>
 <script>
 //<![CDATA[
-/* QCX Card Hero Fallback — pathname-matched (protocol/domain agnostic) + media$thumbnail & body img */
+/* QCX Card Hero Fallback   pathname-matched (protocol/domain agnostic) + media$thumbnail & body img */
 (function() {
   var isHome = !document.querySelector('.post-body.entry-content');
   if (!isHome) return;
@@ -9449,7 +9449,7 @@ window.addEventListener('load', qcxBootMacFrames, { once: true });
 </script>
 
   <style id='qcx-a11y-fixes' type='text/css'>
-/* ── Typography override: beat frozen CDN qcx-polish.css Ghost Font 'Space Grotesk' ── */
+/* &#9472;&#9472; Typography override: beat frozen CDN qcx-polish.css Ghost Font 'Space Grotesk' &#9472;&#9472; */
 [data-page-item='multiple'] .card-content .title,
 [data-page-item='multiple'] .card-content .title a,
 .post-header .post-title,
@@ -9464,7 +9464,7 @@ window.addEventListener('load', qcxBootMacFrames, { once: true });
 .qcx-hero-title {
   font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace !important;
 }
-/* ── Footer canonical polish: remove ugly .qcx-addon-zone rounded box, align to 1120px grid, fix contrast and scroll-top overlap ── */
+/* &#9472;&#9472; Footer canonical polish: remove ugly .qcx-addon-zone rounded box, align to 1120px grid, fix contrast and scroll-top overlap &#9472;&#9472; */
 html body footer.footer,
 html body footer.footer #footer,
 html body footer.footer #footer.qcx-footer-gadgets {
@@ -9583,9 +9583,9 @@ html body .scroll--top:hover {
     display: none !important;
   }
 }
-/* ── Touch target a11y (Mobile 100/100) ── */
+/* &#9472;&#9472; Touch target a11y (Mobile 100/100) &#9472;&#9472; */
 .card-content .qcx-card-labels,.qcx-card-labels a[rel=tag],.card-content a[rel=tag],a[rel=tag],.qcx-footer-links a{min-height:40px!important;min-width:44px!important;padding:8px 14px!important;margin:0 4px 6px 0!important;align-items:center!important;display:inline-flex!important;box-sizing:border-box!important}
-/* ── Gmail Auth Slot, 4-Tier Role Color &amp; Account Dropdown ── */
+/* &#9472;&#9472; Gmail Auth Slot, 4-Tier Role Color &amp; Account Dropdown &#9472;&#9472; */
 .qcx-auth-slot{display:inline-flex;align-items:center;position:relative;z-index:120}
 .qcx-mac-topbar .qcx-mt-right{display:inline-flex!important;align-items:center!important;gap:10px!important}
 .qcx-auth-login-btn{appearance:none;border:1px solid rgba(52,230,160,0.32)!important;background:rgba(9,20,14,0.88)!important;color:#e6f5ec!important;cursor:pointer!important;font:600 12px/1 var(--qcx-article-mono,monospace)!important;display:inline-flex!important;align-items:center!important;gap:7px!important;height:36px!important;padding:0 14px!important;border-radius:999px!important;transition:border-color .18s,background .18s,transform .18s!important}
@@ -9633,7 +9633,7 @@ html body .scroll--top:hover {
 .qcx-google-oauth-btn{width:100%;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,0.18);background:#fff;color:#111;font:700 13.5px/1.2 var(--qcx-article-sans,system-ui,sans-serif);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:12px}
 .qcx-google-oauth-btn:hover{background:#f2f6f4}
 .qcx-po-gmail-locked{display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:8px;background:rgba(52,230,160,0.10);border:1px solid rgba(52,230,160,0.35);color:#bdf5d8;font-size:12.5px;margin-bottom:10px}
-/* ── PayOS 3-Tier VietQR Modal &amp; Smart Tier Banner ── */
+/* &#9472;&#9472; PayOS 3-Tier VietQR Modal &amp; Smart Tier Banner &#9472;&#9472; */
 .qcx-payos-vip-banner{margin:10px 0 0;padding:10px 14px;border-radius:10px;border:1px solid rgba(224,179,90,0.45);background:rgba(224,179,90,0.09);color:#f5dca2;font:500 12.5px/1.45 var(--qcx-article-sans,system-ui,sans-serif)}
 .qcx-payos-vip-banner strong{color:#ffd678;font-weight:700}
 .qcx-payos-recover-link{display:inline-flex;align-items:center;gap:5px;margin-top:8px;padding:4px 0;color:#6dd9a4;font:600 12px/1.3 var(--qcx-article-mono,monospace);background:none;border:0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
@@ -9657,7 +9657,7 @@ html body .scroll--top:hover {
 .qcx-payos-btn:disabled{opacity:.6;cursor:wait}
 .qcx-payos-status{margin-top:10px;padding:8px 10px;border-radius:8px;background:rgba(52,230,160,0.08);border:1px solid rgba(52,230,160,0.22);color:#7dcea0;font:600 12px/1.35 var(--qcx-article-mono,monospace);text-align:center}
 .qcx-payos-status.is-err{background:rgba(255,95,86,0.1);border-color:rgba(255,95,86,0.35);color:#ff9b94}
-/* ── Supplemented Blogger Layout (Bố cục) Widgets Styling ── */
+/* &#9472;&#9472; Supplemented Blogger Layout (B&#7889; c&#7909;c) Widgets Styling &#9472;&#9472; */
 body:not(#layout) .qcx-auth-config-widget{display:none!important}
 body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false']){display:none!important}
 .qcx-home-notice-bar{display:flex;align-items:center;justify-content:center;gap:8px;padding:9px 14px;border-radius:10px;background:rgba(52,230,160,0.08);border:1px solid rgba(52,230,160,0.28);color:#c4f5dd;font:600 12.5px/1.35 var(--qcx-article-sans,system-ui,sans-serif)}
@@ -9707,7 +9707,7 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
     document.addEventListener('DOMContentLoaded',function(){rIC(function(){qcxFixAriaHiddenTabindex();qcxOptimizeMobileBrandMark();qcxObserveFooterClearance();});},{once:true});
     window.addEventListener('load',function(){rIC(function(){qcxFixAriaHiddenTabindex();qcxOptimizeMobileBrandMark();});},{once:true});
 
-    /* ── MMO TEAM PayOS 3-Tier & Gmail Auth Role Engine ── */
+    /*    MMO TEAM PayOS 3-Tier & Gmail Auth Role Engine    */
     var API_BASE='https://timkiem-store-api.kkymljnk.workers.dev';
     var ENT_KEY='qcx_payos_entitlement_v1';
     var PEND_KEY='qcx_payos_pending_v1';
@@ -9730,6 +9730,14 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
             if(em && adminEmailsList.indexOf(em)===-1)adminEmailsList.push(em);
           });
         }
+        var domCfg=document.querySelector('.qcx-layout-auth-config[data-admin-emails]');
+        if(domCfg){
+          var csv=String(domCfg.getAttribute('data-admin-emails')||'');
+          csv.split(',').forEach(function(e){
+            var em=String(e||'').trim().toLowerCase();
+            if(em && adminEmailsList.indexOf(em)===-1)adminEmailsList.push(em);
+          });
+        }
       }catch(e){}
     }
     function isClientAdminEmail(email){
@@ -9745,7 +9753,7 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
     }
     function fmtVnd(n){
       var v=Number(n)||0;
-      return v.toString().replace(/\B(?=(\d{3})+(?!\d))/g,'.')+' đ';
+      return v.toString().replace(/\B(?=(\d{3})+(?!\d))/g,'.')+' \u0111';
     }
     function readEnt(){
       try{return JSON.parse(localStorage.getItem(ENT_KEY)||'{}')||{};}catch(e){return {};}
@@ -9781,9 +9789,9 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
       renderAuthSlots();
     }
     function roleBadgeText(role){
-      if(role==='admin')return '⚡ ADMIN';
-      if(role==='vip')return '👑 VIP';
-      if(role==='pro')return '💎 PRO';
+      if(role==='admin')return '\u26a1 ADMIN';
+      if(role==='vip')return '\ud83d\udc51 VIP';
+      if(role==='pro')return '\ud83d\udc8e PRO';
       return 'MEMBER';
     }
     function renderAuthSlots(){
@@ -9795,16 +9803,22 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
         mSlot.className='qcx-auth-slot qcx-auth-slot--menu';
         mSlot.setAttribute('data-qcx-auth-slot','menu');
         mSlot.style.cssText='margin-left:auto;margin-right:8px;';
-        mSlot.innerHTML='<button aria-label="Đăng nhập bằng Gmail" class="qcx-signal-x qcx-auth-login-btn" type="button"><svg aria-hidden="true" class="qcx-google-ico" height="14" viewBox="0 0 24 24" width="14"><path d="M21.35 11.1h-9.17v2.73h6.51c-.33 1.81-1.5 3.34-3.2 4.37v3.62h5.18c3.03-2.79 4.78-6.9 4.78-11.82 0-.8-.08-1.57-.23-2.3z" fill="#4285F4"></path><path d="M12.18 22c4.32 0 7.95-1.43 10.6-3.88l-5.18-3.62c-1.43.96-3.26 1.53-5.42 1.53-4.17 0-7.7-2.81-8.96-6.6H-2.1v3.73C.54 18.4 5.94 22 12.18 22z" fill="#34A853"></path><path d="M3.22 13.43a5.85 5.85 0 0 1 0-3.76V5.94H-2.1a9.99 9.99 0 0 0 0 8.95l5.32-3.73z" fill="#FBBC05"></path><path d="M12.18 5.98c2.35 0 4.46.81 6.12 2.4l4.59-4.59C20.12 1.19 16.5 0 12.18 0 5.94 0 .54 3.6-2.1 8.84l5.32 3.73c1.26-3.79 4.79-6.59 8.96-6.59z" fill="#EA4335"></path></svg><span class="qcx-signal-x-label">Đăng nhập</span><span aria-hidden="true" class="qcx-signal-x-arrow">&#8594;</span></button><button aria-expanded="false" aria-haspopup="menu" class="qcx-user-chip" data-role="member" hidden="hidden" type="button"><img alt="" class="qcx-user-avatar" decoding="async" height="22" loading="lazy" width="22"/><span class="qcx-user-name"></span><span class="qcx-user-role-badge">MEMBER</span></button>';
+        mSlot.innerHTML='<button aria-label="\u0110\u0103ng nh\u1eadp b\u1eb1ng Gmail" class="qcx-signal-x qcx-auth-login-btn" type="button"><svg aria-hidden="true" class="qcx-google-ico" height="14" viewBox="0 0 24 24" width="14"><path d="M21.35 11.1h-9.17v2.73h6.51c-.33 1.81-1.5 3.34-3.2 4.37v3.62h5.18c3.03-2.79 4.78-6.9 4.78-11.82 0-.8-.08-1.57-.23-2.3z" fill="#4285F4"></path><path d="M12.18 22c4.32 0 7.95-1.43 10.6-3.88l-5.18-3.62c-1.43.96-3.26 1.53-5.42 1.53-4.17 0-7.7-2.81-8.96-6.6H-2.1v3.73C.54 18.4 5.94 22 12.18 22z" fill="#34A853"></path><path d="M3.22 13.43a5.85 5.85 0 0 1 0-3.76V5.94H-2.1a9.99 9.99 0 0 0 0 8.95l5.32-3.73z" fill="#FBBC05"></path><path d="M12.18 5.98c2.35 0 4.46.81 6.12 2.4l4.59-4.59C20.12 1.19 16.5 0 12.18 0 5.94 0 .54 3.6-2.1 8.84l5.32 3.73c1.26-3.79 4.79-6.59 8.96-6.59z" fill="#EA4335"></path></svg><span class="qcx-signal-x-label">\u0110\u0103ng nh\u1eadp</span><span aria-hidden="true" class="qcx-signal-x-arrow">&#8594;</span></button><button aria-expanded="false" aria-haspopup="menu" class="qcx-user-chip" data-role="member" hidden="hidden" type="button"><img alt="" class="qcx-user-avatar" decoding="async" height="22" loading="lazy" width="22"/><span class="qcx-user-name"></span><span class="qcx-user-role-badge">MEMBER</span></button>';
         var closeBtn=document.getElementById('qcx-menu-close');
         if(closeBtn && closeBtn.parentNode===mh)mh.insertBefore(mSlot,closeBtn);
         else mh.appendChild(mSlot);
       }
+      var slotMarkup='<button aria-label="\u0110\u0103ng nh\u1eadp b\u1eb1ng Gmail" class="qcx-signal-x qcx-auth-login-btn" type="button"><svg aria-hidden="true" class="qcx-google-ico" height="14" viewBox="0 0 24 24" width="14"><path d="M21.35 11.1h-9.17v2.73h6.51c-.33 1.81-1.5 3.34-3.2 4.37v3.62h5.18c3.03-2.79 4.78-6.9 4.78-11.82 0-.8-.08-1.57-.23-2.3z" fill="#4285F4"></path><path d="M12.18 22c4.32 0 7.95-1.43 10.6-3.88l-5.18-3.62c-1.43.96-3.26 1.53-5.42 1.53-4.17 0-7.7-2.81-8.96-6.6H-2.1v3.73C.54 18.4 5.94 22 12.18 22z" fill="#34A853"></path><path d="M3.22 13.43a5.85 5.85 0 0 1 0-3.76V5.94H-2.1a9.99 9.99 0 0 0 0 8.95l5.32-3.73z" fill="#FBBC05"></path><path d="M12.18 5.98c2.35 0 4.46.81 6.12 2.4l4.59-4.59C20.12 1.19 16.5 0 12.18 0 5.94 0 .54 3.6-2.1 8.84l5.32 3.73c1.26-3.79 4.79-6.59 8.96-6.59z" fill="#EA4335"></path></svg><span class="qcx-signal-x-label">\u0110\u0103ng nh\u1eadp</span><span aria-hidden="true" class="qcx-signal-x-arrow">&#8594;</span></button><button aria-expanded="false" aria-haspopup="menu" class="qcx-user-chip" data-role="member" hidden="hidden" type="button"><img alt="" class="qcx-user-avatar" decoding="async" height="22" loading="lazy" width="22"/><span class="qcx-user-name"></span><span class="qcx-user-role-badge">MEMBER</span></button>';
       var slots=document.querySelectorAll('.qcx-auth-slot');
       for(var i=0;i<slots.length;i++){
         var slot=slots[i];
         var loginBtn=slot.querySelector('.qcx-auth-login-btn');
         var chip=slot.querySelector('.qcx-user-chip');
+        if(!loginBtn || !chip){
+          slot.innerHTML=slotMarkup;
+          loginBtn=slot.querySelector('.qcx-auth-login-btn');
+          chip=slot.querySelector('.qcx-user-chip');
+        }
         if(!loginBtn || !chip)continue;
         if(!loginBtn.getAttribute('data-qcx-bound')){
           loginBtn.setAttribute('data-qcx-bound','1');
@@ -9839,6 +9853,18 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
         }else{
           loginBtn.hidden=false;
           chip.hidden=true;
+        }
+      }
+      var extraTriggers=document.querySelectorAll('[data-qcx-google-login]');
+      for(var j=0;j<extraTriggers.length;j++){
+        var trg=extraTriggers[j];
+        if(!trg.getAttribute('data-qcx-bound')){
+          trg.setAttribute('data-qcx-bound','1');
+          trg.addEventListener('click',function(ev){
+            ev.preventDefault();
+            ev.stopPropagation();
+            triggerGoogleSignIn(null);
+          });
         }
       }
     }
@@ -9876,7 +9902,7 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
       var email=String(profile.email||'').trim().toLowerCase();
       var rawName=String(profile.name||'').trim();
       var emailPrefix=email.split('@')[0]||'Member';
-      if((!rawName || rawName.toLowerCase()===emailPrefix.toLowerCase()) && email==='kkymljnk@gmail.com')rawName='Nguyễn Văn Cần';
+      if((!rawName || rawName.toLowerCase()===emailPrefix.toLowerCase()) && email==='kkymljnk@gmail.com')rawName='Nguy\u1ec5n V\u0103n C\u1ea7n';
       else if((!rawName || rawName.toLowerCase()===emailPrefix.toLowerCase()) && email==='superkhung@gmail.com')rawName='SuperKhung';
       var name=rawName||emailPrefix;
       var vipExp=(recoverRes && recoverRes.vipExpiresAt)||cur.vipExpiresAt||null;
@@ -9994,7 +10020,7 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
         }
         if(statusEl){
           statusEl.classList.remove('is-err');
-          statusEl.textContent='Nhập Họ tên & Gmail của bạn bên dưới rồi bấm Đăng nhập.';
+          statusEl.textContent='Nh\u1eadp H\u1ecd t\u00ean & Gmail c\u1ee7a b\u1ea1n b\u00ean d\u01b0\u1edbi r\u1ed3i b\u1ea5m \u0110\u0103ng nh\u1eadp.';
         }
         if(nmInp && !nmInp.value)nmInp.focus();
         else if(emInp)emInp.focus();
@@ -10002,7 +10028,7 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
       }
       loadGsiScript(function(){
         if(!(window.google && window.google.accounts && window.google.accounts.oauth2)){
-          if(statusEl)statusEl.textContent='Trình duyệt chặn popup Google, vui lòng điền Gmail bên dưới.';
+          if(statusEl)statusEl.textContent='Tr\u00ecnh duy\u1ec7t ch\u1eb7n popup Google, vui l\u00f2ng \u0111i\u1ec1n Gmail b\u00ean d\u01b0\u1edbi.';
           return;
         }
         try{
@@ -10012,10 +10038,10 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
             prompt:'select_account',
             callback:function(tokenRes){
               if(!tokenRes || !tokenRes.access_token){
-                if(statusEl){statusEl.textContent='Bạn đã đóng cửa sổ chọn tài khoản Google.';statusEl.classList.add('is-err');}
+                if(statusEl){statusEl.textContent='B\u1ea1n \u0111\u00e3 \u0111\u00f3ng c\u1eeda s\u1ed5 ch\u1ecdn t\u00e0i kho\u1ea3n Google.';statusEl.classList.add('is-err');}
                 return;
               }
-              if(statusEl){statusEl.classList.remove('is-err');statusEl.textContent='Đang xác thực tài khoản Google...';}
+              if(statusEl){statusEl.classList.remove('is-err');statusEl.textContent='\u0110ang x\u00e1c th\u1ef1c t\u00e0i kho\u1ea3n Google...';}
               fetch('https://www.googleapis.com/oauth2/v3/userinfo',{
                 headers:{'Authorization':'Bearer '+tokenRes.access_token}
               }).then(function(r){return r.json();}).catch(function(){return {};}).then(function(gInfo){
@@ -10025,7 +10051,7 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
           });
           gsiTokenClient.requestAccessToken({prompt:'select_account'});
         }catch(e){
-          if(statusEl)statusEl.textContent='Vui lòng nhập Gmail trực tiếp bên dưới.';
+          if(statusEl)statusEl.textContent='Vui l\u00f2ng nh\u1eadp Gmail tr\u1ef1c ti\u1ebfp b\u00ean d\u01b0\u1edbi.';
         }
       });
     }
@@ -10040,7 +10066,7 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
         return;
       }
       wrap.style.display='block';
-      var html='<div style="font-size:11.5px;color:#8fb6a1;margin-bottom:6px;font-weight:600">Chọn nhanh tài khoản đã đăng nhập:</div>';
+      var html='<div style="font-size:11.5px;color:#8fb6a1;margin-bottom:6px;font-weight:600">Ch\u1ecdn nhanh t\u00e0i kho\u1ea3n \u0111\u00e3 \u0111\u0103ng nh\u1eadp:</div>';
       for(var i=0;i<accs.length;i++){
         var a=accs[i];
         var av=a.picture||('https://unavatar.io/google/'+encodeURIComponent(a.email));
@@ -10057,7 +10083,7 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
           var em=this.getAttribute('data-qcx-pick-email')||'';
           var nm=this.getAttribute('data-qcx-pick-name')||'';
           var st=document.getElementById('qcx-ga-status');
-          if(st){st.classList.remove('is-err');st.textContent='Đang đăng nhập '+em+'...';}
+          if(st){st.classList.remove('is-err');st.textContent='\u0110ang \u0111\u0103ng nh\u1eadp '+em+'...';}
           authenticateGmailProfile({email:em,name:nm},'',st);
         });
       }
@@ -10075,20 +10101,20 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
           '<div class="qcx-payos-head">' +
             '<div style="display:flex;align-items:center;gap:10px">' +
               '<svg width="24" height="24" viewBox="0 0 24 24"><path d="M21.35 11.1h-9.17v2.73h6.51c-.33 1.81-1.5 3.34-3.2 4.37v3.62h5.18c3.03-2.79 4.78-6.9 4.78-11.82 0-.8-.08-1.57-.23-2.3z" fill="#4285F4"/><path d="M12.18 22c4.32 0 7.95-1.43 10.6-3.88l-5.18-3.62c-1.43.96-3.26 1.53-5.42 1.53-4.17 0-7.7-2.81-8.96-6.6H-2.1v3.73C.54 18.4 5.94 22 12.18 22z" fill="#34A853"/><path d="M3.22 13.43a5.85 5.85 0 0 1 0-3.76V5.94H-2.1a9.99 9.99 0 0 0 0 8.95l5.32-3.73z" fill="#FBBC05"/><path d="M12.18 5.98c2.35 0 4.46.81 6.12 2.4l4.59-4.59C20.12 1.19 16.5 0 12.18 0 5.94 0 .54 3.6-2.1 8.84l5.32 3.73c1.26-3.79 4.79-6.59 8.96-6.59z" fill="#EA4335"/></svg>' +
-              '<div><span class="qcx-payos-badge">GOOGLE SIGN-IN</span><h3 class="qcx-payos-title">Đăng nhập bằng Gmail</h3></div>' +
+              '<div><span class="qcx-payos-badge">GOOGLE SIGN-IN</span><h3 class="qcx-payos-title">\u0110\u0103ng nh\u1eadp b\u1eb1ng Gmail</h3></div>' +
             '</div>' +
-            '<button type="button" class="qcx-payos-close" id="qcx-ga-close" aria-label="Đóng">&#215;</button>' +
+            '<button type="button" class="qcx-payos-close" id="qcx-ga-close" aria-label="\u0110\u00f3ng">&#215;</button>' +
           '</div>' +
           '<div id="qcx-ga-payos-notice" class="qcx-payos-vip-banner" style="display:none;margin-bottom:12px"></div>' +
           '<div id="qcx-ga-saved-list" style="display:none;margin-bottom:10px"></div>' +
           '<button type="button" class="qcx-google-oauth-btn" id="qcx-ga-popup-btn" style="display:none">' +
             '<svg width="18" height="18" viewBox="0 0 24 24"><path d="M21.35 11.1h-9.17v2.73h6.51c-.33 1.81-1.5 3.34-3.2 4.37v3.62h5.18c3.03-2.79 4.78-6.9 4.78-11.82 0-.8-.08-1.57-.23-2.3z" fill="#4285F4"/><path d="M12.18 22c4.32 0 7.95-1.43 10.6-3.88l-5.18-3.62c-1.43.96-3.26 1.53-5.42 1.53-4.17 0-7.7-2.81-8.96-6.6H-2.1v3.73C.54 18.4 5.94 22 12.18 22z" fill="#34A853"/><path d="M3.22 13.43a5.85 5.85 0 0 1 0-3.76V5.94H-2.1a9.99 9.99 0 0 0 0 8.95l5.32-3.73z" fill="#FBBC05"/><path d="M12.18 5.98c2.35 0 4.46.81 6.12 2.4l4.59-4.59C20.12 1.19 16.5 0 12.18 0 5.94 0 .54 3.6-2.1 8.84l5.32 3.73c1.26-3.79 4.79-6.59 8.96-6.59z" fill="#EA4335"/></svg>' +
-            '<span>Mở cửa sổ Google OAuth (Popup)</span>' +
+            '<span>M\u1edf c\u1eeda s\u1ed5 Google OAuth (Popup)</span>' +
           '</button>' +
-          '<input type="email" class="qcx-payos-input" id="qcx-ga-email" placeholder="Nhập địa chỉ Gmail của bạn (VD: tenban@gmail.com)"/>' +
-          '<input type="text" class="qcx-payos-input" id="qcx-ga-name" placeholder="Họ và tên hiển thị (Tùy chọn — tự động nhận diện nếu để trống)"/>' +
-          '<button type="button" class="qcx-payos-btn" id="qcx-ga-submit">Tiếp tục với Gmail &#8594;</button>' +
-          '<div class="qcx-payos-status" id="qcx-ga-status">Tự động hiển thị Avatar, phân màu Role (MEMBER / PRO / VIP / ADMIN) &amp; đồng bộ quyền mở khóa</div>' +
+          '<input type="email" class="qcx-payos-input" id="qcx-ga-email" placeholder="Nh\u1eadp \u0111\u1ecba ch\u1ec9 Gmail c\u1ee7a b\u1ea1n (VD: tenban@gmail.com)"/>' +
+          '<input type="text" class="qcx-payos-input" id="qcx-ga-name" placeholder="H\u1ecd v\u00e0 t\u00ean hi\u1ec3n th\u1ecb (T\u00f9y ch\u1ecdn \u2014 t\u1ef1 \u0111\u1ed9ng nh\u1eadn di\u1ec7n n\u1ebfu \u0111\u1ec3 tr\u1ed1ng)"/>' +
+          '<button type="button" class="qcx-payos-btn" id="qcx-ga-submit">Ti\u1ebfp t\u1ee5c v\u1edbi Gmail &#8594;</button>' +
+          '<div class="qcx-payos-status" id="qcx-ga-status">T\u1ef1 \u0111\u1ed9ng hi\u1ec3n th\u1ecb Avatar, ph\u00e2n m\u00e0u Role (MEMBER / PRO / VIP / ADMIN) &amp; \u0111\u1ed3ng b\u1ed9 quy\u1ec1n m\u1edf kh\u00f3a</div>' +
         '</div>';
       document.body.appendChild(m);
       document.getElementById('qcx-ga-close').addEventListener('click',function(){
@@ -10104,12 +10130,12 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
         var email=(document.getElementById('qcx-ga-email').value||'').trim().toLowerCase();
         var st=document.getElementById('qcx-ga-status');
         if(!email || email.indexOf('@')===-1){
-          st.textContent='Vui lòng nhập đúng địa chỉ Gmail của bạn!';
+          st.textContent='Vui l\u00f2ng nh\u1eadp \u0111\u00fang \u0111\u1ecba ch\u1ec9 Gmail c\u1ee7a b\u1ea1n!';
           st.classList.add('is-err');
           return;
         }
         st.classList.remove('is-err');
-        st.textContent='Đang kết nối Gmail & đồng bộ quyền...';
+        st.textContent='\u0110ang k\u1ebft n\u1ed1i Gmail & \u0111\u1ed3ng b\u1ed9 quy\u1ec1n...';
         authenticateGmailProfile({email:email,name:name},'',st);
       }
       document.getElementById('qcx-ga-submit').addEventListener('click',submitDirectGmail);
@@ -10135,7 +10161,7 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
       if(notice){
         if(afterLoginPayosCfg){
           notice.style.display='block';
-          notice.innerHTML='<strong>🔐 Bước 1/2 — Đăng nhập Gmail trước khi thanh toán:</strong> Hệ thống sẽ gắn chặt mã VietQR và quyền mở khóa vào đúng Gmail của bạn (đổi máy vẫn tự mở khóa 100%).';
+          notice.innerHTML='<strong>\ud83d\udd10 B\u01b0\u1edbc 1/2 \u2014 \u0110\u0103ng nh\u1eadp Gmail tr\u01b0\u1edbc khi thanh to\u00e1n:</strong> H\u1ec7 th\u1ed1ng s\u1ebd g\u1eafn ch\u1eb7t m\u00e3 VietQR v\u00e0 quy\u1ec1n m\u1edf kh\u00f3a v\u00e0o \u0111\u00fang Gmail c\u1ee7a b\u1ea1n (\u0111\u1ed5i m\u00e1y v\u1eabn t\u1ef1 m\u1edf kh\u00f3a 100%).';
         }else{
           notice.style.display='none';
         }
@@ -10176,15 +10202,15 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
       var u=(ent && ent.user)||null;
       if(!u)return;
       var role=(u.role||'member').toLowerCase();
-      var statusText='Hạng: Thành viên (Chưa kích hoạt VIP)';
+      var statusText='H\u1ea1ng: Th\u00e0nh vi\u00ean (Ch\u01b0a k\u00edch ho\u1ea1t VIP)';
       if(role==='admin'){
-        statusText='⚡ Quản trị viên hệ thống (Mở khóa toàn bộ)';
+        statusText='\u26a1 Qu\u1ea3n tr\u1ecb vi\u00ean h\u1ec7 th\u1ed1ng (M\u1edf kh\u00f3a to\u00e0n b\u1ed9)';
       }else if(role==='vip'){
         var daysLeft=u.vipUntil?Math.max(1,Math.ceil((u.vipUntil-Date.now())/86400000)):30;
-        statusText='👑 Thành viên VIP — Còn '+daysLeft+' ngày sử dụng';
+        statusText='\ud83d\udc51 Th\u00e0nh vi\u00ean VIP \u2014 C\u00f2n '+daysLeft+' ng\u00e0y s\u1eed d\u1ee5ng';
       }else if(role==='pro'){
         var cnt=(u.items && u.items.length)||Object.keys(ent.unlockedItems||{}).length||1;
-        statusText='💎 Thành viên PRO — Đã sở hữu '+cnt+' bài viết';
+        statusText='\ud83d\udc8e Th\u00e0nh vi\u00ean PRO \u2014 \u0110\u00e3 s\u1edf h\u1eefu '+cnt+' b\u00e0i vi\u1ebft';
       }
       var avUrl=u.picture||('https://ui-avatars.com/api/?name='+encodeURIComponent(u.name||u.email)+'&background=0d261a&color=34e6a0&bold=true&size=96');
       dd.innerHTML=
@@ -10193,10 +10219,10 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
           '<div><p class="qcx-ud-name">'+(u.name||u.email)+'</p><p class="qcx-ud-email">'+u.email+'</p></div>' +
         '</div>' +
         '<div class="qcx-ud-status">'+statusText+'</div>' +
-        '<button type="button" class="qcx-ud-btn" id="qcx-ud-vip">👑 Nâng cấp / Gia hạn VIP 30 ngày</button>' +
-        '<button type="button" class="qcx-ud-btn" id="qcx-ud-sync">🔄 Đồng bộ quyền mở khóa ngay</button>' +
-        (role==='admin'?'<a class="qcx-ud-btn" href="/p/admin.html" style="text-decoration:none">⚙️ Mở trang Quản trị Admin</a>':'') +
-        '<button type="button" class="qcx-ud-btn is-danger" id="qcx-ud-logout">🚪 Đăng xuất tài khoản</button>';
+        '<button type="button" class="qcx-ud-btn" id="qcx-ud-vip">\ud83d\udc51 N\u00e2ng c\u1ea5p / Gia h\u1ea1n VIP 30 ng\u00e0y</button>' +
+        '<button type="button" class="qcx-ud-btn" id="qcx-ud-sync">\ud83d\udd04 \u0110\u1ed3ng b\u1ed9 quy\u1ec1n m\u1edf kh\u00f3a ngay</button>' +
+        (role==='admin'?'<a class="qcx-ud-btn" href="/p/admin.html" style="text-decoration:none">\u2699\ufe0f M\u1edf trang Qu\u1ea3n tr\u1ecb Admin</a>':'') +
+        '<button type="button" class="qcx-ud-btn is-danger" id="qcx-ud-logout">\ud83d\udeaa \u0110\u0103ng xu\u1ea5t t\u00e0i kho\u1ea3n</button>';
       var rect=anchorBtn.getBoundingClientRect();
       dd.style.top=Math.min(window.innerHeight-240,Math.max(8,rect.bottom+8))+'px';
       dd.style.left=Math.min(window.innerWidth-290,Math.max(8,rect.right-270))+'px';
@@ -10208,9 +10234,9 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
       };
       document.getElementById('qcx-ud-sync').onclick=function(){
         var btnSync=this;
-        btnSync.textContent='⏳ Đang đồng bộ từ Vault...';
+        btnSync.textContent='\u23f3 \u0110ang \u0111\u1ed3ng b\u1ed9 t\u1eeb Vault...';
         syncAuthSessionFromServer().then(function(){
-          btnSync.textContent='✅ Đã đồng bộ thành công!';
+          btnSync.textContent='\u2705 \u0110\u00e3 \u0111\u1ed3ng b\u1ed9 th\u00e0nh c\u00f4ng!';
           setTimeout(function(){dd.classList.remove('is-open');},700);
         });
       };
@@ -10335,27 +10361,27 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
       m.innerHTML=
         '<div class="qcx-payos-dialog">' +
           '<div class="qcx-payos-head">' +
-            '<div><span class="qcx-payos-badge" id="qcx-po-badge">VIP 30 NGÀY</span><h3 class="qcx-payos-title" id="qcx-po-title">Mở khóa PayOS VietQR</h3></div>' +
-            '<button type="button" class="qcx-payos-close" id="qcx-po-close" aria-label="Đóng">&#215;</button>' +
+            '<div><span class="qcx-payos-badge" id="qcx-po-badge">VIP 30 NG\u00c0Y</span><h3 class="qcx-payos-title" id="qcx-po-title">M\u1edf kh\u00f3a PayOS VietQR</h3></div>' +
+            '<button type="button" class="qcx-payos-close" id="qcx-po-close" aria-label="\u0110\u00f3ng">&#215;</button>' +
           '</div>' +
           '<div id="qcx-po-checkout-view">' +
             '<div class="qcx-po-gmail-locked" id="qcx-po-gmail-locked" style="display:none"></div>' +
-            '<input type="text" class="qcx-payos-input" id="qcx-po-contact" placeholder="Nhập SĐT hoặc Email (để khôi phục trên máy khác)"/>' +
-            '<div class="qcx-payos-qr-box" id="qcx-po-qr-wrap" style="display:none"><img id="qcx-po-qr-img" alt="Mã VietQR PayOS"/></div>' +
+            '<input type="text" class="qcx-payos-input" id="qcx-po-contact" placeholder="Nh\u1eadp S\u0110T ho\u1eb7c Email (\u0111\u1ec3 kh\u00f4i ph\u1ee5c tr\u00ean m\u00e1y kh\u00e1c)"/>' +
+            '<div class="qcx-payos-qr-box" id="qcx-po-qr-wrap" style="display:none"><img id="qcx-po-qr-img" alt="M\u00e3 VietQR PayOS"/></div>' +
             '<div class="qcx-payos-meta" id="qcx-po-meta" style="display:none">' +
-              '<div class="qcx-payos-row"><span>Số tiền:</span><strong id="qcx-po-amt">—</strong></div>' +
-              '<div class="qcx-payos-row"><span>Nội dung CK:</span><strong id="qcx-po-desc">—</strong></div>' +
-              '<div class="qcx-payos-row"><span>Mã đơn (OrderCode):</span><strong id="qcx-po-code">—</strong></div>' +
+              '<div class="qcx-payos-row"><span>S\u1ed1 ti\u1ec1n:</span><strong id="qcx-po-amt">\u2014</strong></div>' +
+              '<div class="qcx-payos-row"><span>N\u1ed9i dung CK:</span><strong id="qcx-po-desc">\u2014</strong></div>' +
+              '<div class="qcx-payos-row"><span>M\u00e3 \u0111\u01a1n (OrderCode):</span><strong id="qcx-po-code">\u2014</strong></div>' +
             '</div>' +
-            '<button type="button" class="qcx-payos-btn" id="qcx-po-action">Tạo mã QR Thanh toán</button>' +
-            '<div class="qcx-payos-status" id="qcx-po-status">Chọn Tạo mã QR để quét VietQR tự động 24/7</div>' +
-            '<div style="text-align:center"><button type="button" class="qcx-payos-recover-link" id="qcx-po-switch-recover">Đã thanh toán hoặc có VIP? Khôi phục 1 chạm</button></div>' +
+            '<button type="button" class="qcx-payos-btn" id="qcx-po-action">T\u1ea1o m\u00e3 QR Thanh to\u00e1n</button>' +
+            '<div class="qcx-payos-status" id="qcx-po-status">Ch\u1ecdn T\u1ea1o m\u00e3 QR \u0111\u1ec3 qu\u00e9t VietQR t\u1ef1 \u0111\u1ed9ng 24/7</div>' +
+            '<div style="text-align:center"><button type="button" class="qcx-payos-recover-link" id="qcx-po-switch-recover">\u0110\u00e3 thanh to\u00e1n ho\u1eb7c c\u00f3 VIP? Kh\u00f4i ph\u1ee5c 1 ch\u1ea1m</button></div>' +
           '</div>' +
           '<div id="qcx-po-recover-view" style="display:none">' +
-            '<input type="text" class="qcx-payos-input" id="qcx-po-recover-input" placeholder="Nhập SĐT, Email hoặc Mã đơn 8 số (OrderCode)"/>' +
-            '<button type="button" class="qcx-payos-btn" id="qcx-po-recover-btn">Khôi phục quyền truy cập ngay</button>' +
-            '<div class="qcx-payos-status" id="qcx-po-recover-status">Nhập đúng SĐT/Email hoặc Mã đơn để đồng bộ quyền VIP &amp; bài mua lẻ</div>' +
-            '<div style="text-align:center"><button type="button" class="qcx-payos-recover-link" id="qcx-po-switch-pay">&#8592; Quay lại màn hình tạo QR</button></div>' +
+            '<input type="text" class="qcx-payos-input" id="qcx-po-recover-input" placeholder="Nh\u1eadp S\u0110T, Email ho\u1eb7c M\u00e3 \u0111\u01a1n 8 s\u1ed1 (OrderCode)"/>' +
+            '<button type="button" class="qcx-payos-btn" id="qcx-po-recover-btn">Kh\u00f4i ph\u1ee5c quy\u1ec1n truy c\u1eadp ngay</button>' +
+            '<div class="qcx-payos-status" id="qcx-po-recover-status">Nh\u1eadp \u0111\u00fang S\u0110T/Email ho\u1eb7c M\u00e3 \u0111\u01a1n \u0111\u1ec3 \u0111\u1ed3ng b\u1ed9 quy\u1ec1n VIP &amp; b\u00e0i mua l\u1ebb</div>' +
+            '<div style="text-align:center"><button type="button" class="qcx-payos-recover-link" id="qcx-po-switch-pay">&#8592; Quay l\u1ea1i m\u00e0n h\u00ecnh t\u1ea1o QR</button></div>' +
           '</div>' +
         '</div>';
       document.body.appendChild(m);
@@ -10373,9 +10399,9 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
       document.getElementById('qcx-po-recover-btn').addEventListener('click',function(){
         var q=(document.getElementById('qcx-po-recover-input').value||'').trim();
         var st=document.getElementById('qcx-po-recover-status');
-        if(!q){st.textContent='Vui lòng nhập SĐT/Email hoặc Mã đơn hàng!';st.classList.add('is-err');return;}
+        if(!q){st.textContent='Vui l\u00f2ng nh\u1eadp S\u0110T/Email ho\u1eb7c M\u00e3 \u0111\u01a1n h\u00e0ng!';st.classList.add('is-err');return;}
         st.classList.remove('is-err');
-        st.textContent='Đang tra cứu dữ liệu từ Vault...';
+        st.textContent='\u0110ang tra c\u1ee9u d\u1eef li\u1ec7u t\u1eeb Vault...';
         fetch(API_BASE+'/api/recover',{
           method:'POST',
           headers:{'Content-Type':'application/json'},
@@ -10383,19 +10409,19 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
         }).then(function(r){return r.json();}).then(function(res){
           if(res && res.ok && res.sessionToken){
             saveEnt(res);
-            st.textContent='Khôi phục thành công! Đang mở khóa bài viết...';
+            st.textContent='Kh\u00f4i ph\u1ee5c th\u00e0nh c\u00f4ng! \u0110ang m\u1edf kh\u00f3a b\u00e0i vi\u1ebft...';
             var cfg=getResourceConfig();
             tryAutoDelivery(cfg).then(function(opened){
               if(!opened){
-                st.textContent='Đã khôi phục gói của bạn! (Lưu ý: Bài giá riêng cần mua độc lập với VIP)';
+                st.textContent='\u0110\u00e3 kh\u00f4i ph\u1ee5c g\u00f3i c\u1ee7a b\u1ea1n! (L\u01b0u \u00fd: B\u00e0i gi\u00e1 ri\u00eang c\u1ea7n mua \u0111\u1ed9c l\u1eadp v\u1edbi VIP)';
               }
             });
           }else{
-            st.textContent=(res && res.error)||'Không tìm thấy giao dịch phù hợp.';
+            st.textContent=(res && res.error)||'Kh\u00f4ng t\u00ecm th\u1ea5y giao d\u1ecbch ph\u00f9 h\u1ee3p.';
             st.classList.add('is-err');
           }
         }).catch(function(){
-          st.textContent='Lỗi kết nối mạng khi khôi phục.';
+          st.textContent='L\u1ed7i k\u1ebft n\u1ed1i m\u1ea1ng khi kh\u00f4i ph\u1ee5c.';
           st.classList.add('is-err');
         });
       });
@@ -10416,7 +10442,7 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
             user:res.user||null
           });
           var st=document.getElementById('qcx-po-status');
-          if(st){st.classList.remove('is-err');st.textContent='Thanh toán thành công! Đã nâng cấp Role & đang mở khóa...';}
+          if(st){st.classList.remove('is-err');st.textContent='Thanh to\u00e1n th\u00e0nh c\u00f4ng! \u0110\u00e3 n\u00e2ng c\u1ea5p Role & \u0111ang m\u1edf kh\u00f3a...';}
           return tryAutoDelivery(cfg);
         }
         return false;
@@ -10444,20 +10470,20 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
         contactInp.value=loggedUser.email;
         contactInp.style.display='none';
         gmailLocked.style.display='flex';
-        gmailLocked.innerHTML='<span>✅ Gắn với Gmail: <strong>'+loggedUser.name+'</strong> ('+loggedUser.email+')</span>';
+        gmailLocked.innerHTML='<span>\u2705 G\u1eafn v\u1edbi Gmail: <strong>'+loggedUser.name+'</strong> ('+loggedUser.email+')</span>';
       }else if(contactInp && gmailLocked){
         contactInp.style.display='block';
         gmailLocked.style.display='none';
       }
 
       if(cfg.mode==='item'){
-        badge.textContent='SOURCE GIÁ RIÊNG · VĨNH VIỄN';
+        badge.textContent='SOURCE GI\u00c1 RI\u00caNG \u00b7 V\u0128NH VI\u1ec4N';
         badge.classList.add('is-item');
-        title.textContent='Mua riêng tài liệu này ('+fmtVnd(cfg.price)+')';
+        title.textContent='Mua ri\u00eang t\u00e0i li\u1ec7u n\u00e0y ('+fmtVnd(cfg.price)+')';
       }else{
-        badge.textContent='GÓI VIP 30 NGÀY · FULL VIP';
+        badge.textContent='G\u00d3I VIP 30 NG\u00c0Y \u00b7 FULL VIP';
         badge.classList.remove('is-item');
-        title.textContent='Nâng cấp VIP 30 ngày ('+fmtVnd(500000)+')';
+        title.textContent='N\u00e2ng c\u1ea5p VIP 30 ng\u00e0y ('+fmtVnd(500000)+')';
       }
 
       document.getElementById('qcx-po-checkout-view').style.display=startRecover?'none':'block';
@@ -10467,15 +10493,15 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
       btn.onclick=function(){
         var activeOrder=btn.getAttribute('data-active-order');
         if(activeOrder){
-          st.textContent='Đang đối soát trực tiếp với PayOS...';
+          st.textContent='\u0110ang \u0111\u1ed1i so\u00e1t tr\u1ef1c ti\u1ebfp v\u1edbi PayOS...';
           checkOrderNow(activeOrder,cfg,true).then(function(done){
-            if(!done)st.textContent='Hệ thống đang chờ ngân hàng xác nhận — tự động kiểm tra mỗi 2.5s...';
+            if(!done)st.textContent='H\u1ec7 th\u1ed1ng \u0111ang ch\u1edd ng\u00e2n h\u00e0ng x\u00e1c nh\u1eadn \u2014 t\u1ef1 \u0111\u1ed9ng ki\u1ec3m tra m\u1ed7i 2.5s...';
           });
           return;
         }
         btn.disabled=true;
         st.classList.remove('is-err');
-        st.textContent='Đang khởi tạo mã VietQR PayOS...';
+        st.textContent='\u0110ang kh\u1edfi t\u1ea1o m\u00e3 VietQR PayOS...';
         var contact=(loggedUser && loggedUser.email) || (document.getElementById('qcx-po-contact').value||'').trim();
         fetch(API_BASE+'/api/checkout',{
           method:'POST',
@@ -10490,13 +10516,13 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
         }).then(function(r){return r.json();}).then(function(res){
           btn.disabled=false;
           if(!res || (!res.ok && !res.success)){
-            st.textContent=(res && res.error)||'Không tạo được mã QR PayOS.';
+            st.textContent=(res && res.error)||'Kh\u00f4ng t\u1ea1o \u0111\u01b0\u1ee3c m\u00e3 QR PayOS.';
             st.classList.add('is-err');
             return;
           }
           var oCode=res.orderCode;
           btn.setAttribute('data-active-order',String(oCode));
-          btn.textContent='Tôi đã chuyển khoản — Kiểm tra ngay';
+          btn.textContent='T\u00f4i \u0111\u00e3 chuy\u1ec3n kho\u1ea3n \u2014 Ki\u1ec3m tra ngay';
           try{
             localStorage.setItem(PEND_KEY,JSON.stringify({
               orderCode:oCode,
@@ -10515,7 +10541,7 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
           document.getElementById('qcx-po-desc').textContent=res.description||('MMO '+oCode);
           document.getElementById('qcx-po-code').textContent=String(oCode);
           metaBox.style.display='flex';
-          st.textContent='Quét mã VietQR để thanh toán — Tự động mở khóa sau 1-3 giây...';
+          st.textContent='Qu\u00e9t m\u00e3 VietQR \u0111\u1ec3 thanh to\u00e1n \u2014 T\u1ef1 \u0111\u1ed9ng m\u1edf kh\u00f3a sau 1-3 gi\u00e2y...';
           window.clearInterval(pollTimer);
           pollTimer=window.setInterval(function(){
             if(document.visibilityState==='hidden')return;
@@ -10523,7 +10549,7 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
           },2500);
         }).catch(function(){
           btn.disabled=false;
-          st.textContent='Lỗi kết nối khi tạo mã QR.';
+          st.textContent='L\u1ed7i k\u1ebft n\u1ed1i khi t\u1ea1o m\u00e3 QR.';
           st.classList.add('is-err');
         });
       };
@@ -10542,21 +10568,21 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
       var ctaText=panel.querySelector('.qcx-lock-cta b');
 
       if(cfg.mode==='item'){
-        if(divSpan)divSpan.textContent='SOURCE / TÀI LIỆU GIÁ RIÊNG ('+fmtVnd(cfg.price)+')';
-        if(strongEl)strongEl.textContent='Tài liệu giá riêng — Mở khóa vĩnh viễn';
-        if(descEl)descEl.textContent='Thanh toán 1 lần ('+fmtVnd(cfg.price)+') để sở hữu riêng tài liệu này (Không thuộc gói VIP tháng)';
-        if(ctaText)ctaText.textContent='Mua riêng '+fmtVnd(cfg.price);
+        if(divSpan)divSpan.textContent='SOURCE / T\u00c0I LI\u1ec6U GI\u00c1 RI\u00caNG ('+fmtVnd(cfg.price)+')';
+        if(strongEl)strongEl.textContent='T\u00e0i li\u1ec7u gi\u00e1 ri\u00eang \u2014 M\u1edf kh\u00f3a v\u0129nh vi\u1ec5n';
+        if(descEl)descEl.textContent='Thanh to\u00e1n 1 l\u1ea7n ('+fmtVnd(cfg.price)+') \u0111\u1ec3 s\u1edf h\u1eefu ri\u00eang t\u00e0i li\u1ec7u n\u00e0y (Kh\u00f4ng thu\u1ed9c g\u00f3i VIP th\u00e1ng)';
+        if(ctaText)ctaText.textContent='Mua ri\u00eang '+fmtVnd(cfg.price);
         if(isVipActive() && !panel.querySelector('.qcx-payos-vip-banner')){
           var banner=document.createElement('div');
           banner.className='qcx-payos-vip-banner';
-          banner.innerHTML='<strong>Thành viên VIP:</strong> Tài liệu này có mức giá riêng (<strong>'+fmtVnd(cfg.price)+'</strong>) độc lập với gói VIP 500k/tháng. Bạn chỉ cần mua 1 lần để mở vĩnh viễn.';
+          banner.innerHTML='<strong>Th\u00e0nh vi\u00ean VIP:</strong> T\u00e0i li\u1ec7u n\u00e0y c\u00f3 m\u1ee9c gi\u00e1 ri\u00eang (<strong>'+fmtVnd(cfg.price)+'</strong>) \u0111\u1ed9c l\u1eadp v\u1edbi g\u00f3i VIP 500k/th\u00e1ng. B\u1ea1n ch\u1ec9 c\u1ea7n mua 1 l\u1ea7n \u0111\u1ec3 m\u1edf v\u0129nh vi\u1ec5n.';
           panel.appendChild(banner);
         }
       }else{
-        if(divSpan)divSpan.textContent='TÀI LIỆU THÀNH VIÊN VIP (500.000Đ / 30 NGÀY)';
-        if(strongEl)strongEl.textContent='Nâng cấp VIP mở khóa toàn bộ kho tài liệu VIP';
-        if(descEl)descEl.textContent='Chỉ 500.000 đ / tháng — Mở tất cả bài viết VIP tự động (Không bao gồm các bài để giá riêng)';
-        if(ctaText)ctaText.textContent='Mở khóa VIP (500k)';
+        if(divSpan)divSpan.textContent='T\u00c0I LI\u1ec6U TH\u00c0NH VI\u00caN VIP (500.000\u0110 / 30 NG\u00c0Y)';
+        if(strongEl)strongEl.textContent='N\u00e2ng c\u1ea5p VIP m\u1edf kh\u00f3a to\u00e0n b\u1ed9 kho t\u00e0i li\u1ec7u VIP';
+        if(descEl)descEl.textContent='Ch\u1ec9 500.000 \u0111 / th\u00e1ng \u2014 M\u1edf t\u1ea5t c\u1ea3 b\u00e0i vi\u1ebft VIP t\u1ef1 \u0111\u1ed9ng (Kh\u00f4ng bao g\u1ed3m c\u00e1c b\u00e0i \u0111\u1ec3 gi\u00e1 ri\u00eang)';
+        if(ctaText)ctaText.textContent='M\u1edf kh\u00f3a VIP (500k)';
       }
 
       if(ctaBtn && ctaBtn.getAttribute('data-qcx-payos-3tier')!=='1'){
@@ -10574,7 +10600,7 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
         var rec=document.createElement('button');
         rec.type='button';
         rec.className='qcx-payos-recover-link';
-        rec.textContent='Đã thanh toán / Có VIP? Khôi phục quyền truy cập 1 chạm';
+        rec.textContent='\u0110\u00e3 thanh to\u00e1n / C\u00f3 VIP? Kh\u00f4i ph\u1ee5c quy\u1ec1n truy c\u1eadp 1 ch\u1ea1m';
         rec.addEventListener('click',function(){openPayosModal(cfg,true);});
         panel.appendChild(rec);
       }

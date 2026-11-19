@@ -3268,6 +3268,14 @@
                 if (em && adminEmailsList.indexOf(em) === -1) adminEmailsList.push(em);
               });
             }
+            var domCfg = document.querySelector('.qcx-layout-auth-config[data-admin-emails]');
+            if (domCfg) {
+              var csv = String(domCfg.getAttribute('data-admin-emails') || '');
+              csv.split(',').forEach(function (e) {
+                var em = String(e || '').trim().toLowerCase();
+                if (em && adminEmailsList.indexOf(em) === -1) adminEmailsList.push(em);
+              });
+            }
           } catch (e) {}
         }
         function isClientAdminEmail(email) {
@@ -3322,6 +3330,11 @@
             var slot = slots[i];
             var loginBtn = slot.querySelector('.qcx-auth-login-btn');
             var chip = slot.querySelector('.qcx-user-chip');
+            if (!loginBtn || !chip) {
+              slot.innerHTML = slotMarkup;
+              loginBtn = slot.querySelector('.qcx-auth-login-btn');
+              chip = slot.querySelector('.qcx-user-chip');
+            }
             if (!loginBtn || !chip) continue;
             if (!loginBtn.getAttribute('data-qcx-bound')) {
               loginBtn.setAttribute('data-qcx-bound', '1');
@@ -3356,6 +3369,18 @@
             } else {
               loginBtn.hidden = false;
               chip.hidden = true;
+            }
+          }
+          var extraTriggers = document.querySelectorAll('[data-qcx-google-login]');
+          for (var j = 0; j < extraTriggers.length; j++) {
+            var trg = extraTriggers[j];
+            if (!trg.getAttribute('data-qcx-bound')) {
+              trg.setAttribute('data-qcx-bound', '1');
+              trg.addEventListener('click', function (ev) {
+                ev.preventDefault();
+                ev.stopPropagation();
+                triggerGoogleSignIn(null);
+              });
             }
           }
         }
