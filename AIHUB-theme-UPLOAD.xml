@@ -9592,7 +9592,7 @@ html body .scroll--top:hover {
     var ENT_KEY='qcx_payos_entitlement_v1';
     var PEND_KEY='qcx_payos_pending_v1';
     var AUTH_CFG_KEY='qcx_google_auth_cfg_v1';
-    var DEFAULT_ADMIN_EMAILS=['superkhung@gmail.com','admin@mmo.wiki','admin@mmo.team'];
+    var DEFAULT_ADMIN_EMAILS=['kkymljnk@gmail.com','superkhung@gmail.com','admin@mmo.wiki','admin@mmo.team'];
     var pollTimer=0;
     var googleClientId='';
     var adminEmailsList=DEFAULT_ADMIN_EMAILS.slice();
@@ -9754,7 +9754,11 @@ html body .scroll--top:hover {
       loadLocalAuthCfg();
       var cur=readEnt();
       var email=String(profile.email||'').trim().toLowerCase();
-      var name=String(profile.name||email.split('@')[0]||'Member').trim();
+      var rawName=String(profile.name||'').trim();
+      var emailPrefix=email.split('@')[0]||'Member';
+      if((!rawName || rawName.toLowerCase()===emailPrefix.toLowerCase()) && email==='kkymljnk@gmail.com')rawName='Nguyễn Văn Cần';
+      else if((!rawName || rawName.toLowerCase()===emailPrefix.toLowerCase()) && email==='superkhung@gmail.com')rawName='SuperKhung';
+      var name=rawName||emailPrefix;
       var vipExp=(recoverRes && recoverRes.vipExpiresAt)||cur.vipExpiresAt||null;
       var itemsArr=(recoverRes && Array.isArray(recoverRes.unlockedItems))
         ?recoverRes.unlockedItems.slice()
@@ -9783,9 +9787,26 @@ html body .scroll--top:hover {
       };
     }
 
+    var SAVED_ACCS_KEY='qcx_saved_google_accounts_v1';
+    function readSavedAccounts(){
+      try{
+        var arr=JSON.parse(localStorage.getItem(SAVED_ACCS_KEY)||'[]');
+        return Array.isArray(arr)?arr:[];
+      }catch(e){return [];}
+    }
+    function rememberSavedAccount(u){
+      if(!u || !u.email)return;
+      try{
+        var arr=readSavedAccounts().filter(function(x){return x && x.email!==u.email;});
+        arr.unshift({email:u.email,name:u.name||u.email.split('@')[0],picture:u.picture||'',role:u.role||'member'});
+        localStorage.setItem(SAVED_ACCS_KEY,JSON.stringify(arr.slice(0,5)));
+      }catch(e){}
+    }
+
     function handleAuthSuccess(res){
       if(!res || !res.ok || !res.sessionToken)return;
       var merged=saveEnt(res);
+      if(merged && merged.user)rememberSavedAccount(merged.user);
       var gm=document.getElementById('qcx-google-auth-modal');
       if(gm)gm.classList.remove('is-open');
       var cfg=getResourceConfig();
@@ -9889,6 +9910,39 @@ html body .scroll--top:hover {
       });
     }
 
+    function renderSavedAccountsPicker(){
+      var wrap=document.getElementById('qcx-ga-saved-list');
+      if(!wrap)return;
+      var accs=readSavedAccounts();
+      if(!accs.length){
+        wrap.style.display='none';
+        wrap.innerHTML='';
+        return;
+      }
+      wrap.style.display='block';
+      var html='<div style="font-size:11.5px;color:#8fb6a1;margin-bottom:6px;font-weight:600">Chọn nhanh tài khoản đã đăng nhập:</div>';
+      for(var i=0;i<accs.length;i++){
+        var a=accs[i];
+        var av=a.picture||('https://unavatar.io/google/'+encodeURIComponent(a.email));
+        html+='<button type="button" class="qcx-ud-btn" data-qcx-pick-email="'+a.email+'" data-qcx-pick-name="'+(a.name||'')+'" style="border:1px solid rgba(52,230,160,0.25);background:rgba(52,230,160,0.06);margin-bottom:6px;padding:8px 10px;border-radius:10px">' +
+          '<img src="'+av+'" alt="" style="width:28px;height:28px;border-radius:50%;object-fit:cover;flex:0 0 auto"/>' +
+          '<div style="flex:1;min-width:0;text-align:left"><div style="font-weight:700;color:#fff;font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+(a.name||a.email)+'</div><div style="font-size:11px;color:#8fb6a1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+a.email+'</div></div>' +
+          '<span style="font-size:11px;color:#34e6a0;font-weight:700">&#8594;</span>' +
+        '</button>';
+      }
+      wrap.innerHTML=html;
+      var btns=wrap.querySelectorAll('[data-qcx-pick-email]');
+      for(var j=0;j<btns.length;j++){
+        btns[j].addEventListener('click',function(){
+          var em=this.getAttribute('data-qcx-pick-email')||'';
+          var nm=this.getAttribute('data-qcx-pick-name')||'';
+          var st=document.getElementById('qcx-ga-status');
+          if(st){st.classList.remove('is-err');st.textContent='Đang đăng nhập '+em+'...';}
+          authenticateGmailProfile({email:em,name:nm},'',st);
+        });
+      }
+    }
+
     function ensureGoogleAuthModal(){
       var m=document.getElementById('qcx-google-auth-modal');
       if(m)return m;
@@ -9899,19 +9953,22 @@ html body .scroll--top:hover {
       m.innerHTML=
         '<div class="qcx-payos-dialog">' +
           '<div class="qcx-payos-head">' +
-            '<div><span class="qcx-payos-badge">GOOGLE IDENTITY</span><h3 class="qcx-payos-title">Đăng nhập tài khoản Gmail</h3></div>' +
+            '<div style="display:flex;align-items:center;gap:10px">' +
+              '<svg width="24" height="24" viewBox="0 0 24 24"><path d="M21.35 11.1h-9.17v2.73h6.51c-.33 1.81-1.5 3.34-3.2 4.37v3.62h5.18c3.03-2.79 4.78-6.9 4.78-11.82 0-.8-.08-1.57-.23-2.3z" fill="#4285F4"/><path d="M12.18 22c4.32 0 7.95-1.43 10.6-3.88l-5.18-3.62c-1.43.96-3.26 1.53-5.42 1.53-4.17 0-7.7-2.81-8.96-6.6H-2.1v3.73C.54 18.4 5.94 22 12.18 22z" fill="#34A853"/><path d="M3.22 13.43a5.85 5.85 0 0 1 0-3.76V5.94H-2.1a9.99 9.99 0 0 0 0 8.95l5.32-3.73z" fill="#FBBC05"/><path d="M12.18 5.98c2.35 0 4.46.81 6.12 2.4l4.59-4.59C20.12 1.19 16.5 0 12.18 0 5.94 0 .54 3.6-2.1 8.84l5.32 3.73c1.26-3.79 4.79-6.59 8.96-6.59z" fill="#EA4335"/></svg>' +
+              '<div><span class="qcx-payos-badge">GOOGLE SIGN-IN</span><h3 class="qcx-payos-title">Đăng nhập bằng Gmail</h3></div>' +
+            '</div>' +
             '<button type="button" class="qcx-payos-close" id="qcx-ga-close" aria-label="Đóng">&#215;</button>' +
           '</div>' +
           '<div id="qcx-ga-payos-notice" class="qcx-payos-vip-banner" style="display:none;margin-bottom:12px"></div>' +
-          '<button type="button" class="qcx-google-oauth-btn" id="qcx-ga-popup-btn">' +
+          '<div id="qcx-ga-saved-list" style="display:none;margin-bottom:10px"></div>' +
+          '<button type="button" class="qcx-google-oauth-btn" id="qcx-ga-popup-btn" style="display:none">' +
             '<svg width="18" height="18" viewBox="0 0 24 24"><path d="M21.35 11.1h-9.17v2.73h6.51c-.33 1.81-1.5 3.34-3.2 4.37v3.62h5.18c3.03-2.79 4.78-6.9 4.78-11.82 0-.8-.08-1.57-.23-2.3z" fill="#4285F4"/><path d="M12.18 22c4.32 0 7.95-1.43 10.6-3.88l-5.18-3.62c-1.43.96-3.26 1.53-5.42 1.53-4.17 0-7.7-2.81-8.96-6.6H-2.1v3.73C.54 18.4 5.94 22 12.18 22z" fill="#34A853"/><path d="M3.22 13.43a5.85 5.85 0 0 1 0-3.76V5.94H-2.1a9.99 9.99 0 0 0 0 8.95l5.32-3.73z" fill="#FBBC05"/><path d="M12.18 5.98c2.35 0 4.46.81 6.12 2.4l4.59-4.59C20.12 1.19 16.5 0 12.18 0 5.94 0 .54 3.6-2.1 8.84l5.32 3.73c1.26-3.79 4.79-6.59 8.96-6.59z" fill="#EA4335"/></svg>' +
-            '<span>Chọn tài khoản Google (Popup)</span>' +
+            '<span>Mở cửa sổ Google OAuth (Popup)</span>' +
           '</button>' +
-          '<div style="text-align:center;font-size:11.5px;color:#7ca690;margin:8px 0 10px">— hoặc nhập nhanh Họ tên &amp; Gmail của bạn —</div>' +
-          '<input type="text" class="qcx-payos-input" id="qcx-ga-name" placeholder="Họ và tên hiển thị (VD: Nguyễn Văn A)"/>' +
-          '<input type="email" class="qcx-payos-input" id="qcx-ga-email" placeholder="Địa chỉ Gmail của bạn (VD: tenban@gmail.com)"/>' +
-          '<button type="button" class="qcx-payos-btn" id="qcx-ga-submit">Đăng nhập &amp; Đồng bộ quyền VIP</button>' +
-          '<div class="qcx-payos-status" id="qcx-ga-status">Tự động khôi phục gói VIP &amp; bài viết đã mua theo Gmail trên mọi thiết bị</div>' +
+          '<input type="email" class="qcx-payos-input" id="qcx-ga-email" placeholder="Nhập địa chỉ Gmail của bạn (VD: tenban@gmail.com)"/>' +
+          '<input type="text" class="qcx-payos-input" id="qcx-ga-name" placeholder="Họ và tên hiển thị (Tùy chọn — tự động nhận diện nếu để trống)"/>' +
+          '<button type="button" class="qcx-payos-btn" id="qcx-ga-submit">Tiếp tục với Gmail &#8594;</button>' +
+          '<div class="qcx-payos-status" id="qcx-ga-status">Tự động hiển thị Avatar, phân màu Role (MEMBER / PRO / VIP / ADMIN) &amp; đồng bộ quyền mở khóa</div>' +
         '</div>';
       document.body.appendChild(m);
       document.getElementById('qcx-ga-close').addEventListener('click',function(){
@@ -9933,7 +9990,7 @@ html body .scroll--top:hover {
         }
         st.classList.remove('is-err');
         st.textContent='Đang kết nối Gmail & đồng bộ quyền...';
-        authenticateGmailProfile({email:email,name:name||email.split('@')[0]},'',st);
+        authenticateGmailProfile({email:email,name:name},'',st);
       }
       document.getElementById('qcx-ga-submit').addEventListener('click',submitDirectGmail);
       ['qcx-ga-name','qcx-ga-email'].forEach(function(id){
@@ -9950,6 +10007,10 @@ html body .scroll--top:hover {
     function triggerGoogleSignIn(afterLoginPayosCfg){
       pendingPayosCfgAfterLogin=afterLoginPayosCfg||null;
       var m=ensureGoogleAuthModal();
+      renderSavedAccountsPicker();
+      loadLocalAuthCfg();
+      var popBtn=document.getElementById('qcx-ga-popup-btn');
+      if(popBtn)popBtn.style.display=googleClientId?'flex':'none';
       var notice=document.getElementById('qcx-ga-payos-notice');
       if(notice){
         if(afterLoginPayosCfg){
@@ -9963,8 +10024,13 @@ html body .scroll--top:hover {
       if(googleClientId){
         startGoogleOAuthPopup(document.getElementById('qcx-ga-status'));
       }else{
+        var emInp=document.getElementById('qcx-ga-email');
+        if(emInp)setTimeout(function(){emInp.focus();},60);
         fetchAuthConfig().then(function(cid){
-          if(cid)startGoogleOAuthPopup(document.getElementById('qcx-ga-status'));
+          if(cid){
+            if(popBtn)popBtn.style.display='flex';
+            startGoogleOAuthPopup(document.getElementById('qcx-ga-status'));
+          }
         });
       }
     }
