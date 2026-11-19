@@ -1,0 +1,302 @@
+/* ==========================================================================
+   MMO TEAM — Role Username FX & Compact Pill Styles (v2026.11.19.6)
+   Self-hosted animated FX assets in /images/fx/:
+     - spark.gif, spark-red.gif, spark-gold.gif, spark-cyan.gif,
+       spark-purple.gif, spark-green.gif, spark-pink.gif, thunder_rank.webp
+   ========================================================================== */
+
+@keyframes SuperiorRankAnimate {
+  0%   { background-position: 0% 50%, center; }
+  100% { background-position: 300% 50%, center; }
+}
+
+@keyframes qcxGradFlow {
+  0%   { background-position: 0% 50%, center; }
+  100% { background-position: 200% 50%, center; }
+}
+
+.qcx-user-role-badge {
+  display: none !important;
+}
+
+.qcx-user-chip {
+  appearance: none;
+  box-sizing: border-box !important;
+  cursor: pointer;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  height: 28px !important;
+  padding: 0 10px 0 3px !important;
+  border-radius: 999px !important;
+  border: 1px solid rgba(52, 230, 160, 0.35) !important;
+  background: rgba(10, 22, 16, 0.92) !important;
+  color: #e8fff2 !important;
+  font: 700 11.5px/1 var(--qcx-article-sans, system-ui, sans-serif) !important;
+  transition: all 0.18s ease !important;
+  max-width: 195px !important;
+}
+
+.qcx-auth-slot--topbar .qcx-user-chip {
+  height: 26px !important;
+  padding: 0 9px 0 3px !important;
+  gap: 5.5px !important;
+  font-size: 11.5px !important;
+  max-width: 180px !important;
+}
+
+.qcx-user-avatar {
+  box-sizing: border-box !important;
+  width: 20px !important;
+  height: 20px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  flex: 0 0 auto !important;
+  border: 1.5px solid #34e6a0 !important;
+  background: #07120c !important;
+  display: block !important;
+}
+
+.qcx-auth-slot--topbar .qcx-user-avatar {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+.qcx-user-name,
+.qcx-ud-name {
+  position: relative !important;
+  display: inline-block !important;
+  white-space: nowrap !important;
+  padding: 1px 4px !important;
+  border-radius: 4px !important;
+  font-weight: 800 !important;
+  line-height: 1.25 !important;
+  letter-spacing: 0.01em !important;
+}
+
+.qcx-user-name {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  max-width: 140px !important;
+}
+
+.qcx-auth-slot--topbar .qcx-user-name {
+  max-width: 130px !important;
+  font-size: 11.5px !important;
+}
+
+/* 1. ADMIN Default — .username--style3 (Crimson + spark.gif) */
+.qcx-user-chip[data-name-style="crimson"] {
+  border-color: rgba(255, 36, 36, 0.72) !important;
+  background: linear-gradient(135deg, rgba(255, 24, 38, 0.18), rgba(120, 12, 22, 0.10)) !important;
+  box-shadow: 0 0 14px rgba(255, 30, 39, 0.30) !important;
+}
+.qcx-user-chip[data-name-style="crimson"] .qcx-user-avatar,
+#qcx-user-dropdown[data-name-style="crimson"] .qcx-ud-head img {
+  border-color: #ff2424 !important;
+  box-shadow: 0 0 7px rgba(255, 30, 39, 0.72) !important;
+}
+.qcx-user-chip[data-name-style="crimson"] .qcx-user-name,
+#qcx-user-dropdown[data-name-style="crimson"] .qcx-ud-name,
+.username--style3 {
+  color: #ff1e27 !important;
+  font-weight: 800 !important;
+  text-shadow: #b52231 1px 1px 10px, 0 0 8px rgba(255, 30, 39, 0.85) !important;
+  background: url("https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.6/images/fx/spark.gif") center repeat !important;
+}
+
+/* 2. VIP Default — Royal Gold + spark.gif */
+.qcx-user-chip[data-name-style="gold"] {
+  border-color: rgba(255, 215, 0, 0.68) !important;
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.16), rgba(180, 120, 0, 0.08)) !important;
+  box-shadow: 0 0 14px rgba(255, 215, 0, 0.28) !important;
+}
+.qcx-user-chip[data-name-style="gold"] .qcx-user-avatar,
+#qcx-user-dropdown[data-name-style="gold"] .qcx-ud-head img {
+  border-color: #ffd700 !important;
+  box-shadow: 0 0 7px rgba(255, 215, 0, 0.65) !important;
+}
+.qcx-user-chip[data-name-style="gold"] .qcx-user-name,
+#qcx-user-dropdown[data-name-style="gold"] .qcx-ud-name {
+  color: #ffd700 !important;
+  font-weight: 800 !important;
+  text-shadow: #c98600 1px 1px 10px, 0 0 8px rgba(255, 215, 0, 0.85) !important;
+  background: url("https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.6/images/fx/spark.gif") center repeat !important;
+}
+
+/* 3. PRO Default — .username--style16 (Electric Thunder + thunder_rank.webp) */
+.qcx-user-chip[data-name-style="thunder"] {
+  border-color: rgba(0, 213, 255, 0.72) !important;
+  background: linear-gradient(135deg, rgba(0, 140, 255, 0.18), rgba(6, 79, 162, 0.12)) !important;
+  box-shadow: 0 0 14px rgba(0, 213, 255, 0.34) !important;
+}
+.qcx-user-chip[data-name-style="thunder"] .qcx-user-avatar,
+#qcx-user-dropdown[data-name-style="thunder"] .qcx-ud-head img {
+  border-color: #00d5ff !important;
+  box-shadow: 0 0 7px rgba(0, 213, 255, 0.75) !important;
+}
+.qcx-user-chip[data-name-style="thunder"] .qcx-user-name,
+#qcx-user-dropdown[data-name-style="thunder"] .qcx-ud-name,
+.username--style16 {
+  position: relative !important;
+  background:
+    linear-gradient(123deg, #008cff 0%, #00d5ff 20%, #064fa2 27%, #0065d9 35%, #b5fffe 49%, #d4ecff 57%, #00d5ff 68%, #008cff 78%, #00d5ff 92%, #008cff 100%),
+    url("https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.6/images/fx/thunder_rank.webp") !important;
+  -webkit-text-fill-color: transparent !important;
+  -webkit-background-clip: text, border-box !important;
+  background-clip: text, border-box !important;
+  letter-spacing: 0.02em !important;
+  font-weight: 800 !important;
+  animation: SuperiorRankAnimate 4s linear infinite !important;
+  background-size: 300% 100%, 12em 6em !important;
+  filter: drop-shadow(0 0 6px rgba(0, 213, 255, 0.55)) !important;
+}
+
+/* 4. MEMBER Default — Cyber Mint Neon */
+.qcx-user-chip[data-name-style="mint"] {
+  border-color: rgba(52, 230, 160, 0.48) !important;
+  background: rgba(52, 230, 160, 0.08) !important;
+  box-shadow: 0 0 10px rgba(52, 230, 160, 0.14) !important;
+}
+.qcx-user-chip[data-name-style="mint"] .qcx-user-avatar,
+#qcx-user-dropdown[data-name-style="mint"] .qcx-ud-head img {
+  border-color: #34e6a0 !important;
+}
+.qcx-user-chip[data-name-style="mint"] .qcx-user-name,
+#qcx-user-dropdown[data-name-style="mint"] .qcx-ud-name {
+  color: #34e6a0 !important;
+  font-weight: 700 !important;
+  text-shadow: #0f764c 1px 1px 8px, 0 0 6px rgba(52, 230, 160, 0.55) !important;
+  background: none !important;
+}
+
+/* 5. Crimson Thunder (thunder_rank.webp crimson hue) */
+.qcx-user-chip[data-name-style="thunder-red"] {
+  border-color: rgba(255, 56, 76, 0.72) !important;
+  background: linear-gradient(135deg, rgba(255, 36, 56, 0.20), rgba(140, 10, 28, 0.12)) !important;
+  box-shadow: 0 0 14px rgba(255, 36, 56, 0.34) !important;
+}
+.qcx-user-chip[data-name-style="thunder-red"] .qcx-user-avatar,
+#qcx-user-dropdown[data-name-style="thunder-red"] .qcx-ud-head img {
+  border-color: #ff384c !important;
+  box-shadow: 0 0 7px rgba(255, 36, 56, 0.72) !important;
+}
+.qcx-user-chip[data-name-style="thunder-red"] .qcx-user-name,
+#qcx-user-dropdown[data-name-style="thunder-red"] .qcx-ud-name {
+  background:
+    linear-gradient(123deg, #008cff 0%, #00d5ff 20%, #064fa2 27%, #0065d9 35%, #b5fffe 49%, #d4ecff 57%, #00d5ff 68%, #008cff 78%, #00d5ff 92%, #008cff 100%),
+    url("https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.6/images/fx/thunder_rank.webp") !important;
+  -webkit-text-fill-color: transparent !important;
+  -webkit-background-clip: text, border-box !important;
+  background-clip: text, border-box !important;
+  letter-spacing: 0.02em !important;
+  font-weight: 800 !important;
+  animation: SuperiorRankAnimate 4s linear infinite !important;
+  background-size: 300% 100%, 12em 6em !important;
+  filter: hue-rotate(148deg) saturate(1.85) drop-shadow(0 0 6px rgba(255, 42, 64, 0.65)) !important;
+}
+
+/* 6. Electric Cyan Spark */
+.qcx-user-chip[data-name-style="cyan"] {
+  border-color: rgba(0, 217, 255, 0.62) !important;
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.14), rgba(2, 132, 199, 0.06)) !important;
+  box-shadow: 0 0 13px rgba(0, 217, 255, 0.24) !important;
+}
+.qcx-user-chip[data-name-style="cyan"] .qcx-user-avatar,
+#qcx-user-dropdown[data-name-style="cyan"] .qcx-ud-head img {
+  border-color: #00d9ff !important;
+  box-shadow: 0 0 6px rgba(0, 217, 255, 0.6) !important;
+}
+.qcx-user-chip[data-name-style="cyan"] .qcx-user-name,
+#qcx-user-dropdown[data-name-style="cyan"] .qcx-ud-name {
+  color: #00d9ff !important;
+  font-weight: 800 !important;
+  text-shadow: #0284c7 1px 1px 10px, 0 0 8px rgba(0, 217, 255, 0.85) !important;
+  background: url("https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.6/images/fx/spark-cyan.gif") center repeat !important;
+}
+
+/* 7. Amethyst Violet Spark */
+.qcx-user-chip[data-name-style="purple"] {
+  border-color: rgba(192, 132, 252, 0.65) !important;
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.17), rgba(107, 33, 168, 0.08)) !important;
+  box-shadow: 0 0 14px rgba(168, 85, 247, 0.28) !important;
+}
+.qcx-user-chip[data-name-style="purple"] .qcx-user-avatar,
+#qcx-user-dropdown[data-name-style="purple"] .qcx-ud-head img {
+  border-color: #c084fc !important;
+  box-shadow: 0 0 6px rgba(192, 132, 252, 0.65) !important;
+}
+.qcx-user-chip[data-name-style="purple"] .qcx-user-name,
+#qcx-user-dropdown[data-name-style="purple"] .qcx-ud-name {
+  color: #d8b4fe !important;
+  font-weight: 800 !important;
+  text-shadow: #9333ea 1px 1px 10px, 0 0 9px rgba(192, 132, 252, 0.9) !important;
+  background: url("https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.6/images/fx/spark-purple.gif") center repeat !important;
+}
+
+/* 8. Matrix Emerald Spark */
+.qcx-user-chip[data-name-style="emerald"] {
+  border-color: rgba(0, 255, 136, 0.62) !important;
+  background: linear-gradient(135deg, rgba(0, 255, 136, 0.14), rgba(5, 150, 105, 0.06)) !important;
+  box-shadow: 0 0 14px rgba(0, 255, 136, 0.24) !important;
+}
+.qcx-user-chip[data-name-style="emerald"] .qcx-user-avatar,
+#qcx-user-dropdown[data-name-style="emerald"] .qcx-ud-head img {
+  border-color: #00ff88 !important;
+  box-shadow: 0 0 6px rgba(0, 255, 136, 0.6) !important;
+}
+.qcx-user-chip[data-name-style="emerald"] .qcx-user-name,
+#qcx-user-dropdown[data-name-style="emerald"] .qcx-ud-name {
+  color: #00ff88 !important;
+  font-weight: 800 !important;
+  text-shadow: #059669 1px 1px 10px, 0 0 9px rgba(0, 255, 136, 0.85) !important;
+  background: url("https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.6/images/fx/spark-green.gif") center repeat !important;
+}
+
+/* 9. Rainbow RGB Animated + spark.gif */
+.qcx-user-chip[data-name-style="rainbow"] {
+  border-color: rgba(244, 114, 182, 0.65) !important;
+  background: linear-gradient(135deg, rgba(255, 36, 36, 0.13), rgba(192, 132, 252, 0.13), rgba(0, 217, 255, 0.13)) !important;
+  box-shadow: 0 0 14px rgba(192, 132, 252, 0.28) !important;
+}
+.qcx-user-chip[data-name-style="rainbow"] .qcx-user-avatar,
+#qcx-user-dropdown[data-name-style="rainbow"] .qcx-ud-head img {
+  border-color: #f472b6 !important;
+  box-shadow: 0 0 6px rgba(244, 114, 182, 0.65) !important;
+}
+.qcx-user-chip[data-name-style="rainbow"] .qcx-user-name,
+#qcx-user-dropdown[data-name-style="rainbow"] .qcx-ud-name {
+  background:
+    linear-gradient(90deg, #ff3b3b, #ffd700, #34e6a0, #00d9ff, #c084fc, #ff3b3b),
+    url("https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.6/images/fx/spark.gif") !important;
+  -webkit-text-fill-color: transparent !important;
+  -webkit-background-clip: text, border-box !important;
+  background-clip: text, border-box !important;
+  background-size: 200% 100%, auto !important;
+  animation: qcxGradFlow 3s linear infinite !important;
+  filter: drop-shadow(0 0 6px rgba(244, 114, 182, 0.55)) !important;
+}
+
+/* 10. Inferno Blaze Animated + spark-pink.gif */
+.qcx-user-chip[data-name-style="inferno"] {
+  border-color: rgba(255, 107, 53, 0.68) !important;
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.16), rgba(255, 46, 147, 0.10)) !important;
+  box-shadow: 0 0 14px rgba(255, 90, 95, 0.28) !important;
+}
+.qcx-user-chip[data-name-style="inferno"] .qcx-user-avatar,
+#qcx-user-dropdown[data-name-style="inferno"] .qcx-ud-head img {
+  border-color: #ff6b35 !important;
+  box-shadow: 0 0 6px rgba(255, 107, 53, 0.65) !important;
+}
+.qcx-user-chip[data-name-style="inferno"] .qcx-user-name,
+#qcx-user-dropdown[data-name-style="inferno"] .qcx-ud-name {
+  background:
+    linear-gradient(90deg, #ff9f1c, #ff4d4d, #ff2e93, #ff9f1c),
+    url("https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.6/images/fx/spark-pink.gif") !important;
+  -webkit-text-fill-color: transparent !important;
+  -webkit-background-clip: text, border-box !important;
+  background-clip: text, border-box !important;
+  background-size: 200% 100%, auto !important;
+  animation: qcxGradFlow 2.6s linear infinite !important;
+  filter: drop-shadow(0 0 6px rgba(255, 77, 77, 0.65)) !important;
+}
