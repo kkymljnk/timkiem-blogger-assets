@@ -356,9 +356,9 @@ body#layout .qcx-layout-brand span{display:block;color:rgba(230,245,236,.7);font
     </script>
     <!-- Dynamic SEO Meta Description (zero duplicates across labels/posts) -->
     <b:if cond='data:view.isHomepage'>
-      <meta content='MMO TEAM — Kho công cụ AI, hướng dẫn thực chiến và tài nguyên miễn phí cho người Việt. ChatGPT, Claude, Gemini, VPS miễn phí, automation n8n và nhiều hơn nữa.' name='description'/>
+      <meta content='MMO TEAM &#8212; Kho c&#244;ng c&#7909; AI, h&#432;&#7899;ng d&#7851;n th&#7921;c chi&#7871;n v&#224; t&#224;i nguy&#234;n mi&#7877;n ph&#237; cho ng&#432;&#7901;i Vi&#7879;t. ChatGPT, Claude, Gemini, VPS mi&#7877;n ph&#237;, automation n8n v&#224; nhi&#7873;u h&#417;n n&#7919;a.' name='description'/>
     <b:elseif cond='data:view.search.label'/>
-      <meta expr:content='&quot;Tổng hợp bài viết, công cụ và hướng dẫn chuyên mục &quot; + data:view.search.label + &quot; mới nhất, miễn phí và thực chiến tại MMO TEAM.&quot;' name='description'/>
+      <meta expr:content='&quot;T&#7893;ng h&#7907;p b&#224;i vi&#7871;t, c&#244;ng c&#7909; v&#224; h&#432;&#7899;ng d&#7851;n chuy&#234;n m&#7909;c &quot; + data:view.search.label + &quot; m&#7899;i nh&#7845;t, mi&#7877;n ph&#237; v&#224; th&#7921;c chi&#7871;n t&#7841;i MMO TEAM.&quot;' name='description'/>
     <b:elseif cond='data:view.isPost'/>
       <b:loop values='data:widgets.Blog.first.posts.first' var='post'>
         <b:if cond='data:view.description != &quot;&quot; and data:view.description != data:blog.metaDescription'>
@@ -366,23 +366,23 @@ body#layout .qcx-layout-brand span{display:block;color:rgba(230,245,236,.7);font
         <b:elseif cond='data:post.snippets.short != &quot;&quot;'/>
           <meta expr:content='data:post.snippets.short.escaped' name='description'/>
         <b:else/>
-          <meta expr:content='data:post.title.escaped + &quot; — Hướng dẫn chi tiết, công cụ và tài nguyên AI miễn phí trên MMO TEAM.&quot;' name='description'/>
+          <meta expr:content='data:post.title.escaped + &quot; &#8212; H&#432;&#7899;ng d&#7851;n chi ti&#7871;t, c&#244;ng c&#7909; v&#224; t&#224;i nguy&#234;n AI mi&#7877;n ph&#237; tr&#234;n MMO TEAM.&quot;' name='description'/>
         </b:if>
       </b:loop>
     <b:elseif cond='data:view.description != &quot;&quot;'/>
       <meta expr:content='data:view.description.escaped' name='description'/>
     <b:else/>
-      <meta expr:content='data:view.title.escaped + &quot; — Hướng dẫn chi tiết, công cụ và tài nguyên AI miễn phí trên MMO TEAM.&quot;' name='description'/>
+      <meta expr:content='data:view.title.escaped + &quot; &#8212; H&#432;&#7899;ng d&#7851;n chi ti&#7871;t, c&#244;ng c&#7909; v&#224; t&#224;i nguy&#234;n AI mi&#7877;n ph&#237; tr&#234;n MMO TEAM.&quot;' name='description'/>
     </b:if>
     <!-- Dynamic SEO Keywords per view -->
     <b:if cond='data:view.isPost'>
       <b:loop values='data:widgets.Blog.first.posts.first' var='post'>
-        <meta expr:content='data:post.title.escaped + &quot;, &quot; + (data:post.labels ? data:post.labels.first.name + &quot;, &quot; : &quot;&quot;) + &quot;hướng dẫn AI, công cụ AI miễn phí, MMO TEAM&quot;' name='keywords'/>
+        <meta expr:content='data:post.title.escaped + &quot;, &quot; + (data:post.labels ? data:post.labels.first.name + &quot;, &quot; : &quot;&quot;) + &quot;h&#432;&#7899;ng d&#7851;n AI, c&#244;ng c&#7909; AI mi&#7877;n ph&#237;, MMO TEAM&quot;' name='keywords'/>
       </b:loop>
     <b:elseif cond='data:view.search.label'/>
-      <meta expr:content='data:view.search.label + &quot;, hướng dẫn &quot; + data:view.search.label + &quot;, tài nguyên &quot; + data:view.search.label + &quot; miễn phí, công cụ AI, MMO TEAM&quot;' name='keywords'/>
+      <meta expr:content='data:view.search.label + &quot;, h&#432;&#7899;ng d&#7851;n &quot; + data:view.search.label + &quot;, t&#224;i nguy&#234;n &quot; + data:view.search.label + &quot; mi&#7877;n ph&#237;, c&#244;ng c&#7909; AI, MMO TEAM&quot;' name='keywords'/>
     <b:else/>
-      <meta content='công cụ AI miễn phí, AI tools Vietnam, ChatGPT miễn phí, Claude AI, Gemini AI, VPS miễn phí, n8n self-host, tự động hóa AI, tài nguyên AI, thủ thuật công nghệ, MMO, MMO TEAM' name='keywords'/>
+      <meta content='c&#244;ng c&#7909; AI mi&#7877;n ph&#237;, AI tools Vietnam, ChatGPT mi&#7877;n ph&#237;, Claude AI, Gemini AI, VPS mi&#7877;n ph&#237;, n8n self-host, t&#7921; &#273;&#7897;ng h&#243;a AI, t&#224;i nguy&#234;n AI, th&#7911; thu&#7853;t c&#244;ng ngh&#7879;, MMO, MMO TEAM' name='keywords'/>
     </b:if>
     <meta content='summary_large_image' name='twitter:card'/>
     <meta content='MMO TEAM' property='og:site_name'/>
@@ -410,21 +410,21 @@ body#layout .qcx-layout-brand span{display:block;color:rgba(230,245,236,.7);font
       </b:loop>
     </b:if>
     <b:if cond='data:view.isHomepage'>
-      <meta content='MMO TEAM – Công cụ AI · Hướng dẫn thực chiến · Tài nguyên miễn phí' property='og:title'/>
-      <meta content='MMO TEAM – Công cụ AI · Hướng dẫn thực chiến · Tài nguyên miễn phí' name='twitter:title'/>
+      <meta content='MMO TEAM &#8211; C&#244;ng c&#7909; AI &#183; H&#432;&#7899;ng d&#7851;n th&#7921;c chi&#7871;n &#183; T&#224;i nguy&#234;n mi&#7877;n ph&#237;' property='og:title'/>
+      <meta content='MMO TEAM &#8211; C&#244;ng c&#7909; AI &#183; H&#432;&#7899;ng d&#7851;n th&#7921;c chi&#7871;n &#183; T&#224;i nguy&#234;n mi&#7877;n ph&#237;' name='twitter:title'/>
     <b:elseif cond='data:view.search.label'/>
-      <meta expr:content='data:view.search.label + &quot; – Công cụ &amp; Hướng dẫn mới nhất | MMO TEAM&quot;' property='og:title'/>
-      <meta expr:content='data:view.search.label + &quot; – Công cụ &amp; Hướng dẫn mới nhất | MMO TEAM&quot;' name='twitter:title'/>
+      <meta expr:content='data:view.search.label + &quot; &#8211; C&#244;ng c&#7909; &amp; H&#432;&#7899;ng d&#7851;n m&#7899;i nh&#7845;t | MMO TEAM&quot;' property='og:title'/>
+      <meta expr:content='data:view.search.label + &quot; &#8211; C&#244;ng c&#7909; &amp; H&#432;&#7899;ng d&#7851;n m&#7899;i nh&#7845;t | MMO TEAM&quot;' name='twitter:title'/>
     <b:else/>
       <meta expr:content='data:view.title.escaped' property='og:title'/>
       <meta expr:content='data:view.title.escaped' name='twitter:title'/>
     </b:if>
     <b:if cond='data:view.isHomepage'>
-      <meta content='MMO TEAM — Kho công cụ AI, hướng dẫn thực chiến và tài nguyên miễn phí cho người Việt. ChatGPT, Claude, Gemini, VPS miễn phí, automation n8n và nhiều hơn nữa.' property='og:description'/>
-      <meta content='MMO TEAM — Kho công cụ AI, hướng dẫn thực chiến và tài nguyên miễn phí cho người Việt. ChatGPT, Claude, Gemini, VPS miễn phí, automation n8n và nhiều hơn nữa.' name='twitter:description'/>
+      <meta content='MMO TEAM &#8212; Kho c&#244;ng c&#7909; AI, h&#432;&#7899;ng d&#7851;n th&#7921;c chi&#7871;n v&#224; t&#224;i nguy&#234;n mi&#7877;n ph&#237; cho ng&#432;&#7901;i Vi&#7879;t. ChatGPT, Claude, Gemini, VPS mi&#7877;n ph&#237;, automation n8n v&#224; nhi&#7873;u h&#417;n n&#7919;a.' property='og:description'/>
+      <meta content='MMO TEAM &#8212; Kho c&#244;ng c&#7909; AI, h&#432;&#7899;ng d&#7851;n th&#7921;c chi&#7871;n v&#224; t&#224;i nguy&#234;n mi&#7877;n ph&#237; cho ng&#432;&#7901;i Vi&#7879;t. ChatGPT, Claude, Gemini, VPS mi&#7877;n ph&#237;, automation n8n v&#224; nhi&#7873;u h&#417;n n&#7919;a.' name='twitter:description'/>
     <b:elseif cond='data:view.search.label'/>
-      <meta expr:content='&quot;Tổng hợp bài viết, công cụ và hướng dẫn chuyên mục &quot; + data:view.search.label + &quot; mới nhất, miễn phí và thực chiến tại MMO TEAM.&quot;' property='og:description'/>
-      <meta expr:content='&quot;Tổng hợp bài viết, công cụ và hướng dẫn chuyên mục &quot; + data:view.search.label + &quot; mới nhất, miễn phí và thực chiến tại MMO TEAM.&quot;' name='twitter:description'/>
+      <meta expr:content='&quot;T&#7893;ng h&#7907;p b&#224;i vi&#7871;t, c&#244;ng c&#7909; v&#224; h&#432;&#7899;ng d&#7851;n chuy&#234;n m&#7909;c &quot; + data:view.search.label + &quot; m&#7899;i nh&#7845;t, mi&#7877;n ph&#237; v&#224; th&#7921;c chi&#7871;n t&#7841;i MMO TEAM.&quot;' property='og:description'/>
+      <meta expr:content='&quot;T&#7893;ng h&#7907;p b&#224;i vi&#7871;t, c&#244;ng c&#7909; v&#224; h&#432;&#7899;ng d&#7851;n chuy&#234;n m&#7909;c &quot; + data:view.search.label + &quot; m&#7899;i nh&#7845;t, mi&#7877;n ph&#237; v&#224; th&#7921;c chi&#7871;n t&#7841;i MMO TEAM.&quot;' name='twitter:description'/>
     <b:elseif cond='data:view.isPost'/>
       <b:loop values='data:widgets.Blog.first.posts.first' var='post'>
         <b:if cond='data:view.description != &quot;&quot; and data:view.description != data:blog.metaDescription'>
@@ -434,16 +434,16 @@ body#layout .qcx-layout-brand span{display:block;color:rgba(230,245,236,.7);font
           <meta expr:content='data:post.snippets.short.escaped' property='og:description'/>
           <meta expr:content='data:post.snippets.short.escaped' name='twitter:description'/>
         <b:else/>
-          <meta expr:content='data:post.title.escaped + &quot; — Hướng dẫn chi tiết, công cụ và tài nguyên AI miễn phí trên MMO TEAM.&quot;' property='og:description'/>
-          <meta expr:content='data:post.title.escaped + &quot; — Hướng dẫn chi tiết, công cụ và tài nguyên AI miễn phí trên MMO TEAM.&quot;' name='twitter:description'/>
+          <meta expr:content='data:post.title.escaped + &quot; &#8212; H&#432;&#7899;ng d&#7851;n chi ti&#7871;t, c&#244;ng c&#7909; v&#224; t&#224;i nguy&#234;n AI mi&#7877;n ph&#237; tr&#234;n MMO TEAM.&quot;' property='og:description'/>
+          <meta expr:content='data:post.title.escaped + &quot; &#8212; H&#432;&#7899;ng d&#7851;n chi ti&#7871;t, c&#244;ng c&#7909; v&#224; t&#224;i nguy&#234;n AI mi&#7877;n ph&#237; tr&#234;n MMO TEAM.&quot;' name='twitter:description'/>
         </b:if>
       </b:loop>
     <b:elseif cond='data:view.description != &quot;&quot;'/>
       <meta expr:content='data:view.description.escaped' property='og:description'/>
       <meta expr:content='data:view.description.escaped' name='twitter:description'/>
     <b:else/>
-      <meta expr:content='data:view.title.escaped + &quot; — Hướng dẫn chi tiết, công cụ và tài nguyên AI miễn phí trên MMO TEAM.&quot;' property='og:description'/>
-      <meta expr:content='data:view.title.escaped + &quot; — Hướng dẫn chi tiết, công cụ và tài nguyên AI miễn phí trên MMO TEAM.&quot;' name='twitter:description'/>
+      <meta expr:content='data:view.title.escaped + &quot; &#8212; H&#432;&#7899;ng d&#7851;n chi ti&#7871;t, c&#244;ng c&#7909; v&#224; t&#224;i nguy&#234;n AI mi&#7877;n ph&#237; tr&#234;n MMO TEAM.&quot;' property='og:description'/>
+      <meta expr:content='data:view.title.escaped + &quot; &#8212; H&#432;&#7899;ng d&#7851;n chi ti&#7871;t, c&#244;ng c&#7909; v&#224; t&#224;i nguy&#234;n AI mi&#7877;n ph&#237; tr&#234;n MMO TEAM.&quot;' name='twitter:description'/>
     </b:if>
     <meta expr:content='data:view.title.escaped' property='og:image:alt'/>
     <meta expr:content='data:view.title.escaped' name='twitter:image:alt'/>
@@ -476,7 +476,7 @@ body#layout .qcx-layout-brand span{display:block;color:rgba(230,245,236,.7);font
           &quot;mainEntityOfPage&quot;: { &quot;@type&quot;: &quot;WebPage&quot;, &quot;@id&quot;: &quot;<data:post.url.canonical/>&quot; },
           &quot;url&quot;: &quot;<data:post.url.canonical/>&quot;,
           &quot;headline&quot;: &quot;<data:post.title.jsonEscaped/>&quot;,
-          &quot;description&quot;: &quot;<b:if cond='data:view.description != &quot;&quot; and data:view.description != data:blog.metaDescription'><data:view.description.jsonEscaped/><b:elseif cond='data:post.snippets.short != &quot;&quot;'/><data:post.snippets.short.jsonEscaped/><b:else/><data:post.title.jsonEscaped/> — Hướng dẫn chi tiết, công cụ và tài nguyên AI miễn phí trên MMO TEAM.</b:if>&quot;,
+          &quot;description&quot;: &quot;<b:if cond='data:view.description != &quot;&quot; and data:view.description != data:blog.metaDescription'><data:view.description.jsonEscaped/><b:elseif cond='data:post.snippets.short != &quot;&quot;'/><data:post.snippets.short.jsonEscaped/><b:else/><data:post.title.jsonEscaped/> &#8212; H&#432;&#7899;ng d&#7851;n chi ti&#7871;t, c&#244;ng c&#7909; v&#224; t&#224;i nguy&#234;n AI mi&#7877;n ph&#237; tr&#234;n MMO TEAM.</b:if>&quot;,
           &quot;inLanguage&quot;: &quot;vi-VN&quot;,
           <b:if cond='data:post.labels'>
           &quot;articleSection&quot;: &quot;<data:post.labels.first.name.jsonEscaped/>&quot;,
@@ -511,7 +511,7 @@ body#layout .qcx-layout-brand span{display:block;color:rgba(230,245,236,.7);font
           &quot;@context&quot;: &quot;https://schema.org&quot;,
           &quot;@type&quot;: &quot;BreadcrumbList&quot;,
           &quot;itemListElement&quot;: [
-            { &quot;@type&quot;: &quot;ListItem&quot;, &quot;position&quot;: 1, &quot;name&quot;: &quot;Trang chủ&quot;, &quot;item&quot;: &quot;<data:blog.canonicalHomepageUrl/>&quot; }
+            { &quot;@type&quot;: &quot;ListItem&quot;, &quot;position&quot;: 1, &quot;name&quot;: &quot;Trang ch&#7911;&quot;, &quot;item&quot;: &quot;<data:blog.canonicalHomepageUrl/>&quot; }
             <b:if cond='data:post.labels and data:post.labels.first.name != &quot;blog&quot;'>
             ,{ &quot;@type&quot;: &quot;ListItem&quot;, &quot;position&quot;: 2, &quot;name&quot;: &quot;<data:post.labels.first.name.jsonEscaped/>&quot;, &quot;item&quot;: &quot;<data:post.labels.first.url/>&quot; }
             ,{ &quot;@type&quot;: &quot;ListItem&quot;, &quot;position&quot;: 3, &quot;name&quot;: &quot;<data:post.title.jsonEscaped/>&quot;, &quot;item&quot;: &quot;<data:post.url.canonical/>&quot; }
@@ -530,7 +530,7 @@ body#layout .qcx-layout-brand span{display:block;color:rgba(230,245,236,.7);font
         &quot;@id&quot;: &quot;<data:blog.canonicalHomepageUrl/>#website&quot;,
         &quot;url&quot;: &quot;<data:blog.canonicalHomepageUrl/>&quot;,
         &quot;name&quot;: &quot;MMO TEAM&quot;,
-        &quot;description&quot;: &quot;Kho công cụ AI, hướng dẫn thực chiến, source code và tài nguyên MMO cho người Việt.&quot;,
+        &quot;description&quot;: &quot;Kho c&#244;ng c&#7909; AI, h&#432;&#7899;ng d&#7851;n th&#7921;c chi&#7871;n, source code v&#224; t&#224;i nguy&#234;n MMO cho ng&#432;&#7901;i Vi&#7879;t.&quot;,
         &quot;inLanguage&quot;: &quot;vi-VN&quot;,
         &quot;potentialAction&quot;: {
           &quot;@type&quot;: &quot;SearchAction&quot;,
@@ -541,8 +541,8 @@ body#layout .qcx-layout-brand span{display:block;color:rgba(230,245,236,.7);font
       </script>
     </b:if>
   <b:else/>
-    <title>Rất tiếc, không tìm được trang này. | MMO TEAM</title>
-    <meta content='Không tìm thấy nội dung trên MMO TEAM. Trang có thể đã được chuyển, xoá hoặc địa chỉ URL chưa chính xác.' name='description'/>
+    <title>R&#7845;t ti&#7871;c, kh&#244;ng t&#236;m &#273;&#432;&#7907;c trang n&#224;y. | MMO TEAM</title>
+    <meta content='Kh&#244;ng t&#236;m th&#7845;y n&#7897;i dung tr&#234;n MMO TEAM. Trang c&#243; th&#7875; &#273;&#227; &#273;&#432;&#7907;c chuy&#7875;n, xo&#225; ho&#7863;c &#273;&#7883;a ch&#7881; URL ch&#432;a ch&#237;nh x&#225;c.' name='description'/>
     <meta content='noindex, nofollow' name='robots'/>
   </b:if>
   <meta content='IE=edge' http-equiv='X-UA-Compatible'/>
@@ -7115,7 +7115,7 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
   <b:if cond='!data:view.isError'>	
 	<header>
       <div class='main-container'>
-        <b:section class='qcx-brand-zone' id='brand' maxwidgets='5' name='Thương hiệu MMO' showaddelement='true'>
+        <b:section class='qcx-brand-zone' id='brand' maxwidgets='5' name='Th&#432;&#417;ng hi&#7879;u MMO' showaddelement='true'>
           <b:widget id='HTML3' locked='false' title='Logo MMO' type='HTML' version='2' visible='true'>
             <b:widget-settings>
               <b:widget-setting name='content'><![CDATA[<div class="qcx-layout-brand"><img alt="MMO" height="72" src="https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.4/theme/qcx-brand-mark.png" width="72"/><div><strong>MMO</strong><span>MMO TEAM · Layout &amp; branding</span></div></div>]]></b:widget-setting>
@@ -7132,8 +7132,8 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
 </b:includable>
           </b:widget>
         </b:section>
-        <b:section class='header flex-align' id='header' maxwidgets='6' name='Tìm kiếm &amp; Header' showaddelement='true'>
-          <b:widget id='BlogSearch1' locked='false' title='Tìm kiếm' type='BlogSearch' version='2' visible='true'>
+        <b:section class='header flex-align' id='header' maxwidgets='6' name='T&#236;m ki&#7871;m &amp; Header' showaddelement='true'>
+          <b:widget id='BlogSearch1' locked='false' title='T&#236;m ki&#7871;m' type='BlogSearch' version='2' visible='true'>
             <b:includable id='main'>
   <b:attr name='class' value='widget web-search flex-align'/>
   <b:include name='content'/>
@@ -7167,7 +7167,7 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
   <button class='submit has-hover has-svg-icon' expr:aria-label='data:messages.search' type='submit'/>
 </b:includable>
           </b:widget>
-          <b:widget id='HTML6' locked='false' title='Đăng nhập Gmail &amp; Role VIP' type='HTML' version='2' visible='true'>
+          <b:widget id='HTML6' locked='false' title='&#272;&#259;ng nh&#7853;p Gmail &amp; Role VIP' type='HTML' version='2' visible='true'>
             <b:widget-settings>
               <b:widget-setting name='content'><![CDATA[<div class="qcx-layout-auth-config" data-admin-emails="kkymljnk@gmail.com,superkhung@gmail.com,admin@mmo.wiki,admin@mmo.team" data-login-label="Đăng nhập">Google Identity · 4-Tier Role Color (ADMIN / VIP / PRO / MEMBER)</div>]]></b:widget-setting>
             </b:widget-settings>
@@ -7176,7 +7176,7 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
   <div class='qcx-layout-auth-config' data-admin-emails='kkymljnk@gmail.com,superkhung@gmail.com,admin@mmo.wiki,admin@mmo.team' data-login-label='Đăng nhập' style='font-size:12px;color:#8ab8a0'>Google Identity · 4-Tier Role (⚡ ADMIN / 👑 VIP / 💎 PRO / 🌱 MEMBER)</div>
 </b:includable>
           </b:widget>
-          <b:widget id='HTML1' locked='false' title='Nút mở Menu' type='HTML' version='2' visible='true'>
+          <b:widget id='HTML1' locked='false' title='N&#250;t m&#7903; Menu' type='HTML' version='2' visible='true'>
             <b:widget-settings>
               <b:widget-setting name='content'/>
             </b:widget-settings>
@@ -7186,8 +7186,8 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
 </b:includable>
           </b:widget>
         </b:section>
-        <b:section class='menu' id='menu' maxwidgets='6' name='Menu điều hướng' showaddelement='true'>
-          <b:widget id='HTML2' locked='false' title='Đầu mục Menu &amp; Tài khoản' type='HTML' version='2' visible='true'>
+        <b:section class='menu' id='menu' maxwidgets='6' name='Menu &#273;i&#7873;u h&#432;&#7899;ng' showaddelement='true'>
+          <b:widget id='HTML2' locked='false' title='&#272;&#7847;u m&#7909;c Menu &amp; T&#224;i kho&#7843;n' type='HTML' version='2' visible='true'>
             <b:widget-settings>
               <b:widget-setting name='content'/>
             </b:widget-settings>
@@ -7198,7 +7198,7 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
   </div>
 </b:includable>
           </b:widget>
-          <b:widget id='PageList1' locked='false' title='Danh sách Trang &amp; Chuyên mục' type='PageList' version='2' visible='true'>
+          <b:widget id='PageList1' locked='false' title='Danh s&#225;ch Trang &amp; Chuy&#234;n m&#7909;c' type='PageList' version='2' visible='true'>
             <b:widget-settings>
               <b:widget-setting name='pageListJson'>{}</b:widget-setting>
               <b:widget-setting name='homeTitle'>Trang chủ</b:widget-setting>
@@ -7249,8 +7249,8 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
       </div>
 	</header>    
 	<main class='main-container'>
-      <b:section class='qcx-addon-zone qcx-homepage-widgets' cond='data:view.isLayoutMode or data:view.isHomepage' id='homepage-widgets' maxwidgets='3' name='Thêm banner trang chủ' showaddelement='true'>
-        <b:widget id='HTML7' locked='false' title='Thông báo nhanh &amp; Sự kiện (Banner)' type='HTML' version='2' visible='true'>
+      <b:section class='qcx-addon-zone qcx-homepage-widgets' cond='data:view.isLayoutMode or data:view.isHomepage' id='homepage-widgets' maxwidgets='3' name='Th&#234;m banner trang ch&#7911;' showaddelement='true'>
+        <b:widget id='HTML7' locked='false' title='Th&#244;ng b&#225;o nhanh &amp; S&#7921; ki&#7879;n (Banner)' type='HTML' version='2' visible='true'>
           <b:widget-settings>
             <b:widget-setting name='content'><![CDATA[<div class="qcx-home-notice-bar" data-active="false"><span>⚡ Hệ thống đã tích hợp Đăng nhập Gmail &amp; Tự động đồng bộ quyền VIP PayOS trên mọi thiết bị</span></div>]]></b:widget-setting>
           </b:widget-settings>
@@ -7265,8 +7265,8 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
         </b:widget>
       </b:section>
       <div class='main-wrapper'>
-        <b:section class='main' id='main' maxwidgets='1' name='Bài viết chính (Blog)' showaddelement='true'>
-          <b:widget id='Blog1' locked='false' title='Bài đăng trên Blog' type='Blog' version='2' visible='true'>
+        <b:section class='main' id='main' maxwidgets='1' name='B&#224;i vi&#7871;t ch&#237;nh (Blog)' showaddelement='true'>
+          <b:widget id='Blog1' locked='false' title='B&#224;i &#273;&#259;ng tr&#234;n Blog' type='Blog' version='2' visible='true'>
             <b:widget-settings>
               <b:widget-setting name='showDateHeader'>false</b:widget-setting>
               <b:widget-setting name='commentLabel'>Questions</b:widget-setting>
@@ -8273,8 +8273,8 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
 </b:includable>
           </b:widget>
         </b:section>
-        <b:section class='sidebar qcx-addon-zone' cond='data:view.isLayoutMode or data:view.isSingleItem' id='sidebar' maxwidgets='5' name='Thanh bên (Bài viết)' showaddelement='true'>
-          <b:widget id='HTML4' locked='false' title='Bài viết liên quan (Tutorial)' type='HTML' version='2' visible='true'>
+        <b:section class='sidebar qcx-addon-zone' cond='data:view.isLayoutMode or data:view.isSingleItem' id='sidebar' maxwidgets='5' name='Thanh b&#234;n (B&#224;i vi&#7871;t)' showaddelement='true'>
+          <b:widget id='HTML4' locked='false' title='B&#224;i vi&#7871;t li&#234;n quan (Tutorial)' type='HTML' version='2' visible='true'>
             <b:widget-settings>
               <b:widget-setting name='content'><![CDATA[<div class="qcx-related-heading" role="heading" aria-level="2">Bài Viết liên quan</div><ul class="qcx-latest-list" aria-busy="true" aria-label="Bài Viết liên quan"></ul>]]></b:widget-setting>
             </b:widget-settings>
@@ -8286,7 +8286,7 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
   </div>
 </b:includable>
           </b:widget>
-          <b:widget id='HTML8' locked='false' title='Thẻ Thành Viên VIP &amp; Đồng Bộ Gmail' type='HTML' version='2' visible='true'>
+          <b:widget id='HTML8' locked='false' title='Th&#7867; Th&#224;nh Vi&#234;n VIP &amp; &#272;&#7891;ng B&#7897; Gmail' type='HTML' version='2' visible='true'>
             <b:widget-settings>
               <b:widget-setting name='content'><![CDATA[<div class="qcx-sidebar-vip-box"><div class="qcx-svb-badge">GOOGLE IDENTITY · PAYOS</div><div class="qcx-svb-title">Đồng bộ Tài khoản &amp; Quyền VIP</div><p class="qcx-svb-desc">Đăng nhập bằng Gmail để tự động hiển thị Role Color (Admin / VIP / PRO / Member) và khôi phục toàn bộ bài viết đã mua.</p><div class="qcx-auth-slot qcx-auth-slot--sidebar"></div></div>]]></b:widget-setting>
             </b:widget-settings>
@@ -8307,7 +8307,7 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
   </div>
 </b:includable>
           </b:widget>
-          <b:widget id='HTML9' locked='false' title='Chuyên mục AI &amp; Tài nguyên (Topics)' type='HTML' version='2' visible='true'>
+          <b:widget id='HTML9' locked='false' title='Chuy&#234;n m&#7909;c AI &amp; T&#224;i nguy&#234;n (Topics)' type='HTML' version='2' visible='true'>
             <b:widget-settings>
               <b:widget-setting name='content'><![CDATA[<div class="qcx-sidebar-topics-box"><div class="qcx-related-heading" role="heading" aria-level="2">Chuyên mục nổi bật</div><div class="qcx-topics-pills"><a href="/search/label/Tutorial">📚 Tutorial</a><a href="/search/label/FREE">🎁 Tài nguyên FREE</a><a href="/search/label/AI">🤖 Công cụ AI</a><a href="/search/label/Automation">⚡ Automation</a><a href="/search/label/VPS">☁️ Cloud &amp; VPS</a><a href="/search/label/Antigravity">🚀 Antigravity</a></div></div>]]></b:widget-setting>
             </b:widget-settings>
@@ -8329,8 +8329,8 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
 </b:includable>
           </b:widget>
         </b:section>
-        <b:section class='qcx-addon-zone' cond='data:view.isLayoutMode or data:view.isPost' id='below-main' maxwidgets='4' name='Thêm dưới bài (Hỗ trợ &amp; Cộng đồng)' showaddelement='true'>
-          <b:widget id='HTML10' locked='false' title='Cộng đồng MMO TEAM &amp; Hỗ trợ 24/7' type='HTML' version='2' visible='true'>
+        <b:section class='qcx-addon-zone' cond='data:view.isLayoutMode or data:view.isPost' id='below-main' maxwidgets='4' name='Th&#234;m d&#432;&#7899;i b&#224;i (H&#7895; tr&#7907; &amp; C&#7897;ng &#273;&#7891;ng)' showaddelement='true'>
+          <b:widget id='HTML10' locked='false' title='C&#7897;ng &#273;&#7891;ng MMO TEAM &amp; H&#7895; tr&#7907; 24/7' type='HTML' version='2' visible='true'>
             <b:widget-settings>
               <b:widget-setting name='content'><![CDATA[<div class="qcx-below-support-bar"><div class="qcx-bsb-text"><strong>Cần hỗ trợ cài đặt hoặc khôi phục quyền VIP?</strong><span>Tham gia nhóm Telegram MMO TEAM hoặc bấm Đồng bộ Gmail để tự động mở khóa tài nguyên.</span></div><div class="qcx-bsb-actions"><a href="https://t.me/superkhung" target="_blank" rel="noopener noreferrer" class="qcx-bsb-btn qcx-bsb-btn--tg">💬 Hỗ trợ Telegram</a><button type="button" class="qcx-bsb-btn qcx-bsb-btn--auth" data-qcx-google-login="1">🔑 Đồng bộ Gmail</button></div></div>]]></b:widget-setting>
             </b:widget-settings>
@@ -8355,7 +8355,7 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
 
 	</main>
     <footer class='footer'>
-      <b:section class='qcx-addon-zone qcx-footer-gadgets' id='footer' maxwidgets='6' name='Thêm footer' showaddelement='true'>
+      <b:section class='qcx-addon-zone qcx-footer-gadgets' id='footer' maxwidgets='6' name='Th&#234;m footer' showaddelement='true'>
         <b:widget id='HTML5' locked='false' title='MMO Footer Social' type='HTML' version='2' visible='true'>
           <b:widget-settings>
             <b:widget-setting name='content'><![CDATA[<div class="qcx-footer-social"><div class="qcx-footer-brand"><strong>MMO TEAM</strong><span>Công cụ AI &amp; Tài nguyên miễn phí</span></div><div class="qcx-footer-links"><a href="https://t.me/superkhung" target="_blank" rel="noopener noreferrer">📱 Telegram</a><a href="https://www.mmo.team/search/label/Tutorial" rel="noopener">📚 Tutorial</a><a href="https://www.mmo.team/search/label/FREE" rel="noopener">🎁 FREE</a></div><p class="qcx-footer-copy">© 2026 MMO TEAM · <a href="https://www.mmo.team/" rel="home">mmo.team</a></p></div>]]></b:widget-setting>
