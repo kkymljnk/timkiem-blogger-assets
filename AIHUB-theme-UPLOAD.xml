@@ -7079,7 +7079,7 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
     <div class='qcx-signal-inner'>
       <div class='qcx-signal-row'>
         <a aria-label='Về trang chủ MMO' class='qcx-signal-status' href='/'><span aria-hidden='true' class='qcx-signal-dot'/>signal / online</a>
-        <div class='qcx-auth-slot' data-qcx-auth-slot='header'>
+        <div class='qcx-auth-slot' data-qcx-auth-slot='header' id='qcx-header-auth-slot'>
           <button aria-label='Đăng nhập bằng Gmail' class='qcx-signal-x qcx-auth-login-btn' type='button'>
             <svg aria-hidden='true' class='qcx-google-ico' height='14' viewBox='0 0 24 24' width='14'><path d='M21.35 11.1h-9.17v2.73h6.51c-.33 1.81-1.5 3.34-3.2 4.37v3.62h5.18c3.03-2.79 4.78-6.9 4.78-11.82 0-.8-.08-1.57-.23-2.3z' fill='#4285F4'/><path d='M12.18 22c4.32 0 7.95-1.43 10.6-3.88l-5.18-3.62c-1.43.96-3.26 1.53-5.42 1.53-4.17 0-7.7-2.81-8.96-6.6H-2.1v3.73C.54 18.4 5.94 22 12.18 22z' fill='#34A853'/><path d='M3.22 13.43a5.85 5.85 0 0 1 0-3.76V5.94H-2.1a9.99 9.99 0 0 0 0 8.95l5.32-3.73z' fill='#FBBC05'/><path d='M12.18 5.98c2.35 0 4.46.81 6.12 2.4l4.59-4.59C20.12 1.19 16.5 0 12.18 0 5.94 0 .54 3.6-2.1 8.84l5.32 3.73c1.26-3.79 4.79-6.59 8.96-6.59z' fill='#EA4335'/></svg>
             <span class='qcx-signal-x-label'>Đăng nhập</span>
@@ -10116,17 +10116,28 @@ html body .scroll--top:hover {
     }
     function tryAutoDelivery(cfg){
       var ent=readEnt();
-      if(!ent.sessionToken)return Promise.resolve(false);
+      var isAdmin=!!(ent && ent.user && (ent.user.role==='admin' || isClientAdminEmail(ent.user.email)));
+      if(!ent.sessionToken && !isAdmin)return Promise.resolve(false);
       return fetch(API_BASE+'/api/delivery?resourceId='+encodeURIComponent(cfg.resourceId),{
         method:'GET',
-        headers:{'Authorization':'Bearer '+ent.sessionToken}
+        headers:ent.sessionToken?{'Authorization':'Bearer '+ent.sessionToken}:{}
       }).then(function(r){return r.json();}).then(function(res){
         if(res && res.ok && res.data){
           unlockDomWithDelivery(res.data);
           return true;
         }
+        if(isAdmin){
+          unlockDomWithDelivery({});
+          return true;
+        }
         return false;
-      }).catch(function(){return false;});
+      }).catch(function(){
+        if(isAdmin){
+          unlockDomWithDelivery({});
+          return true;
+        }
+        return false;
+      });
     }
     function ensurePayosModal(){
       var m=document.getElementById('qcx-payos-modal');
