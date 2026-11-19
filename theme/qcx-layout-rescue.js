@@ -3130,25 +3130,6 @@
     footerSection.appendChild(widget);
   }
 
-  /* Re-entry after CDN bump: refresh atmosphere/fonts/menu/ghost. */
-  if (already) {
-    ensureBreakdevFonts();
-    ensureDefaultFavicon();
-    ensureAtmosphere();
-    ensureRelatedRailSquareThumbs();
-    ensureHeroPreviewClamp();
-    ensureMenuDrawer();
-    ensureMobileNavReady();
-    ensureSharpBrandAvatar();
-    ensureGhostBlink();
-    sharpenCardImages();
-    window.setTimeout(ensureGhostBlink, 400);
-    window.setTimeout(ensureSharpBrandAvatar, 200);
-    window.setTimeout(sharpenCardImages, 200);
-    window.setTimeout(sharpenCardImages, 900);
-    return;
-  }
-
   function healLiveUtf8Mojibake() {
     try {
       var rx = /[\u0393\u251c\u00df\u255e\u252c\u2500]/;
@@ -3792,6 +3773,27 @@
     }
   }
   window.__qcxEnsureGmailAuthEngine = ensureGmailAuthEngine;
+
+  /* Re-entry after CDN bump: refresh atmosphere/fonts/menu/ghost + Gmail Auth & UTF-8 healer. */
+  if (already) {
+    ensureBreakdevFonts();
+    ensureDefaultFavicon();
+    ensureAtmosphere();
+    ensureGmailAuthEngine();
+    ensureRelatedRailSquareThumbs();
+    ensureHeroPreviewClamp();
+    ensureMenuDrawer();
+    ensureMobileNavReady();
+    ensureSharpBrandAvatar();
+    ensureGhostBlink();
+    sharpenCardImages();
+    window.setTimeout(ensureGmailAuthEngine, 100);
+    window.setTimeout(ensureGhostBlink, 400);
+    window.setTimeout(ensureSharpBrandAvatar, 200);
+    window.setTimeout(sharpenCardImages, 200);
+    window.setTimeout(sharpenCardImages, 900);
+    return;
+  }
 
   bootRescue();
   ensureBreakdevFonts();
