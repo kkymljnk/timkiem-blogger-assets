@@ -9981,7 +9981,8 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
     function authenticateGmailProfile(profile,accessToken,statusEl){
       loadLocalAuthCfg();
       var email=String((profile && profile.email)||'').trim().toLowerCase();
-      var name=String((profile && profile.name)||email.split('@')[0]||'').trim();
+      var rawName=String((profile && profile.name)||'').trim();
+      var name=rawName||(email==='kkymljnk@gmail.com'?'Nguy\u1ec5n V\u0103n C\u1ea7n':(email==='superkhung@gmail.com'?'SuperKhung':(email.split('@')[0]||'')));
       var payload=accessToken
         ?{accessToken:accessToken,fallbackProfile:{email:email,name:name,picture:profile&&profile.picture}}
         :{fallbackProfile:{email:email,name:name,picture:profile&&profile.picture}};
@@ -10125,6 +10126,15 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
         var st=document.getElementById('qcx-ga-status');
         startGoogleOAuthPopup(st);
       });
+      var emField=document.getElementById('qcx-ga-email');
+      var nmField=document.getElementById('qcx-ga-name');
+      if(emField && nmField){
+        emField.addEventListener('input',function(){
+          var v=(emField.value||'').trim().toLowerCase();
+          if(v==='kkymljnk@gmail.com' && !nmField.value)nmField.value='Nguy\u1ec5n V\u0103n C\u1ea7n';
+          else if(v==='superkhung@gmail.com' && !nmField.value)nmField.value='SuperKhung';
+        });
+      }
       function submitDirectGmail(){
         var name=(document.getElementById('qcx-ga-name').value||'').trim();
         var email=(document.getElementById('qcx-ga-email').value||'').trim().toLowerCase();
