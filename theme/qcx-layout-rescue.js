@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.42/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.8/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -3464,8 +3464,10 @@
                 if (em && adminEmailsList.indexOf(em) === -1) adminEmailsList.push(em);
               });
             }
-            var domCfg = document.querySelector('.qcx-layout-auth-config[data-admin-emails]');
+            var domCfg = document.querySelector('.qcx-layout-auth-config');
             if (domCfg) {
+              var domCid = String(domCfg.getAttribute('data-google-client-id') || '').trim();
+              if (domCid) googleClientId = domCid;
               var csv = String(domCfg.getAttribute('data-admin-emails') || '');
               csv.split(',').forEach(function (e) {
                 var em = String(e || '').trim().toLowerCase();
@@ -3473,6 +3475,27 @@
               });
             }
           } catch (e) {}
+        }
+        function persistLocalAuthCfg() {
+          try {
+            localStorage.setItem(AUTH_CFG_KEY, JSON.stringify({
+              googleClientId: googleClientId || '',
+              adminEmails: adminEmailsList.slice()
+            }));
+          } catch (e) {}
+        }
+        function fetchAuthConfig() {
+          loadLocalAuthCfg();
+          return fetch(API_BASE + '/api/auth/config', { method: 'GET' })
+            .then(function (r) { return r.json(); })
+            .then(function (res) {
+              if (res && res.googleClientId) {
+                googleClientId = String(res.googleClientId).trim();
+                persistLocalAuthCfg();
+              }
+              return googleClientId;
+            })
+            .catch(function () { return googleClientId || ''; });
         }
         function isClientAdminEmail(email) {
           var em = String(email || '').trim().toLowerCase();
@@ -3959,18 +3982,34 @@
           });
           return m;
         }
-        function triggerGoogleSignIn() {
+        function openFallbackAuthModal() {
           var m = ensureGoogleAuthModal();
           m.classList.add('is-open');
           loadLocalAuthCfg();
           renderSavedAccountsPicker();
           var popBtn = document.getElementById('qcx-ga-popup-btn');
           if (popBtn) popBtn.style.display = googleClientId ? 'flex' : 'none';
-          if (googleClientId) startGoogleOAuthPopup(document.getElementById('qcx-ga-status'));
-          else {
-            var em = document.getElementById('qcx-ga-email');
-            if (em) em.focus();
+          var em = document.getElementById('qcx-ga-email');
+          if (em) em.focus();
+        }
+        function triggerGoogleSignIn() {
+          loadLocalAuthCfg();
+          function launchNativeGoogleChooser() {
+            if (!googleClientId) {
+              openFallbackAuthModal();
+              return;
+            }
+            // Official Google Identity Services account chooser (select_account) — no custom modal first.
+            startGoogleOAuthPopup(null);
           }
+          if (googleClientId) {
+            launchNativeGoogleChooser();
+            return;
+          }
+          fetchAuthConfig().then(function (cid) {
+            if (cid) launchNativeGoogleChooser();
+            else openFallbackAuthModal();
+          });
         }
         function toggleUserDropdown(anchorBtn) {
           var dd = document.getElementById('qcx-user-dropdown');
@@ -4042,6 +4081,7 @@
           };
         }
         fetchAdminRoleStyles();
+        fetchAuthConfig().then(function () { /* warm GSI client id for native chooser */ });
         window.__qcxRenderAuthSlots = renderAuthSlots;
         window.__qcxTriggerGoogleSignIn = triggerGoogleSignIn;
       })();
