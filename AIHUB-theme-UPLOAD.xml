@@ -9175,7 +9175,7 @@ window.addEventListener('load', qcxBootMacFrames, { once: true });
 <script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.13/theme/qcx-runtime.js'></script>
 <script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.26/theme/qcx-smart-runtime.js'></script>
 <!-- secure-resource.js handles unlock flow -->
-<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.25/theme/qcx-layout-rescue.js'></script>
+<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.26/theme/qcx-layout-rescue.js'></script>
 <!-- moved to CDN: qcx-layout-rescue -->
 <script>//<![CDATA[
 (function(){
@@ -9453,16 +9453,27 @@ window.addEventListener('load', qcxBootMacFrames, { once: true });
   font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace !important;
 }
 /* &#9472;&#9472; Footer canonical polish: remove ugly .qcx-addon-zone rounded box, align to 1120px grid, fix contrast and scroll-top overlap &#9472;&#9472; */
-html body footer.footer,
+html body footer.footer {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  margin-top: auto !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: #060d08 !important;
+  display: block !important;
+  box-shadow: none !important;
+}
 html body footer.footer #footer,
 html body footer.footer #footer.qcx-footer-gadgets {
   width: 100% !important;
   max-width: none !important;
-  margin: 40px 0 0 !important;
+  margin: 0 !important;
   padding: 0 !important;
   border: 0 !important;
   border-radius: 0 !important;
-  background: #070e09 !important;
+  background: transparent !important;
   display: block !important;
   box-shadow: none !important;
 }
