@@ -9175,7 +9175,7 @@ window.addEventListener('load', qcxBootMacFrames, { once: true });
 <script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.13/theme/qcx-runtime.js'></script>
 <script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.26/theme/qcx-smart-runtime.js'></script>
 <!-- secure-resource.js handles unlock flow -->
-<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.28/theme/qcx-layout-rescue.js'></script>
+<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.29/theme/qcx-layout-rescue.js'></script>
 <!-- moved to CDN: qcx-layout-rescue -->
 <script>//<![CDATA[
 (function(){
@@ -9457,7 +9457,7 @@ html body footer.footer {
   width: 100% !important;
   max-width: none !important;
   margin: 0 !important;
-  margin-top: auto !important;
+  margin-top: 0 !important;
   padding: 0 !important;
   border: 0 !important;
   border-radius: 0 !important;
@@ -9493,37 +9493,52 @@ html body footer.footer #footer .qcx-footer-widget .widget-content {
 html body footer.footer .qcx-footer-social {
   width: 100% !important;
   margin: 0 !important;
-  padding: 18px 24px !important;
+  padding: 10px 16px !important;
+  padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px)) !important;
   border: 0 !important;
-  border-top: 1px solid rgba(76,175,130,0.22) !important;
+  border-top: 1px solid rgba(76,175,130,0.16) !important;
   border-radius: 0 !important;
-  background: #070e09 !important;
+  background: #060d08 !important;
   box-sizing: border-box !important;
 }
 html body footer.footer .qcx-footer-inner {
   width: 100% !important;
   max-width: 1080px !important;
   margin: 0 auto !important;
-  padding: 0 72px 0 8px !important;
+  padding: 0 !important;
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
-  gap: 16px !important;
+  gap: 10px !important;
   box-sizing: border-box !important;
+  min-width: 0 !important;
 }
 html body footer.footer .qcx-footer-logo {
   font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace !important;
-  font-size: 12px !important;
-  font-weight: 700 !important;
-  color: #5ee3a5 !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  color: #6dd9a4 !important;
   letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+  flex: 0 0 auto !important;
+  margin: 0 !important;
 }
 html body footer.footer .qcx-footer-copy,
 html body .qcx-footer-copy {
   font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace !important;
-  font-size: 12px !important;
-  color: #9ec4b0 !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  color: rgba(158,196,176,0.55) !important;
   opacity: 1 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  white-space: nowrap !important;
+  flex: 1 1 auto !important;
+  text-align: center !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }
 html body footer.footer .qcx-footer-copy a,
 html body .qcx-footer-copy a {
@@ -9532,31 +9547,43 @@ html body .qcx-footer-copy a {
 }
 html body footer.footer .qcx-footer-tg-btn {
   font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace !important;
-  font-size: 12px !important;
+  font-size: 11px !important;
   font-weight: 600 !important;
-  color: #b8ded0 !important;
-  -webkit-text-fill-color: #b8ded0 !important;
-  min-height: 38px !important;
-  padding: 7px 16px !important;
+  color: #9ec4b0 !important;
+  -webkit-text-fill-color: #9ec4b0 !important;
+  height: 28px !important;
+  min-height: 28px !important;
+  max-height: 28px !important;
+  padding: 0 10px !important;
+  margin: 0 !important;
   display: inline-flex !important;
   align-items: center !important;
-  gap: 6px !important;
-  border: 1px solid rgba(76,175,130,0.32) !important;
+  gap: 5px !important;
+  border: 1px solid rgba(76,175,130,0.28) !important;
   border-radius: 999px !important;
-  background: rgba(76,175,130,0.08) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  flex: 0 0 auto !important;
 }
 html body footer.footer .qcx-footer-tg-btn:hover {
-  color: #ffffff !important;
-  -webkit-text-fill-color: #ffffff !important;
-  border-color: #4caf82 !important;
-  background: rgba(76,175,130,0.18) !important;
+  color: #6dd9a4 !important;
+  -webkit-text-fill-color: #6dd9a4 !important;
+  border-color: rgba(109,217,164,0.45) !important;
+  background: rgba(76,175,130,0.08) !important;
+}
+html body footer.footer .qcx-footer-tg-btn svg {
+  width: 12px !important;
+  height: 12px !important;
+  flex-shrink: 0 !important;
 }
 html body .scroll--top {
-  bottom: 78px !important;
-  right: 20px !important;
-  width: 42px !important;
-  height: 42px !important;
-  border-radius: 12px !important;
+  bottom: 64px !important;
+  right: 18px !important;
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 10px !important;
   border: 1px solid rgba(76,175,130,0.36) !important;
   background: rgba(13,24,18,0.92) !important;
   backdrop-filter: blur(8px) !important;
@@ -9564,7 +9591,7 @@ html body .scroll--top {
   transition: transform .2s ease, bottom .2s ease, opacity .2s ease !important;
 }
 html[data-at-footer='1'] body .scroll--top {
-  bottom: 86px !important;
+  bottom: 70px !important;
 }
 html body .scroll--top:hover {
   border-color: #4caf82 !important;
@@ -9573,10 +9600,21 @@ html body .scroll--top:hover {
 }
 @media (max-width: 860px) {
   html body footer.footer .qcx-footer-social {
-    padding: 16px 16px calc(76px + env(safe-area-inset-bottom, 0px)) !important;
+    padding: 10px 14px calc(64px + env(safe-area-inset-bottom, 0px)) !important;
   }
   html body footer.footer .qcx-footer-inner {
-    padding: 0 4px !important;
+    padding: 0 !important;
+    gap: 8px !important;
+  }
+  html body footer.footer .qcx-footer-copy {
+    display: none !important;
+  }
+  html body footer.footer .qcx-footer-tg-btn {
+    height: 26px !important;
+    min-height: 26px !important;
+    max-height: 26px !important;
+    padding: 0 9px !important;
+    font-size: 10.5px !important;
   }
   html body .scroll--top {
     display: none !important;
