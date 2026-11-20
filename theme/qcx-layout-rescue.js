@@ -251,7 +251,7 @@
 
   function qcxCdnPin() {
     var m = String(QCX_CDN || '').match(/@(v\d[\w.-]+)\//);
-    return (m && m[1]) || 'v2026.11.19.87';
+    return (m && m[1]) || 'v2026.11.19.88';
   }
 
   /* Homepage cards: ~15–55KB WebP instead of 450–1000KB hero JPG (PSI image delivery). */
@@ -558,7 +558,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.87/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.88/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -3036,6 +3036,8 @@
         if (node.id === 'Blog1' || (node.classList && node.classList.contains('qcx-rescue-blog'))) return;
         try { node.parentNode.removeChild(node); } catch (ignoreDup) {}
       });
+      var early = document.getElementById('qcx-early-lcp-img');
+      if (early && early.parentNode) early.parentNode.removeChild(early);
     } catch (ignoreShell) {}
   }
 
