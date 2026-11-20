@@ -9174,7 +9174,7 @@ window.addEventListener('load', qcxBootMacFrames, { once: true });
 <script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.13/theme/qcx-runtime.js'></script>
 <script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.26/theme/qcx-smart-runtime.js'></script>
 <!-- secure-resource.js handles unlock flow -->
-<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.29/theme/qcx-layout-rescue.js'></script>
+<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.30/theme/qcx-layout-rescue.js'></script>
 <!-- moved to CDN: qcx-layout-rescue -->
 <script>//<![CDATA[
 (function(){
@@ -9489,16 +9489,25 @@ html body footer.footer #footer .qcx-footer-widget .widget-content {
   box-shadow: none !important;
   overflow: visible !important;
 }
+html body footer.footer #footer,
+html body footer.footer #footer.qcx-footer-gadgets,
+html body footer.footer .qcx-addon-zone {
+  margin: 0 !important;
+  margin-top: 0 !important;
+  padding: 0 !important;
+  min-height: 0 !important;
+}
 html body footer.footer .qcx-footer-social {
   width: 100% !important;
   margin: 0 !important;
-  padding: 10px 16px !important;
-  padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px)) !important;
+  padding: 8px 16px !important;
+  padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px)) !important;
   border: 0 !important;
   border-top: 1px solid rgba(76,175,130,0.16) !important;
   border-radius: 0 !important;
   background: #060d08 !important;
   box-sizing: border-box !important;
+  min-height: 0 !important;
 }
 html body footer.footer .qcx-footer-inner {
   width: 100% !important;
@@ -9550,9 +9559,9 @@ html body footer.footer .qcx-footer-tg-btn {
   font-weight: 600 !important;
   color: #9ec4b0 !important;
   -webkit-text-fill-color: #9ec4b0 !important;
-  height: 28px !important;
-  min-height: 28px !important;
-  max-height: 28px !important;
+  height: 26px !important;
+  min-height: 26px !important;
+  max-height: 26px !important;
   padding: 0 10px !important;
   margin: 0 !important;
   display: inline-flex !important;
@@ -9565,6 +9574,7 @@ html body footer.footer .qcx-footer-tg-btn {
   text-decoration: none !important;
   white-space: nowrap !important;
   flex: 0 0 auto !important;
+  line-height: 1 !important;
 }
 html body footer.footer .qcx-footer-tg-btn:hover {
   color: #6dd9a4 !important;
