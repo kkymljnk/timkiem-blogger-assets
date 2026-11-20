@@ -1990,6 +1990,11 @@ Chúc các bạn thành công!"></textarea>
           updatedAt: new Date().toISOString()
         }));
       } catch (e) {}
+      try { clearStalePersonalNameStyles(); } catch (eCs) {}
+      try {
+        if (typeof window.__qcxClearStalePersonalNameStyles === 'function') window.__qcxClearStalePersonalNameStyles();
+        if (typeof window.__qcxApplyNameStylesAll === 'function') window.__qcxApplyNameStylesAll();
+      } catch (eHost) {}
       if (typeof window.__qcxRenderAuthSlots === 'function') {
         try { window.__qcxRenderAuthSlots(); } catch (e) {}
       }
