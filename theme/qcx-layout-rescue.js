@@ -2,6 +2,26 @@
   var already = document.documentElement.getAttribute('data-qcx-rescue') === 'true';
   document.documentElement.setAttribute('data-qcx-rescue', 'true');
 
+  /* Reserve homepage feed height early so rescue paint does not score ~0.25 CLS. */
+  (function reserveHomepageFeedHeight() {
+    try {
+      var type = document.documentElement.getAttribute('data-page-type') || '';
+      var item = document.documentElement.getAttribute('data-page-item') || '';
+      if (type === 'post' || type === 'page' || item === 'single') return;
+      if (document.getElementById('qcx-home-cls-reserve')) return;
+      var st = document.createElement('style');
+      st.id = 'qcx-home-cls-reserve';
+      st.textContent =
+        'html[data-page-type="homepage"] #main.main,' +
+        'html[data-page-item="multiple"] #main.main{' +
+        'min-height:min(70vh,720px)!important}' +
+        'html[data-page-type="homepage"] #qcx-ssr-lcp-shell,' +
+        'html[data-page-type="homepage"] #Blog1.qcx-rescue-blog .all_posts{' +
+        'min-height:280px}';
+      (document.head || document.documentElement).appendChild(st);
+    } catch (ignoreReserve) {}
+  })();
+
   /* F5 homepage: hide Blog SSR immediately so stale cards never flash before rescue. */
   (function hideSsrOnReload() {
     try {
@@ -231,7 +251,7 @@
 
   function qcxCdnPin() {
     var m = String(QCX_CDN || '').match(/@(v\d[\w.-]+)\//);
-    return (m && m[1]) || 'v2026.11.19.86';
+    return (m && m[1]) || 'v2026.11.19.87';
   }
 
   /* Homepage cards: ~15–55KB WebP instead of 450–1000KB hero JPG (PSI image delivery). */
@@ -538,7 +558,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.86/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.87/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
