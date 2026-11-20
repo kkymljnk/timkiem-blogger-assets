@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.19/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.20/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -3241,25 +3241,24 @@
       '.qcx-ud-btn.is-danger{color:#ff9b94}' +
       '.qcx-ud-btn.is-danger:hover{background:rgba(255,95,86,0.14)}' +
       '.qcx-ud-count{margin-left:auto;min-width:18px;height:18px;padding:0 5px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font:800 10px/1 var(--qcx-article-mono,monospace);background:rgba(52,230,160,0.16);color:#34e6a0}' +
-      /* Save lives in mac-topbar — ghost mono link, not under title */ +
+      /* Save: compact icon-only in mac-topbar */ +
       '.post-header .qcx-post-save-btn,.post-header #qcx-post-save-btn{display:none!important}' +
       '.qcx-mac-topbar .qcx-post-save-btn,.qcx-mt-right .qcx-post-save-btn,button.qcx-post-save-btn{' +
         'appearance:none!important;-webkit-appearance:none!important;box-sizing:border-box!important;' +
-        'display:inline-flex!important;flex-direction:row!important;align-items:center!important;justify-content:center!important;' +
-        'gap:5px!important;width:auto!important;min-width:0!important;height:auto!important;min-height:0!important;' +
-        'padding:0!important;margin:0!important;border:0!important;border-radius:0!important;' +
+        'position:relative!important;display:inline-grid!important;place-items:center!important;' +
+        'width:26px!important;height:26px!important;min-width:26px!important;min-height:26px!important;' +
+        'padding:0!important;margin:0!important;gap:0!important;' +
+        'border:1px solid transparent!important;border-radius:7px!important;' +
         'background:transparent!important;box-shadow:none!important;' +
-        'color:#8aa596!important;font:500 11px/1 var(--mono),ui-monospace,monospace!important;' +
-        'letter-spacing:.02em!important;cursor:pointer!important;vertical-align:middle!important;' +
-        'text-transform:none!important;transition:color .15s!important}' +
-      '.qcx-mac-topbar .qcx-post-save-btn:hover{color:#34e6a0!important;background:transparent!important}' +
-      '.qcx-mac-topbar .qcx-post-save-btn.is-saved{color:#ffd166!important}' +
+        'color:#8aa596!important;cursor:pointer!important;vertical-align:middle!important;' +
+        'transition:color .15s,border-color .15s,background .15s!important}' +
+      '.qcx-mac-topbar .qcx-post-save-btn:hover{color:#34e6a0!important;border-color:rgba(52,230,160,0.28)!important;background:rgba(52,230,160,0.08)!important}' +
+      '.qcx-mac-topbar .qcx-post-save-btn.is-saved{color:#ffd166!important;border-color:rgba(255,209,102,0.35)!important;background:rgba(255,209,102,0.08)!important}' +
       '.qcx-mac-topbar .qcx-post-save-btn svg,.qcx-mac-topbar .qcx-post-save-ico{' +
-        'width:12px!important;height:12px!important;min-width:12px!important;min-height:12px!important;' +
-        'max-width:12px!important;max-height:12px!important;flex:0 0 12px!important;display:block!important;' +
-        'margin:0!important;padding:0!important}' +
-      '.qcx-mac-topbar .qcx-post-save-label{display:inline!important;font:inherit!important;color:inherit!important;margin:0!important;padding:0!important}' +
-      '.qcx-mt-right{display:inline-flex!important;align-items:center!important;gap:14px!important}' +
+        'width:14px!important;height:14px!important;min-width:14px!important;min-height:14px!important;' +
+        'max-width:14px!important;max-height:14px!important;display:block!important;margin:0!important;padding:0!important}' +
+      '.qcx-mac-topbar .qcx-post-save-label{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;border:0!important}' +
+      '.qcx-mt-right{display:inline-flex!important;align-items:center!important;gap:10px!important}' +
       '#qcx-google-auth-modal,#qcx-google-auth-modal.is-open{display:none!important;visibility:hidden!important;pointer-events:none!important}' +
       '#qcx-saved-modal{position:fixed;inset:0;z-index:999999;display:none;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;background:rgba(6,10,8,0.72)}' +
       '#qcx-saved-modal.is-open{display:flex}' +
@@ -3701,7 +3700,9 @@
           btn.classList.toggle('is-saved', !!saved);
           btn.setAttribute('aria-pressed', saved ? 'true' : 'false');
           var label = btn.querySelector('.qcx-post-save-label');
-          if (label) label.textContent = saved ? 'đã lưu' : 'lưu bài';
+          if (label) label.textContent = saved ? 'Đã lưu' : 'Lưu bài';
+          btn.title = saved ? 'Đã lưu' : 'Lưu bài';
+          btn.setAttribute('aria-label', saved ? 'Đã lưu' : 'Lưu bài');
         }
         function ensurePostSaveButton() {
           if (!isItemPostPage()) return;
