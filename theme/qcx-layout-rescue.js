@@ -231,7 +231,7 @@
 
   function qcxCdnPin() {
     var m = String(QCX_CDN || '').match(/@(v\d[\w.-]+)\//);
-    return (m && m[1]) || 'v2026.11.19.84';
+    return (m && m[1]) || 'v2026.11.19.85';
   }
 
   /* Homepage cards: ~15–55KB WebP instead of 450–1000KB hero JPG (PSI image delivery). */
@@ -538,7 +538,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.84/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.85/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -2579,11 +2579,11 @@
     var highPrio = index === 0;
     var col = el('div', 'col-md-4');
     var media = thumb
-      ? ('<img class="qcx-card-media" alt="' + escapeHtml(title) + '"' +
+      ? ('<img class="qcx-card-media' + (highPrio ? ' qcx-card-lcp' : '') + '" alt="' + escapeHtml(title) + '"' +
         (meta.anim ? ' data-qcx-anim="1"' : '') +
         (highPrio
           ? ' loading="eager" fetchpriority="high" decoding="async"'
-          : ' loading="lazy" decoding="async"') +
+          : ' loading="lazy" decoding="async" fetchpriority="low"') +
         ' src="' + escapeHtml(thumb) + '" width="720" height="405" sizes="(max-width:820px) 100vw, 33vw"/>')
       : '<span class="qcx-card-noimg" aria-hidden="true">// no image</span>';
     var awardHtml = '';
@@ -2758,9 +2758,18 @@
 
   function prioritizeHomepageLcpImages(row) {
     try {
-      /* Always rank against the full homepage grid — never per-card (that made every img LCP/eager). */
-      var imgs = document.querySelectorAll('.all_posts .card-header img.qcx-card-media, .all_posts .card-header img, .all_posts img.qcx-card-media');
+      /* Shell must die before ranking — otherwise its eager img steals index 0 and demotes Blog1 LCP. */
+      removeSsrLcpShell();
+      /* Always rank against the real homepage grid — never per-card (that made every img LCP/eager). */
+      var scope = (row && row.querySelectorAll) ? row : document;
+      var imgs = scope.querySelectorAll(
+        '#Blog1 .all_posts .card-header img.qcx-card-media, #Blog1 .all_posts .card-header img, #Blog1 .all_posts img.qcx-card-media, .widget.Blog.qcx-rescue-blog .all_posts .card-header img, .widget.Blog.qcx-rescue-blog .all_posts img.qcx-card-media'
+      );
+      if (!imgs.length) {
+        imgs = document.querySelectorAll('.all_posts:not(#qcx-ssr-lcp-shell) .card-header img.qcx-card-media, .all_posts:not(#qcx-ssr-lcp-shell) .card-header img, .all_posts:not(#qcx-ssr-lcp-shell) img.qcx-card-media');
+      }
       Array.prototype.forEach.call(imgs, function(img, index){
+        if (img.closest && img.closest('#qcx-ssr-lcp-shell')) return;
         var dataSrc = img.getAttribute('data-src') || '';
         var srcAttr = img.getAttribute('src') || '';
         /* Rewrite legacy wsrv.nl / catbox full JPGs before ranking. */
@@ -2837,6 +2846,12 @@
     ensureCardLabelsWithTutorial(row);
     ensureGsapCardLabels(row);
     prioritizeHomepageLcpImages(row || document);
+    /* Re-scrub after theme applyImages (may inject legacy wsrv/catbox late). */
+    try {
+      [700, 1600, 3600].forEach(function(ms){
+        window.setTimeout(function(){ prioritizeHomepageLcpImages(document); }, ms);
+      });
+    } catch (ignoreScrub) {}
     ensureHomepageCardReveal(row || document);
     var scope = row || document;
     var needsLabelFit = false;
@@ -2975,6 +2990,17 @@
     }).catch(function(){});
   }
 
+  function removeSsrLcpShell() {
+    try {
+      var shell = document.getElementById('qcx-ssr-lcp-shell');
+      if (shell && shell.parentNode) shell.parentNode.removeChild(shell);
+      /* Also drop any duplicate shells (theme + JS ensure). */
+      document.querySelectorAll('[id="qcx-ssr-lcp-shell"], .qcx-ssr-lcp-shell').forEach(function(node){
+        try { if (node && node.parentNode) node.parentNode.removeChild(node); } catch (ignoreDup) {}
+      });
+    } catch (ignoreShell) {}
+  }
+
   function enhanceNativeHomepageFeed() {
     if (!isStrictHomepage()) return;
     var native = document.querySelector('.widget.Blog:not(.qcx-rescue-blog):not(.qcx-rescue-skel)');
@@ -2988,6 +3014,7 @@
       );
     });
     if (!cols.length) return;
+    removeSsrLcpShell();
     native.setAttribute('data-qcx-home-more', '1');
     polishHomepageCards(row);
 
@@ -3325,6 +3352,7 @@
     clearRescuePaint(main);
     if (isSingle) renderSinglePost(main, result);
     else {
+      removeSsrLcpShell();
       renderHomepage(main, result || []);
       ensureSidebarSearch();
       hideSidebarOnFeed();
@@ -3512,8 +3540,8 @@
       }, 120);
       return;
     }
+    /* Do not chain rescuePosts() after enhance — that raced SSR LCP on homepage. */
     enhanceNativeHomepageFeed();
-    rescuePosts();
   }
 
   function isHomepageView() {
