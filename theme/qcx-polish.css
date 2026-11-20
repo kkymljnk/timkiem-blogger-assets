@@ -2491,8 +2491,9 @@ body:not(#layout) .qcx-hero-divider,
   overflow: hidden !important;
   border: 0 !important;
 }
-/* Restore + center header Telegram handle on desktop */
-.qcx-signal-x {
+/* Restore + center header Telegram handle on desktop.
+   Never force-show the Gmail login btn when [hidden] / logged-in. */
+.qcx-signal-x:not([hidden]) {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -2503,6 +2504,14 @@ body:not(#layout) .qcx-hero-divider,
   box-sizing: border-box !important;
   line-height: 1 !important;
   overflow: hidden !important;
+}
+.qcx-signal-x.qcx-auth-login-btn[hidden],
+.qcx-auth-login-btn[hidden],
+html.qcx-authed .qcx-auth-login-btn,
+.qcx-auth-slot.is-authed .qcx-auth-login-btn {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 .qcx-signal-x-label {
   display: inline-flex !important;
