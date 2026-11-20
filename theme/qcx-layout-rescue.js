@@ -231,7 +231,7 @@
 
   function qcxCdnPin() {
     var m = String(QCX_CDN || '').match(/@(v\d[\w.-]+)\//);
-    return (m && m[1]) || 'v2026.11.19.82';
+    return (m && m[1]) || 'v2026.11.19.83';
   }
 
   /* Homepage cards: ~15–55KB WebP instead of 450–1000KB hero JPG (PSI image delivery). */
@@ -243,6 +243,12 @@
     if (hero) {
       return 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@' +
         qcxCdnPin() + '/images/hero/card/' + hero[1] + '.webp';
+    }
+    var cat = u.match(/files\.catbox\.moe\/([a-z0-9]+)\.(jpe?g|png|webp)(?:$|[?#])/i)
+      || u.match(/[?&]url=https?%3A%2F%2Ffiles\.catbox\.moe%2F([a-z0-9]+)\./i);
+    if (cat) {
+      return 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@' +
+        qcxCdnPin() + '/images/hero/card/catbox-' + cat[1] + '.webp';
     }
     /* No third-party image proxy (wsrv) — broken loads tank Best Practices. */
     return '';
@@ -532,13 +538,13 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.82/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.83/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
 
   function brandAvatarHtml() {
-    var src1 = QCX_CDN + 'qcx-brand-mark.png';
+    var src1 = QCX_CDN + 'qcx-brand-mark.webp';
     return '<div class="qcx-avatar" aria-label="MMO">' +
       '<img class="qcx-brand-raster" src="' + src1 + '" ' +
       'width="64" height="64" decoding="async" alt="MMO"/>' +
@@ -2722,13 +2728,11 @@
         }, { root: null, rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
       }
 
-      var vh = window.innerHeight || document.documentElement.clientHeight || 800;
-      Array.prototype.forEach.call(cards, function(card){
+      /* Avoid sync layout reads (PSI forced-reflow) — first 3 cards paint in; rest via IO. */
+      Array.prototype.forEach.call(cards, function(card, idx){
         if (card.classList.contains('is-in')) return;
         card.classList.add('qcx-reveal');
-        var rect = card.getBoundingClientRect();
-        var inFold = rect.top < vh * 0.92 && rect.bottom > 0;
-        if (inFold || !__qcxCardRevealObs) {
+        if (idx < 3 || !__qcxCardRevealObs) {
           card.classList.add('is-in');
         } else {
           __qcxCardRevealObs.observe(card);
@@ -2744,6 +2748,16 @@
       Array.prototype.forEach.call(imgs, function(img, index){
         var dataSrc = img.getAttribute('data-src') || '';
         var srcAttr = img.getAttribute('src') || '';
+        /* Rewrite legacy wsrv.nl / catbox full JPGs before ranking. */
+        if (/wsrv\.nl|files\.catbox\.moe/i.test(srcAttr + dataSrc)) {
+          var proxied = toCardWebp(srcAttr || dataSrc);
+          if (proxied) {
+            srcAttr = proxied;
+            dataSrc = '';
+            img.removeAttribute('data-src');
+            img.src = proxied;
+          }
+        }
         var raw = (dataSrc && dataSrc.indexOf('data:') !== 0) ? dataSrc
           : ((srcAttr && srcAttr.indexOf('data:') !== 0) ? srcAttr : '');
         var anim = img.getAttribute('data-qcx-anim') === '1' || isLikelyAnimatedUrl(raw || srcAttr || dataSrc);

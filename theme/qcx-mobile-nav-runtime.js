@@ -182,19 +182,11 @@
   }
 
   function fixResponsiveArticleWidth() {
-    if (window.innerWidth <= 860) {
-      var frames = document.querySelectorAll('.mac-frame-image, .mac-frame');
-      Array.prototype.forEach.call(frames, function(f) {
-        f.style.setProperty('--qcx-stage-w', '100%', 'important');
-        f.style.setProperty('width', '100%', 'important');
-        f.style.setProperty('max-width', '100%', 'important');
-      });
-      var articles = document.querySelectorAll('.the-article, #the-article, .main, #main');
-      Array.prototype.forEach.call(articles, function(el) {
-        el.style.setProperty('width', '100%', 'important');
-        el.style.setProperty('max-width', '100%', 'important');
-      });
-    }
+    /* Class toggle only — no getBoundingClientRect / per-node style writes (PSI forced-reflow). */
+    try {
+      var narrow = window.matchMedia && window.matchMedia('(max-width: 860px)').matches;
+      document.documentElement.classList.toggle('qcx-narrow', !!narrow);
+    } catch (ignoreNarrow) {}
   }
 
   /* ==========================================================
