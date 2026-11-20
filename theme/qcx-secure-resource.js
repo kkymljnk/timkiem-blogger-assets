@@ -1019,10 +1019,10 @@
       avatar +
       '<div class="qcx-comment-body" style="min-width:0!important;flex:1 1 auto!important">' +
       '<div class="qcx-comment-meta" style="display:flex!important;flex-wrap:nowrap!important;align-items:baseline!important;justify-content:space-between!important;width:100%!important;gap:4px 8px!important">' +
-      '<b class="qcx-user-name qcx-comment-name' + (isAdmin ? ' is-admin' : '') + '" style="font:800 13px/1.25 system-ui,-apple-system,sans-serif!important">' + name + '</b>' +
-      (time ? '<time style="font:600 11px/1.2 ui-monospace,monospace!important;color:#8fb39f!important;margin-left:auto!important;white-space:nowrap!important">' + time + '</time>' : '') +
+      '<b class="qcx-user-name qcx-comment-name' + (isAdmin ? ' is-admin' : '') + '" style="font-weight:800!important;font-size:13px!important;line-height:1.25!important;font-family:system-ui,-apple-system,sans-serif!important">' + name + '</b>' +
+      (time ? '<time style="font-weight:600!important;font-size:11px!important;line-height:1.2!important;font-family:ui-monospace,monospace!important;color:#8fb39f!important;margin-left:auto!important;white-space:nowrap!important">' + time + '</time>' : '') +
       '</div>' +
-      '<p style="margin:2px 0 0!important;color:#d7ebe0!important;font:500 12px/1.35 system-ui,sans-serif!important;word-break:break-word!important">' + text + '</p>' +
+      '<p style="margin:2px 0 0!important;color:#d7ebe0!important;font-weight:500!important;font-size:12px!important;line-height:1.35!important;font-family:system-ui,sans-serif!important;word-break:break-word!important">' + text + '</p>' +
       '</div></div></li>'
     );
   }
