@@ -17,10 +17,52 @@
       /* Keep reserve modest — 70vh left a huge empty gap when Blog1 sat outside #main. */
       st.textContent =
         'html[data-page-type="homepage"] #qcx-ssr-lcp-shell,' +
-        'html[data-page-type="homepage"] #Blog1.qcx-rescue-blog .all_posts{' +
-        'min-height:200px}';
+        'html[data-page-type="homepage"] #Blog1.qcx-rescue-blog .all_posts,' +
+        'html[data-page-type="homepage"] .widget.Blog .all_posts{' +
+        'min-height:220px}' +
+        'html[data-page-type="homepage"] .card-header,' +
+        'html[data-page-type="homepage"] #qcx-ssr-lcp-shell .card-header{' +
+        'aspect-ratio:16/9;overflow:hidden}' +
+        'html[data-page-type="homepage"] .card-header img,' +
+        'html[data-page-type="homepage"] #qcx-ssr-lcp-shell img.qcx-card-lcp{' +
+        'width:100%;height:100%;object-fit:cover;display:block}';
       (document.head || document.documentElement).appendChild(st);
     } catch (ignoreReserve) {}
+  })();
+
+  /* Live HTML may still ship dual fetchpriority=high (SSR WebP + Blog1 resizeImage).
+     Demote every competitor before polish so LCP stays the preloaded SSR node. */
+  (function demoteCompetingHomepageLcp() {
+    try {
+      var type = document.documentElement.getAttribute('data-page-type') || '';
+      var path = location.pathname || '/';
+      if (type === 'post' || type === 'page') return;
+      if (type !== 'homepage' && type !== 'index' && path !== '/') return;
+      var ssr = document.getElementById('qcx-ssr-lcp-shell');
+      var keep = ssr ? ssr.querySelector('img.qcx-card-lcp, img.qcx-card-media, .card-header img') : null;
+      var imgs = document.querySelectorAll('img.qcx-card-lcp, img[fetchpriority="high"]');
+      Array.prototype.forEach.call(imgs, function(img) {
+        if (keep && (img === keep || (ssr && ssr.contains(img)))) return;
+        img.setAttribute('fetchpriority', 'low');
+        try { img.fetchPriority = 'low'; } catch (ignoreFp) {}
+        if (!img.getAttribute('loading') || img.getAttribute('loading') === 'eager') {
+          img.setAttribute('loading', 'lazy');
+        }
+        img.classList.remove('qcx-card-lcp');
+      });
+      var atm = document.getElementById('qcx-atmosphere');
+      if (atm && atm.parentNode) atm.parentNode.removeChild(atm);
+      if (!document.getElementById('qcx-a11y-touch-fix')) {
+        var touch = document.createElement('style');
+        touch.id = 'qcx-a11y-touch-fix';
+        touch.textContent =
+          '.card-header .qcx-card-labels a[rel=tag],.card-header .qcx-card-labels .qcx-label-more,' +
+          '.keywords a,.keywords .more-icon{min-height:24px!important;min-width:24px!important;' +
+          'padding:6px 10px!important;box-sizing:border-box!important;display:inline-flex!important;' +
+          'align-items:center!important}';
+        (document.head || document.documentElement).appendChild(touch);
+      }
+    } catch (ignoreDemote) {}
   })();
 
   /* F5: do NOT blank Blog SSR. Hiding cards caused empty dark-grid flash (chip only)
@@ -240,7 +282,7 @@
 
   function qcxCdnPin() {
     var m = String(QCX_CDN || '').match(/@(v\d[\w.-]+)\//);
-    return (m && m[1]) || 'v2026.11.19.98';
+    return (m && m[1]) || 'v2026.11.19.99';
   }
 
   /* Homepage cards: ~15–55KB WebP instead of 450–1000KB hero JPG (PSI image delivery). */
@@ -557,7 +599,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.98/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.99/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
