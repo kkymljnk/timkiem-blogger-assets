@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.63/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.64/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -2139,9 +2139,24 @@
     } catch (err) {}
   }
 
+  /* Beat theme touch-target a[rel=tag]{min-height:40px} so chips match GSAP ~20px. */
+  function ensureGsapChipSizeCss() {
+    if (document.getElementById('qcx-gsap-chip-size')) return;
+    var st = document.createElement('style');
+    st.id = 'qcx-gsap-chip-size';
+    st.textContent =
+      '.card-header .qcx-card-labels a[rel=tag],' +
+      '.card-header .qcx-card-labels .qcx-label-secondary a,' +
+      '.card-header .qcx-card-labels .qcx-label-more{' +
+      'min-height:0!important;min-width:0!important;height:auto!important;' +
+      'padding:.25rem .7rem!important;margin:0!important}';
+    (document.head || document.documentElement).appendChild(st);
+  }
+
   /* GSAP filtered-gallery plugins: primary + mask(secondary) + +N; fit never wraps. */
   function ensureGsapCardLabels(root) {
     try {
+      ensureGsapChipSizeCss();
       (root || document).querySelectorAll('.card-header .qcx-card-labels, .all_posts .qcx-card-labels').forEach(function(wrap){
         reshapeGsapLabelDom(wrap);
         var card = wrap.closest ? wrap.closest('.card') : null;
