@@ -3681,16 +3681,18 @@
               loginBtn.addEventListener('click', function (ev) {
                 ev.preventDefault();
                 ev.stopPropagation();
+                if (ev.stopImmediatePropagation) ev.stopImmediatePropagation();
                 triggerGoogleSignIn(null);
-              });
+              }, true);
             }
             if (!chip.getAttribute('data-qcx-bound')) {
               chip.setAttribute('data-qcx-bound', '1');
               chip.addEventListener('click', function (ev) {
                 ev.preventDefault();
                 ev.stopPropagation();
+                if (ev.stopImmediatePropagation) ev.stopImmediatePropagation();
                 toggleUserDropdown(this);
-              });
+              }, true);
             }
             if (u) {
               loginBtn.hidden = true;
@@ -3722,10 +3724,14 @@
               trg.addEventListener('click', function (ev) {
                 ev.preventDefault();
                 ev.stopPropagation();
+                if (ev.stopImmediatePropagation) ev.stopImmediatePropagation();
                 triggerGoogleSignIn(null);
-              });
+              }, true);
             }
           }
+          // Override theme-inline login entry so header always opens native Google chooser.
+          window.__qcxTriggerGoogleSignIn = triggerGoogleSignIn;
+          try { window.triggerGoogleSignIn = triggerGoogleSignIn; } catch (e) {}
         }
         function buildClientAuthResponse(profile, recoverRes) {
           var cur = readEnt();
@@ -4028,57 +4034,43 @@
           var u = (ent && ent.user) || null;
           if (!u) return;
           var role = (u.role || 'member').toLowerCase();
-          var emLow = String(u.email || '').trim().toLowerCase();
-          var adminCfg = readAdminRoleStyles();
-          var hasAdminOverride = !!(emLow && adminCfg.userOverrides && adminCfg.userOverrides[emLow]) || (u.styleSource === 'admin_user_override');
           var activeStyle = getUserNameStyle(u.email, role, u);
           dd.setAttribute('data-role', role);
           dd.setAttribute('data-name-style', activeStyle);
           var ICO_BOLT = '<svg class="qcx-ud-ico qcx-ud-ico--fill" viewBox="0 0 16 16" aria-hidden="true"><path d="M9.6 1L2.6 9.2h4.4L6.2 15l7.2-8.2H9L9.6 1z"/></svg>';
           var ICO_CROWN = '<svg class="qcx-ud-ico qcx-ud-ico--fill" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 12.2h12v1.6H2v-1.6zm0-8l3 3.1L8 3l3 4.3 3-3.1-1 6.8H3L2 4.2z"/></svg>';
           var ICO_GEM = '<svg class="qcx-ud-ico qcx-ud-ico--fill" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.2 2.4h7.6l2.7 3.8L8 14 1.5 6.2l2.7-3.8z"/></svg>';
-          var ICO_FX = '<svg class="qcx-ud-ico qcx-ud-ico--fill" style="color:#ff85d0" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1l1.7 4.3L14 7l-4.3 1.7L8 13l-1.7-4.3L2 7l4.3-1.7L8 1z"/></svg>';
-          var ICO_COG = '<svg class="qcx-ud-ico qcx-ud-ico--stroke" viewBox="0 0 16 16" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="2.5"/><path d="M8 1.8v1.6M8 12.6v1.6M1.8 8h1.6M12.6 8h1.6M3.6 3.6l1.1 1.1M11.3 11.3l1.1 1.1M12.4 3.6l-1.1 1.1M4.7 11.3l-1.1 1.1"/></svg>';
           var ICO_OUT = '<svg class="qcx-ud-ico qcx-ud-ico--stroke" viewBox="0 0 16 16" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2.5H3.5v11H6M10.5 5l3 3-3 3M13.5 8H6.5"/></svg>';
           var statusText = role === 'admin' ? (ICO_BOLT + '<span>Quản trị viên hệ thống · Mở khóa toàn bộ</span>') : (role === 'vip' ? (ICO_CROWN + '<span>Thành viên VIP 30 ngày</span>') : (role === 'pro' ? (ICO_GEM + '<span>Thành viên PRO</span>') : '<span>Hạng: Thành viên (Chưa có VIP)</span>'));
           var avUrl = getPreferredGoogleAvatar(u.email, u.name, u.picture, role);
-          var canSelfSwitch = role === 'admin' || (role !== 'member' && adminCfg.allowSelfSwitch !== false && !hasAdminOverride);
-          var stylePickerHtml = '';
-          if (canSelfSwitch) {
-            stylePickerHtml = '<div class="qcx-ud-styles"><span class="qcx-ud-styles-lbl">' + ICO_FX + '<span>Hiệu ứng tên · 18 Pro FX</span></span><div class="qcx-ud-swatches">';
-            NAME_STYLE_CATALOG.forEach(function (stItem) {
-              var act = stItem.id === activeStyle ? ' is-active' : '';
-              stylePickerHtml += '<button type="button" class="qcx-ud-sw' + act + '" data-pick-style="' + stItem.id + '" style="color:' + stItem.dot + '">' + stItem.label + '</button>';
-            });
-            stylePickerHtml += '</div></div>';
-          } else if (hasAdminOverride) {
-            stylePickerHtml = '<div class="qcx-ud-styles"><span class="qcx-ud-styles-lbl">' + ICO_FX + '<span>Style riêng được Admin cấp</span></span></div>';
-          }
+          // Public chip menu stays lean: profile + status + logout only.
+          // Name FX / VIP / sync / admin tools live on /p/admin.html (Role FX + PayOS).
           dd.innerHTML =
             '<div class="qcx-ud-head"><img src="' + avUrl + '" alt=""/><div><p class="qcx-ud-name">' + (u.name || u.email) + '</p><p class="qcx-ud-email">' + u.email + '</p></div></div>' +
             '<div class="qcx-ud-status">' + statusText + '</div>' +
-            stylePickerHtml +
-            (role === 'admin' ? '<a class="qcx-ud-btn" href="/p/admin.html#role-fx" style="text-decoration:none">' + ICO_FX + '<span>Quản lý Style Role &amp; Thành viên</span></a><a class="qcx-ud-btn" href="/p/admin.html" style="text-decoration:none">' + ICO_COG + '<span>Mở trang Quản trị Admin</span></a>' : '') +
             '<button type="button" class="qcx-ud-btn is-danger" id="qcx-ud-logout">' + ICO_OUT + '<span>Đăng xuất tài khoản</span></button>';
           var rect = anchorBtn.getBoundingClientRect();
-          dd.style.top = Math.min(window.innerHeight - 360, Math.max(8, rect.bottom + 6)) + 'px';
+          dd.style.top = Math.min(window.innerHeight - 168, Math.max(8, rect.bottom + 6)) + 'px';
           dd.style.left = Math.min(window.innerWidth - 332, Math.max(8, rect.right - 306)) + 'px';
           dd.classList.add('is-open');
-          var swBtns = dd.querySelectorAll('[data-pick-style]');
-          for (var si = 0; si < swBtns.length; si++) {
-            swBtns[si].addEventListener('click', function (ev) {
-              ev.stopPropagation();
-              var nextSt = this.getAttribute('data-pick-style');
-              if (!nextSt) return;
-              setUserNameStyle(u.email, nextSt, role === 'admin');
-              var allSw = dd.querySelectorAll('[data-pick-style]');
-              for (var k = 0; k < allSw.length; k++) allSw[k].classList.toggle('is-active', allSw[k].getAttribute('data-pick-style') === nextSt);
-            });
-          }
           document.getElementById('qcx-ud-logout').onclick = function () {
             dd.classList.remove('is-open');
             clearEnt();
           };
+        }
+        // Capture-phase: win over theme-inline fat menu (FX / VIP / sync / admin links).
+        if (!window.__qcxSlimUserMenuBound) {
+          window.__qcxSlimUserMenuBound = true;
+          document.addEventListener('click', function (ev) {
+            var t = ev.target;
+            var chip = t && t.closest ? t.closest('.qcx-user-chip') : null;
+            if (!chip || chip.hidden || chip.getAttribute('hidden') != null) return;
+            if (ev.target.closest && ev.target.closest('#qcx-user-dropdown')) return;
+            ev.preventDefault();
+            ev.stopPropagation();
+            if (ev.stopImmediatePropagation) ev.stopImmediatePropagation();
+            toggleUserDropdown(chip);
+          }, true);
         }
         fetchAdminRoleStyles();
         fetchAuthConfig().then(function () { /* warm GSI client id for native chooser */ });
