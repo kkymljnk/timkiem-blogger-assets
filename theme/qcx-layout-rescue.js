@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.21/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.22/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -3247,8 +3247,10 @@
       '.qcx-mac-topbar .qcx-post-save-btn,.qcx-mt-right .qcx-post-save-btn,button.qcx-post-save-btn{' +
         'appearance:none!important;-webkit-appearance:none!important;box-sizing:border-box!important;' +
         'position:relative!important;display:inline-grid!important;place-items:center!important;' +
-        'width:26px!important;height:26px!important;min-width:26px!important;min-height:26px!important;' +
-        'padding:0!important;margin:0!important;gap:0!important;' +
+        'width:26px!important;height:26px!important;min-width:26px!important;max-width:26px!important;' +
+        'min-height:26px!important;max-height:26px!important;' +
+        'padding:0!important;margin:0!important;gap:0!important;overflow:hidden!important;' +
+        'font-size:0!important;line-height:0!important;white-space:nowrap!important;' +
         'border:1px solid transparent!important;border-radius:7px!important;' +
         'background:transparent!important;box-shadow:none!important;' +
         'color:#8aa596!important;cursor:pointer!important;vertical-align:middle!important;' +
@@ -3258,7 +3260,9 @@
       '.qcx-mac-topbar .qcx-post-save-btn svg,.qcx-mac-topbar .qcx-post-save-ico{' +
         'width:14px!important;height:14px!important;min-width:14px!important;min-height:14px!important;' +
         'max-width:14px!important;max-height:14px!important;display:block!important;margin:0!important;padding:0!important}' +
-      '.qcx-mac-topbar .qcx-post-save-label{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;border:0!important}' +
+      '.qcx-mac-topbar .qcx-post-save-label,.qcx-mt-right .qcx-post-save-label,button.qcx-post-save-btn .qcx-post-save-label{' +
+        'display:none!important;visibility:hidden!important;width:0!important;height:0!important;' +
+        'padding:0!important;margin:0!important;overflow:hidden!important;font-size:0!important}' +
       '.qcx-mt-right{display:inline-flex!important;align-items:center!important;gap:10px!important}' +
       '#qcx-google-auth-modal,#qcx-google-auth-modal.is-open{display:none!important;visibility:hidden!important;pointer-events:none!important}' +
       '#qcx-saved-modal{position:fixed;inset:0;z-index:999999;display:none;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;background:rgba(6,10,8,0.72)}' +
@@ -3680,6 +3684,9 @@
           if (!pending || !pending.url) return;
           apiSavePost(pending).catch(function () {});
         }
+        function postSaveIconHtml() {
+          return '<svg class="qcx-post-save-ico" viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 2.5h8v11l-4-2.4L4 13.5v-11z"/></svg>';
+        }
         function updatePostSaveButtonState() {
           var btn = document.getElementById('qcx-post-save-btn');
           if (!btn) return;
@@ -3690,8 +3697,12 @@
           var saved = list.some(function (p) { return p && (String(p.id) === String(meta.id) || String(p.url) === String(meta.url)); });
           btn.classList.toggle('is-saved', !!saved);
           btn.setAttribute('aria-pressed', saved ? 'true' : 'false');
+          /* Icon-only: strip any leftover label text from older builds */
           var label = btn.querySelector('.qcx-post-save-label');
-          if (label) label.textContent = saved ? 'Đã lưu' : 'Lưu bài';
+          if (label) label.parentNode.removeChild(label);
+          if (!btn.querySelector('.qcx-post-save-ico, svg')) {
+            btn.innerHTML = postSaveIconHtml();
+          }
           btn.title = saved ? 'Đã lưu' : 'Lưu bài';
           btn.setAttribute('aria-label', saved ? 'Đã lưu' : 'Lưu bài');
         }
@@ -3706,6 +3717,9 @@
             existing = null;
           }
           if (existing) {
+            if (existing.querySelector('.qcx-post-save-label') || /Lưu bài|Đã lưu/i.test(existing.textContent || '')) {
+              existing.innerHTML = postSaveIconHtml();
+            }
             updatePostSaveButtonState();
             return;
           }
@@ -3714,7 +3728,8 @@
           btn.id = 'qcx-post-save-btn';
           btn.className = 'qcx-post-save-btn';
           btn.setAttribute('aria-label', 'Lưu bài');
-          btn.innerHTML = '<svg class="qcx-post-save-ico" viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 2.5h8v11l-4-2.4L4 13.5v-11z"/></svg><span class="qcx-post-save-label">lưu bài</span>';
+          btn.title = 'Lưu bài';
+          btn.innerHTML = postSaveIconHtml();
           btn.addEventListener('click', function (ev) {
             ev.preventDefault();
             ev.stopPropagation();
