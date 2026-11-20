@@ -290,7 +290,7 @@
 
   function qcxCdnPin() {
     var m = String(QCX_CDN || '').match(/@(v\d[\w.-]+)\//);
-    return (m && m[1]) || 'v2026.11.19.102';
+    return (m && m[1]) || 'v2026.11.19.103';
   }
 
   /* Homepage cards: ~15–55KB WebP instead of 450–1000KB hero JPG (PSI image delivery). */
@@ -607,7 +607,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.102/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.103/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -2815,9 +2815,15 @@
         }, { root: null, rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
       }
 
-      /* Avoid sync layout reads (PSI forced-reflow) — first 3 cards paint in; rest via IO. */
+      /* Avoid sync layout reads (PSI forced-reflow) — first 3 cards paint in; rest via IO.
+         Never put qcx-reveal (opacity:0) on the LCP card — delayed LCP paint ~3s. */
       Array.prototype.forEach.call(cards, function(card, idx){
         if (card.classList.contains('is-in')) return;
+        if (idx === 0 || card.querySelector('img.qcx-card-lcp')) {
+          card.classList.add('is-in');
+          card.classList.remove('qcx-reveal');
+          return;
+        }
         card.classList.add('qcx-reveal');
         if (idx < 3 || !__qcxCardRevealObs) {
           card.classList.add('is-in');
@@ -3008,7 +3014,8 @@
     if (ssr) {
       shell = ssr;
       shell.id = 'Blog1';
-      shell.className = 'widget Blog qcx-rescue-blog qcx-feed-in';
+      /* No qcx-feed-in: animation both+opacity:0 delayed LCP on first card. */
+      shell.className = 'widget Blog qcx-rescue-blog';
       shell.removeAttribute('data-qcx-ssr');
       try {
         var oldRow = shell.querySelector('.row');
@@ -3028,7 +3035,7 @@
         });
       } catch (ignoreClear) {}
     } else {
-      shell = el('div', 'widget Blog qcx-rescue-blog qcx-feed-in');
+      shell = el('div', 'widget Blog qcx-rescue-blog');
       shell.id = 'Blog1';
       main.appendChild(shell);
     }
