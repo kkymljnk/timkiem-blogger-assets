@@ -273,16 +273,19 @@
 
 .qcx-mobile-search-window {
   width: min(560px, 100%);
-  overflow: hidden;
+  /* Never clip the command-row border — overflow only on .qcx-mobile-search-results */
+  overflow: visible !important;
   display: flex;
   flex-direction: column;
-  border: 1px solid rgba(0,240,163,.14);
+  padding: 10px 10px 0;
+  box-sizing: border-box;
+  border: 1px solid rgba(0,240,163,.32);
   border-radius: 14px;
   background: linear-gradient(180deg, #0e1612 0%, #0a100d 100%);
   box-shadow:
-    0 0 0 1px rgba(0,0,0,.5),
+    0 0 0 1px rgba(0,0,0,.45),
     0 28px 90px rgba(0,0,0,.7),
-    0 0 48px rgba(0,240,163,.04);
+    0 0 40px rgba(0,240,163,.06);
   animation: qcxCmdIn .18s ease-out;
 }
 @keyframes qcxCmdIn {
@@ -293,18 +296,20 @@
   .qcx-mobile-search-window { animation: none; }
 }
 
-/* One clean command row — no nested green input box */
+/* Command row — full green border (window padding keeps top edge unclipped) */
 .qcx-mobile-search-form {
   display: grid;
   grid-template-columns: auto minmax(0,1fr) auto;
   align-items: center;
   gap: 0;
-  min-height: 52px;
-  margin: 0;
-  padding: 0 4px 0 16px;
-  border: 0;
-  border-bottom: 1px solid rgba(255,255,255,.06);
-  background: transparent;
+  min-height: 48px;
+  margin: 0 !important;
+  padding: 0 4px 0 14px;
+  border: 1px solid rgba(0,240,163,.42) !important;
+  border-radius: 10px;
+  background: rgba(0,0,0,.22);
+  box-sizing: border-box;
+  box-shadow: inset 0 0 0 1px rgba(0,240,163,.08);
 }
 .qcx-mobile-search-prompt {
   margin-right: 10px;
@@ -319,7 +324,7 @@
 }
 .qcx-mobile-search-input {
   width: 100%;
-  height: 52px;
+  height: 46px;
   margin: 0 !important;
   padding: 0 !important;
   border: 0 !important;
@@ -375,7 +380,10 @@
   gap: 2px;
   flex: 1 1 auto;
   max-height: min(52vh, 420px);
+  margin: 8px 0 0;
+  overflow-x: hidden;
   overflow-y: auto;
+  border-radius: 0 0 14px 14px;
   -webkit-overflow-scrolling: touch;
   padding: 6px;
   font-family: var(--mono, 'JetBrains Mono', monospace);
@@ -586,8 +594,8 @@
     padding-top: max(16vh, 110px);
   }
   .qcx-mobile-search-window { width: min(560px, calc(100vw - 48px)); }
-  .qcx-mobile-search-form { min-height: 54px; }
-  .qcx-mobile-search-input { height: 54px; font-size: 15px !important; }
+  .qcx-mobile-search-form { min-height: 50px; }
+  .qcx-mobile-search-input { height: 48px; font-size: 15px !important; }
 }
 
 /* Mobile — same Command Space chrome, denser */
@@ -599,17 +607,19 @@
   .qcx-mobile-search-window {
     width: 100%;
     border-radius: 14px;
+    padding: 8px 8px 0;
   }
   .qcx-mobile-search-form {
-    min-height: 50px;
-    padding-left: 14px;
+    min-height: 48px;
+    margin: 0 !important;
+    padding-left: 12px;
   }
   .qcx-mobile-search-prompt {
     font-size: 12px;
     margin-right: 8px;
   }
   .qcx-mobile-search-input {
-    height: 50px;
+    height: 46px;
     font-size: 16px !important; /* prevent iOS zoom */
   }
   .qcx-mobile-search-results {

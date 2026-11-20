@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.55/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.56/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -888,9 +888,25 @@
       'visibility:hidden!important;pointer-events:none!important}' +
       '#qcx-menu.open,#qcx-menu[aria-hidden=\"false\"]{transform:translateY(0)!important;opacity:1!important;' +
       'visibility:visible!important;pointer-events:auto!important}' +
-      '#qcx-menu-header{display:flex!important;align-items:center!important;justify-content:space-between!important;' +
-      'padding:10px 16px 6px!important;flex-shrink:0!important;gap:10px!important;max-width:960px!important;' +
+      '#qcx-menu-header{display:flex!important;align-items:center!important;justify-content:flex-start!important;' +
+      'padding:12px 14px 8px!important;flex-shrink:0!important;gap:6px!important;max-width:960px!important;' +
       'width:100%!important;margin:0 auto!important;box-sizing:border-box!important}' +
+      '#qcx-menu-header .qcx-auth-slot--menu{margin-left:auto!important;margin-right:0!important;flex:0 0 auto!important;' +
+      'display:inline-flex!important;align-items:center!important;max-width:min(168px,46vw)!important;' +
+      'order:2!important}' +
+      '#qcx-menu-header .qcx-auth-slot--menu .qcx-user-chip{height:28px!important;max-width:100%!important;' +
+      'padding:0 8px 0 2px!important;gap:5px!important}' +
+      '#qcx-menu-header .qcx-auth-slot--menu .qcx-user-chip::before{opacity:.55!important;inset:0 0 0 16px!important}' +
+      '#qcx-menu-header .qcx-auth-slot--menu .qcx-user-avatar{width:18px!important;height:18px!important}' +
+      '#qcx-menu-header .qcx-auth-slot--menu .qcx-user-name{max-width:96px!important;font-size:11.5px!important}' +
+      '#qcx-menu-header .qcx-auth-slot--menu .qcx-auth-login-btn{height:28px!important;padding:0 10px!important}' +
+      '#qcx-menu-header #qcx-menu-close{margin-left:0!important;flex:0 0 auto!important;order:3!important}' +
+      '#qcx-menu-header #qcx-menu-logo{order:1!important;flex:0 0 auto!important;margin-right:0!important}' +
+      /* Search command row — keep full green border (window padding, never clip) */
+      '.qcx-mobile-search-window{overflow:visible!important;padding:10px 10px 0!important;box-sizing:border-box!important}' +
+      '.qcx-mobile-search-form{margin:0!important;border:1px solid rgba(0,240,163,.42)!important;border-radius:10px!important;' +
+      'background:rgba(0,0,0,.22)!important;box-shadow:inset 0 0 0 1px rgba(0,240,163,.08)!important}' +
+      '@media (max-width:860px){.qcx-mobile-search-window{padding:8px 8px 0!important}}' +
       '#qcx-menu-logo{display:inline-flex!important;align-items:center!important;gap:8px!important;' +
       'font:800 14px/1.2 system-ui,-apple-system,sans-serif!important;color:#fff!important;cursor:pointer!important;' +
       'letter-spacing:.02em!important;text-transform:none!important;-webkit-text-fill-color:#fff!important}' +
@@ -3646,7 +3662,7 @@
       var mSlot = document.createElement('div');
       mSlot.className = 'qcx-auth-slot qcx-auth-slot--menu';
       mSlot.setAttribute('data-qcx-auth-slot', 'menu');
-      mSlot.style.cssText = 'margin-left:auto;margin-right:8px;';
+      mSlot.style.cssText = 'margin-left:auto;margin-right:0;flex:0 0 auto;';
       mSlot.innerHTML = slotMarkup;
       var closeBtn = document.getElementById('qcx-menu-close');
       if (closeBtn && closeBtn.parentNode === mh) mh.insertBefore(mSlot, closeBtn);
