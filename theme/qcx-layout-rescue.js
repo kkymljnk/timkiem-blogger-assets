@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.42/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.43/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -4034,6 +4034,21 @@
           };
         }
         var roleStylesFetched = false;
+        function clearStalePersonalNameStyles(userOverrides) {
+          try {
+            var overrides = userOverrides && typeof userOverrides === 'object'
+              ? userOverrides
+              : (readAdminRoleStyles().userOverrides || {});
+            var map = JSON.parse(localStorage.getItem(NAME_STYLE_KEY) || '{}') || {};
+            var next = {};
+            var keys = Object.keys(map);
+            for (var i = 0; i < keys.length; i++) {
+              var em = keys[i];
+              if (overrides[em]) next[em] = map[em];
+            }
+            localStorage.setItem(NAME_STYLE_KEY, JSON.stringify(next));
+          } catch (eClear) {}
+        }
         function fetchAdminRoleStyles(force) {
           if (roleStylesFetched && !force) return;
           roleStylesFetched = true;
@@ -4049,6 +4064,7 @@
                   updatedAt: res.updatedAt || new Date().toISOString()
                 };
                 try { localStorage.setItem(ADMIN_ROLE_STYLES_KEY, JSON.stringify(next)); } catch (e) {}
+                clearStalePersonalNameStyles(next.userOverrides);
                 renderAuthSlots();
                 applyNameStylesAll();
               }).catch(function () {});
@@ -4064,7 +4080,8 @@
           if (userObj && userObj.styleSource === 'admin_user_override' && userObj.nameStyle) {
             return userObj.nameStyle;
           }
-          if (r === 'admin' || (r !== 'member' && cfg.allowSelfSwitch !== false)) {
+          /* ADMIN always follows roleDefaults (not personal self-style cache). */
+          if (r !== 'admin' && r !== 'member' && cfg.allowSelfSwitch !== false) {
             try {
               var map = JSON.parse(localStorage.getItem(NAME_STYLE_KEY) || '{}') || {};
               if (key && map[key]) return map[key];
@@ -4142,6 +4159,7 @@
           } catch (eBc) {}
           window.addEventListener('storage', function (ev) {
             if (ev && ev.key === ADMIN_ROLE_STYLES_KEY) {
+              clearStalePersonalNameStyles();
               renderAuthSlots();
               applyNameStylesAll();
             }
@@ -4172,8 +4190,9 @@
         function setUserNameStyle(email, styleId, isAdminUser) {
           var key = String(email || '').trim().toLowerCase();
           try {
-            var map = JSON.parse(localStorage.getItem(NAME_STYLE_KEY) || '{}') || {};
-            if (key) {
+            /* Personal self-switch is VIP/PRO only; admin follows roleDefaults. */
+            if (!isAdminUser && key) {
+              var map = JSON.parse(localStorage.getItem(NAME_STYLE_KEY) || '{}') || {};
               map[key] = styleId;
               localStorage.setItem(NAME_STYLE_KEY, JSON.stringify(map));
             }
@@ -4192,6 +4211,7 @@
         window.__qcxApplyNameStylesAll = applyNameStylesAll;
         window.__qcxBroadcastRoleStyles = broadcastRoleStylesRefresh;
         window.__qcxFetchAdminRoleStyles = fetchAdminRoleStyles;
+        window.__qcxClearStalePersonalNameStyles = clearStalePersonalNameStyles;
         function roleBadgeHtml(role) {
           if (role === 'admin') {
             return '<svg class="qcx-urb-ico" viewBox="0 0 16 16" width="10" height="10" fill="currentColor" aria-hidden="true"><path d="M9.8 1L2.6 9.3h4.5L6.1 15l7.3-8.3H8.9L9.8 1z"/></svg><span class="qcx-urb-txt">ADMIN</span>';

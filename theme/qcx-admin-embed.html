@@ -317,7 +317,7 @@
             </div>
 
             <!-- Block 2: Per-Member Style Override (Single-Row Assign Bar) -->
-            <div class="rfx-section">
+            <div class="rfx-section rfx-section-last">
               <div class="rfx-head-row">
                 <label class="rfx-sec-title">2. Gán style theo Gmail</label>
                 <span class="rfx-sec-hint">Ghi đè style Role</span>
@@ -339,14 +339,6 @@
               </div>
             </div>
 
-            <!-- Block 3: 18 Pro Styles Interactive Visual Gallery (3x6 Uniform Grid) -->
-            <div class="rfx-section rfx-section-last">
-              <div class="rfx-head-row">
-                <label class="rfx-sec-title">3. Thư viện 20 mẫu Pro</label>
-                <span class="rfx-sec-hint">GIF/WebP mới · bấm chọn nhanh</span>
-              </div>
-              <div id="roleFxGalleryGrid" class="rfx-gallery"></div>
-            </div>
           </div>
         </div>
         </div><!-- /.compose-shell -->
@@ -1931,7 +1923,7 @@ Chúc các bạn thành công!"></textarea>
   (function initAdminRoleFxController() {
     var ROLE_STYLES_CACHE_KEY = 'qcx_admin_role_styles_v1';
     var DEFAULT_OWNER_AV = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.3/images/avatars/kkymljnk-google.png';
-    var ROLE_FX_CSS_URL = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.42/theme/qcx-role-styles.css';
+    var ROLE_FX_CSS_URL = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.43/theme/qcx-role-styles.css';
 
     if (!document.getElementById('qcx-role-fx-admin-css')) {
       var linkFx = document.createElement('link');
@@ -2111,40 +2103,26 @@ Chúc các bạn thành công!"></textarea>
       });
     }
 
-    function renderGallery() {
-      var grid = document.getElementById('roleFxGalleryGrid');
-      if (!grid) return;
-      var curSel = (document.getElementById('selMemberStyleId') || {}).value || 'crimson';
-      grid.innerHTML = PRO_STYLES.map(function (st) {
-        var cls = st.id === curSel ? 'rfx-gal-card is-picked' : 'rfx-gal-card';
-        return '<button type="button" class="' + cls + '" data-pick-gallery="' + st.id + '">' +
-          pillPreviewHtml(st.id, 'Nguyễn Văn Cần') +
-          '<span class="rfx-gal-meta">' +
-            '<span class="rfx-gal-name">' + escapeHtml(st.name) + '</span>' +
-            '<span class="rfx-gal-fx">' + escapeHtml(st.fx) + '</span>' +
-          '</span>' +
-        '</button>';
-      }).join('');
-      grid.querySelectorAll('[data-pick-gallery]').forEach(function (card) {
-        card.addEventListener('click', function () {
-          var stId = this.getAttribute('data-pick-gallery');
-          var sel = document.getElementById('selMemberStyleId');
-          if (sel && stId) {
-            sel.value = stId;
-            updateMemberPreview();
-            grid.querySelectorAll('[data-pick-gallery]').forEach(function (c) {
-              c.classList.toggle('is-picked', c.getAttribute('data-pick-gallery') === stId);
-            });
-            var emInp = document.getElementById('inpMemberStyleEmail');
-            if (emInp) emInp.focus();
-          }
+    function renderGallery() { /* gallery removed — select in section 2 covers all styles */ }
+
+    function clearStalePersonalNameStyles() {
+      try {
+        var NAME_KEY = 'qcx_name_style_v1';
+        var overrides = state.userOverrides || {};
+        var map = JSON.parse(localStorage.getItem(NAME_KEY) || '{}') || {};
+        var next = {};
+        Object.keys(map).forEach(function (em) {
+          if (overrides[em]) next[em] = map[em];
         });
-      });
+        localStorage.setItem(NAME_KEY, JSON.stringify(next));
+      } catch (eClear) {}
     }
 
     function notifyRoleStylesUpdated() {
       try {
+        clearStalePersonalNameStyles();
         var host = window.parent && window.parent !== window ? window.parent : window;
+        if (typeof host.__qcxClearStalePersonalNameStyles === 'function') host.__qcxClearStalePersonalNameStyles();
         if (typeof host.__qcxApplyNameStylesAll === 'function') host.__qcxApplyNameStylesAll();
         if (typeof host.__qcxBroadcastRoleStyles === 'function') host.__qcxBroadcastRoleStyles();
         else if (typeof BroadcastChannel !== 'undefined') {
