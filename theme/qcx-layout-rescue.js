@@ -3334,8 +3334,8 @@
       belowZone.appendChild(commWidget);
     }
 
-    if (!window.__qcxGmailAuthV3) {
-      window.__qcxGmailAuthV3 = true;
+    if (!window.__qcxGmailAuthV4) {
+      window.__qcxGmailAuthV4 = true;
       (function initRescueAuthFallback() {
         var API_BASE = 'https://timkiem-store-api.kkymljnk.workers.dev';
         var ENT_KEY = 'qcx_payos_entitlement_v1';
