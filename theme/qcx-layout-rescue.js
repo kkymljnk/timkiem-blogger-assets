@@ -468,7 +468,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.75/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.76/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -3996,16 +3996,17 @@
         'transition:color .15s,background-color .15s,border-color .15s,transform .12s!important}' +
       'h1.post-title .qcx-post-save-btn:hover:not(.is-saved),button.qcx-post-save-btn:hover:not(.is-saved),' +
       '.post-header h1.post-title #qcx-post-save-btn:hover:not(.is-saved),#qcx-post-save-btn:hover:not(.is-saved){' +
-        'opacity:1!important;color:#c5d0c9!important;background:rgba(255,255,255,0.04)!important;' +
-        'background-color:rgba(255,255,255,0.04)!important;border-color:rgba(255,255,255,0.08)!important}' +
+        'opacity:1!important;color:#c5d0c9!important;background:transparent!important;background-color:transparent!important;' +
+        'border-color:transparent!important;box-shadow:none!important}' +
       'h1.post-title .qcx-post-save-btn.is-saved,button.qcx-post-save-btn.is-saved,' +
       '.post-header h1.post-title #qcx-post-save-btn.is-saved,h1.post-title #qcx-post-save-btn.is-saved,#qcx-post-save-btn.is-saved{' +
         'opacity:1!important;color:#34e6a0!important;' +
-        'background:rgba(52,230,160,0.16)!important;background-color:rgba(52,230,160,0.16)!important;' +
-        'border-color:rgba(52,230,160,0.45)!important;box-shadow:0 0 0 1px rgba(52,230,160,0.12)!important}' +
+        'background:transparent!important;background-color:transparent!important;' +
+        'border-color:transparent!important;box-shadow:none!important}' +
       'h1.post-title .qcx-post-save-btn.is-saved:hover,button.qcx-post-save-btn.is-saved:hover,' +
       '.post-header h1.post-title #qcx-post-save-btn.is-saved:hover,h1.post-title #qcx-post-save-btn.is-saved:hover,#qcx-post-save-btn.is-saved:hover{' +
-        'color:#7dcea0!important;background:rgba(52,230,160,0.22)!important;background-color:rgba(52,230,160,0.22)!important}' +
+        'color:#7dcea0!important;background:transparent!important;background-color:transparent!important;' +
+        'border-color:transparent!important;box-shadow:none!important}' +
       'h1.post-title .qcx-post-save-btn svg,h1.post-title .qcx-post-save-ico,button.qcx-post-save-btn svg,' +
       '#qcx-post-save-btn svg,#qcx-post-save-btn .qcx-post-save-ico{' +
         'width:0.92em!important;height:0.92em!important;min-width:0.92em!important;min-height:0.92em!important;' +
