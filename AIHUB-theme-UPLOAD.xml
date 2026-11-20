@@ -9187,7 +9187,7 @@ window.addEventListener('load', qcxBootMacFrames, { once: true });
 <script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.13/theme/qcx-runtime.js'></script>
 <script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.26/theme/qcx-smart-runtime.js'></script>
 <!-- secure-resource.js handles unlock flow -->
-<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.12/theme/qcx-layout-rescue.js'></script>
+<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.13/theme/qcx-layout-rescue.js'></script>
 <!-- moved to CDN: qcx-layout-rescue -->
 <script>//<![CDATA[
 (function(){
@@ -10244,33 +10244,11 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
     function triggerGoogleSignIn(afterLoginPayosCfg){
       pendingPayosCfgAfterLogin=afterLoginPayosCfg||null;
       loadLocalAuthCfg();
-      function openFallbackModal(){
-        var m=ensureGoogleAuthModal();
-        renderSavedAccountsPicker();
-        var popBtn=document.getElementById('qcx-ga-popup-btn');
-        if(popBtn)popBtn.style.display=googleClientId?'flex':'none';
-        var notice=document.getElementById('qcx-ga-payos-notice');
-        if(notice){
-          if(afterLoginPayosCfg){
-            notice.style.display='block';
-            notice.innerHTML='<strong>\ud83d\udd10 B\u01b0\u1edbc 1/2 \u2014 \u0110\u0103ng nh\u1eadp Gmail tr\u01b0\u1edbc khi thanh to\u00e1n:</strong> H\u1ec7 th\u1ed1ng s\u1ebd g\u1eafn ch\u1eb7t m\u00e3 VietQR v\u00e0 quy\u1ec1n m\u1edf kh\u00f3a v\u00e0o \u0111\u00fang Gmail c\u1ee7a b\u1ea1n (\u0111\u1ed5i m\u00e1y v\u1eabn t\u1ef1 m\u1edf kh\u00f3a 100%).';
-          }else{
-            notice.style.display='none';
-          }
-        }
-        m.classList.add('is-open');
-        var emInp=document.getElementById('qcx-ga-email');
-        if(emInp)setTimeout(function(){emInp.focus();},60);
-      }
-      function launchNative(){
-        if(!googleClientId){openFallbackModal();return;}
-        startGoogleOAuthPopup(null);
-      }
-      if(googleClientId){launchNative();return;}
-      fetchAuthConfig().then(function(cid){
-        if(cid)launchNative();
-        else openFallbackModal();
-      });
+      var m=document.getElementById('qcx-google-auth-modal');
+      if(m){m.classList.remove('is-open');m.style.display='none';try{m.remove();}catch(e){}}
+      if(!googleClientId)googleClientId='94419988478-0os3sguo1jbe06ob9fi5vusb969vpmil.apps.googleusercontent.com';
+      startGoogleOAuthPopup(null);
+      fetchAuthConfig();
     }
     window.__qcxTriggerGoogleSignIn=triggerGoogleSignIn;
 

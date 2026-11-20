@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.12/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.13/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -3244,8 +3244,7 @@
       '.qcx-post-save-btn:hover{border-color:#34e6a0;background:rgba(52,230,160,0.12);transform:translateY(-1px)}' +
       '.qcx-post-save-btn.is-saved{border-color:rgba(255,209,102,0.55);color:#ffd166;background:rgba(38,28,5,0.72)}' +
       '.qcx-post-save-btn svg{width:13px;height:13px;flex:0 0 auto}' +
-      '#qcx-google-auth-modal{position:fixed;inset:0;z-index:999999;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(3,9,6,0.84);backdrop-filter:blur(8px)}' +
-      '#qcx-google-auth-modal.is-open{display:flex}' +
+      '#qcx-google-auth-modal,#qcx-google-auth-modal.is-open{display:none!important;visibility:hidden!important;pointer-events:none!important}' +
       '.qcx-payos-dialog{width:100%;max-width:420px;border-radius:16px;border:1px solid rgba(52,230,160,0.38);background:linear-gradient(180deg,#0b1912 0%,#06100b 100%);color:#e8fff2;padding:18px;box-shadow:0 24px 64px rgba(0,0,0,0.82);box-sizing:border-box;font-family:var(--qcx-article-sans,system-ui,sans-serif)}' +
       '.qcx-payos-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}' +
       '.qcx-payos-badge{display:inline-block;padding:2px 7px;border-radius:999px;background:rgba(52,230,160,0.15);color:#34e6a0;font:800 9.5px/1.2 var(--qcx-article-mono,monospace);letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px}' +
@@ -3356,8 +3355,8 @@
       belowZone.appendChild(commWidget);
     }
 
-    if (!window.__qcxGmailAuthV4) {
-      window.__qcxGmailAuthV4 = true;
+    if (!window.__qcxGmailAuthV5) {
+      window.__qcxGmailAuthV5 = true;
       (function initRescueAuthFallback() {
         var API_BASE = 'https://timkiem-store-api.kkymljnk.workers.dev';
         var ENT_KEY = 'qcx_payos_entitlement_v1';
@@ -3372,10 +3371,20 @@
           'kkymljnk@gmail.com': 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.3/images/avatars/kkymljnk-google.png',
           'superkhung@gmail.com': 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.3/images/avatars/kkymljnk-google.png'
         };
-        var googleClientId = '';
+        var DEFAULT_GOOGLE_CLIENT_ID = '94419988478-0os3sguo1jbe06ob9fi5vusb969vpmil.apps.googleusercontent.com';
+        var googleClientId = DEFAULT_GOOGLE_CLIENT_ID;
         var adminEmailsList = DEFAULT_ADMIN_EMAILS.slice();
         var gsiScriptLoading = false;
         var pendingProbes = {};
+        function killAuthModal() {
+          var m = document.getElementById('qcx-google-auth-modal');
+          if (m) {
+            m.classList.remove('is-open');
+            m.style.display = 'none';
+            m.setAttribute('hidden', 'hidden');
+            try { m.remove(); } catch (e) {}
+          }
+        }
 
         function isPlaceholderAvatar(url) {
           if (!url) return true;
@@ -4057,24 +4066,21 @@
           (document.head || document.documentElement).appendChild(s);
         }
         function startGoogleOAuthPopup(statusEl) {
+          killAuthModal();
           loadLocalAuthCfg();
-          if (!googleClientId) {
-            var emInp = document.getElementById('qcx-ga-email');
-            var nmInp = document.getElementById('qcx-ga-name');
-            if (emInp && emInp.value && emInp.value.indexOf('@') !== -1) {
-              var subBtn = document.getElementById('qcx-ga-submit');
-              if (subBtn) { subBtn.click(); return; }
-            }
-            if (statusEl) {
-              statusEl.classList.remove('is-err');
-              statusEl.textContent = 'Nhập Gmail & Họ tên bên dưới để đăng nhập và tự động tải Avatar Google.';
-            }
-            if (emInp && !emInp.value) emInp.focus();
-            else if (nmInp) nmInp.focus();
-            return;
-          }
+          if (!googleClientId) googleClientId = DEFAULT_GOOGLE_CLIENT_ID;
           loadGsiScript(function () {
-            if (!(window.google && window.google.accounts && window.google.accounts.oauth2)) return;
+            if (!(window.google && window.google.accounts && window.google.accounts.oauth2)) {
+              // Last resort: open Google accounts chooser in a new tab.
+              try {
+                window.open(
+                  'https://accounts.google.com/AccountChooser?continue=' + encodeURIComponent(location.href),
+                  '_blank',
+                  'noopener'
+                );
+              } catch (e) {}
+              return;
+            }
             try {
               var client = window.google.accounts.oauth2.initTokenClient({
                 client_id: googleClientId,
@@ -4092,7 +4098,15 @@
                 }
               });
               client.requestAccessToken({ prompt: 'select_account' });
-            } catch (e) {}
+            } catch (e) {
+              try {
+                window.open(
+                  'https://accounts.google.com/AccountChooser?continue=' + encodeURIComponent(location.href),
+                  '_blank',
+                  'noopener'
+                );
+              } catch (e2) {}
+            }
           });
         }
         function renderSavedAccountsPicker() {
@@ -4203,33 +4217,17 @@
           return m;
         }
         function openFallbackAuthModal() {
-          var m = ensureGoogleAuthModal();
-          m.classList.add('is-open');
-          loadLocalAuthCfg();
-          renderSavedAccountsPicker();
-          var popBtn = document.getElementById('qcx-ga-popup-btn');
-          if (popBtn) popBtn.style.display = googleClientId ? 'flex' : 'none';
-          var em = document.getElementById('qcx-ga-email');
-          if (em) em.focus();
+          // Custom Gmail modal removed — always go straight to Google.
+          killAuthModal();
+          startGoogleOAuthPopup(null);
         }
         function triggerGoogleSignIn() {
+          killAuthModal();
           loadLocalAuthCfg();
-          function launchNativeGoogleChooser() {
-            if (!googleClientId) {
-              openFallbackAuthModal();
-              return;
-            }
-            // Official Google Identity Services account chooser (select_account) — no custom modal first.
-            startGoogleOAuthPopup(null);
-          }
-          if (googleClientId) {
-            launchNativeGoogleChooser();
-            return;
-          }
-          fetchAuthConfig().then(function (cid) {
-            if (cid) launchNativeGoogleChooser();
-            else openFallbackAuthModal();
-          });
+          if (!googleClientId) googleClientId = DEFAULT_GOOGLE_CLIENT_ID;
+          // Native Google account chooser only (popup/tab) — never show custom modal.
+          startGoogleOAuthPopup(null);
+          fetchAuthConfig().then(function () { /* warm/refresh client id for next time */ });
         }
         function renderSavedPostsBlock(list) {
           var items = Array.isArray(list) ? list.slice(0, 50) : [];
