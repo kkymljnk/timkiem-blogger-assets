@@ -962,6 +962,12 @@
     return entries.map(function (entry) {
       var author = (entry.author && entry.author[0]) || {};
       var name = (author.name && author.name.$t) || 'Ẩn danh';
+      var emailRaw =
+        (author.email && author.email.$t) ||
+        (author.email && typeof author.email === 'string' ? author.email : '') ||
+        '';
+      var email = String(emailRaw || '').trim().toLowerCase();
+      if (email && email.indexOf('@') === -1) email = '';
       var avatar =
         (author.gd$image && author.gd$image.src) ||
         (author['gd$image'] && author['gd$image'].src) ||
@@ -976,6 +982,7 @@
       return {
         id: id,
         name: name,
+        email: email,
         avatar: avatar,
         text: stripHtml(content),
         published: published
@@ -984,6 +991,41 @@
   }
 
   var QCX_COMMENT_PREVIEW_MAX = 5;
+
+  function commentRowHtml(c) {
+    var avatarUrl = String(c.avatar || '').replace(/"/g, '');
+    var avatar = avatarUrl
+      ? '<img class="qcx-user-avatar qcx-comment-avatar" src="' + avatarUrl + '" alt="" width="24" height="24" loading="lazy" referrerpolicy="no-referrer" style="width:24px!important;height:24px!important;max-width:24px!important;border-radius:50%!important;object-fit:cover!important;display:block!important">'
+      : '<span class="qcx-user-avatar qcx-comment-avatar is-fallback" aria-hidden="true" style="width:24px!important;height:24px!important;border-radius:50%!important;display:block!important"></span>';
+    var nameRaw = String(c.name || 'Ẩn danh');
+    var name = nameRaw.replace(/</g, '&lt;');
+    var nameLower = nameRaw.trim().toLowerCase().replace(/"/g, '');
+    var email = String(c.email || '').trim().toLowerCase().replace(/"/g, '');
+    var isAdmin = nameRaw.trim() === "K'";
+    var time = c.published ? formatCommentTime(c.published) : '';
+    var text = String(c.text || '').replace(/</g, '&lt;');
+    var chipAttrs =
+      ' class="qcx-user-chip qcx-comment-chip"' +
+      ' data-qcx-user-name="' + nameLower + '"' +
+      (email ? ' data-qcx-user="' + email + '"' : '') +
+      (isAdmin ? ' data-role="admin" data-tier="ADMIN"' : ' data-role="member" data-tier="MEMBER"') +
+      ' style="display:flex!important;align-items:flex-start!important;gap:6px!important;flex:1 1 auto!important;min-width:0!important;pointer-events:none!important"';
+    return (
+      '<li class="qcx-comment-item" data-id="' + String(c.id).replace(/"/g, '') + '"' +
+      (email ? ' data-qcx-user="' + email + '"' : '') +
+      ' data-qcx-user-name="' + nameLower + '"' +
+      ' style="display:flex!important;align-items:flex-start!important;gap:6px!important;margin:0!important;padding:4px 0!important;list-style:none!important">' +
+      '<div' + chipAttrs + '>' +
+      avatar +
+      '<div class="qcx-comment-body" style="min-width:0!important;flex:1 1 auto!important">' +
+      '<div class="qcx-comment-meta" style="display:flex!important;flex-wrap:nowrap!important;align-items:baseline!important;justify-content:space-between!important;width:100%!important;gap:4px 8px!important">' +
+      '<b class="qcx-user-name qcx-comment-name' + (isAdmin ? ' is-admin' : '') + '" style="font:800 13px/1.25 system-ui,-apple-system,sans-serif!important">' + name + '</b>' +
+      (time ? '<time style="font:600 11px/1.2 ui-monospace,monospace!important;color:#8fb39f!important;margin-left:auto!important;white-space:nowrap!important">' + time + '</time>' : '') +
+      '</div>' +
+      '<p style="margin:2px 0 0!important;color:#d7ebe0!important;font:500 12px/1.35 system-ui,sans-serif!important;word-break:break-word!important">' + text + '</p>' +
+      '</div></div></li>'
+    );
+  }
 
   function renderCommentList(listEl, comments, stateText) {
     if (!listEl) return;
@@ -997,29 +1039,10 @@
     }
     var overflow = comments.length > QCX_COMMENT_PREVIEW_MAX;
     var visible = overflow ? comments.slice(0, QCX_COMMENT_PREVIEW_MAX) : comments;
-    itemsEl.innerHTML = visible.map(function (c) {
-      var avatarUrl = String(c.avatar || '').replace(/"/g, '');
-      var avatar = avatarUrl
-        ? '<img class="qcx-comment-avatar" src="' + avatarUrl + '" alt="" width="24" height="24" loading="lazy" referrerpolicy="no-referrer" style="width:24px!important;height:24px!important;max-width:24px!important;border-radius:50%!important;object-fit:cover!important;display:block!important">'
-        : '<span class="qcx-comment-avatar is-fallback" aria-hidden="true" style="width:24px!important;height:24px!important;border-radius:50%!important;display:block!important"></span>';
-      var name = String(c.name || 'Ẩn danh').replace(/</g, '&lt;');
-      var isAdmin = String(c.name || '').trim() === "K'";
-      var nameColor = isAdmin ? '#ff3b3b' : '#eaf7f0';
-      var nameClass = isAdmin ? ' class="is-admin"' : '';
-      var time = c.published ? formatCommentTime(c.published) : '';
-      var text = String(c.text || '').replace(/</g, '&lt;');
-      return (
-        '<li class="qcx-comment-item" data-id="' + String(c.id).replace(/"/g, '') + '" style="display:flex!important;align-items:flex-start!important;gap:6px!important;margin:0!important;padding:4px 0!important;list-style:none!important">' +
-        avatar +
-        '<div class="qcx-comment-body" style="min-width:0!important;flex:1 1 auto!important">' +
-        '<div class="qcx-comment-meta" style="display:flex!important;flex-wrap:nowrap!important;align-items:baseline!important;justify-content:space-between!important;width:100%!important;gap:4px 8px!important">' +
-        '<b' + nameClass + ' style="font:800 13px/1.25 system-ui,-apple-system,sans-serif!important;color:' + nameColor + '!important">' + name + '</b>' +
-        (time ? '<time style="font:600 11px/1.2 ui-monospace,monospace!important;color:#8fb39f!important;margin-left:auto!important;white-space:nowrap!important">' + time + '</time>' : '') +
-        '</div>' +
-        '<p style="margin:2px 0 0!important;color:#d7ebe0!important;font:500 12px/1.35 system-ui,sans-serif!important;word-break:break-word!important">' + text + '</p>' +
-        '</div></li>'
-      );
-    }).join('');
+    itemsEl.innerHTML = visible.map(commentRowHtml).join('');
+    try {
+      if (typeof window.__qcxApplyNameStylesAll === 'function') window.__qcxApplyNameStylesAll();
+    } catch (eApply) {}
     /* "Xem thêm X bình luận" link when overflow */
     if (overflow) {
       var remaining = comments.length - QCX_COMMENT_PREVIEW_MAX;
@@ -1033,31 +1056,12 @@
       var moreBtn = listEl.querySelector('#' + moreId + ' button');
       if (moreBtn) {
         moreBtn.addEventListener('click', function () {
-          itemsEl.innerHTML += comments.slice(QCX_COMMENT_PREVIEW_MAX).map(function (c) {
-            var avatarUrl = String(c.avatar || '').replace(/"/g, '');
-            var avatar = avatarUrl
-              ? '<img class="qcx-comment-avatar" src="' + avatarUrl + '" alt="" width="24" height="24" loading="lazy" referrerpolicy="no-referrer" style="width:24px!important;height:24px!important;max-width:24px!important;border-radius:50%!important;object-fit:cover!important;display:block!important">'
-              : '<span class="qcx-comment-avatar is-fallback" aria-hidden="true" style="width:24px!important;height:24px!important;border-radius:50%!important;display:block!important"></span>';
-            var name = String(c.name || 'Ẩn danh').replace(/</g, '&lt;');
-            var isAdmin = String(c.name || '').trim() === "K'";
-            var nameColor = isAdmin ? '#ff3b3b' : '#eaf7f0';
-            var nameClass = isAdmin ? ' class="is-admin"' : '';
-            var time = c.published ? formatCommentTime(c.published) : '';
-            var text = String(c.text || '').replace(/</g, '&lt;');
-            return (
-              '<li class="qcx-comment-item" data-id="' + String(c.id).replace(/"/g, '') + '" style="display:flex!important;align-items:flex-start!important;gap:6px!important;margin:0!important;padding:4px 0!important;list-style:none!important">' +
-              avatar +
-              '<div class="qcx-comment-body" style="min-width:0!important;flex:1 1 auto!important">' +
-              '<div class="qcx-comment-meta" style="display:flex!important;flex-wrap:nowrap!important;align-items:baseline!important;justify-content:space-between!important;width:100%!important;gap:4px 8px!important">' +
-              '<b' + nameClass + ' style="font:800 13px/1.25 system-ui,-apple-system,sans-serif!important;color:' + nameColor + '!important">' + name + '</b>' +
-              (time ? '<time style="font:600 11px/1.2 ui-monospace,monospace!important;color:#8fb39f!important;margin-left:auto!important;white-space:nowrap!important">' + time + '</time>' : '') +
-              '</div>' +
-              '<p style="margin:2px 0 0!important;color:#d7ebe0!important;font:500 12px/1.35 system-ui,sans-serif!important;word-break:break-word!important">' + text + '</p>' +
-              '</div></li>'
-            );
-          }).join('');
+          itemsEl.innerHTML += comments.slice(QCX_COMMENT_PREVIEW_MAX).map(commentRowHtml).join('');
           try { listEl.querySelector('#' + moreId).remove(); } catch (ignoreRm) {}
           itemsEl.style.setProperty('max-height', 'none', 'important');
+          try {
+            if (typeof window.__qcxApplyNameStylesAll === 'function') window.__qcxApplyNameStylesAll();
+          } catch (eMore) {}
         });
       }
     }
