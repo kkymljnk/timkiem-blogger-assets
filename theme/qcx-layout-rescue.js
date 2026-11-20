@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.60/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.61/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -2203,17 +2203,18 @@
     }
 
     /* Rest: primary + +N only (matches GSAP showcase). Hover: expand all, hide +. */
+    /* Must use setProperty(...'important') — CSS sets width:0 !important on .qcx-label-mask. */
     if (expanded) {
-      mask.style.width = 'auto';
+      mask.style.setProperty('width', 'auto', 'important');
       var full = secondary.scrollWidth;
-      mask.style.width = full + 'px';
+      mask.style.setProperty('width', full + 'px', 'important');
       more.textContent = '';
       more.setAttribute('hidden', 'hidden');
       more.setAttribute('aria-hidden', 'true');
       return;
     }
 
-    mask.style.width = '0px';
+    mask.style.setProperty('width', '0px', 'important');
     more.textContent = '+' + secLinks.length;
     more.removeAttribute('hidden');
     more.setAttribute('aria-hidden', 'false');

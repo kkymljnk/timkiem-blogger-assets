@@ -1,12 +1,12 @@
-/* Final compact layer: one 1120px axis for header, cards and footer. */
+/* GSAP showcase axis: ~1280px so 3 cards ≈ 389–416px (gsap.com/showcase @1400). */
 body {
   background-size: 60px 60px, 60px 60px, auto !important;
 }
 
-/* Match the compact visual axis shared by header, cards and footer. */
+/* Match the visual axis shared by header, cards and footer. */
 [data-page-item='multiple'] main.main-container {
   width: calc(100% - 48px) !important;
-  max-width: 1120px !important;
+  max-width: 1280px !important;
   padding-top: 0 !important;
   padding-left: 0 !important;
   padding-right: 0 !important;
@@ -275,7 +275,7 @@ footer.footer #footer.qcx-footer-gadgets {
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
   gap: 14px !important;
   width: calc(100% - 48px) !important;
-  max-width: 1120px !important;
+  max-width: 1280px !important;
   margin: 0 auto 48px !important;
   padding: 0 !important;
   border: 0 !important;
