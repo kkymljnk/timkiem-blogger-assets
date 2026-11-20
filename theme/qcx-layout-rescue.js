@@ -229,22 +229,48 @@
     return false;
   }
 
+  function qcxCdnPin() {
+    var m = String(QCX_CDN || '').match(/@(v\d[\w.-]+)\//);
+    return (m && m[1]) || 'v2026.11.19.81';
+  }
+
+  /* Homepage cards: ~15–55KB WebP instead of 450–1000KB hero JPG (PSI image delivery). */
+  function toCardWebp(url) {
+    var u = String(url || '');
+    if (!u || u.indexOf('data:') === 0) return '';
+    if (/\/images\/hero\/card\/[^/?#]+\.webp(?:$|[?#])/i.test(u)) return u;
+    var hero = u.match(/\/images\/hero\/([^/?#]+)\.(jpe?g|png)(?:$|[?#])/i);
+    if (hero) {
+      return 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@' +
+        qcxCdnPin() + '/images/hero/card/' + hero[1] + '.webp';
+    }
+    if (/files\.catbox\.moe|i\.imgur\.com|(?:^|\/\/)imgur\.com\//i.test(u)) {
+      return 'https://wsrv.nl/?url=' + encodeURIComponent(u.split('#')[0]) +
+        '&w=720&h=405&fit=cover&output=webp&q=70';
+    }
+    return '';
+  }
+
   function upgradeThumb(url, opts) {
     if (!url) return '';
     var anim = !!(opts && opts.anim) || isLikelyAnimatedUrl(url);
     var forCard = !!(opts && opts.card);
     var u = String(url);
-    /* External featured images via Blogger proxy — card LCP caps at 800; else full. */
+    if (forCard && !anim) {
+      var cardWebp = toCardWebp(u);
+      if (cardWebp) return cardWebp;
+    }
+    /* External featured images via Blogger proxy — card LCP caps at 720; else full. */
     if (/blogger_img_proxy/i.test(u)) {
       u = u
         .replace(/=s\d+(?:-[^?&#]*)?(?=$|[?#])/i, '')
         .replace(/=w\d+-h\d+(?:-[^?&#]*)?(?=$|[?#])/i, '');
-      if (anim) return u + '=w800-h450-c';
-      return u + (forCard ? '=w800-h450-c' : '=s0');
+      if (anim) return u + '=w640-h360-c';
+      return u + (forCard ? '=w720-h405-c' : '=s0');
     }
-    /* Cards: w800 for LCP/PSI. Post-body / retina: keep larger source. */
-    var crop = anim ? 'w640-h360-c' : (forCard ? 'w800-h450-c' : 'w1600-h900-c');
-    var bare = anim ? 's640' : (forCard ? 's800' : 's1600');
+    /* Cards: w720 for LCP/PSI. Post-body / retina: keep larger source. */
+    var crop = anim ? 'w640-h360-c' : (forCard ? 'w720-h405-c' : 'w1600-h900-c');
+    var bare = anim ? 's640' : (forCard ? 's720' : 's1600');
     return u
       .replace(/\/s\d+-c\//i, '/' + crop + '/')
       .replace(/=s\d+-c(?=$|[/?#])/i, '=' + crop)
@@ -340,20 +366,23 @@
         }
       }
     } catch (ignore) {}
-    /* Prefer direct body assets (catbox/etc) over soft feed proxy thumbs. */
-    if (bodyUrl && !bodyAnim) {
-      return { url: upgradeThumb(bodyUrl, { card: true }), anim: false, source: 'body' };
-    }
+    /* Cards: prefer feed thumb (already sized) or compressed card WebP — never full hero JPG. */
     try {
       if (entry.media$thumbnail && entry.media$thumbnail.url) {
         var feedUrl = entry.media$thumbnail.url;
-        return {
-          url: upgradeThumb(feedUrl, { anim: isLikelyAnimatedUrl(feedUrl), card: true }),
-          anim: isLikelyAnimatedUrl(feedUrl),
-          source: 'feed'
-        };
+        var feedCard = upgradeThumb(feedUrl, { anim: isLikelyAnimatedUrl(feedUrl), card: true });
+        if (feedCard) {
+          return {
+            url: feedCard,
+            anim: isLikelyAnimatedUrl(feedUrl),
+            source: 'feed'
+          };
+        }
       }
     } catch (ignore) {}
+    if (bodyUrl && !bodyAnim) {
+      return { url: upgradeThumb(bodyUrl, { card: true }), anim: false, source: 'body' };
+    }
     if (bodyUrl) {
       return { url: upgradeThumb(bodyUrl, { anim: bodyAnim, card: true }), anim: bodyAnim, source: bodyAnim ? 'body-gif' : 'body' };
     }
@@ -498,7 +527,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.80/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.81/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -2529,7 +2558,7 @@
         (highPrio
           ? ' loading="eager" fetchpriority="high" decoding="async"'
           : ' loading="lazy" decoding="async"') +
-        ' src="' + escapeHtml(thumb) + '" width="800" height="450" sizes="(max-width:820px) 100vw, 33vw"/>')
+        ' src="' + escapeHtml(thumb) + '" width="720" height="405" sizes="(max-width:820px) 100vw, 33vw"/>')
       : '<span class="qcx-card-noimg" aria-hidden="true">// no image</span>';
     var awardHtml = '';
     if (award && award.kind && award.text) {
@@ -2705,8 +2734,8 @@
 
   function prioritizeHomepageLcpImages(row) {
     try {
-      var scope = row || document;
-      var imgs = scope.querySelectorAll('.all_posts .card-header img, .all_posts img.qcx-card-media');
+      /* Always rank against the full homepage grid — never per-card (that made every img LCP/eager). */
+      var imgs = document.querySelectorAll('.all_posts .card-header img.qcx-card-media, .all_posts .card-header img, .all_posts img.qcx-card-media');
       Array.prototype.forEach.call(imgs, function(img, index){
         var dataSrc = img.getAttribute('data-src') || '';
         var srcAttr = img.getAttribute('src') || '';
@@ -2715,6 +2744,8 @@
         var anim = img.getAttribute('data-qcx-anim') === '1' || isLikelyAnimatedUrl(raw || srcAttr || dataSrc);
         var next = raw ? upgradeThumb(raw, { anim: anim, card: true }) : '';
         img.setAttribute('decoding', 'async');
+        img.setAttribute('width', img.getAttribute('width') || '720');
+        img.setAttribute('height', img.getAttribute('height') || '405');
         if (!img.getAttribute('sizes')) {
           img.setAttribute('sizes', '(max-width:820px) 100vw, 33vw');
         }
@@ -2722,6 +2753,7 @@
         if (index === 0) {
           img.setAttribute('loading', 'eager');
           img.setAttribute('fetchpriority', 'high');
+          img.classList.add('qcx-card-lcp');
           if (next) {
             if (dataSrc && dataSrc.indexOf('data:') !== 0) img.setAttribute('data-src', next);
             img.src = next;
@@ -2731,7 +2763,7 @@
             } catch (ignoreCls) {}
           }
           try {
-            var href = img.currentSrc || img.src || '';
+            var href = next || img.currentSrc || img.src || '';
             if (href && href.indexOf('data:') !== 0) {
               var old = document.getElementById('qcx-lcp-preload');
               if (old && old.parentNode) old.parentNode.removeChild(old);
@@ -2741,17 +2773,25 @@
               link.as = 'image';
               link.href = href;
               link.setAttribute('fetchpriority', 'high');
+              if (/\.webp(?:$|[?#])/i.test(href)) link.type = 'image/webp';
               (document.head || document.documentElement).appendChild(link);
             }
           } catch (ignorePre) {}
           return;
         }
         img.setAttribute('loading', 'lazy');
-        img.removeAttribute('fetchpriority');
+        img.setAttribute('fetchpriority', 'low');
+        img.classList.remove('qcx-card-lcp');
         if (!raw || raw.indexOf('data:') === 0) return;
         if (next && next !== raw) {
-          if (dataSrc && dataSrc.indexOf('data:') !== 0) img.setAttribute('data-src', next);
-          else if (srcAttr && srcAttr.indexOf('data:') !== 0) img.setAttribute('src', next);
+          if (dataSrc && dataSrc.indexOf('data:') !== 0) {
+            img.setAttribute('data-src', next);
+            if (srcAttr && srcAttr.indexOf('data:') !== 0) {
+              img.setAttribute('src', next);
+            }
+          } else if (srcAttr && srcAttr.indexOf('data:') !== 0) {
+            img.setAttribute('src', next);
+          }
         }
       });
     } catch (ignoreLcp) {}
