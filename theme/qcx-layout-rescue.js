@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.17/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.18/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -3202,6 +3202,11 @@
     st.textContent =
       '.qcx-auth-slot{display:inline-flex!important;align-items:center!important;position:relative!important;z-index:120!important}' +
       '.qcx-mac-topbar .qcx-mt-right{display:inline-flex!important;align-items:center!important;gap:8px!important;flex-wrap:nowrap!important;white-space:nowrap!important}' +
+      /* Auth chip only on homepage signal header — hide on post/page topbar + sidebar */ +
+      'html[data-page-type="post"] .qcx-mac-topbar .qcx-auth-slot,' +
+      'html[data-page-type="page"] .qcx-mac-topbar .qcx-auth-slot,' +
+      'html[data-page-item="single"] .qcx-mac-topbar .qcx-auth-slot,' +
+      '.qcx-auth-slot--sidebar,.qcx-sidebar-vip-card,#HTML8.widget.HTML:has(.qcx-sidebar-vip-card){display:none!important}' +
       '.qcx-auth-login-btn{appearance:none;border:1px solid rgba(52,230,160,0.32)!important;background:rgba(9,20,14,0.88)!important;color:#e6f5ec!important;cursor:pointer!important;font:600 11px/1 var(--qcx-article-mono,monospace)!important;display:inline-flex!important;align-items:center!important;gap:5px!important;height:28px!important;padding:0 10px!important;border-radius:999px!important;white-space:nowrap!important;transition:border-color .18s,background .18s,transform .18s!important}' +
       '.qcx-auth-slot--topbar .qcx-auth-login-btn{height:26px!important;padding:0 8px!important;font-size:10.5px!important;gap:4px!important}' +
       '.qcx-auth-login-btn:hover{border-color:#34e6a0!important;background:rgba(52,230,160,0.14)!important;transform:translateY(-1px)}' +
@@ -3236,10 +3241,24 @@
       '.qcx-ud-btn.is-danger{color:#ff9b94}' +
       '.qcx-ud-btn.is-danger:hover{background:rgba(255,95,86,0.14)}' +
       '.qcx-ud-count{margin-left:auto;min-width:18px;height:18px;padding:0 5px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font:800 10px/1 var(--qcx-article-mono,monospace);background:rgba(52,230,160,0.16);color:#34e6a0}' +
-      '.qcx-post-save-btn{appearance:none;display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 12px;margin:0 0 10px;border-radius:999px;border:1px solid rgba(52,230,160,0.38);background:rgba(9,20,14,0.88);color:#e6f5ec;font:700 12px/1 var(--qcx-article-sans,system-ui,sans-serif);cursor:pointer;transition:border-color .18s,background .18s,transform .18s}' +
-      '.qcx-post-save-btn:hover{border-color:#34e6a0;background:rgba(52,230,160,0.12);transform:translateY(-1px)}' +
-      '.qcx-post-save-btn.is-saved{border-color:rgba(255,209,102,0.55);color:#ffd166;background:rgba(38,28,5,0.72)}' +
-      '.qcx-post-save-btn svg{width:13px;height:13px;flex:0 0 auto}' +
+      '.qcx-post-save-btn,.post-header .qcx-post-save-btn,button.qcx-post-save-btn{' +
+        'appearance:none!important;-webkit-appearance:none!important;box-sizing:border-box!important;' +
+        'display:inline-flex!important;flex-direction:row!important;align-items:center!important;justify-content:center!important;' +
+        'gap:6px!important;width:auto!important;min-width:0!important;max-width:none!important;' +
+        'height:28px!important;min-height:28px!important;max-height:28px!important;' +
+        'padding:0 11px!important;margin:8px 0 12px!important;border-radius:999px!important;' +
+        'border:1px solid rgba(52,230,160,0.38)!important;background:rgba(9,20,14,0.92)!important;' +
+        'color:#e6f5ec!important;font:700 11.5px/1 var(--qcx-article-sans,system-ui,sans-serif)!important;' +
+        'cursor:pointer!important;vertical-align:middle!important;float:none!important;' +
+        'box-shadow:none!important;text-transform:none!important;letter-spacing:0!important;' +
+        'transition:border-color .18s,background .18s,color .18s!important}' +
+      '.qcx-post-save-btn:hover{border-color:#34e6a0!important;background:rgba(52,230,160,0.12)!important;color:#fff!important}' +
+      '.qcx-post-save-btn.is-saved{border-color:rgba(255,209,102,0.55)!important;color:#ffd166!important;background:rgba(38,28,5,0.72)!important}' +
+      '.qcx-post-save-btn svg,.qcx-post-save-btn .qcx-post-save-ico{' +
+        'width:13px!important;height:13px!important;min-width:13px!important;min-height:13px!important;' +
+        'max-width:13px!important;max-height:13px!important;flex:0 0 13px!important;display:block!important;' +
+        'margin:0!important;padding:0!important;overflow:visible!important}' +
+      '.qcx-post-save-label{display:inline!important;font:inherit!important;color:inherit!important;margin:0!important;padding:0!important;line-height:1!important}' +
       '#qcx-google-auth-modal,#qcx-google-auth-modal.is-open{display:none!important;visibility:hidden!important;pointer-events:none!important}' +
       '#qcx-saved-modal{position:fixed;inset:0;z-index:999999;display:none;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;background:rgba(6,10,8,0.72)}' +
       '#qcx-saved-modal.is-open{display:flex}' +
@@ -3316,14 +3335,13 @@
       }
     }
 
-    var mtRight = document.querySelector('.qcx-mac-topbar .qcx-mt-right');
-    if (mtRight && !mtRight.querySelector('.qcx-auth-slot')) {
-      var tSlot = document.createElement('div');
-      tSlot.className = 'qcx-auth-slot qcx-auth-slot--topbar';
-      tSlot.setAttribute('data-qcx-auth-slot', 'topbar');
-      tSlot.innerHTML = slotMarkup;
-      mtRight.insertBefore(tSlot, mtRight.firstChild);
-    }
+    /* Post/page mac-topbar: back-to-home only — auth chip lives on homepage signal header */
+    try {
+      var postAuthSlots = document.querySelectorAll('.qcx-mac-topbar .qcx-auth-slot');
+      for (var pai = 0; pai < postAuthSlots.length; pai++) {
+        if (postAuthSlots[pai].parentNode) postAuthSlots[pai].parentNode.removeChild(postAuthSlots[pai]);
+      }
+    } catch (ePa) {}
 
     var mh = document.getElementById('qcx-menu-header');
     if (mh && !mh.querySelector('.qcx-auth-slot')) {
@@ -3337,23 +3355,16 @@
       else mh.appendChild(mSlot);
     }
 
-    var sbZone = document.getElementById('sidebar');
-    if (sbZone && !sbZone.querySelector('.qcx-sidebar-vip-card')) {
-      var vipWidget = document.createElement('div');
-      vipWidget.className = 'widget HTML';
-      vipWidget.id = 'HTML8';
-      vipWidget.innerHTML =
-        '<div class="widget-content"><div class="qcx-sidebar-vip-card" style="margin-top:16px;padding:16px;border-radius:14px;border:1px solid rgba(52,230,160,0.28);background:linear-gradient(145deg,rgba(12,28,20,0.95),rgba(7,16,11,0.98))">' +
-          '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px">' +
-            '<span style="font:800 10px/1.2 monospace;letter-spacing:.08em;color:#ffd166;background:rgba(255,209,102,0.14);padding:3px 8px;border-radius:999px">&#128081; VIP PASS &amp; GMAIL SYNC</span>' +
-            '<span style="font:700 10px/1.2 monospace;color:#34e6a0">PayOS 24/7</span>' +
-          '</div>' +
-          '<h4 style="margin:0 0 6px;font-size:14px;font-weight:700;color:#ecfdf5">Mở khóa toàn bộ kho VIP</h4>' +
-          '<p style="margin:0 0 12px;font-size:12px;line-height:1.45;color:#9cc4b0">Đăng nhập Gmail để tự động khôi phục gói VIP/PRO và mở khóa nhanh không cần nhập lại mã trên mọi thiết bị.</p>' +
-          '<div class="qcx-auth-slot qcx-auth-slot--sidebar" data-qcx-auth-slot="sidebar" style="width:100%">' + slotMarkup + '</div>' +
-        '</div></div>';
-      sbZone.appendChild(vipWidget);
-    }
+    /* Remove legacy VIP PASS sidebar promo + auth chip inside posts */
+    try {
+      var staleVip = document.querySelectorAll('.qcx-sidebar-vip-card, #HTML8 .qcx-sidebar-vip-card, .qcx-auth-slot--sidebar');
+      for (var vi = 0; vi < staleVip.length; vi++) {
+        var vipNode = staleVip[vi];
+        var vipHost = vipNode.closest ? vipNode.closest('#HTML8.widget, .widget.HTML') : null;
+        if (vipHost && vipHost.parentNode) vipHost.parentNode.removeChild(vipHost);
+        else if (vipNode.parentNode) vipNode.parentNode.removeChild(vipNode);
+      }
+    } catch (eVip) {}
 
     var belowZone = document.getElementById('below-main');
     if (belowZone && !belowZone.querySelector('.qcx-community-support')) {
@@ -3704,7 +3715,7 @@
           btn.id = 'qcx-post-save-btn';
           btn.className = 'qcx-post-save-btn';
           btn.setAttribute('aria-label', 'Lưu bài');
-          btn.innerHTML = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 2.5h8v11l-4-2.4L4 13.5v-11z"/></svg><span class="qcx-post-save-label">Lưu bài</span>';
+          btn.innerHTML = '<svg class="qcx-post-save-ico" viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 2.5h8v11l-4-2.4L4 13.5v-11z"/></svg><span class="qcx-post-save-label">Lưu bài</span>';
           btn.addEventListener('click', function (ev) {
             ev.preventDefault();
             ev.stopPropagation();
