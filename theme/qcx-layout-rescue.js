@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.48/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.49/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -3497,16 +3497,19 @@
         'font-size:1em!important;line-height:1!important;vertical-align:-0.12em!important;' +
         'border:0!important;border-radius:0!important;outline:none!important;' +
         'background:transparent!important;background-color:transparent!important;box-shadow:none!important;' +
-        'color:inherit!important;opacity:0.55!important;cursor:pointer!important;' +
+        /* Gray stroke = chưa lưu; green = đã lưu (.is-saved) */ +
+        'color:#8a9690!important;opacity:1!important;cursor:pointer!important;' +
         'transition:opacity .15s,color .15s!important}' +
       'h1.post-title .qcx-post-save-btn:hover,button.qcx-post-save-btn:hover{' +
         'opacity:1!important;color:#34e6a0!important;background:transparent!important;background-color:transparent!important}' +
       'h1.post-title .qcx-post-save-btn.is-saved,button.qcx-post-save-btn.is-saved{' +
-        'opacity:1!important;color:#ffd166!important;background:transparent!important;background-color:transparent!important}' +
+        'opacity:1!important;color:#34e6a0!important;background:transparent!important;background-color:transparent!important}' +
+      'h1.post-title .qcx-post-save-btn.is-saved:hover,button.qcx-post-save-btn.is-saved:hover{' +
+        'color:#7dcea0!important}' +
       'h1.post-title .qcx-post-save-btn svg,h1.post-title .qcx-post-save-ico,button.qcx-post-save-btn svg{' +
         'width:1em!important;height:1em!important;min-width:1em!important;min-height:1em!important;' +
         'max-width:1em!important;max-height:1em!important;display:block!important;margin:0!important;padding:0!important;' +
-        'flex:0 0 auto!important}' +
+        'flex:0 0 auto!important;stroke:currentColor!important;fill:none!important}' +
       'h1.post-title .qcx-post-save-label,button.qcx-post-save-btn .qcx-post-save-label{' +
         'display:none!important;visibility:hidden!important;width:0!important;height:0!important;' +
         'padding:0!important;margin:0!important;overflow:hidden!important;font-size:0!important}' +
