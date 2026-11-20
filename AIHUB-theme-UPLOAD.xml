@@ -304,16 +304,14 @@ body#layout .qcx-layout-brand span{display:block;color:rgba(230,245,236,.7);font
 </b:includable>
       <b:includable id='all-head'>
   <meta content='width=device-width,initial-scale=1,viewport-fit=cover' name='viewport'/>
-  <link rel='preconnect' href='https://fonts.googleapis.com' crossorigin='anonymous'/>
   <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin='anonymous'/>
-  <link rel='preconnect' href='https://timkiem-store-api.kkymljnk.workers.dev' crossorigin='anonymous'/>
-  <!-- Unified Vietnamese-ready Fonts: Inter (400-800) + JetBrains Mono (400-700) in 1 request with display=optional (CLS=0.000) -->
-  <link rel='preload' as='style' crossorigin='anonymous' fetchpriority='high' href='https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700&amp;display=optional'/>
-  <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700&amp;display=optional' media='print' onload='this.media=&quot;all&quot;' crossorigin='anonymous'/>
-  <noscript><link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700&amp;display=optional'/></noscript>
+  <link rel='preconnect' href='https://cdn.jsdelivr.net' crossorigin='anonymous'/>
+  <!-- Slim fonts: JetBrains Mono only (site chrome). No noscript — Blogger unwraps it into blocking CSS. -->
+  <link rel='preload' as='style' crossorigin='anonymous' href='https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&amp;display=optional'/>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&amp;display=optional' media='print' onload='this.media=&quot;all&quot;' crossorigin='anonymous'/>
   <!-- Pre-empt CDN qcx-breakdev-fonts.css @import waterfall: fonts already loaded above -->
   <style id='qcx-breakdev-fonts' type='text/css'>
-  :root{--qcx-article-sans:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;--qcx-article-mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace}
+  :root{--qcx-article-sans:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;--qcx-article-mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace}
   [data-page-type='post'] .post-header .post-title,.qcx-rescue-single .post-header .post-title,.post-item .post-header .post-title,[data-page-type='page'] .post-header .post-title,[data-page-type='post'] .post-body h2,[data-page-type='post'] .post-body h3,[data-page-type='post'] .post-body h4,.qcx-rescue-single .post-body h2,.qcx-rescue-single .post-body h3,.qcx-rescue-single .post-body h4{font-family:var(--qcx-article-sans)!important}
   [data-page-type='post'] .post-header .post-title,.qcx-rescue-single .post-header .post-title,.post-item .post-header .post-title,[data-page-type='page'] .post-header .post-title{font-weight:800!important}
   [data-page-type='post'] .post-body,.qcx-rescue-single .post-body,[data-page-type='page'] .post-body:not(:has(#qcx-admin-root)),[data-page-type='post'] .post-body p,[data-page-type='post'] .post-body li,.qcx-rescue-single .post-body p,.qcx-rescue-single .post-body li{font-family:var(--qcx-article-sans)!important}
@@ -561,18 +559,13 @@ body#layout .qcx-layout-brand span{display:block;color:rgba(230,245,236,.7);font
   <meta content='aapEgxBJeA55UQSN9guWq4rlu05ah3DlDRbmj2ruZLc' name='google-site-verification'/>
   <link expr:href='data:blog.blogspotFaviconUrl' rel='icon' type='image/x-icon'/>
   <link href='https://blogger.googleusercontent.com' rel='preconnect' crossorigin='anonymous'/>
-  <link href='https://cdn.jsdelivr.net' rel='preconnect' crossorigin='anonymous'/>
-  <link href='https://cdnjs.cloudflare.com' rel='preconnect' crossorigin='anonymous'/>
-  <!-- QCX external theme assets — polish+smart-media blocking; atmosphere deferred (LCP) -->
-  <link id='qcx-polish' rel='stylesheet' href='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.78/theme/qcx-polish.css'/>
-  <link id='qcx-smart-media' rel='stylesheet' href='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.78/theme/qcx-smart-media.css'/>
-  <link id='qcx-atmosphere' rel='stylesheet' href='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.78/theme/qcx-atmosphere.css' media='print' onload='this.media=&apos;all&apos;'/>
-  <noscript><link id='qcx-atmosphere-ns' rel='stylesheet' href='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.78/theme/qcx-atmosphere.css'/></noscript>
+  <!-- QCX CSS: polish critical; smart-media+atmosphere deferred (Blogger must not see noscript fallbacks). -->
+  <link id='qcx-polish' rel='stylesheet' href='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.79/theme/qcx-polish.css'/>
+  <link id='qcx-smart-media' rel='stylesheet' href='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.79/theme/qcx-smart-media.css' media='print' onload='this.media=&apos;all&apos;'/>
+  <link id='qcx-atmosphere' rel='stylesheet' href='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.79/theme/qcx-atmosphere.css' media='print' onload='this.media=&apos;all&apos;'/>
   <b:if cond='data:view.isHomepage'>
     <link as='fetch' crossorigin='anonymous' href='/feeds/posts/summary?alt=json&amp;max-results=27' rel='preload'/>
-    <b:if cond='data:widgets.Blog.first.posts.first.featuredImage'>
-      <link as='image' expr:href='resizeImage(data:widgets.Blog.first.posts.first.featuredImage, 800, &quot;16:9&quot;)' fetchpriority='high' rel='preload'/>
-    </b:if>
+    <!-- LCP image preload injected by qcx-layout-rescue (matches real first card src). -->
   </b:if>
   <!-- Start post feed ASAP when Blog1 SSR is empty (rescue path). -->
   <b:if cond='data:view.isPost and data:view.postId'>
@@ -837,7 +830,7 @@ header .header{-webkit-box-flex:1;-ms-flex:1;flex:1;min-height:50px;height:100%;
 .processing,.success{position:relative}
 .processing:before,.processing:after,.success:before,.success:after{position:absolute;z-index:99;pointer-events:none}
 .processing:before{top:calc(50% - 15px);left:calc(50% - 15px);content:"";border:2px solid transparent;border-left:2px solid #fff;animation:spin .6s infinite linear;border-radius:50%;width:30px;height:30px}
-.success:before{content:url(https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.78/images/icon-check.png)}
+.success:before{content:url(https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.79/images/icon-check.png)}
 .processing:after,.success:after{margin-top:35px;color:#fff}
 .processing:after,.success:before,.success:after{top:50%;left:50%;transform:translate(-50%,-50%)}
 .processing:after{content:"&#272;ang g&#7917;i..."}.success:after{content:"&#272;&#227; g&#7917;i th&#224;nh c&#244;ng!"}
@@ -7147,12 +7140,12 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
         <b:section class='qcx-brand-zone' id='brand' maxwidgets='5' name='Th&#432;&#417;ng hi&#7879;u MMO' showaddelement='true'>
           <b:widget id='HTML3' locked='false' title='Logo MMO' type='HTML' version='2' visible='true'>
             <b:widget-settings>
-              <b:widget-setting name='content'><![CDATA[<div class="qcx-layout-brand"><img alt="MMO" height="72" src="https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.78/theme/qcx-brand-mark.png" width="72"/><div><strong>MMO</strong><span>MMO TEAM &#183; Layout &amp; branding</span></div></div>]]></b:widget-setting>
+              <b:widget-setting name='content'><![CDATA[<div class="qcx-layout-brand"><img alt="MMO" height="72" src="https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.79/theme/qcx-brand-mark.png" width="72"/><div><strong>MMO</strong><span>MMO TEAM &#183; Layout &amp; branding</span></div></div>]]></b:widget-setting>
             </b:widget-settings>
             <b:includable id='main'>
   <b:attr name='class' value='widget qcx-brand-widget'/>
   <div class='qcx-layout-brand'>
-    <span class="qcx-avatar qcx-layout-avatar" aria-label="MMO" style="display:inline-block;position:relative;width:72px;height:72px"><img alt="MMO" class="qcx-brand-raster" decoding="async" loading="eager" height="72" src="https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.78/theme/qcx-brand-mark.png" width="72"/><svg xmlns="http://www.w3.org/2000/svg" class="qcx-brand-mark qcx-brand-svg qcx-brand-eyes-only" viewBox="0 0 512 512" width="72" height="72" role="img" aria-hidden="true" tabindex="-1"><g class="qcx-ghost-eyes"><circle class="qcx-eye-socket" cx="230.6" cy="189.9" r="16.5" fill="#f2f2f2"/><circle class="qcx-eye qcx-eye-l" cx="230.6" cy="189.9" r="13.2" fill="#0a0a0a"/><circle class="qcx-eye-socket" cx="294.1" cy="183.5" r="16" fill="#f2f2f2"/><circle class="qcx-eye qcx-eye-r" cx="294.1" cy="183.5" r="12.8" fill="#0a0a0a"/></g></svg></span>
+    <span class="qcx-avatar qcx-layout-avatar" aria-label="MMO" style="display:inline-block;position:relative;width:72px;height:72px"><img alt="MMO" class="qcx-brand-raster" decoding="async" loading="eager" height="72" src="https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.79/theme/qcx-brand-mark.png" width="72"/><svg xmlns="http://www.w3.org/2000/svg" class="qcx-brand-mark qcx-brand-svg qcx-brand-eyes-only" viewBox="0 0 512 512" width="72" height="72" role="img" aria-hidden="true" tabindex="-1"><g class="qcx-ghost-eyes"><circle class="qcx-eye-socket" cx="230.6" cy="189.9" r="16.5" fill="#f2f2f2"/><circle class="qcx-eye qcx-eye-l" cx="230.6" cy="189.9" r="13.2" fill="#0a0a0a"/><circle class="qcx-eye-socket" cx="294.1" cy="183.5" r="16" fill="#f2f2f2"/><circle class="qcx-eye qcx-eye-r" cx="294.1" cy="183.5" r="12.8" fill="#0a0a0a"/></g></svg></span>
     <div>
       <strong>MMO</strong>
       <span>MMO TEAM &#183; branding</span>
@@ -7405,7 +7398,7 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
   </div>
   <div class='qcx-avatar-wrap'>
     <div class='qcx-avatar' aria-label='MMO'>
-      <img alt='MMO' class='qcx-brand-raster' decoding='async' loading='eager' height='64' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.78/theme/qcx-brand-mark.png' width='64'/>
+      <img alt='MMO' class='qcx-brand-raster' decoding='async' loading='eager' height='64' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.79/theme/qcx-brand-mark.png' width='64'/>
       <svg xmlns="http://www.w3.org/2000/svg" class="qcx-brand-mark qcx-brand-svg qcx-brand-eyes-only" viewBox="0 0 512 512" width="300" height="300" role="img" aria-hidden="true"><g class="qcx-ghost-eyes"><circle class="qcx-eye-socket" cx="230.6" cy="189.9" r="16.5" fill="#f2f2f2"/><circle class="qcx-eye qcx-eye-l" cx="230.6" cy="189.9" r="13.2" fill="#0a0a0a"/><circle class="qcx-eye-socket" cx="294.1" cy="183.5" r="16" fill="#f2f2f2"/><circle class="qcx-eye qcx-eye-r" cx="294.1" cy="183.5" r="12.8" fill="#0a0a0a"/></g></svg>
     </div>
   </div>
@@ -8434,23 +8427,8 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
 <!-- moved to CDN: qcx-smart-media -->
 <!-- CSS links live in head (all-head); keep admin UI inline for F5 -->
 <style id='qcx-admin-ui' type='text/css'>
-/* &#9472;&#9472; QCX Footer Social Widget &#9472;&#9472; */
-.qcx-footer-social { padding: 10px 16px !important; text-align: center; border-top: 1px solid rgba(76,175,130,0.16) !important; margin: 0 !important; background: #060d08 !important; }
-.qcx-footer-brand { margin-bottom: 0 !important; display: none !important; }
-.qcx-footer-brand strong { display: block; font-size: 11px; color: #6dd9a4; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 800; }
-.qcx-footer-brand span { display: none !important; }
-.qcx-footer-links { display: none !important; }
-.qcx-footer-copy { font-size: 11px !important; color: rgba(158,196,176,0.55) !important; margin: 0 !important; }
-.qcx-footer-copy a { color: #b8ded0 !important; text-decoration: none !important; }
-/* Force footer social widget full-width (beat .footer .widget:nth-of-type(1){width:30%}) */
-footer.footer #footer .qcx-footer-widget,
-footer.footer #footer .qcx-footer-widget .widget-content,
-.qcx-footer-gadgets .qcx-footer-widget,
-.qcx-footer-gadgets .qcx-footer-widget .widget-content { width:100%!important; float:none!important; padding:0!important; margin:0!important; }
-footer.footer, #footer, .qcx-footer-gadgets { background: #060d08 !important; margin: 0 !important; padding: 0 !important; }
-/* &#9472;&#9472; END Footer Social Widget &#9472;&#9472; */
 /* qcx-admin-ui */
-/* MMO Admin &#8212; dense cockpit (PC + mobile) */
+/* MMO Admin — dense cockpit (PC + mobile) */
     #qcx-admin-root, #qcx-admin-root * { box-sizing: border-box; }
     #qcx-admin-root {
       --qcx-admin-radius: 8px;
@@ -8461,69 +8439,144 @@ footer.footer, #footer, .qcx-footer-gadgets { background: #060d08 !important; ma
       --qcx-admin-mint: #7dcea0;
       --qcx-admin-mint-ink: #06110a;
       --qcx-admin-input: #0b120c;
-      --sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      --qcx-admin-line: #243028;
+      --qcx-admin-panel: rgba(12, 18, 14, 0.94);
+      --qcx-admin-gap: 12px;
+      --qcx-admin-field-h: 36px;
+      --qcx-admin-side-w: 168px;
+      --qcx-admin-rail-w: 280px;
+      --sans: 'IBM Plex Sans', 'Segoe UI', sans-serif;
       --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
       margin: 0 auto;
       min-height: 0;
-      padding: 0 0 16px;
+      padding: 0 0 28px;
       color: var(--fg, #e6f5ec);
-      font: 13px/1.4 var(--sans);
+      font: 13px/1.45 var(--sans);
       -webkit-font-smoothing: antialiased;
       background: transparent;
       width: 100%;
-      max-width: 1080px;
+      max-width: 1360px;
+      overflow-x: clip;
     }
     #qcx-admin-root .wrap {
-      max-width: 1080px;
+      max-width: 1360px;
       margin: 0 auto;
-      padding: 0 12px 16px;
+      padding: 6px 14px 20px;
       width: 100%;
+      overflow-x: clip;
     }
 
-    /* Login gate: compact card, slightly above center */
+    /* Login gate: pro dark card + grid backdrop */
+    body:has(#qcx-admin-root:has(.gate:not(.hidden))) {
+      background-color: #050a07 !important;
+      background-image:
+        linear-gradient(rgba(52, 230, 160, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(52, 230, 160, 0.04) 1px, transparent 1px) !important;
+      background-size: 28px 28px !important;
+      background-attachment: fixed !important;
+    }
+    body:has(#qcx-admin-root:has(.gate:not(.hidden))) .content-wrapper,
+    body:has(#qcx-admin-root:has(.gate:not(.hidden))) .main-wrapper,
+    body:has(#qcx-admin-root:has(.gate:not(.hidden))) .blog-posts,
+    body:has(#qcx-admin-root:has(.gate:not(.hidden))) .post-outer,
+    body:has(#qcx-admin-root:has(.gate:not(.hidden))) .post,
+    body:has(#qcx-admin-root:has(.gate:not(.hidden))) .post-body {
+      background: transparent !important;
+      box-shadow: none !important;
+      border: 0 !important;
+    }
     #qcx-admin-root:has(.gate:not(.hidden)) {
-      min-height: calc(100vh - 64px);
+      min-height: 100vh;
+      max-width: none;
+      width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 12px 10px 28px;
-      max-width: none;
+      padding: 24px 16px 40px;
+      background:
+        radial-gradient(ellipse 70% 50% at 50% 42%, rgba(52, 230, 160, 0.07), transparent 65%),
+        linear-gradient(rgba(52, 230, 160, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(52, 230, 160, 0.035) 1px, transparent 1px);
+      background-size: auto, 28px 28px, 28px 28px;
+      background-color: #050a07;
     }
     #qcx-admin-root:has(.gate:not(.hidden)) .wrap {
       width: 100%;
-      max-width: 300px;
-      margin: -10vh auto 0;
+      max-width: 360px;
+      margin: 0 auto;
       padding: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
-    #qcx-admin-root:has(.gate:not(.hidden)) > .wrap > header,
-    #qcx-admin-root:has(.gate:not(.hidden)) #btnLogout {
-      display: none !important;
-    }
     #qcx-admin-root:has(.gate:not(.hidden)) .gate {
       width: 100%;
-      max-width: 300px;
+      max-width: 360px;
       margin: 0 auto;
-      padding: 10px 12px;
+      padding: 28px 28px 24px;
     }
     #qcx-admin-root .gate h2 {
-      margin: 0 0 8px;
-      font: 700 10px/1.2 var(--mono);
-      letter-spacing: 0.1em;
+      margin: 0 0 22px;
+      font: 700 28px/1.15 var(--sans);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #f2faf5;
+      text-align: center;
     }
-    #qcx-admin-root .gate .field { margin-bottom: 8px; }
+    #qcx-admin-root .gate .field { margin-bottom: 16px; }
+    #qcx-admin-root .gate label {
+      margin: 0 0 8px;
+      color: #8a9a90;
+      font: 600 11px/1.2 var(--mono);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    #qcx-admin-root .gate input#tokenInput,
+    #qcx-admin-root .gate input[type='password'] {
+      width: 100%;
+      min-height: 44px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid #243028;
+      background: #070d09;
+      color: #e6f5ec;
+      font: 500 14px/1.3 var(--sans);
+    }
+    #qcx-admin-root .gate input#tokenInput:focus,
+    #qcx-admin-root .gate input[type='password']:focus {
+      border-color: rgba(52, 230, 160, 0.55);
+      box-shadow: 0 0 0 3px rgba(52, 230, 160, 0.12);
+      outline: none;
+    }
     #qcx-admin-root .gate .actions {
       display: flex;
       width: 100%;
-      margin-top: 8px;
+      margin-top: 4px;
       padding-top: 0;
     }
     #qcx-admin-root .gate .actions .primary,
     #qcx-admin-root .gate button.primary {
       width: 100%;
       flex: 1 1 auto;
+      min-height: 46px;
+      border-radius: 10px;
+      font: 700 14px/1 var(--sans);
+      letter-spacing: 0.02em;
+      background: #34e6a0;
+      border-color: #34e6a0;
+      color: #06110a;
+      box-shadow: 0 0 24px rgba(52, 230, 160, 0.22);
+    }
+    #qcx-admin-root .gate button.primary:hover {
+      background: #4af0b0;
+      border-color: #4af0b0;
+      color: #06110a;
+      filter: brightness(1.05);
+      box-shadow: 0 0 28px rgba(52, 230, 160, 0.3);
+    }
+    #qcx-admin-root .gate #gateStatus {
+      margin-top: 12px;
+      text-align: center;
     }
     /* Hide login hint; gate status only when not .hidden */
     #qcx-admin-root .gate > .hint,
@@ -8531,146 +8584,820 @@ footer.footer, #footer, .qcx-footer-gadgets { background: #060d08 !important; ma
       display: none !important;
     }
 
-    /* Beat theme header kill: display:none + height:0 + overflow:hidden */
-    #qcx-admin-root header {
-      display: flex !important;
-      position: relative !important;
-      height: auto !important;
-      min-height: 0 !important;
-      max-height: none !important;
-      overflow: visible !important;
-      visibility: visible !important;
-      opacity: 1 !important;
-      background: transparent !important;
-      flex-wrap: nowrap;
-      gap: 8px 12px;
-      align-items: center;
-      justify-content: space-between;
-      margin: 0 !important;
-      padding: 0 0 2px !important;
-      border: 0 !important;
-      border-bottom: 1px solid var(--line, #1d2a1f) !important;
-    }
-    #qcx-admin-root header h1,
-    #qcx-admin-root header button {
-      position: static !important;
-      height: auto !important;
-      overflow: visible !important;
-      visibility: visible !important;
-      opacity: 1 !important;
-    }
-    #qcx-admin-root header h1 {
-      margin: 0;
-      font: 700 13px/1.2 var(--mono);
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      color: var(--fg, #e6f5ec);
-    }
-    #qcx-admin-root header h1 span { color: var(--qcx-admin-mint); }
-    #qcx-admin-root header p { display: none !important; }
-    #qcx-admin-root #btnLogout {
-      min-height: 28px;
-      padding: 4px 10px;
-      font: 600 10px/1 var(--mono);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      flex: 0 0 auto;
-      white-space: nowrap;
+    /* Legacy page header removed — brand/logout live in .admin-side */
+    #qcx-admin-root > .wrap > header,
+    #qcx-admin-root header:not(.modal-header) {
+      display: none !important;
     }
 
     #qcx-admin-root .gate, #qcx-admin-root .panel {
       background: linear-gradient(180deg, #101a12 0%, var(--card, #0e170f) 100%);
       border: 1px solid var(--line, #1d2a1f);
       border-radius: var(--qcx-admin-radius);
-      padding: 6px 10px 10px;
+      padding: 12px;
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22);
-      margin: 0 !important;
     }
     #qcx-admin-root .gate {
-      max-width: 300px; width: 100%; margin: 0 auto;
+      max-width: 360px;
+      width: 100%;
+      margin: 0 auto;
       animation: qcx-admin-rise 0.35s ease-out both;
-      padding: 10px 12px;
+      padding: 28px 28px 24px;
+      border-radius: 16px;
+      border: 1px solid rgba(52, 230, 160, 0.55);
+      background: linear-gradient(180deg, #0f1a14 0%, #0b1610 100%);
+      box-shadow:
+        0 0 0 1px rgba(52, 230, 160, 0.12),
+        0 0 40px rgba(52, 230, 160, 0.18),
+        0 16px 48px rgba(0, 0, 0, 0.45);
     }
-    /* Beat theme `.post-body h2{margin-top:36px!important}` above So&#7841;n b&#224;i / Preview */
-    body .post-body #qcx-admin-root h2,
-    body .post-body #qcx-admin-root .panel h2,
-    body .post-body #qcx-admin-root .panel-head h2,
-    body .post-body #qcx-admin-root .gate h2,
-    #qcx-admin-root .gate h2,
     #qcx-admin-root .panel h2,
-    #qcx-admin-root .panel-head h2,
-    #qcx-admin-root h2 {
-      margin: 0 !important;
-      margin-top: 0 !important;
-      margin-bottom: 0 !important;
-      padding: 0 !important;
-      padding-top: 0 !important;
-      padding-bottom: 0 !important;
-      font: 700 11px/1.2 var(--mono) !important;
+    #qcx-admin-root .card h2 {
+      margin: 0 0 4px;
+      font: 700 11px/1.2 var(--mono);
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--qcx-admin-mint);
-      background: none !important;
-      border: 0 !important;
-      border-bottom: 0 !important;
     }
     #qcx-admin-root .panel-head {
-      display: flex !important;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      margin: 0 0 4px !important;
-      padding: 0 0 3px !important;
-      min-height: 0 !important;
-      border: 0 !important;
-      border-bottom: 1px solid var(--line, #1d2a1f) !important;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 10px; margin-bottom: 10px; padding-bottom: 8px;
+      border-bottom: 1px solid var(--line, #1d2a1f);
     }
-    #qcx-admin-root .panel-head h2 { margin: 0 !important; color: var(--fg, #e6f5ec); }
+    #qcx-admin-root .panel-head h2 { margin: 0; }
 
-    /* Beat theme `.grid{grid-template-columns:repeat(4,1fr)!important}` */
+    /* Desktop dashboard: sidebar | work | checklist */
     #qcx-admin-root .grid {
       display: grid !important;
-      grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr) !important;
-      gap: 10px !important;
+      grid-template-columns:
+        var(--qcx-admin-side-w)
+        minmax(0, 1fr)
+        minmax(240px, var(--qcx-admin-rail-w)) !important;
+      gap: 12px !important;
+      column-gap: 12px !important;
       animation: qcx-admin-rise 0.35s ease-out both;
       width: 100%;
-      max-width: 1080px;
-      margin: 0 auto !important;
-      padding: 0 !important;
+      max-width: 1360px;
+      margin: 0 auto;
       align-items: start;
+    }
+    #qcx-admin-root .admin-side,
+    #qcx-admin-root .compose-col,
+    #qcx-admin-root .panel-rail {
+      min-width: 0;
     }
     #qcx-admin-root .grid.hidden,
     #qcx-admin-root .hidden { display: none !important; }
-    @media (max-width: 900px) {
-      #qcx-admin-root .grid { grid-template-columns: 1fr !important; }
+    /* Legacy class kept inert — PayOS/Role FX keep rail + vault bar */
+    #qcx-admin-root .grid.is-wide-tab {
+      grid-template-columns:
+        var(--qcx-admin-side-w)
+        minmax(0, 1fr)
+        minmax(240px, var(--qcx-admin-rail-w)) !important;
+    }
+
+    #qcx-admin-root .admin-side {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: sticky;
+      top: 8px;
+      align-self: start;
+      max-height: calc(100vh - 16px);
+      padding: 10px 8px;
+      border: 1px solid var(--qcx-admin-line);
+      border-radius: 10px;
+      background: rgba(10, 14, 11, 0.96);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+      z-index: 4;
+    }
+    #qcx-admin-root .admin-brand {
+      font: 800 13px/1.1 var(--mono);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #f2faf5;
+      padding: 4px 6px 8px;
+      border-bottom: 1px solid var(--qcx-admin-line);
+    }
+    #qcx-admin-root .admin-brand span {
+      color: var(--qcx-admin-mint);
+      font-weight: 700;
+    }
+    #qcx-admin-root .admin-side .compose-nav {
+      position: static;
+      flex: 1 1 auto;
+      border: 0;
+      border-bottom: 0;
+      background: transparent;
+      backdrop-filter: none;
+      overflow: visible;
+      padding: 0;
+    }
+    #qcx-admin-root .admin-side .compose-nav-track {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      gap: 4px;
+      padding: 0;
+      overflow: visible;
+      scroll-snap-type: none;
+    }
+    #qcx-admin-root .admin-side .compose-nav button {
+      flex: 0 0 auto;
+      width: 100%;
+      min-width: 0;
+      min-height: 34px;
+      justify-content: flex-start;
+      text-align: left;
+      padding: 7px 8px;
+      border-radius: 7px;
+      font-size: 10px;
+      letter-spacing: 0.04em;
+      box-shadow: none;
+    }
+    #qcx-admin-root .admin-side .compose-nav button.active {
+      box-shadow: inset 3px 0 0 var(--qcx-admin-mint);
+      background: rgba(125, 206, 160, 0.14);
+    }
+    #qcx-admin-root .admin-side .compose-nav button.active.nav-accent-payos {
+      box-shadow: inset 3px 0 0 #ffd166;
+    }
+    #qcx-admin-root .admin-side .compose-nav button.active.nav-accent-rolefx {
+      box-shadow: inset 3px 0 0 #ff85d0;
+    }
+    #qcx-admin-root .admin-logout {
+      margin-top: auto;
+      width: 100%;
+      min-height: 34px;
+      font: 600 10.5px/1 var(--mono);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      display: inline-flex !important;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #qcx-admin-root .compose-col {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 0;
+      overflow: visible;
+    }
+    #qcx-admin-root .compose-title {
+      --compose-bar-h: 28px;
+      display: flex;
+      margin: 0 0 6px;
+      padding: 0;
+      border-bottom: 0;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: nowrap;
+      height: var(--compose-bar-h);
+      min-height: var(--compose-bar-h);
+      max-height: var(--compose-bar-h);
+      line-height: 1;
+    }
+    #qcx-admin-root .compose-title-lead {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      flex: 0 1 auto;
+      height: var(--compose-bar-h);
+    }
+    #qcx-admin-root .compose-title h2 {
+      margin: 0;
+      padding: 0;
+      font: 700 16px/1 var(--sans);
+      letter-spacing: -0.02em;
+      text-transform: none;
+      color: #f2faf5;
+      white-space: nowrap;
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      height: var(--compose-bar-h);
+      line-height: 1;
+    }
+    #qcx-admin-root .compose-title-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 6px;
+      margin-left: auto;
+      flex: 0 0 auto;
+      min-width: 0;
+      height: var(--compose-bar-h);
+    }
+    #qcx-admin-root .btn-smart-crawl {
+      background: linear-gradient(135deg, #00f2fe, #4facfe) !important;
+      color: #04100c !important;
+      border: 0 !important;
+      border-radius: 6px !important;
+      font: 700 11px/1 var(--mono) !important;
+      letter-spacing: -0.01em;
+      min-height: var(--compose-bar-h) !important;
+      height: var(--compose-bar-h) !important;
+      padding: 0 10px !important;
+      gap: 5px;
+      display: inline-flex !important;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 10px rgba(0, 242, 254, 0.32);
+      white-space: nowrap;
+      flex: 0 0 auto;
+      line-height: 1 !important;
+    }
+    #qcx-admin-root .btn-smart-crawl .rfx-ico {
+      opacity: 0.72;
+      flex: 0 0 auto;
+      display: block;
+    }
+    #qcx-admin-root .btn-smart-crawl:hover {
+      filter: brightness(1.06);
+      background: linear-gradient(135deg, #2af6ff, #63b8ff) !important;
+      color: #04100c !important;
+    }
+    #qcx-admin-root .compose-title-actions .ghost {
+      min-height: var(--compose-bar-h) !important;
+      height: var(--compose-bar-h) !important;
+      padding: 0 10px !important;
+      font: 600 11px/1 var(--mono) !important;
+      white-space: nowrap;
+      display: inline-flex !important;
+      align-items: center;
+      justify-content: center;
+      line-height: 1 !important;
+      box-sizing: border-box;
+    }
+    #qcx-admin-root .compose-shell .card-ai,
+    #qcx-admin-root .compose-shell .card-editor,
+    #qcx-admin-root .compose-shell .card-vault,
+    #qcx-admin-root .compose-shell .card-payos,
+    #qcx-admin-root .compose-shell .card-rolefx {
+      /* Same pane inset as Meta — uniform shell rhythm */
+      padding: 16px;
+    }
+    #qcx-admin-root input[type='file'].hidden,
+    #qcx-admin-root input[type='file'][hidden] {
+      display: none !important;
+    }
+    /* Unified tab+form shell — fixed rhythm for every pane */
+    #qcx-admin-root .compose-shell {
+      border: 1px solid var(--qcx-admin-line);
+      border-radius: 10px;
+      background: var(--qcx-admin-panel);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.28);
+    }
+    #qcx-admin-root .compose-nav {
+      position: sticky;
+      top: 0;
+      z-index: 6;
+      padding: 0;
+      border: 0;
+      border-bottom: 1px solid var(--qcx-admin-line);
+      border-radius: 0;
+      background: rgba(8, 12, 10, 0.97);
+      backdrop-filter: blur(12px);
+      overflow: hidden;
+    }
+    #qcx-admin-root .compose-nav-track {
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: stretch;
+      gap: 2px;
+      padding: 6px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scrollbar-width: thin;
+      -webkit-overflow-scrolling: touch;
+      scroll-snap-type: x proximity;
+    }
+    #qcx-admin-root .compose-nav-track::-webkit-scrollbar { height: 4px; }
+    #qcx-admin-root .compose-nav-track::-webkit-scrollbar-thumb {
+      background: rgba(125, 206, 160, 0.28);
+      border-radius: 999px;
+    }
+    #qcx-admin-root .compose-nav button {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      flex: 1 1 0;
+      min-width: 88px;
+      min-height: 40px;
+      border-color: transparent;
+      background: transparent;
+      color: var(--fg-dim, #8aa596);
+      font: 700 10.5px/1.1 var(--mono);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding: 8px 10px;
+      border-radius: 6px;
+      scroll-snap-align: start;
+    }
+    #qcx-admin-root .compose-nav button .rfx-ico {
+      opacity: 0.85;
+    }
+    #qcx-admin-root .compose-nav button.nav-accent-payos .rfx-ico { color: #ffd166; }
+    #qcx-admin-root .compose-nav button.nav-accent-rolefx .rfx-ico { color: #ff85d0; }
+    #qcx-admin-root .compose-nav button:hover {
+      color: var(--fg, #e6f5ec);
+      background: rgba(125, 206, 160, 0.07);
+      border-color: transparent;
+    }
+    #qcx-admin-root .compose-nav button.active {
+      background: rgba(125, 206, 160, 0.14);
+      color: var(--qcx-admin-mint);
+      box-shadow: inset 0 -2px 0 var(--qcx-admin-mint);
+    }
+    #qcx-admin-root .compose-nav button.active.nav-accent-payos {
+      color: #ffd166;
+      box-shadow: inset 0 -2px 0 #ffd166;
+      background: rgba(255, 209, 102, 0.1);
+    }
+    #qcx-admin-root .compose-nav button.active.nav-accent-rolefx {
+      color: #ff85d0;
+      box-shadow: inset 0 -2px 0 #ff85d0;
+      background: rgba(255, 133, 208, 0.1);
+    }
+    #qcx-admin-root .compose-panes {
+      min-width: 0;
+      padding: 0;
+    }
+    #qcx-admin-root .compose-panes > [data-section-pane][hidden],
+    #qcx-admin-root .compose-panes > [data-section-pane].hidden {
+      display: none !important;
+    }
+    #qcx-admin-root .compose-shell .card {
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      padding: 14px;
+      box-shadow: none;
+    }
+    #qcx-admin-root .field-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 4px;
+      min-height: 28px;
+    }
+    #qcx-admin-root .field-head label { margin: 0; }
+    #qcx-admin-root .row.row-2 {
+      display: grid !important;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+      gap: var(--qcx-admin-gap) !important;
+      align-items: start;
+      margin: 0;
+    }
+    #qcx-admin-root .row.row-2 > .field { margin-bottom: 0; min-width: 0; }
+    #qcx-admin-root .row.row-2 #priceField[hidden],
+    #qcx-admin-root .row.row-2 #priceField.hidden {
+      display: none !important;
+    }
+    #qcx-admin-root .row-identity,
+    #qcx-admin-root .row-mode-labels,
+    #qcx-admin-root .row-media {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    }
+    #qcx-admin-root .row-identity > .field,
+    #qcx-admin-root .row-mode-labels > .field,
+    #qcx-admin-root .row-media > .field {
+      min-width: 0;
+    }
+    #qcx-admin-root .field-mode,
+    #qcx-admin-root .field-labels,
+    #qcx-admin-root .row-media > .field {
+      display: flex;
+      flex-direction: column;
+    }
+    #qcx-admin-root .field-mode .seg,
+    #qcx-admin-root .field-labels > input,
+    #qcx-admin-root .row-media > .field > input {
+      min-height: var(--qcx-admin-field-h);
+    }
+    #qcx-admin-root .item-price-row {
+      margin-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    #qcx-admin-root .item-price-row input {
+      min-height: var(--qcx-admin-field-h);
+    }
+    #qcx-admin-root .field-span { grid-column: 1 / -1; }
+    #qcx-admin-root .compose-actions {
+      position: sticky;
+      bottom: 8px;
+      z-index: 5;
+      margin: 0;
+      padding: 10px 12px;
+      border: 1px solid var(--qcx-admin-line);
+      border-radius: var(--qcx-admin-radius);
+      background: var(--qcx-admin-panel);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.25);
+    }
+    #qcx-admin-root .card {
+      margin: 0;
+      padding: 12px 14px;
+      border: 1px solid var(--line, #1d2a1f);
+      border-radius: var(--qcx-admin-radius);
+      background: rgba(14, 20, 16, 0.72);
+    }
+
+    /* Meta: three fixed 2-col rows — Title|Slug, Mode|Labels, Hero|Video */
+    #qcx-admin-root .card-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    #qcx-admin-root .card-meta > .field,
+    #qcx-admin-root .card-meta > .row {
+      margin-bottom: 0;
+      width: 100%;
+    }
+    #qcx-admin-root .card-meta > .field-optional {
+      min-width: 0;
+    }
+    #qcx-admin-root .row-identity .hint {
+      margin-top: 4px;
+      font-size: 11px;
+      line-height: 1.35;
+    }
+
+    /* PayOS: 2×2 tile panels */
+    #qcx-admin-root .card-payos {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      align-items: stretch;
+    }
+    #qcx-admin-root .card-payos > .panel-head {
+      grid-column: 1 / -1;
+      margin-bottom: 2px;
+    }
+    #qcx-admin-root .card-payos > .payos-tile,
+    #qcx-admin-root .card-payos > .field {
+      margin: 0 !important;
+      padding: 12px !important;
+      border: 1px solid #1d2a1f !important;
+      border-radius: 8px !important;
+      background: #09110b;
+      min-width: 0;
+    }
+    #qcx-admin-root .card-payos > .payos-tile-span,
+    #qcx-admin-root .card-payos > .field.payos-tile-span {
+      grid-column: 1 / -1;
+    }
+    #qcx-admin-root .card .field { margin-bottom: 12px; }
+    #qcx-admin-root .card .field:last-child { margin-bottom: 0; }
+    #qcx-admin-root .panel-head.tight {
+      margin-bottom: 12px;
+      padding-bottom: 8px;
     }
 
     #qcx-admin-root label {
-      display: block; margin: 0 0 4px;
+      display: block; margin: 0 0 6px;
       color: var(--fg-dim, #8aa596);
       font: 600 10px/1.15 var(--mono);
-      letter-spacing: 0.06em; text-transform: uppercase;
+      letter-spacing: 0.07em; text-transform: uppercase;
     }
-    #qcx-admin-root .field { margin-bottom: 8px; }
+    #qcx-admin-root .field { margin-bottom: 12px; }
     #qcx-admin-root .row {
       display: grid !important;
       grid-template-columns: 1fr 1fr !important;
+      gap: var(--qcx-admin-gap);
+    }
+
+    #qcx-admin-root .card-ai {
+      border-color: rgba(125, 206, 160, 0.28);
+      background: rgba(125, 206, 160, 0.05);
+    }
+    #qcx-admin-root .ai-strip {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: center;
+    }
+    #qcx-admin-root .ai-strip select {
+      min-height: var(--qcx-admin-field-h);
+      font-size: 11px;
+    }
+    #qcx-admin-root .ai-brief-wrap {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(125, 206, 160, 0.18);
+    }
+    #qcx-admin-root .ai-brief-wrap[hidden],
+    #qcx-admin-root .ai-brief-wrap.hidden { display: none !important; }
+    #qcx-admin-root .ai-brief-wrap textarea {
+      min-height: 72px;
+      font-family: var(--sans);
+    }
+    #qcx-admin-root .input-sans { font-family: var(--sans) !important; font-weight: 600; }
+    #qcx-admin-root .field-optional { opacity: 0.88; }
+    #qcx-admin-root .field-optional .opt {
+      text-transform: none;
+      letter-spacing: 0;
+      font-weight: 500;
+      color: #6f8576;
+    }
+
+    #qcx-admin-root .body-tabs { margin-bottom: 0; }
+    #qcx-admin-root .body-tab-seg { margin-bottom: 8px; }
+    #qcx-admin-root .body-pane.hidden { display: none !important; }
+    #qcx-admin-root .body-pane { margin-bottom: 0; }
+    #qcx-admin-root .body-pane textarea.tall { min-height: 260px; }
+
+    #qcx-admin-root .card-vault {
+      border-color: #2a3830;
+    }
+    #qcx-admin-root .vault-actions {
+      margin-top: 0;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr auto;
       gap: 8px;
     }
+    #qcx-admin-root .vault-actions button { width: 100%; }
+    #qcx-admin-root .more-menu {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    #qcx-admin-root .more-menu[hidden],
+    #qcx-admin-root .more-menu.hidden { display: none !important; }
+    #qcx-admin-root .compose-actions .status {
+      margin-top: 8px;
+      padding: 6px 8px;
+      font-size: 10.5px;
+    }
+    #qcx-admin-root .body-pane textarea.tall { min-height: 280px; }
+
+    #qcx-admin-root .panel.panel-rail,
+    #qcx-admin-root .panel-rail {
+      position: sticky;
+      top: 8px;
+      padding: 12px;
+      border: 1px solid var(--qcx-admin-line);
+      border-radius: 10px;
+      background: var(--qcx-admin-panel);
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.22);
+      max-height: calc(100vh - 16px);
+      overflow: auto;
+      align-self: start;
+    }
+    #qcx-admin-root .panel-rail .panel-head {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      margin: -2px 0 10px;
+      padding: 2px 0 10px;
+      background: linear-gradient(180deg, rgba(12, 18, 14, 0.98) 70%, transparent);
+      border-bottom-color: var(--qcx-admin-line);
+    }
+    #qcx-admin-root .panel-rail .panel-head h2 {
+      font: 700 11px/1.2 var(--mono);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #f2faf5;
+    }
+    #qcx-admin-root button, #qcx-admin-root .btn { white-space: nowrap; }
+    #qcx-admin-root .rfx-ico { flex: 0 0 auto; display: inline-block; vertical-align: -2px; }
+    #qcx-admin-root .card-rolefx {
+      padding: 12px 14px !important;
+    }
+    #qcx-admin-root .card-rolefx > .rfx-panel-head h2 {
+      font: 700 14px/1.15 var(--sans) !important;
+      margin: 0 !important;
+    }
+    #qcx-admin-root .rfx-panel-head {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 8px; flex-wrap: nowrap; margin-bottom: 6px; padding-bottom: 6px;
+      border-bottom: 1px solid #1d2a1f;
+    }
+    #qcx-admin-root .rfx-pill-stat {
+      font: 700 9px/1 var(--mono); color: #7dcea0; white-space: nowrap; flex-shrink: 0;
+      padding: 3px 7px; border-radius: 999px;
+      background: rgba(125,206,160,0.1); border: 1px solid rgba(125,206,160,0.28);
+    }
+    #qcx-admin-root .rfx-section {
+      padding: 6px 0 8px; border-bottom: 1px solid #1d2a1f;
+    }
+    #qcx-admin-root .rfx-section:first-of-type { padding-top: 0; }
+    #qcx-admin-root .rfx-section-last { border-bottom: 0; padding-bottom: 0; }
+    #qcx-admin-root .rfx-head-row {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 8px; flex-wrap: nowrap; margin-bottom: 5px;
+    }
+    #qcx-admin-root .rfx-sec-title {
+      margin: 0 !important; font: 700 10px/1.15 var(--mono); color: #d6f5e3;
+      white-space: nowrap; flex-shrink: 0; letter-spacing: 0.02em;
+    }
+    #qcx-admin-root .rfx-sec-sub {
+      margin: 0 !important; font: 600 9.5px/1.15 var(--mono); color: #8aa596;
+      white-space: nowrap; flex-shrink: 0;
+    }
+    #qcx-admin-root .rfx-sec-hint {
+      font: 500 10px/1.15 var(--sans); color: #6f8f7d;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;
+    }
+    #qcx-admin-root .rfx-roles-grid {
+      display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px;
+    }
+    #qcx-admin-root .rfx-role-card {
+      padding: 6px 8px; border-radius: 7px; border: 1px solid #1d2a1f; background: #09110b;
+      display: flex; flex-direction: column; gap: 4px; min-width: 0;
+    }
+    #qcx-admin-root .rfx-role-top {
+      display: flex; align-items: center; justify-content: space-between; gap: 4px; white-space: nowrap;
+    }
+    #qcx-admin-root .rfx-role-lbl {
+      display: inline-flex; align-items: center; gap: 4px; margin: 0 !important;
+      font: 700 10px/1 var(--mono); white-space: nowrap;
+    }
+    #qcx-admin-root .rfx-role-tier {
+      display: none;
+    }
+    #qcx-admin-root .rfx-prev-slot {
+      display: flex; align-items: center; min-height: 24px; max-height: 28px; overflow: hidden;
+    }
+    #qcx-admin-root .rfx-prev-slot .qcx-user-chip,
+    #qcx-admin-root .rfx-prev-slot .qcx-auth-slot {
+      transform: scale(0.9);
+      transform-origin: left center;
+    }
+    #qcx-admin-root .rfx-role-card select {
+      min-height: 28px; height: 28px; padding: 2px 6px; font-size: 10.5px;
+    }
+    #qcx-admin-root .rfx-toolbar {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 8px; flex-wrap: nowrap; margin-top: 6px;
+    }
+    #qcx-admin-root .rfx-toolbar .primary {
+      min-height: 30px !important; height: 30px; padding: 0 10px !important;
+      font-size: 11px !important; flex: 0 0 auto;
+    }
+    #qcx-admin-root .rfx-check-lbl {
+      display: inline-flex; align-items: center; gap: 6px; margin: 0 !important;
+      text-transform: none; letter-spacing: 0; cursor: pointer;
+      color: #a8c8b6; font: 500 11px/1.2 var(--sans); white-space: nowrap;
+      min-width: 0; overflow: hidden; text-overflow: ellipsis;
+    }
+    #qcx-admin-root .rfx-check-lbl input { width: auto; min-height: 0; accent-color: #ff85d0; margin: 0; flex: 0 0 auto; }
+    #qcx-admin-root .rfx-assign-bar {
+      display: grid; grid-template-columns: minmax(160px, 1.2fr) minmax(140px, 0.9fr) auto auto;
+      gap: 6px; align-items: center;
+      padding: 6px 8px; border-radius: 7px;
+      border: 1px dashed rgba(255,133,208,0.3); background: rgba(255,133,208,0.03);
+    }
+    #qcx-admin-root .rfx-assign-bar input,
+    #qcx-admin-root .rfx-assign-bar select { min-height: 28px; height: 28px; padding: 3px 8px; font-size: 11px; }
+    #qcx-admin-root .rfx-assign-bar .primary {
+      min-height: 28px !important; height: 28px; padding: 0 10px !important; font-size: 11px !important;
+    }
+    #qcx-admin-root .rfx-assign-prev {
+      display: flex; align-items: center; flex-shrink: 0; max-width: 140px; overflow: hidden;
+    }
+    #qcx-admin-root .rfx-assign-prev .qcx-user-chip { transform: scale(0.88); transform-origin: left center; }
+    #qcx-admin-root .rfx-ov-wrap { margin-top: 6px; }
+    #qcx-admin-root .rfx-ov-list { display: flex; flex-direction: column; gap: 4px; min-height: 0; }
+    #qcx-admin-root .rfx-ov-empty {
+      margin: 0; padding: 6px 8px; border-radius: 6px;
+      border: 1px dashed #243028; background: rgba(8, 14, 10, 0.5);
+      font: 500 11px/1.35 var(--sans); color: #6f8f7d;
+    }
+    #qcx-admin-root .rfx-ov-row {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 8px; flex-wrap: nowrap; padding: 4px 8px;
+      border: 1px solid #1d2a1f; border-radius: 7px; background: #09110b;
+    }
+    #qcx-admin-root .rfx-ov-left {
+      display: flex; align-items: center; gap: 8px; min-width: 0; flex: 1; flex-wrap: nowrap;
+    }
+    #qcx-admin-root .rfx-ov-email {
+      font: 600 11px/1.15 var(--mono); color: #d6f5e3;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      min-width: 120px; max-width: 200px;
+    }
+    #qcx-admin-root .rfx-ov-tag {
+      font: 600 9.5px/1 var(--mono); color: #84ae97; padding: 2px 7px; border-radius: 999px;
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+      white-space: nowrap; flex-shrink: 0;
+    }
+    #qcx-admin-root .rfx-ov-acts {
+      display: flex; align-items: center; gap: 4px; flex-shrink: 0; white-space: nowrap;
+    }
+    #qcx-admin-root .rfx-gallery {
+      display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 5px;
+    }
+    #qcx-admin-root .rfx-gal-card {
+      display: flex !important; align-items: center !important; justify-content: space-between !important;
+      gap: 6px !important; padding: 4px 8px !important; min-height: 34px !important; width: 100%;
+      border-radius: 7px !important; border: 1px solid #1d2a1f !important; background: #08100a !important;
+      cursor: pointer; text-align: left;
+    }
+    #qcx-admin-root .rfx-gal-card:hover,
+    #qcx-admin-root .rfx-gal-card.is-picked {
+      border-color: rgba(255,133,208,0.65) !important; background: rgba(255,133,208,0.08) !important;
+    }
+    #qcx-admin-root .rfx-gal-meta {
+      display: flex; flex-direction: column; align-items: flex-end; gap: 2px; min-width: 0; overflow: hidden;
+    }
+    #qcx-admin-root .rfx-gal-name {
+      font: 700 10.5px/1.15 var(--mono); color: #d4f0e0;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;
+    }
+    #qcx-admin-root .rfx-gal-fx {
+      font: 500 9.5px/1 var(--mono); color: #6f9480; white-space: nowrap;
+    }
+    @media (max-width: 900px) {
+      #qcx-admin-root .rfx-roles-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      #qcx-admin-root .rfx-assign-bar { grid-template-columns: 1fr 1fr; }
+      #qcx-admin-root .rfx-assign-bar .primary,
+      #qcx-admin-root .rfx-assign-prev { grid-column: span 1; }
+      #qcx-admin-root .rfx-gallery { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      #qcx-admin-root .rfx-toolbar { flex-wrap: wrap; }
+      #qcx-admin-root .rfx-sec-hint { display: none; }
+    }
     @media (max-width: 560px) {
-      #qcx-admin-root .row { grid-template-columns: 1fr !important; }
+      #qcx-admin-root .rfx-roles-grid,
+      #qcx-admin-root .rfx-assign-bar,
+      #qcx-admin-root .rfx-gallery { grid-template-columns: 1fr; }
+      #qcx-admin-root .rfx-toolbar { flex-wrap: wrap; }
+      #qcx-admin-root .rfx-toolbar .primary { width: 100%; }
+    }
+    #qcx-admin-root .checklist {
+      list-style: none;
+      margin: 0 0 10px;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    #qcx-admin-root .checklist .check {
+      display: grid;
+      grid-template-columns: 18px minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: baseline;
+      padding: 8px 10px;
+      min-height: 40px;
+      border-radius: 7px;
+      border: 1px solid var(--line, #1d2a1f);
+      background: rgba(0, 0, 0, 0.18);
+      font: 500 11px/1.3 var(--mono);
+    }
+    #qcx-admin-root .checklist .check.pass {
+      border-color: rgba(125, 206, 160, 0.35);
+      color: var(--qcx-admin-ok);
+    }
+    #qcx-admin-root .checklist .check.fail {
+      border-color: rgba(255, 84, 112, 0.35);
+      color: var(--danger, #ff5470);
+    }
+    #qcx-admin-root .checklist .tick { font-weight: 700; }
+    #qcx-admin-root .checklist .check-label { color: inherit; }
+    #qcx-admin-root .checklist .check-detail {
+      color: var(--fg-dim, #8aa596);
+      font-size: 10px;
+      max-width: 46%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      text-align: right;
+    }
+    #qcx-admin-root .html-out.collapsed,
+    #qcx-admin-root .html-out.hidden,
+    #qcx-admin-root .html-out[hidden] {
+      display: none !important;
+    }
+    #qcx-admin-root .panel-head .ghost { margin-left: auto; }
+    #qcx-admin-root .ghost-hint {
+      opacity: 0.65;
+      cursor: help;
+      font-size: 10px;
     }
 
     #qcx-admin-root input,
     #qcx-admin-root select,
     #qcx-admin-root textarea {
       width: 100%;
-      min-height: 34px;
+      min-height: var(--qcx-admin-field-h);
       background: var(--qcx-admin-input);
       border: 1px solid #243328;
       border-radius: 7px;
       color: var(--fg, #e6f5ec);
-      padding: 7px 10px;
+      padding: 8px 11px;
       font: 500 12.5px/1.35 var(--mono);
       transition: border-color 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
     }
@@ -8705,12 +9432,12 @@ footer.footer, #footer, .qcx-footer-gadgets { background: #060d08 !important; ma
       appearance: none;
       display: inline-flex; align-items: center; justify-content: center;
       gap: 6px;
-      min-height: 34px;
+      min-height: var(--qcx-admin-field-h);
       border: 1px solid #2a3830;
       background: var(--qcx-admin-fill);
       color: #e8efe9;
       border-radius: 7px;
-      padding: 6px 11px;
+      padding: 7px 12px;
       font: 700 11px/1 var(--mono);
       letter-spacing: 0.03em;
       cursor: pointer;
@@ -8762,17 +9489,6 @@ footer.footer, #footer, .qcx-footer-gadgets { background: #060d08 !important; ma
     #qcx-admin-root .status.err { border-color: rgba(255,84,112,.45); color: var(--danger, #ff5470); background: rgba(255,84,112,.06); }
     #qcx-admin-root .status.warn { border-color: rgba(224,179,90,.45); color: var(--qcx-admin-warn); background: rgba(224,179,90,.06); }
 
-    #qcx-admin-root .preview-meta {
-      display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px;
-    }
-    #qcx-admin-root .chip {
-      border: 1px solid var(--line, #1d2a1f); border-radius: 999px;
-      padding: 3px 8px; font: 500 10px/1 var(--mono);
-      color: var(--fg-dim, #8aa596); background: rgba(0,0,0,.2);
-    }
-    #qcx-admin-root .chip.bad { color: var(--danger, #ff5470); border-color: rgba(255,84,112,.4); }
-    #qcx-admin-root .chip.good { color: var(--qcx-admin-ok); border-color: rgba(125,206,160,.4); }
-
     #qcx-admin-root .html-out {
       margin: 0; max-height: 360px; overflow: auto;
       background: #080d08; border: 1px solid var(--line, #1d2a1f);
@@ -8796,13 +9512,15 @@ footer.footer, #footer, .qcx-footer-gadgets { background: #060d08 !important; ma
     #qcx-admin-root .seg {
       display: inline-flex; width: 100%;
       border: 1px solid #243328; border-radius: 7px;
-      overflow: hidden; background: var(--qcx-admin-input); min-height: 34px;
+      overflow: hidden; background: var(--qcx-admin-input);
+      min-height: var(--qcx-admin-field-h);
     }
     #qcx-admin-root .seg button {
-      flex: 1; border: 0; border-radius: 0; min-height: 34px;
-      background: transparent; padding: 6px 8px;
+      flex: 1; border: 0; border-radius: 0;
+      min-height: var(--qcx-admin-field-h);
+      background: transparent; padding: 7px 8px;
       color: var(--fg-dim, #8aa596); box-shadow: none; transform: none;
-      font-size: 10px;
+      font-size: 10.5px;
     }
     #qcx-admin-root .seg button:hover {
       background: rgba(125, 206, 160, 0.06); color: var(--fg, #e6f5ec); transform: none;
@@ -8813,15 +9531,108 @@ footer.footer, #footer, .qcx-footer-gadgets { background: #060d08 !important; ma
       box-shadow: inset 0 -2px 0 var(--qcx-admin-mint);
     }
 
-    /* Sticky action bar on small screens */
-    @media (max-width: 700px) {
+    /* Mid desktop: slightly narrower side/rail */
+    @media (max-width: 1100px) {
+      #qcx-admin-root {
+        --qcx-admin-side-w: 148px;
+        --qcx-admin-rail-w: 250px;
+      }
+      #qcx-admin-root .compose-title h2 { font-size: 15px; }
+    }
+
+    /* ≤820: sidebar → chip row; stack work then checklist */
+    @media (max-width: 820px) {
+      #qcx-admin-root .grid {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+      }
+      #qcx-admin-root .admin-side {
+        position: static;
+        order: 0;
+        max-height: none;
+        flex-direction: column;
+        padding: 8px;
+      }
+      #qcx-admin-root .admin-brand {
+        display: none;
+      }
+      #qcx-admin-root .admin-side .compose-nav-track {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 4px;
+      }
+      #qcx-admin-root .admin-side .compose-nav button {
+        min-width: 0;
+        justify-content: center;
+        text-align: center;
+        padding: 6px 4px;
+        font-size: 9.5px;
+      }
+      #qcx-admin-root .admin-side .compose-nav button.active {
+        box-shadow: inset 0 -2px 0 var(--qcx-admin-mint);
+      }
+      #qcx-admin-root .admin-side .compose-nav button.active.nav-accent-payos {
+        box-shadow: inset 0 -2px 0 #ffd166;
+      }
+      #qcx-admin-root .admin-side .compose-nav button.active.nav-accent-rolefx {
+        box-shadow: inset 0 -2px 0 #ff85d0;
+      }
+      #qcx-admin-root .admin-logout {
+        margin-top: 6px;
+      }
+      #qcx-admin-root .compose-col { order: 1; }
+      #qcx-admin-root .panel-rail {
+        position: static;
+        order: 2;
+        max-height: none;
+        overflow: visible;
+      }
+      #qcx-admin-root .card-payos { grid-template-columns: 1fr; }
+      #qcx-admin-root .row.row-2,
+      #qcx-admin-root .row-identity,
+      #qcx-admin-root .row-mode-labels,
+      #qcx-admin-root .row-media {
+        grid-template-columns: 1fr !important;
+      }
+      #qcx-admin-root .compose-shell .card { padding: 14px; }
+      #qcx-admin-root .compose-title {
+        flex-wrap: nowrap;
+        gap: 6px;
+        height: var(--compose-bar-h);
+        max-height: var(--compose-bar-h);
+      }
+      #qcx-admin-root .compose-title-lead {
+        flex: 1 1 auto;
+        min-width: 0;
+        gap: 6px;
+      }
+      #qcx-admin-root .compose-title-actions {
+        margin-left: auto;
+        flex: 0 0 auto;
+      }
+      #qcx-admin-root .compose-title-actions #btnImportJson {
+        min-height: var(--compose-bar-h) !important;
+        height: var(--compose-bar-h) !important;
+      }
+      #qcx-admin-root .label-chips {
+        max-height: 72px;
+      }
+      #qcx-admin-root .rfx-roles-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      }
+    }
+
+    /* Sticky vault + true mobile cockpit */
+    @media (max-width: 560px) {
       #qcx-admin-root {
         max-width: none;
         width: 100%;
-        padding-bottom: 16px;
+        padding-bottom: 12px;
+        --qcx-admin-field-h: 42px;
+        --qcx-admin-gap: 10px;
       }
       #qcx-admin-root .wrap {
-        padding: 0 10px 72px;
+        padding: 6px 10px 96px;
         max-width: none;
         width: 100%;
       }
@@ -8829,43 +9640,101 @@ footer.footer, #footer, .qcx-footer-gadgets { background: #060d08 !important; ma
         max-width: none !important;
         width: 100% !important;
       }
-      #qcx-admin-root header {
-        gap: 8px;
-        margin-bottom: 6px !important;
-        padding-bottom: 4px !important;
+      #qcx-admin-root .row,
+      #qcx-admin-root .row.row-2,
+      #qcx-admin-root .row-mode-labels,
+      #qcx-admin-root .row-media {
+        grid-template-columns: 1fr !important;
       }
-      #qcx-admin-root header p { display: none !important; }
-      #qcx-admin-root .panel { padding: 10px; width: 100%; }
-      #qcx-admin-root .gate { padding: 12px; max-width: 100%; }
+      #qcx-admin-root .panel,
+      #qcx-admin-root .card { padding: 12px; width: 100%; }
+      #qcx-admin-root .compose-title h2 { font-size: 16px; }
+      #qcx-admin-root .compose-shell .card { padding: 12px; }
+      #qcx-admin-root .gate { padding: 24px 20px 20px; max-width: 100%; }
       #qcx-admin-root:has(.gate:not(.hidden)) .wrap,
-      #qcx-admin-root:has(.gate:not(.hidden)) .gate { max-width: 100%; }
+      #qcx-admin-root:has(.gate:not(.hidden)) .gate { max-width: 360px; }
+      #qcx-admin-root .gate h2 { font-size: 24px; }
       #qcx-admin-root textarea { min-height: 64px; }
-      #qcx-admin-root textarea.tall { min-height: 100px; }
+      #qcx-admin-root textarea.tall { min-height: 180px; }
       #qcx-admin-root .html-out { max-height: 220px; }
       #qcx-admin-root .hint.publish { display: none; }
-      #qcx-admin-root .panel .actions {
+      #qcx-admin-root .ai-strip { grid-template-columns: 1fr; }
+      #qcx-admin-root .admin-side .compose-nav-track {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      #qcx-admin-root .admin-side .compose-nav button {
+        min-height: 40px;
+        padding: 8px 6px;
+        font-size: 10px;
+      }
+      #qcx-admin-root .vault-actions {
+        grid-template-columns: 1fr 1fr;
+      }
+      #qcx-admin-root .vault-actions .primary {
+        grid-column: 1 / -1;
+      }
+      #qcx-admin-root .compose-actions {
         position: sticky;
-        bottom: 8px;
+        bottom: 6px;
         z-index: 5;
-        margin-top: 10px;
-        padding: 8px;
-        border-radius: 8px;
-        background: rgba(10, 16, 12, 0.92);
-        border: 1px solid #243328;
-        backdrop-filter: blur(8px);
+        padding: 10px;
       }
-      #qcx-admin-root .panel .actions button {
-        flex: 1 1 calc(50% - 6px);
-        min-width: 0;
+      #qcx-admin-root .body-pane textarea.tall { min-height: 200px; }
+      #qcx-admin-root .panel-rail {
+        border-radius: 10px;
+        padding: 12px;
       }
-      #qcx-admin-root .panel .actions button.primary {
-        flex: 1 1 100%;
+      #qcx-admin-root .checklist .check {
+        grid-template-columns: 18px minmax(0, 1fr);
+        min-height: 44px;
+        align-items: center;
+      }
+      #qcx-admin-root .checklist .check-detail {
+        grid-column: 2;
+        max-width: none;
+        text-align: left;
+      }
+      #qcx-admin-root .field-head {
+        flex-wrap: wrap;
+        min-height: 0;
+      }
+      #qcx-admin-root .field-head .ghost {
+        min-height: 36px;
       }
     }
 
     @keyframes qcx-admin-rise {
       from { opacity: 0; transform: translateY(6px); }
       to { opacity: 1; transform: translateY(0); }
+    }
+    #qcx-admin-root .label-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 8px;
+      max-height: 72px;
+      overflow: auto;
+      scrollbar-width: thin;
+      padding-right: 2px;
+    }
+    #qcx-admin-root .field-labels .label-chips {
+      /* Keeps Mode|Labels pair from exploding vertically */
+      max-height: 72px;
+    }
+    #qcx-admin-root .label-chips button {
+      min-height: 28px;
+      padding: 4px 9px;
+      font: 600 10px/1.2 var(--mono);
+      border-radius: 999px;
+      background: var(--qcx-admin-fill);
+      border: 1px solid var(--line, #1d2a1f);
+      color: #a9c4b3;
+      cursor: pointer;
+    }
+    #qcx-admin-root .label-chips button.active {
+      background: rgba(125, 206, 160, 0.16);
+      border-color: var(--qcx-admin-mint);
+      color: var(--qcx-admin-mint);
     }
     @media (prefers-reduced-motion: reduce) {
       #qcx-admin-root .gate, #qcx-admin-root .grid { animation: none; }
@@ -8881,13 +9750,11 @@ footer.footer, #footer, .qcx-footer-gadgets { background: #060d08 !important; ma
       font-family: var(--sans);
     }
     body:has(#qcx-admin-root) .post-header,
-    body:has(#qcx-admin-boot) .post-header,
     body:has(#qcx-admin-root) .qcx-read-time,
     body:has(#qcx-admin-root) #qcx-sidebar-rail-rescue,
     body:has(#qcx-admin-root) .qcx-sidebar-rail,
     body:has(#qcx-admin-root) .sidebar-wrapper,
     body:has(#qcx-admin-root) #sidebar,
-    body:has(#qcx-admin-boot) #sidebar,
     body:has(#qcx-admin-root) .sidebar,
     body:has(#qcx-admin-root) .widget.BlogArchive,
     body:has(#qcx-admin-root) .widget.FollowByEmail,
@@ -8895,68 +9762,32 @@ footer.footer, #footer, .qcx-footer-gadgets { background: #060d08 !important; ma
     body:has(#qcx-admin-root) .qcx-follow-cta,
     body:has(#qcx-admin-root) .follow-by-email,
     body:has(#qcx-admin-root) #qcx-admin-root .mac-frame,
-    body:has(#qcx-admin-root) .qcx-mac-topbar,
-    body:has(#qcx-admin-boot) .qcx-mac-topbar,
-    body:has(#qcx-admin-root) .qcx-follow-strip,
-    body:has(#qcx-admin-boot) .qcx-follow-strip,
     body:has(#qcx-admin-root) #qcx-admin-boot { display: none !important; }
 
-    /* Collapse Blogspot chrome so admin sits flush (also during F5 boot) */
-    body:has(#qcx-admin-root) main.main-container,
-    body:has(#qcx-admin-boot) main.main-container,
-    body:has(#qcx-admin-root) .main-container,
-    body:has(#qcx-admin-boot) .main-container {
-      padding-top: 0 !important;
-      margin-top: 0 !important;
-    }
+    /* Collapse Blogspot chrome so admin sits in true page center */
     body:has(#qcx-admin-root) .main-wrapper,
-    body:has(#qcx-admin-boot) .main-wrapper,
     body:has(#qcx-admin-root) .centered-bottom,
-    body:has(#qcx-admin-boot) .centered-bottom,
     body:has(#qcx-admin-root) .centered-top,
-    body:has(#qcx-admin-boot) .centered-top,
     body:has(#qcx-admin-root) .blog-posts,
     body:has(#qcx-admin-root) .the-article,
-    body:has(#qcx-admin-boot) .the-article,
     body:has(#qcx-admin-root) .post-body,
     body:has(#qcx-admin-root) #main,
-    body:has(#qcx-admin-boot) #main,
     body:has(#qcx-admin-root) .main {
       max-width: none !important;
       width: 100% !important;
-      margin: 0 auto !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
       float: none !important;
       grid-template-columns: 1fr !important;
       display: block !important;
-      padding-top: 0 !important;
-    }
-    body:has(#qcx-admin-root) .the-article,
-    body:has(#qcx-admin-boot) .the-article,
-    body:has(#qcx-admin-root) .post-body,
-    body:has(#qcx-admin-boot) .post-body,
-    body:has(#qcx-admin-root) .blog-posts,
-    body:has(#qcx-admin-boot) .blog-posts,
-    body:has(#qcx-admin-root) .post-item,
-    body:has(#qcx-admin-boot) .post-item {
-      padding: 0 !important;
-      margin: 0 !important;
-      border: 0 !important;
-      box-shadow: none !important;
-      background: transparent !important;
     }
     body:has(#qcx-admin-root) .main-wrapper,
-    body:has(#qcx-admin-boot) .main-wrapper,
-    body:has(#qcx-admin-root) .centered-bottom,
-    body:has(#qcx-admin-boot) .centered-bottom,
-    body:has(#qcx-admin-root) .centered-top,
-    body:has(#qcx-admin-boot) .centered-top {
-      padding: 0 !important;
-      margin: 0 !important;
+    body:has(#qcx-admin-root) .centered-bottom {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
     }
     body:has(#qcx-admin-root) .content-outer,
-    body:has(#qcx-admin-boot) .content-outer,
     body:has(#qcx-admin-root) .content-inner,
-    body:has(#qcx-admin-boot) .content-inner,
     body:has(#qcx-admin-root) .column-center-outer,
     body:has(#qcx-admin-root) .column-center-inner,
     body:has(#qcx-admin-root) .main-inner,
@@ -8964,27 +9795,128 @@ footer.footer, #footer, .qcx-footer-gadgets { background: #060d08 !important; ma
     body:has(#qcx-admin-root) .page {
       max-width: none !important;
       width: 100% !important;
-      margin: 0 !important;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
       float: none !important;
-      padding: 0 !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
     }
     body:has(#qcx-admin-root:has(.gate:not(.hidden))) .qcx-follow-strip,
-    body:has(#qcx-admin-root:has(.gate:not(.hidden))) [class*="follow"],
+    body:has(#qcx-admin-root:has(.gate:not(.hidden))) [class*='follow'],
     body:has(#qcx-admin-root:has(.gate:not(.hidden))) .widget.Profile,
     body:has(#qcx-admin-root:has(.gate:not(.hidden))) .widget.Attribution {
       display: none !important;
     }
-    /* F5: hide native Blog SSR on Admin until qcx-rescue rehydrates from feed */
-    body:has(#qcx-admin-boot) #main > .widget.Blog:not(.qcx-rescue-blog):not(.qcx-rescue-skel),
-    body:has(#qcx-admin-root) #main > .widget.Blog:not(.qcx-rescue-blog):not(.qcx-rescue-skel) {
-      visibility: hidden !important;
-      position: absolute !important;
-      width: 1px !important;
-      height: 1px !important;
-      overflow: hidden !important;
-      clip: rect(0 0 0 0) !important;
-      pointer-events: none !important;
+
+    /* Modal: Smart Format Crawl */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: rgba(0, 0, 0, 0.78);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
     }
+    .modal-overlay.hidden, .modal-overlay[hidden] {
+      display: none !important;
+    }
+    .modal-card {
+      background: #09100c;
+      border: 1px solid rgba(125, 206, 160, 0.35);
+      border-radius: 12px;
+      width: 100%;
+      max-width: 680px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.7), 0 0 24px rgba(0, 242, 254, 0.2);
+      color: #e6f5ec;
+      font-family: var(--sans);
+      overflow: hidden;
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(125, 206, 160, 0.2);
+      background: rgba(11, 18, 12, 0.95);
+    }
+    .modal-header h3 {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 700;
+      color: #00f2fe;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .modal-close {
+      background: transparent;
+      border: 0;
+      color: #8fa398;
+      font-size: 24px;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0 4px;
+    }
+    .modal-close:hover { color: #fff; }
+    .modal-body {
+      padding: 16px 18px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .modal-body label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #8fb39f;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .modal-body textarea {
+      width: 100%;
+      min-height: 200px;
+      background: #050a07;
+      border: 1px solid rgba(125, 206, 160, 0.25);
+      border-radius: 8px;
+      padding: 10px 12px;
+      color: #fff;
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height: 1.45;
+      resize: vertical;
+      box-sizing: border-box;
+    }
+    .modal-body textarea:focus, .modal-body input[type="text"]:focus {
+      outline: none;
+      border-color: #00f2fe;
+      box-shadow: 0 0 10px rgba(0, 242, 254, 0.25);
+    }
+    .modal-body input[type="text"] {
+      width: 100%;
+      background: #050a07;
+      border: 1px solid rgba(125, 206, 160, 0.25);
+      border-radius: 8px;
+      padding: 8px 12px;
+      color: #fff;
+      font-size: 13px;
+      box-sizing: border-box;
+    }
+    .modal-footer {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 12px 18px;
+      border-top: 1px solid rgba(125, 206, 160, 0.2);
+      background: rgba(4, 8, 5, 0.85);
+    }
+
 </style>
 <!-- moved to CDN: qcx-final-polish -->
 <!-- moved to CDN: qcx-carrd-polish -->
@@ -9202,21 +10134,21 @@ if (document.readyState === 'loading') {
 window.addEventListener('load', qcxBootMacFrames, { once: true });
 //]]></script>
 
-<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.78/theme/qcx-menu-icons.js'></script>
-<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.78/theme/qcx-mobile-nav-runtime.js'></script>
+<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.79/theme/qcx-menu-icons.js'></script>
+<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.79/theme/qcx-mobile-nav-runtime.js'></script>
 
 
 <!-- moved to CDN: qcx-smart-runtime -->
 
-<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.78/theme/qcx-secure-resource.js'></script>
+<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.79/theme/qcx-secure-resource.js'></script>
 
 <!-- moved to CDN: qcx-terminal-lightbox -->
 
 <!-- Rescue: ne  u Layout ma  t Blog widget, tu   du  ng homepage/cards hoa  c single post tu   feed. -->
-<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.78/theme/qcx-runtime.js'></script>
-<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.78/theme/qcx-smart-runtime.js'></script>
+<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.79/theme/qcx-runtime.js'></script>
+<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.79/theme/qcx-smart-runtime.js'></script>
 <!-- secure-resource.js handles unlock flow -->
-<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.78/theme/qcx-layout-rescue.js'></script>
+<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.79/theme/qcx-layout-rescue.js'></script>
 <!-- moved to CDN: qcx-layout-rescue -->
 <script>//<![CDATA[
 (function(){
@@ -9962,7 +10894,7 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
           var nm=chip.querySelector('.qcx-user-name');
           var bg=chip.querySelector('.qcx-user-role-badge');
           if(av){
-            var ownerPic='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.78/images/avatars/kkymljnk-google.png';
+            var ownerPic='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.79/images/avatars/kkymljnk-google.png';
             var emLow=String(u.email||'').toLowerCase();
             av.src=(emLow==='kkymljnk@gmail.com'||emLow==='superkhung@gmail.com')?ownerPic:(u.picture||('https://ui-avatars.com/api/?name='+encodeURIComponent(u.name||u.email)+'&background=0d261a&color=34e6a0&bold=true&size=96'));
             av.alt=u.name||u.email;
@@ -10041,7 +10973,7 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
       var bgHex=role==='admin'?'2b0907':(role==='vip'?'261c05':(role==='pro'?'061d2b':'0d261a'));
       var fgHex=role==='admin'?'ff6b6b':(role==='vip'?'ffd166':(role==='pro'?'38bdf8':'34e6a0'));
       var fallbackAv='https://ui-avatars.com/api/?name='+encodeURIComponent(name)+'&background='+bgHex+'&color='+fgHex+'&bold=true&size=96';
-      var ownerAv='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.78/images/avatars/kkymljnk-google.png';
+      var ownerAv='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.79/images/avatars/kkymljnk-google.png';
       var pic=(email==='kkymljnk@gmail.com'||email==='superkhung@gmail.com')?ownerAv:(profile.picture||fallbackAv);
       var sess=(recoverRes && recoverRes.sessionToken)||cur.sessionToken||('qcx_gmail_'+encodeURIComponent(email));
       return {
@@ -10174,7 +11106,7 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
       var html='<div style="font-size:11.5px;color:#8fb6a1;margin-bottom:6px;font-weight:600">Ch\u1ecdn nhanh t\u00e0i kho\u1ea3n \u0111\u00e3 \u0111\u0103ng nh\u1eadp:</div>';
       for(var i=0;i<accs.length;i++){
         var a=accs[i];
-        var ownerPic2='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.78/images/avatars/kkymljnk-google.png';
+        var ownerPic2='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.79/images/avatars/kkymljnk-google.png';
         var aEm=String(a.email||'').toLowerCase();
         var av=(aEm==='kkymljnk@gmail.com'||aEm==='superkhung@gmail.com')?ownerPic2:(a.picture||('https://ui-avatars.com/api/?name='+encodeURIComponent(a.name||a.email)+'&background=0d261a&color=34e6a0&bold=true&size=96'));
         html+='<button type="button" class="qcx-ud-btn" data-qcx-pick-email="'+a.email+'" data-qcx-pick-name="'+(a.name||'')+'" style="border:1px solid rgba(52,230,160,0.25);background:rgba(52,230,160,0.06);margin-bottom:6px;padding:8px 10px;border-radius:10px">' +
@@ -10319,7 +11251,7 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
         var cnt=(u.items && u.items.length)||Object.keys(ent.unlockedItems||{}).length||1;
         statusText=ICO_GEM+'<span>Th\u00e0nh vi\u00ean PRO \u2014 S\u1edf h\u1eefu '+cnt+' b\u00e0i</span>';
       }
-      var ownerPic3='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.78/images/avatars/kkymljnk-google.png';
+      var ownerPic3='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.79/images/avatars/kkymljnk-google.png';
       var avUrl=(uEm==='kkymljnk@gmail.com'||uEm==='superkhung@gmail.com')?ownerPic3:(u.picture||('https://ui-avatars.com/api/?name='+encodeURIComponent(u.name||u.email)+'&background=0d261a&color=34e6a0&bold=true&size=96'));
       // Lean public menu: profile + status + logout. FX/VIP/sync/admin live on /p/admin.html
       dd.innerHTML=

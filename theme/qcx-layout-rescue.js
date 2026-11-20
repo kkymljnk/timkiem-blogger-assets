@@ -498,7 +498,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.78/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.79/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -2521,18 +2521,15 @@
     var topics = (packed && packed.topics) || [];
     var meta = entryThumbMeta(entry);
     var thumb = meta.url;
-    var eager = index < 3;
     var highPrio = index === 0;
     var col = el('div', 'col-md-4');
     var media = thumb
       ? ('<img class="qcx-card-media" alt="' + escapeHtml(title) + '"' +
         (meta.anim ? ' data-qcx-anim="1"' : '') +
-        (eager
-          ? (highPrio
-            ? ' loading="eager" fetchpriority="high" decoding="async"'
-            : ' loading="eager" decoding="async"')
+        (highPrio
+          ? ' loading="eager" fetchpriority="high" decoding="async"'
           : ' loading="lazy" decoding="async"') +
-        ' src="' + escapeHtml(thumb) + '" width="800" height="450"/>')
+        ' src="' + escapeHtml(thumb) + '" width="800" height="450" sizes="(max-width:820px) 100vw, 33vw"/>')
       : '<span class="qcx-card-noimg" aria-hidden="true">// no image</span>';
     var awardHtml = '';
     if (award && award.kind && award.text) {
@@ -2717,11 +2714,14 @@
           : ((srcAttr && srcAttr.indexOf('data:') !== 0) ? srcAttr : '');
         var anim = img.getAttribute('data-qcx-anim') === '1' || isLikelyAnimatedUrl(raw || srcAttr || dataSrc);
         var next = raw ? upgradeThumb(raw, { anim: anim, card: true }) : '';
-        if (index < 3) {
+        img.setAttribute('decoding', 'async');
+        if (!img.getAttribute('sizes')) {
+          img.setAttribute('sizes', '(max-width:820px) 100vw, 33vw');
+        }
+        /* Only the first card competes for LCP — rest stay lazy to cut mobile payload. */
+        if (index === 0) {
           img.setAttribute('loading', 'eager');
-          img.setAttribute('decoding', 'async');
-          if (index === 0) img.setAttribute('fetchpriority', 'high');
-          else img.removeAttribute('fetchpriority');
+          img.setAttribute('fetchpriority', 'high');
           if (next) {
             if (dataSrc && dataSrc.indexOf('data:') !== 0) img.setAttribute('data-src', next);
             img.src = next;
@@ -2730,8 +2730,24 @@
               img.classList.add('lazyloaded');
             } catch (ignoreCls) {}
           }
+          try {
+            var href = img.currentSrc || img.src || '';
+            if (href && href.indexOf('data:') !== 0) {
+              var old = document.getElementById('qcx-lcp-preload');
+              if (old && old.parentNode) old.parentNode.removeChild(old);
+              var link = document.createElement('link');
+              link.id = 'qcx-lcp-preload';
+              link.rel = 'preload';
+              link.as = 'image';
+              link.href = href;
+              link.setAttribute('fetchpriority', 'high');
+              (document.head || document.documentElement).appendChild(link);
+            }
+          } catch (ignorePre) {}
           return;
         }
+        img.setAttribute('loading', 'lazy');
+        img.removeAttribute('fetchpriority');
         if (!raw || raw.indexOf('data:') === 0) return;
         if (next && next !== raw) {
           if (dataSrc && dataSrc.indexOf('data:') !== 0) img.setAttribute('data-src', next);
