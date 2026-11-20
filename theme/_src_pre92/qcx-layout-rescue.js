@@ -25,16 +25,15 @@
         'position:relative!important;left:auto!important;right:auto!important;top:auto!important;' +
         'z-index:auto!important;width:100%!important;margin:0 0 16px!important;' +
         'min-height:0!important;pointer-events:auto!important}' +
-        'html[data-page-type="homepage"] #Blog1.qcx-rescue-blog .all_posts,' +
-        'html[data-page-type="homepage"] .widget.Blog .all_posts,' +
-        'html[data-page-type="homepage"] #qcx-ssr-lcp-shell{' +
-        'min-height:calc((min(100vw,1120px) - 32px) * 0.5625 + 148px)}' +
         'html[data-page-type="homepage"] .card-header,' +
         'html[data-page-type="homepage"] #qcx-ssr-lcp-shell .card-header{' +
         'position:relative;aspect-ratio:16/9;overflow:hidden;background:#0b1a12}' +
         'html[data-page-type="homepage"] .card-header img,' +
         'html[data-page-type="homepage"] #qcx-ssr-lcp-shell img.qcx-card-lcp{' +
-        'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}';
+        'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;' +
+        'opacity:1!important;transition:none!important}' +
+        'html[data-page-type="homepage"] img.qcx-card-lcp{' +
+        'opacity:1!important;transition:none!important}';
       (document.head || document.documentElement).appendChild(st);
     } catch (ignoreReserve) {}
   })();
@@ -291,7 +290,7 @@
 
   function qcxCdnPin() {
     var m = String(QCX_CDN || '').match(/@(v\d[\w.-]+)\//);
-    return (m && m[1]) || 'v2026.11.19.101';
+    return (m && m[1]) || 'v2026.11.19.102';
   }
 
   /* Homepage cards: ~15–55KB WebP instead of 450–1000KB hero JPG (PSI image delivery). */
@@ -608,7 +607,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.101/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.102/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -2869,28 +2868,41 @@
         if (index === 0) {
           img.setAttribute('loading', 'eager');
           img.setAttribute('fetchpriority', 'high');
+          try { img.fetchPriority = 'high'; } catch (ignoreFpHigh) {}
           img.classList.add('qcx-card-lcp');
-          if (next) {
-            if (dataSrc && dataSrc.indexOf('data:') !== 0) img.setAttribute('data-src', next);
+          /* Never involve lazysizes on LCP — opacity:0/.lazyloaded fade delayed LCP ~300ms+ and CLS. */
+          try {
+            img.classList.remove('lazyload', 'lazyloading', 'lazyloaded');
+            img.removeAttribute('data-src');
+            img.removeAttribute('data-sizes');
+          } catch (ignoreCls) {}
+          var curSrc = img.getAttribute('src') || img.currentSrc || '';
+          /* Keep preloaded SSR hero WebP — swapping src invalidates head preload + delays LCP. */
+          if (next && !/\/images\/hero\/card\/[^/?#]+\.webp/i.test(curSrc)) {
             img.src = next;
-            try {
-              img.classList.remove('lazyload', 'lazyloading');
-              img.classList.add('lazyloaded');
-            } catch (ignoreCls) {}
+            curSrc = next;
           }
           try {
-            var href = next || img.currentSrc || img.src || '';
+            var href = curSrc || next || '';
             if (href && href.indexOf('data:') !== 0) {
               var old = document.getElementById('qcx-lcp-preload');
-              if (old && old.parentNode) old.parentNode.removeChild(old);
-              var link = document.createElement('link');
-              link.id = 'qcx-lcp-preload';
-              link.rel = 'preload';
-              link.as = 'image';
-              link.href = href;
-              link.setAttribute('fetchpriority', 'high');
-              if (/\.webp(?:$|[?#])/i.test(href)) link.type = 'image/webp';
-              (document.head || document.documentElement).appendChild(link);
+              if (old) {
+                var oldHref = old.getAttribute('href') || '';
+                if (oldHref === href) return;
+                /* Update href in place — do not delete/recreate (LCP discovery churn). */
+                old.setAttribute('href', href);
+                old.setAttribute('fetchpriority', 'high');
+                if (/\.webp(?:$|[?#])/i.test(href)) old.type = 'image/webp';
+              } else {
+                var link = document.createElement('link');
+                link.id = 'qcx-lcp-preload';
+                link.rel = 'preload';
+                link.as = 'image';
+                link.href = href;
+                link.setAttribute('fetchpriority', 'high');
+                if (/\.webp(?:$|[?#])/i.test(href)) link.type = 'image/webp';
+                (document.head || document.documentElement).appendChild(link);
+              }
             }
           } catch (ignorePre) {}
           return;
