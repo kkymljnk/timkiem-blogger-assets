@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.16/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.17/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -3241,25 +3241,31 @@
       '.qcx-post-save-btn.is-saved{border-color:rgba(255,209,102,0.55);color:#ffd166;background:rgba(38,28,5,0.72)}' +
       '.qcx-post-save-btn svg{width:13px;height:13px;flex:0 0 auto}' +
       '#qcx-google-auth-modal,#qcx-google-auth-modal.is-open{display:none!important;visibility:hidden!important;pointer-events:none!important}' +
-      '#qcx-saved-modal{position:fixed;inset:0;z-index:999999;display:none;align-items:center;justify-content:center;padding:18px;box-sizing:border-box;background:rgba(0,0,0,0.62)}' +
+      '#qcx-saved-modal{position:fixed;inset:0;z-index:999999;display:none;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;background:rgba(6,10,8,0.72)}' +
       '#qcx-saved-modal.is-open{display:flex}' +
-      '.qcx-saved-dialog{width:100%;max-width:440px;max-height:min(78vh,560px);border-radius:16px;border:1px solid rgba(52,230,160,0.38);background:linear-gradient(180deg,#0b1912 0%,#06100b 100%);color:#e8fff2;padding:16px 16px 14px;box-shadow:0 24px 64px rgba(0,0,0,0.82);box-sizing:border-box;font-family:var(--qcx-article-sans,system-ui,sans-serif);display:flex;flex-direction:column;gap:10px}' +
-      '.qcx-saved-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}' +
-      '.qcx-saved-badge{display:inline-block;padding:2px 7px;border-radius:999px;background:rgba(52,230,160,0.15);color:#34e6a0;font:800 9.5px/1.2 var(--qcx-article-mono,monospace);letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px}' +
-      '.qcx-saved-title{margin:0;font-size:17px;font-weight:800;color:#fff}' +
-      '.qcx-saved-close{appearance:none;width:30px;height:30px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.04);color:#b8d8c8;font-size:18px;line-height:1;cursor:pointer;display:grid;place-items:center;flex:0 0 auto}' +
-      '.qcx-saved-close:hover{background:rgba(255,95,86,0.18);color:#ff9b94;border-color:rgba(255,95,86,0.4)}' +
-      '.qcx-saved-body{overflow:auto;min-height:120px;max-height:min(58vh,420px);padding-right:2px}' +
-      '.qcx-saved-empty{margin:18px 4px;text-align:center;color:#9bbdae;font-size:13px;line-height:1.5}' +
-      '.qcx-saved-hint{display:block;margin-top:6px;font-size:12px;color:#6f9483}' +
-      '.qcx-saved-list{list-style:none;margin:0;padding:0}' +
-      '.qcx-saved-item{display:flex;align-items:center;gap:8px;padding:10px 8px;border-top:1px solid rgba(255,255,255,0.06)}' +
+      '.qcx-saved-dialog{width:100%;max-width:380px;border-radius:14px;border:1px solid #2a3830;background:#141a16;color:#e6f5ec;padding:22px 22px 18px;box-shadow:0 18px 48px rgba(0,0,0,0.55);box-sizing:border-box;font-family:var(--qcx-article-sans,"IBM Plex Sans",system-ui,sans-serif);display:flex;flex-direction:column;gap:0}' +
+      '.qcx-saved-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:14px;margin-bottom:14px;border-bottom:1px solid #2a3830}' +
+      '.qcx-saved-title{margin:0;font-size:18px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:#fff;line-height:1.15}' +
+      '.qcx-saved-close{appearance:none;width:28px;height:28px;border-radius:8px;border:0;background:transparent;color:#8aa396;font-size:20px;line-height:1;cursor:pointer;display:grid;place-items:center;flex:0 0 auto}' +
+      '.qcx-saved-close:hover{color:#e6f5ec;background:rgba(255,255,255,0.05)}' +
+      '.qcx-saved-meta{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}' +
+      '.qcx-saved-label{margin:0;font:700 10px/1.2 var(--qcx-article-mono,ui-monospace,monospace);letter-spacing:.1em;text-transform:uppercase;color:#7d8f84}' +
+      '.qcx-saved-count{font:700 10px/1.2 var(--qcx-article-mono,ui-monospace,monospace);color:#7dcea0;letter-spacing:.04em}' +
+      '.qcx-saved-body{overflow:hidden;min-height:72px}' +
+      '.qcx-saved-empty{margin:20px 0 8px;text-align:center;color:#8aa396;font-size:13px;line-height:1.5}' +
+      '.qcx-saved-hint{display:block;margin-top:6px;font-size:12px;color:#5f7368}' +
+      '.qcx-saved-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:0;border:1px solid #2a3830;border-radius:10px;overflow:hidden;background:#0b120c}' +
+      '.qcx-saved-item{display:flex;align-items:center;gap:10px;padding:11px 12px;border-top:1px solid #1c2420}' +
       '.qcx-saved-item:first-child{border-top:0}' +
-      '.qcx-saved-link{flex:1;min-width:0;color:#d8efe2;text-decoration:none;font:600 13px/1.35 var(--qcx-article-sans,system-ui,sans-serif);overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}' +
-      '.qcx-saved-link:hover{color:#34e6a0}' +
-      '.qcx-saved-del{appearance:none;flex:0 0 auto;width:28px;height:28px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.04);color:#ff9b94;font-size:16px;line-height:1;cursor:pointer;display:grid;place-items:center;padding:0}' +
-      '.qcx-saved-del:hover{background:rgba(255,95,86,0.16)}' +
-      '.qcx-saved-foot{font-size:11.5px;color:#7fa38f;text-align:center;padding-top:2px}' +
+      '.qcx-saved-item:hover{background:#121a15}' +
+      '.qcx-saved-idx{flex:0 0 auto;width:18px;font:700 10px/1 var(--qcx-article-mono,ui-monospace,monospace);color:#5f7368;text-align:right}' +
+      '.qcx-saved-link{flex:1;min-width:0;color:#d8e8de;text-decoration:none;font:600 13px/1.3 var(--qcx-article-sans,"IBM Plex Sans",system-ui,sans-serif);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}' +
+      '.qcx-saved-link:hover{color:#7dcea0}' +
+      '.qcx-saved-del{appearance:none;flex:0 0 auto;width:24px;height:24px;border-radius:6px;border:0;background:transparent;color:#6b7c72;font-size:16px;line-height:1;cursor:pointer;display:grid;place-items:center;padding:0;opacity:.75}' +
+      '.qcx-saved-del:hover{color:#ff9b94;background:rgba(255,95,86,0.12);opacity:1}' +
+      '.qcx-saved-more{appearance:none;width:100%;margin-top:12px;padding:11px 14px;border-radius:10px;border:0;background:#7dcea0;color:#06110a;font:800 13px/1.2 var(--qcx-article-sans,"IBM Plex Sans",system-ui,sans-serif);cursor:pointer}' +
+      '.qcx-saved-more:hover{filter:brightness(1.06)}' +
+      '.qcx-saved-foot{display:none}' +
       '.qcx-payos-dialog{width:100%;max-width:420px;border-radius:16px;border:1px solid rgba(52,230,160,0.38);background:linear-gradient(180deg,#0b1912 0%,#06100b 100%);color:#e8fff2;padding:18px;box-shadow:0 24px 64px rgba(0,0,0,0.82);box-sizing:border-box;font-family:var(--qcx-article-sans,system-ui,sans-serif)}' +
       '.qcx-payos-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}' +
       '.qcx-payos-badge{display:inline-block;padding:2px 7px;border-radius:999px;background:rgba(52,230,160,0.15);color:#34e6a0;font:800 9.5px/1.2 var(--qcx-article-mono,monospace);letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px}' +
@@ -4252,22 +4258,49 @@
           startGoogleOAuthPopup(null);
           fetchAuthConfig().then(function () { /* warm/refresh client id for next time */ });
         }
-        function renderSavedModalBody(list) {
+        var SAVED_PAGE_SIZE = 5;
+        var _savedModalList = [];
+        var _savedModalShown = SAVED_PAGE_SIZE;
+        function renderSavedModalBody(list, shown) {
           var items = Array.isArray(list) ? list.slice(0, 50) : [];
+          _savedModalList = items;
+          var limit = Math.max(SAVED_PAGE_SIZE, Number(shown) || SAVED_PAGE_SIZE);
+          if (limit > items.length) limit = items.length;
+          _savedModalShown = limit || SAVED_PAGE_SIZE;
           if (!items.length) {
             return '<p class="qcx-saved-empty">Chưa có bài nào' +
               '<span class="qcx-saved-hint">Mở một bài viết và bấm Lưu bài</span></p>';
           }
-          var rows = items.map(function (p) {
+          var visible = items.slice(0, limit);
+          var rows = visible.map(function (p, i) {
             var href = escapeHtml(String((p && p.url) || '#'));
             var title = escapeHtml(String((p && p.title) || (p && p.id) || 'Bài viết'));
             var id = escapeHtml(String((p && p.id) || ''));
+            var idx = String(i + 1).padStart(2, '0');
             return '<li class="qcx-saved-item" data-id="' + id + '">' +
+              '<span class="qcx-saved-idx" aria-hidden="true">' + idx + '</span>' +
               '<a class="qcx-saved-link" href="' + href + '" title="' + title + '">' + title + '</a>' +
               '<button type="button" class="qcx-saved-del" data-id="' + id + '" aria-label="Xóa">×</button>' +
               '</li>';
           }).join('');
-          return '<ul class="qcx-saved-list">' + rows + '</ul>';
+          var remain = items.length - visible.length;
+          var more = remain > 0
+            ? ('<button type="button" class="qcx-saved-more" id="qcx-saved-more">' +
+                'Xem tiếp (' + remain + ')</button>')
+            : '';
+          return '<ul class="qcx-saved-list">' + rows + '</ul>' + more;
+        }
+        function paintSavedModal(list, shown) {
+          var body = document.getElementById('qcx-saved-body');
+          var countEl = document.getElementById('qcx-saved-count');
+          var items = Array.isArray(list) ? list : [];
+          if (body) body.innerHTML = renderSavedModalBody(items, shown);
+          if (countEl) {
+            var shownN = Math.min(_savedModalShown, items.length);
+            countEl.textContent = items.length
+              ? (shownN + ' / ' + items.length)
+              : '0';
+          }
         }
         function closeSavedPostsModal() {
           var m = document.getElementById('qcx-saved-modal');
@@ -4282,6 +4315,13 @@
               closeSavedPostsModal();
               return;
             }
+            var moreBtn = t && t.closest ? t.closest('#qcx-saved-more,.qcx-saved-more') : null;
+            if (moreBtn) {
+              ev.preventDefault();
+              ev.stopPropagation();
+              paintSavedModal(_savedModalList, _savedModalShown + SAVED_PAGE_SIZE);
+              return;
+            }
             var del = t && t.closest ? t.closest('.qcx-saved-del') : null;
             if (!del) return;
             ev.preventDefault();
@@ -4289,10 +4329,7 @@
             var id = del.getAttribute('data-id');
             if (!id) return;
             apiUnsavePost(id).then(function (list) {
-              var body = document.getElementById('qcx-saved-body');
-              var foot = document.getElementById('qcx-saved-foot');
-              if (body) body.innerHTML = renderSavedModalBody(list);
-              if (foot) foot.textContent = (Array.isArray(list) ? list.length : 0) + ' bài đã lưu';
+              paintSavedModal(list, _savedModalShown);
               updatePostSaveButtonState();
               var countEl = document.getElementById('qcx-ud-saved-count');
               if (countEl) {
@@ -4321,24 +4358,24 @@
             bindSavedModalActions(modal);
           }
           var cached = readSavedPostsCache(u.email);
-          var n = Array.isArray(cached) ? cached.length : 0;
+          _savedModalShown = SAVED_PAGE_SIZE;
           modal.innerHTML =
             '<div class="qcx-saved-dialog">' +
               '<div class="qcx-saved-head">' +
-                '<div><span class="qcx-saved-badge">Saved</span>' +
-                '<h3 class="qcx-saved-title">Các bài viết đã lưu</h3></div>' +
+                '<h3 class="qcx-saved-title">Bài đã lưu</h3>' +
                 '<button type="button" class="qcx-saved-close" id="qcx-saved-close" aria-label="Đóng">×</button>' +
               '</div>' +
-              '<div class="qcx-saved-body" id="qcx-saved-body">' + renderSavedModalBody(cached) + '</div>' +
-              '<div class="qcx-saved-foot" id="qcx-saved-foot">' + n + ' bài đã lưu</div>' +
+              '<div class="qcx-saved-meta">' +
+                '<p class="qcx-saved-label">Danh sách</p>' +
+                '<span class="qcx-saved-count" id="qcx-saved-count">0</span>' +
+              '</div>' +
+              '<div class="qcx-saved-body" id="qcx-saved-body"></div>' +
             '</div>';
+          paintSavedModal(cached, SAVED_PAGE_SIZE);
           modal.classList.add('is-open');
           fetchSavedPosts(true).then(function (list) {
             if (!modal.classList.contains('is-open')) return;
-            var body = document.getElementById('qcx-saved-body');
-            var foot = document.getElementById('qcx-saved-foot');
-            if (body) body.innerHTML = renderSavedModalBody(list);
-            if (foot) foot.textContent = (Array.isArray(list) ? list.length : 0) + ' bài đã lưu';
+            paintSavedModal(list, _savedModalShown);
             updatePostSaveButtonState();
           }).catch(function () {});
         }
