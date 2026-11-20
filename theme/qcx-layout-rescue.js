@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.15/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.16/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -3235,22 +3235,31 @@
       '.qcx-ud-btn.is-admin:hover{border-color:#34e6a0;background:rgba(52,230,160,0.16);color:#fff}' +
       '.qcx-ud-btn.is-danger{color:#ff9b94}' +
       '.qcx-ud-btn.is-danger:hover{background:rgba(255,95,86,0.14)}' +
-      '.qcx-ud-saved{margin:0;padding:8px 9px;border-radius:9px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06)}' +
-      '.qcx-ud-saved-lbl{display:flex;align-items:center;gap:5px;font:700 9.5px/1.2 monospace;color:#7fa38f;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}' +
-      '.qcx-ud-saved-list{list-style:none;margin:0;padding:0;max-height:140px;overflow-y:auto}' +
-      '.qcx-ud-saved-empty{font-size:12px;color:#9bbdae;padding:2px 0 0;margin:0;line-height:1.45}' +
-      '.qcx-ud-saved-hint{display:block;margin-top:4px;font-size:11px;color:#6f9483}' +
-      '.qcx-ud-saved-item{display:flex;align-items:center;gap:6px;padding:5px 0;border-top:1px solid rgba(255,255,255,0.05)}' +
-      '.qcx-ud-saved-item:first-child{border-top:0;padding-top:0}' +
-      '.qcx-ud-saved-link{flex:1;min-width:0;color:#d8efe2;text-decoration:none;font:600 12px/1.3 var(--qcx-article-sans,system-ui,sans-serif);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}' +
-      '.qcx-ud-saved-link:hover{color:#34e6a0}' +
-      '.qcx-ud-saved-del{appearance:none;flex:0 0 auto;width:22px;height:22px;border-radius:6px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.04);color:#ff9b94;font-size:14px;line-height:1;cursor:pointer;display:grid;place-items:center;padding:0}' +
-      '.qcx-ud-saved-del:hover{background:rgba(255,95,86,0.16)}' +
+      '.qcx-ud-count{margin-left:auto;min-width:18px;height:18px;padding:0 5px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font:800 10px/1 var(--qcx-article-mono,monospace);background:rgba(52,230,160,0.16);color:#34e6a0}' +
       '.qcx-post-save-btn{appearance:none;display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 12px;margin:0 0 10px;border-radius:999px;border:1px solid rgba(52,230,160,0.38);background:rgba(9,20,14,0.88);color:#e6f5ec;font:700 12px/1 var(--qcx-article-sans,system-ui,sans-serif);cursor:pointer;transition:border-color .18s,background .18s,transform .18s}' +
       '.qcx-post-save-btn:hover{border-color:#34e6a0;background:rgba(52,230,160,0.12);transform:translateY(-1px)}' +
       '.qcx-post-save-btn.is-saved{border-color:rgba(255,209,102,0.55);color:#ffd166;background:rgba(38,28,5,0.72)}' +
       '.qcx-post-save-btn svg{width:13px;height:13px;flex:0 0 auto}' +
       '#qcx-google-auth-modal,#qcx-google-auth-modal.is-open{display:none!important;visibility:hidden!important;pointer-events:none!important}' +
+      '#qcx-saved-modal{position:fixed;inset:0;z-index:999999;display:none;align-items:center;justify-content:center;padding:18px;box-sizing:border-box;background:rgba(0,0,0,0.62)}' +
+      '#qcx-saved-modal.is-open{display:flex}' +
+      '.qcx-saved-dialog{width:100%;max-width:440px;max-height:min(78vh,560px);border-radius:16px;border:1px solid rgba(52,230,160,0.38);background:linear-gradient(180deg,#0b1912 0%,#06100b 100%);color:#e8fff2;padding:16px 16px 14px;box-shadow:0 24px 64px rgba(0,0,0,0.82);box-sizing:border-box;font-family:var(--qcx-article-sans,system-ui,sans-serif);display:flex;flex-direction:column;gap:10px}' +
+      '.qcx-saved-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}' +
+      '.qcx-saved-badge{display:inline-block;padding:2px 7px;border-radius:999px;background:rgba(52,230,160,0.15);color:#34e6a0;font:800 9.5px/1.2 var(--qcx-article-mono,monospace);letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px}' +
+      '.qcx-saved-title{margin:0;font-size:17px;font-weight:800;color:#fff}' +
+      '.qcx-saved-close{appearance:none;width:30px;height:30px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.04);color:#b8d8c8;font-size:18px;line-height:1;cursor:pointer;display:grid;place-items:center;flex:0 0 auto}' +
+      '.qcx-saved-close:hover{background:rgba(255,95,86,0.18);color:#ff9b94;border-color:rgba(255,95,86,0.4)}' +
+      '.qcx-saved-body{overflow:auto;min-height:120px;max-height:min(58vh,420px);padding-right:2px}' +
+      '.qcx-saved-empty{margin:18px 4px;text-align:center;color:#9bbdae;font-size:13px;line-height:1.5}' +
+      '.qcx-saved-hint{display:block;margin-top:6px;font-size:12px;color:#6f9483}' +
+      '.qcx-saved-list{list-style:none;margin:0;padding:0}' +
+      '.qcx-saved-item{display:flex;align-items:center;gap:8px;padding:10px 8px;border-top:1px solid rgba(255,255,255,0.06)}' +
+      '.qcx-saved-item:first-child{border-top:0}' +
+      '.qcx-saved-link{flex:1;min-width:0;color:#d8efe2;text-decoration:none;font:600 13px/1.35 var(--qcx-article-sans,system-ui,sans-serif);overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}' +
+      '.qcx-saved-link:hover{color:#34e6a0}' +
+      '.qcx-saved-del{appearance:none;flex:0 0 auto;width:28px;height:28px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.04);color:#ff9b94;font-size:16px;line-height:1;cursor:pointer;display:grid;place-items:center;padding:0}' +
+      '.qcx-saved-del:hover{background:rgba(255,95,86,0.16)}' +
+      '.qcx-saved-foot{font-size:11.5px;color:#7fa38f;text-align:center;padding-top:2px}' +
       '.qcx-payos-dialog{width:100%;max-width:420px;border-radius:16px;border:1px solid rgba(52,230,160,0.38);background:linear-gradient(180deg,#0b1912 0%,#06100b 100%);color:#e8fff2;padding:18px;box-shadow:0 24px 64px rgba(0,0,0,0.82);box-sizing:border-box;font-family:var(--qcx-article-sans,system-ui,sans-serif)}' +
       '.qcx-payos-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}' +
       '.qcx-payos-badge{display:inline-block;padding:2px 7px;border-radius:999px;background:rgba(52,230,160,0.15);color:#34e6a0;font:800 9.5px/1.2 var(--qcx-article-mono,monospace);letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px}' +
@@ -4243,49 +4252,95 @@
           startGoogleOAuthPopup(null);
           fetchAuthConfig().then(function () { /* warm/refresh client id for next time */ });
         }
-        function renderSavedPostsBlock(list) {
+        function renderSavedModalBody(list) {
           var items = Array.isArray(list) ? list.slice(0, 50) : [];
-          var lbl = '<div class="qcx-ud-saved-lbl">Các bài viết đã lưu</div>';
           if (!items.length) {
-            return '<div class="qcx-ud-saved">' + lbl +
-              '<p class="qcx-ud-saved-empty">Chưa có bài nào' +
-              '<span class="qcx-ud-saved-hint">Mở một bài viết và bấm Lưu bài</span></p></div>';
+            return '<p class="qcx-saved-empty">Chưa có bài nào' +
+              '<span class="qcx-saved-hint">Mở một bài viết và bấm Lưu bài</span></p>';
           }
-          var shown = items.slice(0, 4);
-          var rows = shown.map(function (p) {
+          var rows = items.map(function (p) {
             var href = escapeHtml(String((p && p.url) || '#'));
             var title = escapeHtml(String((p && p.title) || (p && p.id) || 'Bài viết'));
             var id = escapeHtml(String((p && p.id) || ''));
-            return '<li class="qcx-ud-saved-item" data-id="' + id + '">' +
-              '<a class="qcx-ud-saved-link" href="' + href + '" title="' + title + '">' + title + '</a>' +
-              '<button type="button" class="qcx-ud-saved-del" data-id="' + id + '" aria-label="Xóa">×</button>' +
+            return '<li class="qcx-saved-item" data-id="' + id + '">' +
+              '<a class="qcx-saved-link" href="' + href + '" title="' + title + '">' + title + '</a>' +
+              '<button type="button" class="qcx-saved-del" data-id="' + id + '" aria-label="Xóa">×</button>' +
               '</li>';
           }).join('');
-          var more = items.length > 4
-            ? ('<p class="qcx-ud-saved-hint">+' + (items.length - 4) + ' bài khác trong danh sách</p>')
-            : '';
-          return '<div class="qcx-ud-saved">' + lbl + '<ul class="qcx-ud-saved-list">' + rows + '</ul>' + more + '</div>';
+          return '<ul class="qcx-saved-list">' + rows + '</ul>';
         }
-        function bindSavedPostsDropdown(dd, email) {
-          if (!dd) return;
-          var dels = dd.querySelectorAll('.qcx-ud-saved-del');
-          for (var i = 0; i < dels.length; i++) {
-            dels[i].onclick = function (ev) {
-              ev.preventDefault();
-              ev.stopPropagation();
-              var id = this.getAttribute('data-id');
-              if (!id) return;
-              apiUnsavePost(id).then(function (list) {
-                var block = dd.querySelector('.qcx-ud-saved');
-                if (block) {
-                  var tmp = document.createElement('div');
-                  tmp.innerHTML = renderSavedPostsBlock(list);
-                  block.replaceWith(tmp.firstChild);
-                  bindSavedPostsDropdown(dd, email);
-                }
-              }).catch(function () {});
-            };
+        function closeSavedPostsModal() {
+          var m = document.getElementById('qcx-saved-modal');
+          if (m) m.classList.remove('is-open');
+        }
+        function bindSavedModalActions(modal) {
+          if (!modal || modal.getAttribute('data-bound') === '1') return;
+          modal.setAttribute('data-bound', '1');
+          modal.addEventListener('click', function (ev) {
+            var t = ev.target;
+            if (t === modal || (t && t.id === 'qcx-saved-close')) {
+              closeSavedPostsModal();
+              return;
+            }
+            var del = t && t.closest ? t.closest('.qcx-saved-del') : null;
+            if (!del) return;
+            ev.preventDefault();
+            ev.stopPropagation();
+            var id = del.getAttribute('data-id');
+            if (!id) return;
+            apiUnsavePost(id).then(function (list) {
+              var body = document.getElementById('qcx-saved-body');
+              var foot = document.getElementById('qcx-saved-foot');
+              if (body) body.innerHTML = renderSavedModalBody(list);
+              if (foot) foot.textContent = (Array.isArray(list) ? list.length : 0) + ' bài đã lưu';
+              updatePostSaveButtonState();
+              var countEl = document.getElementById('qcx-ud-saved-count');
+              if (countEl) {
+                var n = Array.isArray(list) ? list.length : 0;
+                countEl.textContent = String(n);
+                countEl.hidden = n < 1;
+              }
+            }).catch(function () {});
+          });
+          document.addEventListener('keydown', function (ev) {
+            if (ev.key === 'Escape') closeSavedPostsModal();
+          });
+        }
+        function openSavedPostsModal() {
+          var ent = readEnt();
+          var u = (ent && ent.user) || null;
+          if (!u) return;
+          var modal = document.getElementById('qcx-saved-modal');
+          if (!modal) {
+            modal = document.createElement('div');
+            modal.id = 'qcx-saved-modal';
+            modal.setAttribute('role', 'dialog');
+            modal.setAttribute('aria-modal', 'true');
+            modal.setAttribute('aria-label', 'Các bài viết đã lưu');
+            document.body.appendChild(modal);
+            bindSavedModalActions(modal);
           }
+          var cached = readSavedPostsCache(u.email);
+          var n = Array.isArray(cached) ? cached.length : 0;
+          modal.innerHTML =
+            '<div class="qcx-saved-dialog">' +
+              '<div class="qcx-saved-head">' +
+                '<div><span class="qcx-saved-badge">Saved</span>' +
+                '<h3 class="qcx-saved-title">Các bài viết đã lưu</h3></div>' +
+                '<button type="button" class="qcx-saved-close" id="qcx-saved-close" aria-label="Đóng">×</button>' +
+              '</div>' +
+              '<div class="qcx-saved-body" id="qcx-saved-body">' + renderSavedModalBody(cached) + '</div>' +
+              '<div class="qcx-saved-foot" id="qcx-saved-foot">' + n + ' bài đã lưu</div>' +
+            '</div>';
+          modal.classList.add('is-open');
+          fetchSavedPosts(true).then(function (list) {
+            if (!modal.classList.contains('is-open')) return;
+            var body = document.getElementById('qcx-saved-body');
+            var foot = document.getElementById('qcx-saved-foot');
+            if (body) body.innerHTML = renderSavedModalBody(list);
+            if (foot) foot.textContent = (Array.isArray(list) ? list.length : 0) + ' bài đã lưu';
+            updatePostSaveButtonState();
+          }).catch(function () {});
         }
         function toggleUserDropdown(anchorBtn) {
           var dd = document.getElementById('qcx-user-dropdown');
@@ -4309,30 +4364,39 @@
           dd.setAttribute('data-name-style', activeStyle);
           var ICO_OUT = '<svg class="qcx-ud-ico qcx-ud-ico--stroke" viewBox="0 0 16 16" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2.5H3.5v11H6M10.5 5l3 3-3 3M13.5 8H6.5"/></svg>';
           var ICO_GEAR = '<svg class="qcx-ud-ico qcx-ud-ico--stroke" viewBox="0 0 16 16" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="2"/><path d="M8 1.5v1.4M8 13.1v1.4M1.5 8h1.4M13.1 8h1.4M3.1 3.1l1 1M11.9 11.9l1 1M12.9 3.1l-1 1M4.1 11.9l-1 1"/></svg>';
+          var ICO_BOOK = '<svg class="qcx-ud-ico qcx-ud-ico--stroke" viewBox="0 0 16 16" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 2.5h8v11l-4-2.4L4 13.5v-11z"/></svg>';
           var badgeLabel = role === 'admin' ? 'ADMIN' : (role === 'vip' ? 'VIP' : (role === 'pro' ? 'PRO' : 'MEMBER'));
           var avUrl = getPreferredGoogleAvatar(u.email, u.name, u.picture, role);
           var cachedSaved = readSavedPostsCache(u.email);
+          var savedN = Array.isArray(cachedSaved) ? cachedSaved.length : 0;
           var adminLinkHtml = (role === 'admin' && isClientAdminEmail(u.email))
             ? ('<a class="qcx-ud-btn is-admin" id="qcx-ud-admin" href="/p/admin.html">' + ICO_GEAR + '<span>Trang quản trị</span></a>')
             : '';
-          // Hierarchy: identity → saved → actions (admin + logout). No FX/VIP tools.
+          // Hierarchy: identity → actions (saved modal + admin + logout).
           dd.innerHTML =
             '<div class="qcx-ud-head"><img src="' + avUrl + '" alt=""/>' +
               '<div><p class="qcx-ud-name">' + escapeHtml(u.name || u.email) + '</p>' +
               '<p class="qcx-ud-email">' + escapeHtml(u.email) + '</p>' +
               '<span class="qcx-ud-badge" data-role="' + role + '">' + badgeLabel + '</span></div></div>' +
             '<div class="qcx-ud-divider"></div>' +
-            renderSavedPostsBlock(cachedSaved) +
-            '<div class="qcx-ud-divider"></div>' +
             '<div class="qcx-ud-actions">' +
+              '<button type="button" class="qcx-ud-btn" id="qcx-ud-saved">' + ICO_BOOK +
+                '<span>Bài đã lưu</span>' +
+                '<span class="qcx-ud-count" id="qcx-ud-saved-count"' + (savedN ? '' : ' hidden') + '>' + savedN + '</span></button>' +
               adminLinkHtml +
               '<button type="button" class="qcx-ud-btn is-danger" id="qcx-ud-logout">' + ICO_OUT + '<span>Đăng xuất</span></button>' +
             '</div>';
           var rect = anchorBtn.getBoundingClientRect();
-          dd.style.top = Math.min(window.innerHeight - 320, Math.max(8, rect.bottom + 6)) + 'px';
+          dd.style.top = Math.min(window.innerHeight - 240, Math.max(8, rect.bottom + 6)) + 'px';
           dd.style.left = Math.min(window.innerWidth - 332, Math.max(8, rect.right - 306)) + 'px';
           dd.classList.add('is-open');
-          bindSavedPostsDropdown(dd, u.email);
+          var savedBtn = document.getElementById('qcx-ud-saved');
+          if (savedBtn) savedBtn.onclick = function (ev) {
+            ev.preventDefault();
+            ev.stopPropagation();
+            dd.classList.remove('is-open');
+            openSavedPostsModal();
+          };
           var logoutBtn = document.getElementById('qcx-ud-logout');
           if (logoutBtn) logoutBtn.onclick = function () {
             dd.classList.remove('is-open');
@@ -4341,12 +4405,11 @@
           };
           fetchSavedPosts(true).then(function (list) {
             if (!dd.classList.contains('is-open')) return;
-            var block = dd.querySelector('.qcx-ud-saved');
-            if (!block) return;
-            var tmp = document.createElement('div');
-            tmp.innerHTML = renderSavedPostsBlock(list);
-            block.replaceWith(tmp.firstChild);
-            bindSavedPostsDropdown(dd, u.email);
+            var countEl = document.getElementById('qcx-ud-saved-count');
+            if (!countEl) return;
+            var n = Array.isArray(list) ? list.length : 0;
+            countEl.textContent = String(n);
+            countEl.hidden = n < 1;
             updatePostSaveButtonState();
           });
         }
