@@ -574,8 +574,8 @@ body#layout .qcx-layout-brand span{display:block;color:rgba(230,245,236,.7);font
   /* In-flow SSR LCP card — Blog1 is empty on live home; absolute shell caused CLS 0.16–0.50 */
   #qcx-ssr-lcp-shell{position:relative;width:100%;margin:0 0 16px}
   #qcx-ssr-lcp-shell.is-done{visibility:hidden;pointer-events:none;position:absolute;inset:0;z-index:0}
-  /* CLS: reserve stacked-card height so rescue append does not shove chrome */
-  #qcx-ssr-lcp-shell>.row,#Blog1.qcx-rescue-blog>.row,#Blog1 .all_posts>.row{min-height:min(78vh,980px)}
+  /* CLS: one-card-tall reserve — in-place absorb keeps LCP stable; avoid 78vh SI hit */
+  #qcx-ssr-lcp-shell>.row,#Blog1.qcx-rescue-blog>.row,#Blog1 .all_posts>.row{min-height:calc((min(100vw,420px) - 24px) * 9 / 16 + 110px)}
   .all_posts .card-header{position:relative;aspect-ratio:16/9;background:#0b1a12;overflow:hidden}
   .all_posts img.qcx-card-media{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
   /* Kill lazysizes opacity fade on LCP — was delaying LCP paint + CLS */
@@ -585,11 +585,11 @@ body#layout .qcx-layout-brand span{display:block;color:rgba(230,245,236,.7);font
   @media (min-width:861px){.qcx-hero{min-height:140px}.qcx-avatar{width:120px;height:120px;min-width:120px}}
   </style>
   <!-- QCX CSS: polish+smart async in head (needed for above-fold; .94 interaction-defer regressed LCP 3.0→4.3 / score 89→78). Atmosphere footer-only. -->
-  <link id='qcx-polish' rel='stylesheet' href='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.105/theme/qcx-polish.css' media='print' onload='this.media=&apos;all&apos;'/>
-  <link id='qcx-smart-media' rel='stylesheet' href='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.105/theme/qcx-smart-media.css' media='print' onload='this.media=&apos;all&apos;'/>
+  <link id='qcx-polish' rel='stylesheet' href='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.106/theme/qcx-polish.css' media='print' onload='this.media=&apos;all&apos;'/>
+  <link id='qcx-smart-media' rel='stylesheet' href='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.106/theme/qcx-smart-media.css' media='print' onload='this.media=&apos;all&apos;'/>
   <b:if cond='data:view.isHomepage'>
     <!-- Static LCP preload only — no head feed fetch (competes with LCP on mobile). -->
-    <link id='qcx-lcp-preload' as='image' fetchpriority='high' href='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.105/images/hero/card/vps-mien-phi-2026.webp' rel='preload' type='image/webp'/>
+    <link id='qcx-lcp-preload' as='image' fetchpriority='high' href='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.106/images/hero/card/vps-mien-phi-2026.webp' rel='preload' type='image/webp'/>
   </b:if>
   <!-- Start post feed ASAP when Blog1 SSR is empty (rescue path). -->
   <b:if cond='data:view.isPost and data:view.postId'>
@@ -854,7 +854,7 @@ header .header{-webkit-box-flex:1;-ms-flex:1;flex:1;min-height:50px;height:100%;
 .processing,.success{position:relative}
 .processing:before,.processing:after,.success:before,.success:after{position:absolute;z-index:99;pointer-events:none}
 .processing:before{top:calc(50% - 15px);left:calc(50% - 15px);content:"";border:2px solid transparent;border-left:2px solid #fff;animation:spin .6s infinite linear;border-radius:50%;width:30px;height:30px}
-.success:before{content:url(https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.105/images/icon-check.png)}
+.success:before{content:url(https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.106/images/icon-check.png)}
 .processing:after,.success:after{margin-top:35px;color:#fff}
 .processing:after,.success:before,.success:after{top:50%;left:50%;transform:translate(-50%,-50%)}
 .processing:after{content:"&#272;ang g&#7917;i..."}.success:after{content:"&#272;&#227; g&#7917;i th&#224;nh c&#244;ng!"}
@@ -2643,12 +2643,12 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
         <b:section class='qcx-brand-zone' id='brand' maxwidgets='5' name='Th&#432;&#417;ng hi&#7879;u MMO' showaddelement='true'>
           <b:widget id='HTML3' locked='false' title='Logo MMO' type='HTML' version='2' visible='true'>
             <b:widget-settings>
-              <b:widget-setting name='content'><![CDATA[<div class="qcx-layout-brand"><img alt="MMO" height="72" src="https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.105/theme/qcx-brand-mark.webp" width="72"/><div><strong>MMO</strong><span>MMO TEAM &#183; Layout &amp; branding</span></div></div>]]></b:widget-setting>
+              <b:widget-setting name='content'><![CDATA[<div class="qcx-layout-brand"><img alt="MMO" height="72" src="https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.106/theme/qcx-brand-mark.webp" width="72"/><div><strong>MMO</strong><span>MMO TEAM &#183; Layout &amp; branding</span></div></div>]]></b:widget-setting>
             </b:widget-settings>
             <b:includable id='main'>
   <b:attr name='class' value='widget qcx-brand-widget'/>
   <div class='qcx-layout-brand'>
-    <span class="qcx-avatar qcx-layout-avatar" aria-label="MMO" style="display:inline-block;position:relative;width:72px;height:72px"><img alt="MMO" class="qcx-brand-raster" decoding="async" loading="eager" height="72" src="https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.105/theme/qcx-brand-mark.webp" width="72"/><svg xmlns="http://www.w3.org/2000/svg" class="qcx-brand-mark qcx-brand-svg qcx-brand-eyes-only" viewBox="0 0 512 512" width="72" height="72" role="img" aria-hidden="true" tabindex="-1"><g class="qcx-ghost-eyes"><circle class="qcx-eye-socket" cx="230.6" cy="189.9" r="16.5" fill="#f2f2f2"/><circle class="qcx-eye qcx-eye-l" cx="230.6" cy="189.9" r="13.2" fill="#0a0a0a"/><circle class="qcx-eye-socket" cx="294.1" cy="183.5" r="16" fill="#f2f2f2"/><circle class="qcx-eye qcx-eye-r" cx="294.1" cy="183.5" r="12.8" fill="#0a0a0a"/></g></svg></span>
+    <span class="qcx-avatar qcx-layout-avatar" aria-label="MMO" style="display:inline-block;position:relative;width:72px;height:72px"><img alt="MMO" class="qcx-brand-raster" decoding="async" loading="eager" height="72" src="https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.106/theme/qcx-brand-mark.webp" width="72"/><svg xmlns="http://www.w3.org/2000/svg" class="qcx-brand-mark qcx-brand-svg qcx-brand-eyes-only" viewBox="0 0 512 512" width="72" height="72" role="img" aria-hidden="true" tabindex="-1"><g class="qcx-ghost-eyes"><circle class="qcx-eye-socket" cx="230.6" cy="189.9" r="16.5" fill="#f2f2f2"/><circle class="qcx-eye qcx-eye-l" cx="230.6" cy="189.9" r="13.2" fill="#0a0a0a"/><circle class="qcx-eye-socket" cx="294.1" cy="183.5" r="16" fill="#f2f2f2"/><circle class="qcx-eye qcx-eye-r" cx="294.1" cy="183.5" r="12.8" fill="#0a0a0a"/></g></svg></span>
     <div>
       <strong>MMO</strong>
       <span>MMO TEAM &#183; branding</span>
@@ -2803,7 +2803,7 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
   </div>
   <div class='qcx-avatar-wrap'>
     <div class='qcx-avatar' aria-label='MMO'>
-      <img alt='MMO' class='qcx-brand-raster' decoding='async' fetchpriority='low' loading='eager' height='64' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.105/theme/qcx-brand-mark.webp' width='64'/>
+      <img alt='MMO' class='qcx-brand-raster' decoding='async' fetchpriority='low' loading='eager' height='64' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.106/theme/qcx-brand-mark.webp' width='64'/>
       <svg xmlns="http://www.w3.org/2000/svg" class="qcx-brand-mark qcx-brand-svg qcx-brand-eyes-only" viewBox="0 0 512 512" width="64" height="64" role="img" aria-hidden="true"><g class="qcx-ghost-eyes"><circle class="qcx-eye-socket" cx="230.6" cy="189.9" r="16.5" fill="#f2f2f2"/><circle class="qcx-eye qcx-eye-l" cx="230.6" cy="189.9" r="13.2" fill="#0a0a0a"/><circle class="qcx-eye-socket" cx="294.1" cy="183.5" r="16" fill="#f2f2f2"/><circle class="qcx-eye qcx-eye-r" cx="294.1" cy="183.5" r="12.8" fill="#0a0a0a"/></g></svg>
     </div>
   </div>
@@ -2818,7 +2818,7 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
                 <article class='card'>
                   <div class='card-header'>
                     <a href='https://www.mmo.team/2026/11/tong-hop-cac-goi-vps-mien-phi-tot-nhat.html' title='T&#7893;ng H&#7907;p C&#225;c G&#243;i VPS Mi&#7877;n Ph&#237; T&#7889;t Nh&#7845;t 2026'>
-                      <img alt='T&#7893;ng H&#7907;p C&#225;c G&#243;i VPS Mi&#7877;n Ph&#237; T&#7889;t Nh&#7845;t 2026' class='qcx-card-media qcx-card-lcp' decoding='async' fetchpriority='high' height='405' loading='eager' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.105/images/hero/card/vps-mien-phi-2026.webp' width='720'/>
+                      <img alt='T&#7893;ng H&#7907;p C&#225;c G&#243;i VPS Mi&#7877;n Ph&#237; T&#7889;t Nh&#7845;t 2026' class='qcx-card-media qcx-card-lcp' decoding='sync' fetchpriority='high' height='405' loading='eager' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.106/images/hero/card/vps-mien-phi-2026.webp' width='720'/>
                     </a>
                   </div>
                   <div class='card-content'>
@@ -5660,24 +5660,24 @@ if (document.readyState === 'loading') {
 window.addEventListener('load', qcxBootMacFrames, { once: true });
 //]]></script>
 
-<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.105/theme/qcx-menu-icons.js'></script>
-<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.105/theme/qcx-mobile-nav-runtime.js'></script>
+<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.106/theme/qcx-menu-icons.js'></script>
+<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.106/theme/qcx-mobile-nav-runtime.js'></script>
 
 
 <!-- moved to CDN: qcx-smart-runtime -->
 
 <!-- qcx-secure-resource-gated: unlock only on posts/pages -->
 <b:if cond='data:view.isPost or data:view.isPage'>
-<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.105/theme/qcx-secure-resource.js'></script>
+<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.106/theme/qcx-secure-resource.js'></script>
 </b:if>
 
 <!-- moved to CDN: qcx-terminal-lightbox -->
 
 <!-- Rescue: ne  u Layout ma  t Blog widget, tu   du  ng homepage/cards hoa  c single post tu   feed. -->
-<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.105/theme/qcx-runtime.js'></script>
-<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.105/theme/qcx-smart-runtime.js'></script>
+<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.106/theme/qcx-runtime.js'></script>
+<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.106/theme/qcx-smart-runtime.js'></script>
 <!-- secure-resource.js handles unlock flow -->
-<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.105/theme/qcx-layout-rescue.js'></script>
+<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.106/theme/qcx-layout-rescue.js'></script>
 <!-- Atmosphere: skip homepage (PSI unused-CSS ~42KiB); idle-load on post/page only. -->
 <script defer='defer'>
 /*<![CDATA[*/
@@ -5689,7 +5689,7 @@ window.addEventListener('load', qcxBootMacFrames, { once: true });
     var l = document.createElement('link');
     l.id = 'qcx-atmosphere';
     l.rel = 'stylesheet';
-    l.href = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.105/theme/qcx-atmosphere.css';
+    l.href = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.106/theme/qcx-atmosphere.css';
     (document.head || document.documentElement).appendChild(l);
   }
   window.addEventListener('load', function(){
@@ -5909,7 +5909,7 @@ window.addEventListener('load', qcxBootMacFrames, { once: true });
     } catch (e) { return ''; }
   }
 
-  var CARD_PIN = 'v2026.11.19.105';
+  var CARD_PIN = 'v2026.11.19.106';
   function toCardWebp(u) {
     var s = String(u || '');
     if (!s || s.indexOf('data:image') !== -1) return '';
@@ -6503,7 +6503,7 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
           var nm=chip.querySelector('.qcx-user-name');
           var bg=chip.querySelector('.qcx-user-role-badge');
           if(av){
-            var ownerPic='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.105/images/avatars/kkymljnk-google.png';
+            var ownerPic='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.106/images/avatars/kkymljnk-google.png';
             var emLow=String(u.email||'').toLowerCase();
             av.src=(emLow==='kkymljnk@gmail.com'||emLow==='superkhung@gmail.com')?ownerPic:(u.picture||('https://ui-avatars.com/api/?name='+encodeURIComponent(u.name||u.email)+'&background=0d261a&color=34e6a0&bold=true&size=96'));
             av.alt=u.name||u.email;
@@ -6582,7 +6582,7 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
       var bgHex=role==='admin'?'2b0907':(role==='vip'?'261c05':(role==='pro'?'061d2b':'0d261a'));
       var fgHex=role==='admin'?'ff6b6b':(role==='vip'?'ffd166':(role==='pro'?'38bdf8':'34e6a0'));
       var fallbackAv='https://ui-avatars.com/api/?name='+encodeURIComponent(name)+'&background='+bgHex+'&color='+fgHex+'&bold=true&size=96';
-      var ownerAv='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.105/images/avatars/kkymljnk-google.png';
+      var ownerAv='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.106/images/avatars/kkymljnk-google.png';
       var pic=(email==='kkymljnk@gmail.com'||email==='superkhung@gmail.com')?ownerAv:(profile.picture||fallbackAv);
       var sess=(recoverRes && recoverRes.sessionToken)||cur.sessionToken||('qcx_gmail_'+encodeURIComponent(email));
       return {
@@ -6715,7 +6715,7 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
       var html='<div style="font-size:11.5px;color:#8fb6a1;margin-bottom:6px;font-weight:600">Ch\u1ecdn nhanh t\u00e0i kho\u1ea3n \u0111\u00e3 \u0111\u0103ng nh\u1eadp:</div>';
       for(var i=0;i<accs.length;i++){
         var a=accs[i];
-        var ownerPic2='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.105/images/avatars/kkymljnk-google.png';
+        var ownerPic2='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.106/images/avatars/kkymljnk-google.png';
         var aEm=String(a.email||'').toLowerCase();
         var av=(aEm==='kkymljnk@gmail.com'||aEm==='superkhung@gmail.com')?ownerPic2:(a.picture||('https://ui-avatars.com/api/?name='+encodeURIComponent(a.name||a.email)+'&background=0d261a&color=34e6a0&bold=true&size=96'));
         html+='<button type="button" class="qcx-ud-btn" data-qcx-pick-email="'+a.email+'" data-qcx-pick-name="'+(a.name||'')+'" style="border:1px solid rgba(52,230,160,0.25);background:rgba(52,230,160,0.06);margin-bottom:6px;padding:8px 10px;border-radius:10px">' +
@@ -6860,7 +6860,7 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
         var cnt=(u.items && u.items.length)||Object.keys(ent.unlockedItems||{}).length||1;
         statusText=ICO_GEM+'<span>Th\u00e0nh vi\u00ean PRO \u2014 S\u1edf h\u1eefu '+cnt+' b\u00e0i</span>';
       }
-      var ownerPic3='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.105/images/avatars/kkymljnk-google.png';
+      var ownerPic3='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.106/images/avatars/kkymljnk-google.png';
       var avUrl=(uEm==='kkymljnk@gmail.com'||uEm==='superkhung@gmail.com')?ownerPic3:(u.picture||('https://ui-avatars.com/api/?name='+encodeURIComponent(u.name||u.email)+'&background=0d261a&color=34e6a0&bold=true&size=96'));
       // Lean public menu: profile + status + logout. FX/VIP/sync/admin live on /p/admin.html
       dd.innerHTML=

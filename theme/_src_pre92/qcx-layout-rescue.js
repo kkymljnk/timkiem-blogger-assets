@@ -25,11 +25,11 @@
         'position:relative!important;left:auto!important;right:auto!important;top:auto!important;' +
         'z-index:auto!important;width:100%!important;margin:0 0 16px!important;' +
         'pointer-events:auto!important}' +
-        /* Reserve stacked-card height so cards 2–9 append below LCP without shifting chrome (CLS). */
+        /* Modest reserve — in-place absorb already keeps CLS≈0; huge 78vh hurt Speed Index. */
         'html[data-page-type="homepage"] #qcx-ssr-lcp-shell > .row,' +
         'html[data-page-type="homepage"] #Blog1.qcx-rescue-blog > .row,' +
         'html[data-page-type="homepage"] #Blog1 .all_posts > .row{' +
-        'min-height:min(78vh,980px)!important}' +
+        'min-height:calc((min(100vw,420px) - 24px) * 9 / 16 + 110px)!important}' +
         'html[data-page-type="homepage"] .card-header,' +
         'html[data-page-type="homepage"] #qcx-ssr-lcp-shell .card-header{' +
         'position:relative;aspect-ratio:16/9;overflow:hidden;background:#0b1a12}' +
@@ -295,7 +295,7 @@
 
   function qcxCdnPin() {
     var m = String(QCX_CDN || '').match(/@(v\d[\w.-]+)\//);
-    return (m && m[1]) || 'v2026.11.19.105';
+    return (m && m[1]) || 'v2026.11.19.106';
   }
 
   /* Homepage cards: ~15–55KB WebP instead of 450–1000KB hero JPG (PSI image delivery). */
@@ -612,7 +612,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.105/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.106/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -3115,6 +3115,7 @@
           keptLcpImg.classList.add('qcx-card-media', 'qcx-card-lcp');
           keptLcpImg.setAttribute('loading', 'eager');
           keptLcpImg.setAttribute('fetchpriority', 'high');
+          keptLcpImg.setAttribute('decoding', 'sync');
           try { keptLcpImg.fetchPriority = 'high'; } catch (ignoreFp) {}
           if (title) keptLcpImg.alt = title;
           /* Never swap LCP src on absorb — head preload + SSR bytes already won. */
@@ -3124,15 +3125,42 @@
       keptLcpImg = null;
     }
 
+    function pathKey(u) {
+      try {
+        var a = document.createElement('a');
+        a.href = u || '';
+        return (a.pathname || '').replace(/\/+$/, '') || '/';
+      } catch (ignorePk) {
+        return String(u || '');
+      }
+    }
+
+    function findEntryForKeptCard() {
+      if (!keptFirstCol || !pool.length) return pool[0] || null;
+      var anchor = keptFirstCol.querySelector('a[href]');
+      var want = pathKey(anchor && anchor.getAttribute('href'));
+      if (!want || want === '/') return pool[0] || null;
+      for (var i = 0; i < pool.length; i++) {
+        if (pathKey(entryLink(pool[i])) === want) return pool[i];
+      }
+      return pool[0] || null;
+    }
+
     function appendNext() {
       var slice = pool.slice(shown, shown + PAGE_SIZE);
+      var matched = null;
+      var matchedId = '';
+      if (shown === 0 && (keptFirstCol || keptLcpImg)) {
+        matched = findEntryForKeptCard();
+        matchedId = (matched && matched.id && matched.id.$t) || '';
+        syncKeptFirstCard(matched);
+      }
       slice.forEach(function(entry, i){
         var index = shown + i;
-        if (index === 0 && (keptFirstCol || keptLcpImg)) {
-          syncKeptFirstCard(entry);
-          return;
-        }
-        row.appendChild(cardFromEntry(entry, index));
+        var id = (entry && entry.id && entry.id.$t) || '';
+        if (matchedId && id && id === matchedId) return;
+        if (index === 0 && matched && !matchedId) return;
+        row.appendChild(cardFromEntry(entry, index === 0 && matched ? 1 : index));
       });
       shown += slice.length;
       polishHomepageCards(row);
