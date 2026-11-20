@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.69/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.70/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -2618,16 +2618,69 @@
     return path === '/' || path === '';
   }
 
+  var __qcxCardRevealObs = null;
+
+  function ensureHomepageCardReveal(root) {
+    try {
+      if (document.documentElement.getAttribute('data-page-item') === 'single') return;
+      var pageType = document.documentElement.getAttribute('data-page-type') || '';
+      if (pageType === 'post' || pageType === 'page') return;
+      var scope = root || document;
+      var cards = scope.querySelectorAll(
+        '.qcx-rescue-blog .all_posts .card, .all_posts .card, [data-page-item="multiple"] .card'
+      );
+      if (!cards.length) return;
+
+      var reduce = false;
+      try {
+        reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+      } catch (ignoreMq) {}
+
+      if (reduce) {
+        Array.prototype.forEach.call(cards, function(card){
+          card.classList.add('qcx-reveal', 'is-in');
+        });
+        return;
+      }
+
+      if (!__qcxCardRevealObs && typeof IntersectionObserver === 'function') {
+        __qcxCardRevealObs = new IntersectionObserver(function(entries){
+          entries.forEach(function(entry){
+            if (!entry.isIntersecting) return;
+            var node = entry.target;
+            node.classList.add('is-in');
+            try { __qcxCardRevealObs.unobserve(node); } catch (ignoreUn) {}
+          });
+        }, { root: null, rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
+      }
+
+      var vh = window.innerHeight || document.documentElement.clientHeight || 800;
+      Array.prototype.forEach.call(cards, function(card){
+        if (card.classList.contains('is-in')) return;
+        card.classList.add('qcx-reveal');
+        var rect = card.getBoundingClientRect();
+        var inFold = rect.top < vh * 0.92 && rect.bottom > 0;
+        if (inFold || !__qcxCardRevealObs) {
+          card.classList.add('is-in');
+        } else {
+          __qcxCardRevealObs.observe(card);
+        }
+      });
+    } catch (ignoreReveal) {}
+  }
+
   function polishHomepageCards(row) {
     cleanCardSnippets(row);
     stripDomPostTitles(row);
     ensureCardLabelsWithTutorial(row);
     ensureGsapCardLabels(row);
+    ensureHomepageCardReveal(row || document);
     window.setTimeout(function(){
       cleanCardSnippets(row);
       stripDomPostTitles(row);
       ensureCardLabelsWithTutorial(row);
       ensureGsapCardLabels(row);
+      ensureHomepageCardReveal(row || document);
       try {
         var cards = row.querySelectorAll('.card');
         cards.forEach(function(card){ card.style.minHeight = ''; card.style.height = ''; });
@@ -5512,6 +5565,7 @@
   ensureCardLabelMore(document);
   bindCardLabelMoreResize();
   ensureMacFrameDots(document);
+  ensureHomepageCardReveal(document);
   ensureAdminChrome();
   ensureSiteFooter();
   ensureSharpBrandAvatar();
@@ -5534,6 +5588,7 @@
       ensureCardLabelMore(document);
       bindCardLabelMoreResize();
       ensureMacFrameDots(document);
+      ensureHomepageCardReveal(document);
       ensureAdminChrome();
       ensureSiteFooter();
       ensureSharpBrandAvatar();
@@ -5562,8 +5617,12 @@
     ensureCardLabelsWithTutorial(document);
     ensureCardLabelMore(document);
     ensureMacFrameDots(document);
+    ensureHomepageCardReveal(document);
   }, 80);
-  window.setTimeout(function(){ ensureMacFrameDots(document); }, 400);
+  window.setTimeout(function(){
+    ensureMacFrameDots(document);
+    ensureHomepageCardReveal(document);
+  }, 400);
   window.setTimeout(function(){
     if (qcxNeedChromePolish() || !document.querySelector('.qcx-card-labels, .card-content a[rel=tag]')) {
       polishHeroBrand();
