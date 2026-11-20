@@ -468,7 +468,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.71/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.72/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -3993,8 +3993,8 @@
         'background:transparent!important;background-color:transparent!important;box-shadow:none!important;' +
         'color:#8a9690!important;opacity:1!important;cursor:pointer!important;' +
         'transition:opacity .15s,color .15s!important}' +
-      'h1.post-title .qcx-post-save-btn:hover,button.qcx-post-save-btn:hover{' +
-        'opacity:1!important;color:#34e6a0!important;background:transparent!important;background-color:transparent!important}' +
+      'h1.post-title .qcx-post-save-btn:hover:not(.is-saved),button.qcx-post-save-btn:hover:not(.is-saved){' +
+        'opacity:1!important;color:#b0bbb4!important;background:transparent!important;background-color:transparent!important}' +
       'h1.post-title .qcx-post-save-btn.is-saved,button.qcx-post-save-btn.is-saved{' +
         'opacity:1!important;color:#34e6a0!important;background:transparent!important;background-color:transparent!important}' +
       'h1.post-title .qcx-post-save-btn.is-saved:hover,button.qcx-post-save-btn.is-saved:hover{' +
@@ -4449,14 +4449,27 @@
             return list;
           });
         }
-        function apiUnsavePost(id) {
+        function apiUnsavePost(idOrMeta) {
           var ent = readEnt();
           var email = ent && ent.user && ent.user.email;
-          if (!email || !ent.sessionToken || !id) return Promise.reject(new Error('NO_AUTH'));
+          var id = '';
+          var postUrl = '';
+          if (idOrMeta && typeof idOrMeta === 'object') {
+            id = String(idOrMeta.id || '').trim();
+            postUrl = String(idOrMeta.url || '').trim();
+          } else {
+            id = String(idOrMeta || '').trim();
+          }
+          if (!email || !ent.sessionToken || (!id && !postUrl)) {
+            return Promise.reject(new Error('NO_AUTH'));
+          }
+          var body = {};
+          if (id) body.id = id;
+          if (postUrl) body.url = postUrl;
           return fetch(API_BASE + '/api/auth/saved-posts', {
             method: 'DELETE',
             headers: authHeaders(),
-            body: JSON.stringify({ id: id })
+            body: JSON.stringify(body)
           }).then(function (r) { return r.json(); }).then(function (res) {
             if (!(res && res.ok)) throw new Error((res && res.error) || 'UNSAVE_FAIL');
             var list = res.savedPosts || [];
@@ -4523,8 +4536,8 @@
           if (!btn.querySelector('.qcx-post-save-ico, svg')) {
             btn.innerHTML = postSaveIconHtml();
           }
-          btn.title = saved ? 'Đã lưu' : 'Lưu bài';
-          btn.setAttribute('aria-label', saved ? 'Đã lưu' : 'Lưu bài');
+          btn.title = saved ? 'Bỏ lưu' : 'Lưu bài';
+          btn.setAttribute('aria-label', saved ? 'Bỏ lưu' : 'Lưu bài');
         }
         function bindPostSaveClick(btn) {
           if (!btn || btn.getAttribute('data-qcx-save-bound') === '1') return;
@@ -4541,15 +4554,21 @@
             }
             var email = ent.user.email;
             var list = readSavedPostsCache(email);
-            var already = list.some(function (p) { return isSameSavedPost(p, meta); });
+            var hit = null;
+            for (var i = 0; i < list.length; i++) {
+              if (isSameSavedPost(list[i], meta)) { hit = list[i]; break; }
+            }
             /* Optimistic UI: flip color immediately, rollback on API fail. */
             var nextList;
-            if (already) {
+            if (hit) {
               nextList = list.filter(function (p) { return !isSameSavedPost(p, meta); });
               writeSavedPostsCache(email, nextList);
               paintPostSaveButton(btn, false);
               syncSavedCountBadge(nextList);
-              apiUnsavePost(meta.id).catch(function () {
+              apiUnsavePost({
+                id: String((hit && hit.id) || meta.id || '').trim(),
+                url: String((hit && hit.url) || meta.url || '').trim()
+              }).catch(function () {
                 writeSavedPostsCache(email, list);
                 paintPostSaveButton(btn, true);
                 syncSavedCountBadge(list);
