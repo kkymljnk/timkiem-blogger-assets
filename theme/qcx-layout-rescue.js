@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.56/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.57/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -676,10 +676,19 @@
       'html[data-page-type="index"] .nav-pagination:not(.qcx-home-pager):not(.qcx-rescue-pager){' +
       'display:none!important}' +
 
-      '.all_posts .qcx-card-labels a:nth-child(n+4),' +
-      '[data-page-item=\"multiple\"] .qcx-card-labels a:nth-child(n+4){display:none!important}' +
-      '.all_posts .qcx-card-labels a:nth-child(-n+3),' +
-      '[data-page-item=\"multiple\"] .qcx-card-labels a:nth-child(-n+3){display:inline-flex!important}' +
+      '.all_posts .qcx-card-labels > a:nth-of-type(n+4),' +
+      '[data-page-item=\"multiple\"] .qcx-card-labels > a:nth-of-type(n+4){display:none!important}' +
+      '.all_posts .qcx-card-labels > a:nth-of-type(-n+3),' +
+      '[data-page-item=\"multiple\"] .qcx-card-labels > a:nth-of-type(-n+3){display:inline-flex!important}' +
+      '.all_posts .qcx-card-labels .qcx-label-more:not([hidden]),' +
+      '[data-page-item=\"multiple\"] .qcx-card-labels .qcx-label-more:not([hidden]){' +
+      'display:inline-flex!important;align-items:center;justify-content:center;' +
+      'min-width:1.6em;padding:.22em .55em;border-radius:999px;' +
+      'font:700 10px/1.2 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;' +
+      'letter-spacing:.02em;color:rgba(232,239,233,.88);' +
+      'background:rgba(8,14,10,.72);border:1px solid rgba(255,255,255,.14);' +
+      'backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}' +
+
       '.nav-pagination .blog-pager>a,.nav-pagination .blog-pager>button,' +
       '.blog-pager .older-link,.blog-pager .newer-link,' +
       '.qcx-pager .theme-button,.qcx-pager button.theme-button,' +
@@ -2108,12 +2117,12 @@
       }
       others.push(name);
     });
-    /* Compact: ≤2 topic chips + optional FREE/VIP + Tutorial (CSS caps at 3 visible). */
-    var out = others.slice(0, 2);
-    if (mode && out.length < 2) out.unshift(mode);
-    else if (mode && out.length >= 2) out = [mode].concat(out.slice(0, 1));
+    /* Full list for +N; CSS caps visible chips at 3 (mode → topics → Tutorial). */
+    var out = [];
+    if (mode) out.push(mode);
+    others.forEach(function(name){ out.push(name); });
     if (hasTutorial) out.push('Tutorial');
-    return out.slice(0, 3);
+    return out;
   }
 
   function ensureCardLabelsWithTutorial(root) {
@@ -2131,11 +2140,40 @@
           }
         });
         if (!tutorial) return;
+        var more = wrap.querySelector('.qcx-label-more');
         wrap.innerHTML = '';
-        others.slice(0, 2).forEach(function(a){ wrap.appendChild(a); });
+        /* Keep full label list for +N; CSS still caps visible links at 3. */
+        others.forEach(function(a){ wrap.appendChild(a); });
         wrap.appendChild(tutorial);
+        if (more) wrap.appendChild(more);
       });
     } catch (err) {}
+  }
+
+  /* Homepage GSAP cards: show +N when more than 3 tag links remain after excludes. */
+  function ensureCardLabelMore(root) {
+    try {
+      (root || document).querySelectorAll('.card-header .qcx-card-labels, .all_posts .qcx-card-labels').forEach(function(wrap){
+        var links = Array.prototype.slice.call(wrap.querySelectorAll('a[rel="tag"], a[rel=tag], a'));
+        var n = links.length;
+        var more = wrap.querySelector('.qcx-label-more');
+        if (!more) {
+          more = document.createElement('span');
+          more.className = 'qcx-label-more';
+          more.setAttribute('aria-hidden', 'true');
+          wrap.appendChild(more);
+        }
+        if (n > 3) {
+          more.textContent = '+' + (n - 3);
+          more.removeAttribute('hidden');
+          more.setAttribute('aria-hidden', 'false');
+        } else {
+          more.textContent = '';
+          more.setAttribute('hidden', 'hidden');
+          more.setAttribute('aria-hidden', 'true');
+        }
+      });
+    } catch (errMore) {}
   }
 
   function cardFromEntry(entry, index) {
@@ -2162,7 +2200,10 @@
       '<article class="card">' +
       '<div class="card-header">' +
       '<a href="' + escapeHtml(href) + '" title="' + escapeHtml(fullTitle) + '">' + media + '</a>' +
-      (labelHtml ? '<div class="qcx-card-labels">' + labelHtml + '</div>' : '') +
+      (labelHtml
+        ? '<div class="qcx-card-labels">' + labelHtml +
+          '<span class="qcx-label-more" hidden="hidden" aria-hidden="true"></span></div>'
+        : '') +
       '</div>' +
       '<div class="card-content">' +
       '<h2 class="title"><a href="' + escapeHtml(href) + '" title="' + escapeHtml(fullTitle) + '">' + escapeHtml(title) + '</a></h2>' +
@@ -5041,6 +5082,7 @@
   hideDropsOnHome();
   polishHeroBrand();
   ensureCardLabelsWithTutorial(document);
+  ensureCardLabelMore(document);
   ensureAdminChrome();
   ensureSiteFooter();
   ensureSharpBrandAvatar();
@@ -5060,6 +5102,7 @@
       hideDropsOnHome();
       polishHeroBrand();
       ensureCardLabelsWithTutorial(document);
+      ensureCardLabelMore(document);
       ensureAdminChrome();
       ensureSiteFooter();
       ensureSharpBrandAvatar();
@@ -5083,11 +5126,18 @@
   }
   window.setTimeout(ensureGmailAuthEngine, 100);
   window.setTimeout(ensureGmailAuthEngine, 500);
-  window.setTimeout(function(){ polishHeroBrand(); ensureCardLabelsWithTutorial(document); }, 80);
+  window.setTimeout(function(){
+    polishHeroBrand();
+    ensureCardLabelsWithTutorial(document);
+    ensureCardLabelMore(document);
+  }, 80);
   window.setTimeout(function(){
     if (qcxNeedChromePolish() || !document.querySelector('.qcx-card-labels, .card-content a[rel=tag]')) {
       polishHeroBrand();
       ensureCardLabelsWithTutorial(document);
+      ensureCardLabelMore(document);
+    } else {
+      ensureCardLabelMore(document);
     }
   }, 400);
   qcxDeferredPolish(ensureSidebarRail, 80);

@@ -73,19 +73,21 @@
 .all_posts .card-header {
   position: relative !important;
 }
+/* GSAP-style chips: bottom-left on media, first strong / rest quieter, +N overflow */
 [data-page-item='multiple'] .card-header .qcx-card-labels,
 .qcx-rescue-blog .card-header .qcx-card-labels,
 .all_posts .card-header .qcx-card-labels,
 [data-page-item='multiple'] .qcx-card-labels {
   position: absolute !important;
-  top: 10px !important;
+  top: auto !important;
+  bottom: 10px !important;
   left: 10px !important;
   right: 10px !important;
   z-index: 6 !important;
   display: flex !important;
   flex-wrap: wrap !important;
   align-items: center !important;
-  gap: 5px !important;
+  gap: 6px !important;
   min-width: 0 !important;
   max-width: calc(100% - 20px) !important;
   margin: 0 !important;
@@ -95,44 +97,73 @@
 [data-page-item='multiple'] .card-header .qcx-card-labels a,
 .qcx-rescue-blog .card-header .qcx-card-labels a,
 .all_posts .card-header .qcx-card-labels a,
-[data-page-item='multiple'] .qcx-card-labels a {
+[data-page-item='multiple'] .qcx-card-labels a,
+[data-page-item='multiple'] .card-header .qcx-card-labels .qcx-label-more,
+.qcx-rescue-blog .card-header .qcx-card-labels .qcx-label-more,
+.all_posts .card-header .qcx-card-labels .qcx-label-more {
   pointer-events: auto !important;
   display: inline-flex !important;
   align-items: center !important;
+  justify-content: center !important;
   min-width: 0 !important;
-  max-width: 100px !important;
-  height: 20px !important;
-  padding: 0 7px !important;
+  max-width: 112px !important;
+  height: 22px !important;
+  padding: 0 10px !important;
   overflow: hidden !important;
-  border: 1px solid rgba(120,255,190,.2) !important;
-  border-radius: 6px !important;
-  background: rgba(4,12,8,.78) !important;
-  -webkit-backdrop-filter: none !important;
-  backdrop-filter: none !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: rgba(0,0,0,.55) !important;
+  -webkit-backdrop-filter: blur(6px) !important;
+  backdrop-filter: blur(6px) !important;
   box-shadow: none !important;
-  color: rgba(200,230,210,.92) !important;
-  font-family: 'Space Grotesk', Arial, sans-serif !important;
-  font-size: 10px !important;
+  color: #f4f4f4 !important;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif !important;
+  font-size: 11px !important;
   font-weight: 600 !important;
-  line-height: 18px !important;
-  letter-spacing: .02em !important;
+  line-height: 1 !important;
+  letter-spacing: .01em !important;
   text-decoration: none !important;
   text-overflow: ellipsis !important;
-  text-transform: uppercase !important;
+  text-transform: none !important;
   white-space: nowrap !important;
+}
+[data-page-item='multiple'] .card-header .qcx-card-labels a:first-of-type,
+.qcx-rescue-blog .card-header .qcx-card-labels a:first-of-type,
+.all_posts .card-header .qcx-card-labels a:first-of-type {
+  background: rgba(0,0,0,.72) !important;
+  color: #fff !important;
+}
+[data-page-item='multiple'] .card-header .qcx-card-labels a:not(:first-of-type),
+.qcx-rescue-blog .card-header .qcx-card-labels a:not(:first-of-type),
+.all_posts .card-header .qcx-card-labels a:not(:first-of-type) {
+  background: rgba(255,255,255,.16) !important;
+  color: rgba(245,245,245,.92) !important;
 }
 [data-page-item='multiple'] .card-header .qcx-card-labels a:hover,
 .qcx-rescue-blog .card-header .qcx-card-labels a:hover,
 .all_posts .card-header .qcx-card-labels a:hover,
 [data-page-item='multiple'] .qcx-card-labels a:hover {
-  border-color: rgba(90,255,190,.45) !important;
-  background: rgba(8,28,18,.9) !important;
-  color: #e7fff3 !important;
+  background: rgba(0,0,0,.82) !important;
+  color: #fff !important;
 }
-[data-page-item='multiple'] .card-header .qcx-card-labels a:nth-child(n+4),
-.qcx-rescue-blog .card-header .qcx-card-labels a:nth-child(n+4),
-.all_posts .card-header .qcx-card-labels a:nth-child(n+4),
-[data-page-item='multiple'] .qcx-card-labels a:nth-child(n+4) { display: none !important; }
+[data-page-item='multiple'] .card-header .qcx-card-labels .qcx-label-more,
+.qcx-rescue-blog .card-header .qcx-card-labels .qcx-label-more,
+.all_posts .card-header .qcx-card-labels .qcx-label-more {
+  pointer-events: none !important;
+  max-width: none !important;
+  background: rgba(255,255,255,.18) !important;
+  color: rgba(255,255,255,.95) !important;
+  font-variant-numeric: tabular-nums !important;
+}
+[data-page-item='multiple'] .card-header .qcx-card-labels .qcx-label-more[hidden],
+.qcx-rescue-blog .card-header .qcx-card-labels .qcx-label-more[hidden],
+.all_posts .card-header .qcx-card-labels .qcx-label-more[hidden] {
+  display: none !important;
+}
+[data-page-item='multiple'] .card-header .qcx-card-labels a:nth-of-type(n+4),
+.qcx-rescue-blog .card-header .qcx-card-labels a:nth-of-type(n+4),
+.all_posts .card-header .qcx-card-labels a:nth-of-type(n+4),
+[data-page-item='multiple'] .qcx-card-labels a:nth-of-type(n+4) { display: none !important; }
 [data-page-item='multiple'] .qcx-card-date {
   display: none !important;
 }
@@ -140,20 +171,21 @@
   [data-page-item='multiple'] .card-header .qcx-card-labels,
   .qcx-rescue-blog .card-header .qcx-card-labels,
   .all_posts .card-header .qcx-card-labels {
-    top: 8px !important;
+    bottom: 8px !important;
     left: 8px !important;
     right: 8px !important;
-    gap: 4px !important;
+    gap: 5px !important;
   }
   [data-page-item='multiple'] .card-header .qcx-card-labels a,
   .qcx-rescue-blog .card-header .qcx-card-labels a,
-  .all_posts .card-header .qcx-card-labels a {
-    height: 18px !important;
-    padding: 0 6px !important;
-    font-size: 9px !important;
-    line-height: 16px !important;
+  .all_posts .card-header .qcx-card-labels a,
+  [data-page-item='multiple'] .card-header .qcx-card-labels .qcx-label-more,
+  .qcx-rescue-blog .card-header .qcx-card-labels .qcx-label-more,
+  .all_posts .card-header .qcx-card-labels .qcx-label-more {
+    height: 20px !important;
+    padding: 0 8px !important;
+    font-size: 10px !important;
     max-width: 96px !important;
-    border-radius: 5px !important;
   }
 }
 [data-page-item='multiple'] .card-content .title {
