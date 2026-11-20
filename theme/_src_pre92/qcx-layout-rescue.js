@@ -24,7 +24,12 @@
         'html[data-page-type="homepage"] #Blog1.qcx-rescue-blog{' +
         'position:relative!important;left:auto!important;right:auto!important;top:auto!important;' +
         'z-index:auto!important;width:100%!important;margin:0 0 16px!important;' +
-        'min-height:0!important;pointer-events:auto!important}' +
+        'pointer-events:auto!important}' +
+        /* Reserve stacked-card height so cards 2–9 append below LCP without shifting chrome (CLS). */
+        'html[data-page-type="homepage"] #qcx-ssr-lcp-shell > .row,' +
+        'html[data-page-type="homepage"] #Blog1.qcx-rescue-blog > .row,' +
+        'html[data-page-type="homepage"] #Blog1 .all_posts > .row{' +
+        'min-height:min(78vh,980px)!important}' +
         'html[data-page-type="homepage"] .card-header,' +
         'html[data-page-type="homepage"] #qcx-ssr-lcp-shell .card-header{' +
         'position:relative;aspect-ratio:16/9;overflow:hidden;background:#0b1a12}' +
@@ -290,7 +295,7 @@
 
   function qcxCdnPin() {
     var m = String(QCX_CDN || '').match(/@(v\d[\w.-]+)\//);
-    return (m && m[1]) || 'v2026.11.19.104';
+    return (m && m[1]) || 'v2026.11.19.105';
   }
 
   /* Homepage cards: ~15–55KB WebP instead of 450–1000KB hero JPG (PSI image delivery). */
@@ -607,7 +612,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.104/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.105/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -2836,18 +2841,24 @@
 
   function prioritizeHomepageLcpImages(row) {
     try {
-      /* Shell must die before ranking — otherwise its eager img steals index 0 and demotes Blog1 LCP. */
+      /* Only hide leftover shells — absorbed SSR is already #Blog1.qcx-rescue-blog (LCP tree intact). */
       removeSsrLcpShell();
-      /* Always rank against the real homepage grid — never per-card (that made every img LCP/eager). */
+      /* Always rank against the real homepage grid — never per-card (that made every img LCP/eager).
+         #Blog1 may BE .all_posts (SSR absorb) OR wrap .all_posts (fresh rescue). */
       var scope = (row && row.querySelectorAll) ? row : document;
       var imgs = scope.querySelectorAll(
-        '#Blog1 .all_posts .card-header img.qcx-card-media, #Blog1 .all_posts .card-header img, #Blog1 .all_posts img.qcx-card-media, .widget.Blog.qcx-rescue-blog .all_posts .card-header img, .widget.Blog.qcx-rescue-blog .all_posts img.qcx-card-media'
+        '#Blog1 .card-header img.qcx-card-media, #Blog1 .card-header img, #Blog1 img.qcx-card-media,' +
+        '#Blog1 .all_posts .card-header img.qcx-card-media, #Blog1 .all_posts .card-header img,' +
+        '.widget.Blog.qcx-rescue-blog .card-header img.qcx-card-media, .widget.Blog.qcx-rescue-blog .card-header img,' +
+        '.widget.Blog.qcx-rescue-blog .all_posts .card-header img, .widget.Blog.qcx-rescue-blog .all_posts img.qcx-card-media'
       );
       if (!imgs.length) {
-        imgs = document.querySelectorAll('.all_posts:not(#qcx-ssr-lcp-shell) .card-header img.qcx-card-media, .all_posts:not(#qcx-ssr-lcp-shell) .card-header img, .all_posts:not(#qcx-ssr-lcp-shell) img.qcx-card-media');
+        imgs = document.querySelectorAll(
+          '.all_posts .card-header img.qcx-card-media, .all_posts .card-header img, .all_posts img.qcx-card-media'
+        );
       }
       Array.prototype.forEach.call(imgs, function(img, index){
-        if (img.closest && img.closest('#qcx-ssr-lcp-shell')) return;
+        /* Absorbed SSR keeps id Blog1 — do not skip its LCP img. */
         var dataSrc = img.getAttribute('data-src') || '';
         var srcAttr = img.getAttribute('src') || '';
         /* Rewrite legacy wsrv.nl / catbox full JPGs before ranking. */
@@ -3005,51 +3016,77 @@
   function renderHomepage(main, entries) {
     var PAGE_SIZE = QCX_HOME_PAGE_SIZE;
     ensureHero(main);
-    /* Reuse SSR LCP shell in-place as Blog1 — NEVER detach LCP <img> from the document
-       (detach→wipe→reinsert was the mobile LCP 3.0s / render-delay root cause). */
+    /* SSR absorb: rename id + append sibling cards only.
+       NEVER rebuild .all_posts/.row around the LCP <img> (that was LCP 3.6s + CLS 0.12). */
     var ssr = document.getElementById('qcx-ssr-lcp-shell');
-    var shell;
+    var existing = document.getElementById('Blog1');
+    var shell = null;
+    var row = null;
     var keptFirstCol = null;
     var keptLcpImg = null;
-    if (ssr) {
-      shell = ssr;
-      shell.id = 'Blog1';
-      /* No qcx-feed-in: animation both+opacity:0 delayed LCP on first card. */
-      shell.className = 'widget Blog qcx-rescue-blog';
+    var absorbed = false;
+
+    function adoptShell(node) {
+      if (!node) return false;
+      shell = node;
+      if (shell.id !== 'Blog1') shell.id = 'Blog1';
+      /* Keep .all_posts if present — only add rescue markers (no className wipe). */
+      shell.classList.add('widget', 'Blog', 'qcx-rescue-blog');
       shell.removeAttribute('data-qcx-ssr');
-      try {
-        var oldRow = shell.querySelector('.row');
-        keptFirstCol = oldRow && oldRow.querySelector(':scope > .col-md-4, :scope > div');
-        keptLcpImg = keptFirstCol && keptFirstCol.querySelector('img.qcx-card-lcp, .card-header img, img.qcx-card-media');
-        if (keptFirstCol) shell.appendChild(keptFirstCol); /* move within document — stays connected */
-        while (shell.firstChild && shell.firstChild !== keptFirstCol) {
-          shell.removeChild(shell.firstChild);
-        }
-      } catch (ignoreKeep) {
-        keptFirstCol = null;
-        keptLcpImg = null;
+      row = shell.querySelector(':scope > .row');
+      if (!row) {
+        var ap = shell.querySelector(':scope > .all_posts') || shell.querySelector('.all_posts');
+        row = ap ? (ap.querySelector(':scope > .row') || ap.querySelector('.row')) : null;
       }
-      try {
-        main.querySelectorAll('.widget.Blog, .qcx-rescue-blog').forEach(function(node){
-          if (node !== shell) try { node.remove(); } catch (ignoreOld) {}
-        });
-      } catch (ignoreClear) {}
-    } else {
+      if (!row) {
+        row = el('div', 'row');
+        shell.insertBefore(row, shell.firstChild);
+      }
+      keptFirstCol = row.querySelector(':scope > .col-md-4, :scope > div');
+      keptLcpImg = keptFirstCol && keptFirstCol.querySelector(
+        'img.qcx-card-lcp, .card-header img, img.qcx-card-media'
+      );
+      Array.prototype.slice.call(row.children).forEach(function(child){
+        if (child !== keptFirstCol) {
+          try { child.remove(); } catch (ignoreChild) {}
+        }
+      });
+      shell.querySelectorAll('.nav-pagination, .qcx-pager, .qcx-rescue-pager').forEach(function(p){
+        try { p.remove(); } catch (ignorePager) {}
+      });
+      document.querySelectorAll('#Blog1, .qcx-rescue-blog, #qcx-ssr-lcp-shell').forEach(function(node2){
+        if (node2 !== shell) {
+          try { node2.remove(); } catch (ignoreDup) {}
+        }
+      });
+      absorbed = true;
+      return true;
+    }
+
+    if (ssr) {
+      adoptShell(ssr);
+    } else if (existing && existing.classList && existing.classList.contains('qcx-rescue-blog')) {
+      adoptShell(existing);
+    }
+
+    if (!shell) {
       shell = el('div', 'widget Blog qcx-rescue-blog');
       shell.id = 'Blog1';
+      var allPosts = el('div', 'all_posts');
+      row = el('div', 'row');
+      allPosts.appendChild(row);
+      shell.appendChild(allPosts);
       main.appendChild(shell);
     }
-    var allPosts = el('div', 'all_posts');
-    var row = el('div', 'row');
-    if (keptFirstCol) row.appendChild(keptFirstCol); /* still in document */
+
+    var pagerHost = row.parentNode || shell;
     var pager = el('div', 'nav-pagination qcx-pager qcx-rescue-pager');
     pager.style.cssText = 'clear:both!important;float:none!important;width:100%!important;padding-top:40px!important;margin-bottom:40px!important;text-align:center!important;display:block!important;';
     var pagerInner = el('div', 'blog-pager');
     pager.appendChild(pagerInner);
-    allPosts.appendChild(row);
-    shell.insertBefore(allPosts, shell.firstChild);
-    shell.appendChild(pager);
-    if (!ssr && shell.parentNode !== main) main.appendChild(shell);
+    pagerHost.appendChild(pager);
+    if (!absorbed && shell.parentNode !== main) main.appendChild(shell);
+
     if (!entries.length) {
       if (!keptFirstCol) row.appendChild(el('p', 'qcx-rescue-status', 'Chưa có bài viết để hiển thị.'));
       pager.style.display = 'none';
@@ -3080,11 +3117,7 @@
           keptLcpImg.setAttribute('fetchpriority', 'high');
           try { keptLcpImg.fetchPriority = 'high'; } catch (ignoreFp) {}
           if (title) keptLcpImg.alt = title;
-          var thumb = entryThumb(entry);
-          /* Only swap src when feed already has our card WebP — keep preload hit. */
-          if (thumb && /\/images\/hero\/card\/[^/?#]+\.webp/i.test(thumb)) {
-            if (keptLcpImg.getAttribute('src') !== thumb) keptLcpImg.setAttribute('src', thumb);
-          }
+          /* Never swap LCP src on absorb — head preload + SSR bytes already won. */
         }
       } catch (ignoreSync) {}
       keptFirstCol = null;
@@ -3522,7 +3555,17 @@
   }
 
   function clearRescuePaint(main) {
-    main.querySelectorAll('.qcx-hero, .qcx-rule, .qcx-section-head, .qcx-rescue-blog, .qcx-rescue-status').forEach(function(node){ node.remove(); });
+    /* Keep homepage SSR/Blog1 shell for in-place reuse — wiping it reintroduced LCP delay + CLS. */
+    main.querySelectorAll('.qcx-hero, .qcx-rule, .qcx-section-head, .qcx-rescue-status').forEach(function(node){
+      try { node.remove(); } catch (ignoreRm) {}
+    });
+    var keep = document.getElementById('qcx-ssr-lcp-shell') ||
+      document.querySelector('#Blog1.qcx-rescue-blog, .qcx-rescue-blog');
+    main.querySelectorAll('.qcx-rescue-blog').forEach(function(node){
+      if (keep && node === keep) return;
+      if (node.id === 'Blog1' && node.querySelector && node.querySelector('img.qcx-card-lcp')) return;
+      try { node.remove(); } catch (ignoreRm2) {}
+    });
   }
 
   function clearReloadHide() {
