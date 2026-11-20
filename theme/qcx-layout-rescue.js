@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.36/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.38/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -3278,9 +3278,125 @@
     } catch (e) {}
   }
 
+  /* Admin path used to `return` early — that left theme-inline FAT menu
+     (18 Pro FX swatches) unopposed and broke Role FX / compose clicks.
+     Bind a slim override only; do not run full GSI engine on admin. */
+  function ensureAdminSlimUserDropdown() {
+    var cssId = 'qcx-admin-slim-ud-css';
+    if (!document.getElementById(cssId)) {
+      var st = document.createElement('style');
+      st.id = cssId;
+      st.textContent =
+        'html[data-qcx-admin="1"] #qcx-user-dropdown .qcx-ud-styles,' +
+        'html[data-qcx-admin="1"] #qcx-user-dropdown .qcx-ud-swatches,' +
+        'html[data-qcx-admin="1"] #qcx-user-dropdown [data-pick-style],' +
+        'html[data-qcx-admin="1"] #qcx-user-dropdown #qcx-ud-vip,' +
+        'html[data-qcx-admin="1"] #qcx-user-dropdown #qcx-ud-sync{display:none!important}' +
+        '#qcx-user-dropdown.qcx-ud-slim-admin{width:236px;max-width:calc(100vw - 16px);border-radius:10px;border:1px solid #24302a;background:#0e1612;color:#e6f5ec;box-shadow:0 12px 32px rgba(0,0,0,.65);padding:8px;font-family:var(--qcx-article-sans,system-ui,sans-serif)}' +
+        '#qcx-user-dropdown.qcx-ud-slim-admin .qcx-ud-btn{width:100%;text-align:left;padding:6px 7px;border-radius:6px;border:0;background:transparent;color:#c5d9cd;font:600 11.5px/1.25 var(--qcx-article-sans,system-ui,sans-serif);cursor:pointer;display:flex;align-items:center;gap:7px;text-decoration:none;box-sizing:border-box}' +
+        '#qcx-user-dropdown.qcx-ud-slim-admin .qcx-ud-btn:hover{background:rgba(255,255,255,.05);color:#fff}' +
+        '#qcx-user-dropdown.qcx-ud-slim-admin .qcx-ud-btn.is-danger{color:#d9928e}' +
+        '#qcx-user-dropdown.qcx-ud-slim-admin .qcx-ud-head{display:flex;align-items:center;gap:8px;padding:2px 2px 8px}' +
+        '#qcx-user-dropdown.qcx-ud-slim-admin .qcx-ud-head img{width:28px;height:28px;border-radius:50%;object-fit:cover;border:1px solid #3a4a42}' +
+        '#qcx-user-dropdown.qcx-ud-slim-admin .qcx-ud-name{margin:0;font:700 12.5px/1.2 sans-serif;color:#f4faf6}' +
+        '#qcx-user-dropdown.qcx-ud-slim-admin .qcx-ud-email{margin:0;font:500 10px/1.3 monospace;color:#6f8378}' +
+        '#qcx-user-dropdown.qcx-ud-slim-admin .qcx-ud-divider{height:1px;background:#1e2823;margin:0 2px 4px}' +
+        '#qcx-user-dropdown.qcx-ud-slim-admin .qcx-ud-status{display:none!important}';
+      (document.head || document.documentElement).appendChild(st);
+    }
+    if (window.__qcxSlimUserMenuBound) return;
+    window.__qcxSlimUserMenuBound = true;
+    function readAdminEntUser() {
+      var keys = ['qcx_payos_entitlement_v1', 'qcx_ent_v1', 'qcx_auth_ent'];
+      for (var i = 0; i < keys.length; i++) {
+        try {
+          var raw = localStorage.getItem(keys[i]);
+          if (!raw) continue;
+          var j = JSON.parse(raw);
+          var u = (j && j.user) || j;
+          if (u && u.email) return u;
+        } catch (e) {}
+      }
+      var chip = document.querySelector('.qcx-user-chip:not([hidden])');
+      if (!chip) return null;
+      var nm = chip.querySelector('.qcx-user-name');
+      var av = chip.querySelector('.qcx-user-avatar');
+      return {
+        name: nm ? (nm.textContent || '').trim() : 'Admin',
+        email: (chip.getAttribute('data-email') || '').trim() || 'admin',
+        picture: av ? av.getAttribute('src') : '',
+        role: (chip.getAttribute('data-role') || 'admin').toLowerCase()
+      };
+    }
+    function openAdminSlimDropdown(anchorBtn) {
+      var dd = document.getElementById('qcx-user-dropdown');
+      if (!dd) {
+        dd = document.createElement('div');
+        dd.id = 'qcx-user-dropdown';
+        document.body.appendChild(dd);
+        document.addEventListener('click', function (ev) {
+          if (!dd.classList.contains('is-open')) return;
+          if (dd.contains(ev.target) || (ev.target.closest && ev.target.closest('.qcx-user-chip'))) return;
+          dd.classList.remove('is-open');
+        });
+      }
+      if (dd.classList.contains('is-open')) {
+        dd.classList.remove('is-open');
+        return;
+      }
+      var u = readAdminEntUser();
+      if (!u) return;
+      var role = String(u.role || 'admin').toLowerCase();
+      var avUrl = u.picture || '';
+      var ICO_OUT = '<svg class="qcx-ud-ico" viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 2.5H3.5v11H6M10.5 5l3 3-3 3M13.5 8H6.5"/></svg>';
+      var ICO_FX = '<svg class="qcx-ud-ico" viewBox="0 0 16 16" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M9.6 1L2.6 9.2h4.4L6.2 15l7.2-8.2H9L9.6 1z"/></svg>';
+      dd.className = 'qcx-ud-slim-admin is-open';
+      dd.setAttribute('data-role', role);
+      dd.innerHTML =
+        '<div class="qcx-ud-head"><img src="' + String(avUrl).replace(/"/g, '') + '" alt=""/>' +
+          '<div><p class="qcx-ud-name">' + String(u.name || u.email).replace(/</g, '&lt;') + '</p>' +
+          '<p class="qcx-ud-email">' + String(u.email || '').replace(/</g, '&lt;') + '</p></div></div>' +
+        '<div class="qcx-ud-divider"></div>' +
+        '<a class="qcx-ud-btn" href="/p/admin.html#role-fx">' + ICO_FX + '<span>Quản lý Style Role (tab Role FX)</span></a>' +
+        '<button type="button" class="qcx-ud-btn is-danger" id="qcx-ud-logout">' + ICO_OUT + '<span>Đăng xuất</span></button>';
+      var rect = anchorBtn.getBoundingClientRect();
+      dd.style.position = 'fixed';
+      dd.style.zIndex = '999998';
+      dd.style.top = Math.min(window.innerHeight - 160, Math.max(8, rect.bottom + 6)) + 'px';
+      dd.style.left = Math.min(window.innerWidth - 252, Math.max(8, rect.right - 236)) + 'px';
+      dd.style.display = 'block';
+      var logoutBtn = document.getElementById('qcx-ud-logout');
+      if (logoutBtn) {
+        logoutBtn.onclick = function () {
+          dd.classList.remove('is-open');
+          dd.style.display = 'none';
+          try {
+            ['qcx_payos_entitlement_v1', 'qcx_ent_v1', 'qcx_auth_ent'].forEach(function (k) {
+              localStorage.removeItem(k);
+            });
+          } catch (e) {}
+          location.reload();
+        };
+      }
+    }
+    document.addEventListener('click', function (ev) {
+      var t = ev.target;
+      var chip = t && t.closest ? t.closest('.qcx-user-chip') : null;
+      if (!chip || chip.hidden || chip.getAttribute('hidden') != null) return;
+      if (ev.target.closest && ev.target.closest('#qcx-user-dropdown')) return;
+      ev.preventDefault();
+      ev.stopPropagation();
+      if (ev.stopImmediatePropagation) ev.stopImmediatePropagation();
+      openAdminSlimDropdown(chip);
+    }, true);
+  }
+
   function ensureGmailAuthEngine() {
     healLiveUtf8Mojibake();
-    if (isAdminPath()) return;
+    if (isAdminPath()) {
+      ensureAdminSlimUserDropdown();
+      return;
+    }
     var cssId = 'qcx-gmail-auth-css';
     var st = document.getElementById(cssId);
     if (!st) {
