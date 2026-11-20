@@ -468,7 +468,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.72/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.73/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -3993,18 +3993,23 @@
         'background:transparent!important;background-color:transparent!important;box-shadow:none!important;' +
         'color:#8a9690!important;opacity:1!important;cursor:pointer!important;' +
         'transition:opacity .15s,color .15s!important}' +
-      'h1.post-title .qcx-post-save-btn:hover:not(.is-saved),button.qcx-post-save-btn:hover:not(.is-saved){' +
+      'h1.post-title .qcx-post-save-btn:hover:not(.is-saved),button.qcx-post-save-btn:hover:not(.is-saved),' +
+      '.post-header h1.post-title #qcx-post-save-btn:hover:not(.is-saved),#qcx-post-save-btn:hover:not(.is-saved){' +
         'opacity:1!important;color:#b0bbb4!important;background:transparent!important;background-color:transparent!important}' +
-      'h1.post-title .qcx-post-save-btn.is-saved,button.qcx-post-save-btn.is-saved{' +
+      'h1.post-title .qcx-post-save-btn.is-saved,button.qcx-post-save-btn.is-saved,' +
+      '.post-header h1.post-title #qcx-post-save-btn.is-saved,#qcx-post-save-btn.is-saved{' +
         'opacity:1!important;color:#34e6a0!important;background:transparent!important;background-color:transparent!important}' +
-      'h1.post-title .qcx-post-save-btn.is-saved:hover,button.qcx-post-save-btn.is-saved:hover{' +
+      'h1.post-title .qcx-post-save-btn.is-saved:hover,button.qcx-post-save-btn.is-saved:hover,' +
+      '.post-header h1.post-title #qcx-post-save-btn.is-saved:hover,#qcx-post-save-btn.is-saved:hover{' +
         'color:#7dcea0!important}' +
-      'h1.post-title .qcx-post-save-btn svg,h1.post-title .qcx-post-save-ico,button.qcx-post-save-btn svg{' +
+      'h1.post-title .qcx-post-save-btn svg,h1.post-title .qcx-post-save-ico,button.qcx-post-save-btn svg,' +
+      '#qcx-post-save-btn svg,#qcx-post-save-btn .qcx-post-save-ico{' +
         'width:1em!important;height:1em!important;min-width:1em!important;min-height:1em!important;' +
         'max-width:1em!important;max-height:1em!important;display:block!important;margin:0!important;padding:0!important;' +
         'flex:0 0 auto!important;stroke:currentColor!important;fill:none!important}' +
       'h1.post-title .qcx-post-save-btn.is-saved svg,h1.post-title .qcx-post-save-btn.is-saved .qcx-post-save-ico,' +
-      'button.qcx-post-save-btn.is-saved svg,button.qcx-post-save-btn.is-saved .qcx-post-save-ico{' +
+      'button.qcx-post-save-btn.is-saved svg,button.qcx-post-save-btn.is-saved .qcx-post-save-ico,' +
+      '#qcx-post-save-btn.is-saved svg,#qcx-post-save-btn.is-saved .qcx-post-save-ico{' +
         'fill:currentColor!important;stroke:currentColor!important}' +
       'h1.post-title .qcx-post-save-label,button.qcx-post-save-btn .qcx-post-save-label{' +
         'display:none!important;visibility:hidden!important;width:0!important;height:0!important;' +
