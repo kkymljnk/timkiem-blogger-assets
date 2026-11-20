@@ -231,7 +231,7 @@
 
   function qcxCdnPin() {
     var m = String(QCX_CDN || '').match(/@(v\d[\w.-]+)\//);
-    return (m && m[1]) || 'v2026.11.19.85';
+    return (m && m[1]) || 'v2026.11.19.86';
   }
 
   /* Homepage cards: ~15–55KB WebP instead of 450–1000KB hero JPG (PSI image delivery). */
@@ -538,7 +538,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.85/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.86/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -2914,8 +2914,26 @@
   function renderHomepage(main, entries) {
     var PAGE_SIZE = QCX_HOME_PAGE_SIZE;
     ensureHero(main);
-    var shell = el('div', 'widget Blog qcx-rescue-blog qcx-feed-in');
-    shell.id = 'Blog1';
+    /* Reuse SSR LCP shell in-place as Blog1 — avoids remove-above + paint-below CLS (~0.25). */
+    var ssr = document.getElementById('qcx-ssr-lcp-shell');
+    var shell;
+    if (ssr) {
+      shell = ssr;
+      shell.id = 'Blog1';
+      shell.className = 'widget Blog qcx-rescue-blog qcx-feed-in';
+      shell.removeAttribute('data-qcx-ssr');
+      while (shell.firstChild) shell.removeChild(shell.firstChild);
+      /* If shell lived outside #main, keep it there (same box) — do not move (move = CLS). */
+      try {
+        main.querySelectorAll('.widget.Blog, .qcx-rescue-blog').forEach(function(node){
+          if (node !== shell) try { node.remove(); } catch (ignoreOld) {}
+        });
+      } catch (ignoreClear) {}
+    } else {
+      shell = el('div', 'widget Blog qcx-rescue-blog qcx-feed-in');
+      shell.id = 'Blog1';
+      main.appendChild(shell);
+    }
     var allPosts = el('div', 'all_posts');
     var row = el('div', 'row');
     var pager = el('div', 'nav-pagination qcx-pager qcx-rescue-pager');
@@ -2925,7 +2943,7 @@
     allPosts.appendChild(row);
     shell.appendChild(allPosts);
     shell.appendChild(pager);
-    main.appendChild(shell);
+    if (!ssr && shell.parentNode !== main) main.appendChild(shell);
     if (!entries.length) {
       row.appendChild(el('p', 'qcx-rescue-status', 'Chưa có bài viết để hiển thị.'));
       pager.style.display = 'none';
@@ -2992,11 +3010,11 @@
 
   function removeSsrLcpShell() {
     try {
-      var shell = document.getElementById('qcx-ssr-lcp-shell');
-      if (shell && shell.parentNode) shell.parentNode.removeChild(shell);
-      /* Also drop any duplicate shells (theme + JS ensure). */
-      document.querySelectorAll('[id="qcx-ssr-lcp-shell"], .qcx-ssr-lcp-shell').forEach(function(node){
-        try { if (node && node.parentNode) node.parentNode.removeChild(node); } catch (ignoreDup) {}
+      /* Prefer in-place reuse via renderHomepage. Only drop leftovers that were NOT converted to Blog1. */
+      document.querySelectorAll('#qcx-ssr-lcp-shell, .qcx-ssr-lcp-shell').forEach(function(node){
+        if (!node || !node.parentNode) return;
+        if (node.id === 'Blog1' || (node.classList && node.classList.contains('qcx-rescue-blog'))) return;
+        try { node.parentNode.removeChild(node); } catch (ignoreDup) {}
       });
     } catch (ignoreShell) {}
   }
@@ -3352,8 +3370,9 @@
     clearRescuePaint(main);
     if (isSingle) renderSinglePost(main, result);
     else {
-      removeSsrLcpShell();
+      /* renderHomepage absorbs #qcx-ssr-lcp-shell in-place (CLS-safe). */
       renderHomepage(main, result || []);
+      removeSsrLcpShell();
       ensureSidebarSearch();
       hideSidebarOnFeed();
       ensureSidebarRail();
