@@ -231,7 +231,7 @@
 
   function qcxCdnPin() {
     var m = String(QCX_CDN || '').match(/@(v\d[\w.-]+)\//);
-    return (m && m[1]) || 'v2026.11.19.81';
+    return (m && m[1]) || 'v2026.11.19.82';
   }
 
   /* Homepage cards: ~15–55KB WebP instead of 450–1000KB hero JPG (PSI image delivery). */
@@ -244,10 +244,7 @@
       return 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@' +
         qcxCdnPin() + '/images/hero/card/' + hero[1] + '.webp';
     }
-    if (/files\.catbox\.moe|i\.imgur\.com|(?:^|\/\/)imgur\.com\//i.test(u)) {
-      return 'https://wsrv.nl/?url=' + encodeURIComponent(u.split('#')[0]) +
-        '&w=720&h=405&fit=cover&output=webp&q=70';
-    }
+    /* No third-party image proxy (wsrv) — broken loads tank Best Practices. */
     return '';
   }
 
@@ -366,7 +363,11 @@
         }
       }
     } catch (ignore) {}
-    /* Cards: prefer feed thumb (already sized) or compressed card WebP — never full hero JPG. */
+    /* Cards: card WebP from body hero, else Blogger feed thumb — never full-size catbox/jpg. */
+    if (bodyUrl && !bodyAnim) {
+      var bodyCard = toCardWebp(bodyUrl);
+      if (bodyCard) return { url: bodyCard, anim: false, source: 'body-webp' };
+    }
     try {
       if (entry.media$thumbnail && entry.media$thumbnail.url) {
         var feedUrl = entry.media$thumbnail.url;
@@ -381,10 +382,14 @@
       }
     } catch (ignore) {}
     if (bodyUrl && !bodyAnim) {
-      return { url: upgradeThumb(bodyUrl, { card: true }), anim: false, source: 'body' };
+      var bodyUp = upgradeThumb(bodyUrl, { card: true });
+      /* Skip huge remote hosts without a card WebP — feed already tried. */
+      if (bodyUp && !/files\.catbox\.moe|i\.imgur\.com/i.test(bodyUp)) {
+        return { url: bodyUp, anim: false, source: 'body' };
+      }
     }
-    if (bodyUrl) {
-      return { url: upgradeThumb(bodyUrl, { anim: bodyAnim, card: true }), anim: bodyAnim, source: bodyAnim ? 'body-gif' : 'body' };
+    if (bodyUrl && bodyAnim) {
+      return { url: upgradeThumb(bodyUrl, { anim: true, card: true }), anim: true, source: 'body-gif' };
     }
     return { url: '', anim: false, source: '' };
   }
@@ -527,7 +532,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.81/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.82/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
