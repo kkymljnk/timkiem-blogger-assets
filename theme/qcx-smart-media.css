@@ -841,6 +841,45 @@ body.qcx-panel-open { overflow: hidden !important; }
   background: #030704 !important;
 }
 .mac-frame-header { position: relative !important; }
+/* Force-visible mac traffic lights; hide frame title text */
+.mac-frame-header .mac-dots,
+.post-body .mac-frame-header .mac-dots {
+  display: flex !important;
+  align-items: center !important;
+  gap: 9px !important;
+  flex: 0 0 auto !important;
+  width: auto !important;
+  min-width: 54px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+.mac-frame-header .mac-dot,
+.post-body .mac-frame-header .mac-dot {
+  display: block !important;
+  width: 12px !important;
+  height: 12px !important;
+  min-width: 12px !important;
+  min-height: 12px !important;
+  border-radius: 50% !important;
+  flex: 0 0 auto !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.18) !important;
+}
+.mac-frame-header .mac-dot.mac-red,
+.post-body .mac-frame-header .mac-dot.mac-red { background: #ff5f56 !important; }
+.mac-frame-header .mac-dot.mac-yellow,
+.post-body .mac-frame-header .mac-dot.mac-yellow { background: #ffbd2e !important; }
+.mac-frame-header .mac-dot.mac-green,
+.post-body .mac-frame-header .mac-dot.mac-green { background: #27c93f !important; }
+.mac-frame-header .mac-title,
+.mac-frame-header .mac-spacer,
+.post-body .mac-frame-header .mac-title,
+.post-body .mac-frame-header .mac-spacer {
+  display: none !important;
+}
 .mac-frame-header .qcx-copy-btn {
   top: 50% !important;
   right: 14px !important;

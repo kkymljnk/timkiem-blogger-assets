@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.67/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.68/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -612,6 +612,40 @@
     ensureStylesheet('qcx-breakdev-fonts', QCX_FONTS_CSS);
   }
   window.__qcxEnsureBreakdevFonts = ensureBreakdevFonts;
+
+  /* Repair missing mac traffic lights on media frames (title stays hidden). */
+  function ensureMacFrameDots(root) {
+    try {
+      var scope = root || document;
+      scope.querySelectorAll('.mac-frame-header').forEach(function(header){
+        var dots = header.querySelector('.mac-dots');
+        if (!dots) {
+          dots = document.createElement('div');
+          dots.className = 'mac-dots';
+          header.insertBefore(dots, header.firstChild);
+        }
+        var need = [
+          { cls: 'mac-dot mac-red', color: '#ff5f56' },
+          { cls: 'mac-dot mac-yellow', color: '#ffbd2e' },
+          { cls: 'mac-dot mac-green', color: '#27c93f' }
+        ];
+        var existing = Array.prototype.slice.call(dots.querySelectorAll('.mac-dot'));
+        if (existing.length < 3) {
+          dots.innerHTML = '';
+          need.forEach(function(spec){
+            var span = document.createElement('span');
+            span.className = spec.cls;
+            span.style.background = spec.color;
+            dots.appendChild(span);
+          });
+        }
+        var title = header.querySelector('.mac-title');
+        if (title) title.style.setProperty('display', 'none', 'important');
+        var spacer = header.querySelector('.mac-spacer');
+        if (spacer) spacer.style.setProperty('display', 'none', 'important');
+      });
+    } catch (errDots) {}
+  }
 
   /* Blogger favicon.ico is empty — force brand default (same as apple-touch / schema logo). */
   function ensureDefaultFavicon() {
@@ -827,7 +861,20 @@
       'opacity:1!important;font-weight:700!important}' +
       'html[data-qcx-admin=\"1\"] .qcx-read-time{display:none!important}' +
       /* Hide code block title text — keep mac-dots + copy button only */
-      '.mac-title{display:none!important}' +
+      '.mac-title,.mac-spacer,.post-body .mac-frame-header .mac-title,.post-body .mac-frame-header .mac-spacer{display:none!important}' +
+      /* Force-visible mac traffic lights (red/yellow/green) */
+      '.mac-frame-header .mac-dots,.post-body .mac-frame-header .mac-dots{' +
+      'display:flex!important;align-items:center!important;gap:9px!important;' +
+      'flex:0 0 auto!important;width:auto!important;min-width:54px!important;' +
+      'margin:0!important;padding:0!important;opacity:1!important;visibility:visible!important}' +
+      '.mac-frame-header .mac-dot,.post-body .mac-frame-header .mac-dot{' +
+      'display:block!important;width:12px!important;height:12px!important;' +
+      'min-width:12px!important;min-height:12px!important;' +
+      'border-radius:50%!important;flex:0 0 auto!important;' +
+      'opacity:1!important;visibility:visible!important;box-shadow:0 0 0 1px rgba(0,0,0,.18)!important}' +
+      '.mac-frame-header .mac-dot.mac-red,.post-body .mac-frame-header .mac-dot.mac-red{background:#ff5f56!important}' +
+      '.mac-frame-header .mac-dot.mac-yellow,.post-body .mac-frame-header .mac-dot.mac-yellow{background:#ffbd2e!important}' +
+      '.mac-frame-header .mac-dot.mac-green,.post-body .mac-frame-header .mac-dot.mac-green{background:#27c93f!important}' +
       /* mac-frame-header: flex row, copy btn pushed to the right via margin-left:auto */
       '.mac-frame-header{display:flex!important;align-items:center!important;flex-wrap:nowrap!important}' +
       /* Copy btn in header: inline-flex, margin-left:auto pushes it right */
@@ -3882,6 +3929,9 @@
         'width:1em!important;height:1em!important;min-width:1em!important;min-height:1em!important;' +
         'max-width:1em!important;max-height:1em!important;display:block!important;margin:0!important;padding:0!important;' +
         'flex:0 0 auto!important;stroke:currentColor!important;fill:none!important}' +
+      'h1.post-title .qcx-post-save-btn.is-saved svg,h1.post-title .qcx-post-save-btn.is-saved .qcx-post-save-ico,' +
+      'button.qcx-post-save-btn.is-saved svg,button.qcx-post-save-btn.is-saved .qcx-post-save-ico{' +
+        'fill:currentColor!important;stroke:currentColor!important}' +
       'h1.post-title .qcx-post-save-label,button.qcx-post-save-btn .qcx-post-save-label{' +
         'display:none!important;visibility:hidden!important;width:0!important;height:0!important;' +
         'padding:0!important;margin:0!important;overflow:hidden!important;font-size:0!important}' +
@@ -4311,6 +4361,18 @@
         function postSaveIconHtml() {
           return '<svg class="qcx-post-save-ico" viewBox="0 0 16 16" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 2.5h8v11l-4-2.4L4 13.5v-11z"/></svg>';
         }
+        function paintPostSaveButton(btn, saved) {
+          if (!btn) return;
+          btn.classList.toggle('is-saved', !!saved);
+          btn.setAttribute('aria-pressed', saved ? 'true' : 'false');
+          var label = btn.querySelector('.qcx-post-save-label');
+          if (label) label.parentNode.removeChild(label);
+          if (!btn.querySelector('.qcx-post-save-ico, svg')) {
+            btn.innerHTML = postSaveIconHtml();
+          }
+          btn.title = saved ? 'Đã lưu' : 'Lưu bài';
+          btn.setAttribute('aria-label', saved ? 'Đã lưu' : 'Lưu bài');
+        }
         function bindPostSaveClick(btn) {
           if (!btn || btn.getAttribute('data-qcx-save-bound') === '1') return;
           btn.setAttribute('data-qcx-save-bound', '1');
@@ -4324,12 +4386,29 @@
               triggerGoogleSignIn();
               return;
             }
-            var list = readSavedPostsCache(ent.user.email);
+            var email = ent.user.email;
+            var list = readSavedPostsCache(email);
             var already = list.some(function (p) { return p && (String(p.id) === String(meta.id) || String(p.url) === String(meta.url)); });
+            /* Optimistic UI: flip color immediately, rollback on API fail. */
+            var nextList;
             if (already) {
-              apiUnsavePost(meta.id).catch(function () {});
+              nextList = list.filter(function (p) {
+                return !(p && (String(p.id) === String(meta.id) || String(p.url) === String(meta.url)));
+              });
+              writeSavedPostsCache(email, nextList);
+              paintPostSaveButton(btn, false);
+              apiUnsavePost(meta.id).catch(function () {
+                writeSavedPostsCache(email, list);
+                paintPostSaveButton(btn, true);
+              });
             } else {
-              apiSavePost(meta).catch(function () {});
+              nextList = [{ id: meta.id, url: meta.url, title: meta.title, thumb: meta.thumb || '' }].concat(list);
+              writeSavedPostsCache(email, nextList);
+              paintPostSaveButton(btn, true);
+              apiSavePost(meta).catch(function () {
+                writeSavedPostsCache(email, list);
+                paintPostSaveButton(btn, false);
+              });
             }
           });
         }
@@ -4341,16 +4420,7 @@
           var meta = getCurrentPostMeta();
           var list = readSavedPostsCache(email);
           var saved = list.some(function (p) { return p && (String(p.id) === String(meta.id) || String(p.url) === String(meta.url)); });
-          btn.classList.toggle('is-saved', !!saved);
-          btn.setAttribute('aria-pressed', saved ? 'true' : 'false');
-          /* Icon-only: strip any leftover label text from older builds */
-          var label = btn.querySelector('.qcx-post-save-label');
-          if (label) label.parentNode.removeChild(label);
-          if (!btn.querySelector('.qcx-post-save-ico, svg')) {
-            btn.innerHTML = postSaveIconHtml();
-          }
-          btn.title = saved ? 'Đã lưu' : 'Lưu bài';
-          btn.setAttribute('aria-label', saved ? 'Đã lưu' : 'Lưu bài');
+          paintPostSaveButton(btn, !!saved);
         }
         function ensurePostSaveButton() {
           if (!isItemPostPage()) return;
@@ -5357,6 +5427,7 @@
   ensureCardLabelsWithTutorial(document);
   ensureCardLabelMore(document);
   bindCardLabelMoreResize();
+  ensureMacFrameDots(document);
   ensureAdminChrome();
   ensureSiteFooter();
   ensureSharpBrandAvatar();
@@ -5378,6 +5449,7 @@
       ensureCardLabelsWithTutorial(document);
       ensureCardLabelMore(document);
       bindCardLabelMoreResize();
+      ensureMacFrameDots(document);
       ensureAdminChrome();
       ensureSiteFooter();
       ensureSharpBrandAvatar();
@@ -5405,7 +5477,9 @@
     polishHeroBrand();
     ensureCardLabelsWithTutorial(document);
     ensureCardLabelMore(document);
+    ensureMacFrameDots(document);
   }, 80);
+  window.setTimeout(function(){ ensureMacFrameDots(document); }, 400);
   window.setTimeout(function(){
     if (qcxNeedChromePolish() || !document.querySelector('.qcx-card-labels, .card-content a[rel=tag]')) {
       polishHeroBrand();
