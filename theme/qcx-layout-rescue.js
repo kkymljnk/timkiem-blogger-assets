@@ -2,43 +2,8 @@
   var already = document.documentElement.getAttribute('data-qcx-rescue') === 'true';
   document.documentElement.setAttribute('data-qcx-rescue', 'true');
 
-  /* PSI LCP: paint a real <img> as soon as this deferred file runs — do not wait for
-     feed JSON. Preload in <head> warms cache; without a DOM node LCP stays ~4s. */
-  (function paintEarlyLcpFromRescue() {
-    try {
-      var type = document.documentElement.getAttribute('data-page-type') || '';
-      var item = document.documentElement.getAttribute('data-page-item') || '';
-      if (type === 'post' || type === 'page' || item === 'single') return;
-      if (document.getElementById('qcx-ssr-lcp-shell') || document.getElementById('qcx-early-lcp-img')) return;
-      if (document.querySelector('#Blog1 img.qcx-card-media, .all_posts img.qcx-card-media')) return;
-      var pre = document.getElementById('qcx-lcp-preload');
-      var href = (pre && pre.href) || '';
-      if (!href || href.indexOf('data:') === 0) {
-        var pinMatch = (document.querySelector('script[src*="qcx-layout-rescue"]') || {}).src || '';
-        var pin = (pinMatch.match(/@(v20\d{2}\.\d+\.\d+\.\d+)/) || [])[1] || 'v2026.11.19.90';
-        href = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@' + pin + '/images/hero/card/vps-mien-phi-2026.webp';
-      }
-      var img = document.createElement('img');
-      img.id = 'qcx-early-lcp-img';
-      img.className = 'qcx-card-media qcx-card-lcp';
-      img.alt = '';
-      img.width = 720;
-      img.height = 405;
-      img.decoding = 'async';
-      img.loading = 'eager';
-      try { img.fetchPriority = 'high'; } catch (ignoreFp) {}
-      img.setAttribute('fetchpriority', 'high');
-      img.src = href;
-      /* Visible in-viewport node for LCP (opacity>0). Sit where first card will land. */
-      img.style.cssText =
-        'position:absolute;left:12px;right:12px;top:220px;width:auto;max-width:720px;height:auto;' +
-        'aspect-ratio:16/9;object-fit:cover;border-radius:14px;z-index:1;pointer-events:none;';
-      var host = document.querySelector('.main-wrapper') || document.getElementById('main') || document.body;
-      if (!host) return;
-      if (getComputedStyle(host).position === 'static') host.style.position = 'relative';
-      host.insertBefore(img, host.firstChild);
-    } catch (ignoreEarly) {}
-  })();
+  /* Early absolute LCP img removed — it caused CLS 0.93 when hero inserted above it.
+     SSR shell <img> + head preload are the only LCP path. */
 
   /* Reserve homepage feed height early so rescue paint does not score ~0.25 CLS. */
   (function reserveHomepageFeedHeight() {
@@ -275,7 +240,7 @@
 
   function qcxCdnPin() {
     var m = String(QCX_CDN || '').match(/@(v\d[\w.-]+)\//);
-    return (m && m[1]) || 'v2026.11.19.90';
+    return (m && m[1]) || 'v2026.11.19.91';
   }
 
   /* Homepage cards: ~15–55KB WebP instead of 450–1000KB hero JPG (PSI image delivery). */
@@ -499,6 +464,8 @@
     var container = (main && main.closest && main.closest('main.main-container')) ||
       document.querySelector('main.main-container');
     var wrap = document.querySelector('.main-wrapper');
+    /* Final slot already occupied (SSR) — insertBefore same place still moves layout = CLS. */
+    if (wrap && hero.nextElementSibling === wrap) return;
     if (container && wrap && wrap.parentNode === container) {
       container.insertBefore(hero, wrap);
       return;
@@ -514,6 +481,8 @@
     var cta = document.querySelector('.qcx-hero-cta');
     if (!cta) return;
     cta.classList.add('qcx-hero-cta--pro');
+    /* SSR hero already ships final CTA markup — skip stylesheet/HTML rewrite (CLS). */
+    if (cta.getAttribute('data-qcx-cta-pro') === '1') return;
 
     if (!document.getElementById('qcx-cta-pro-live')) {
       var st = document.createElement('style');
@@ -531,7 +500,6 @@
       (document.head || document.documentElement).appendChild(st);
     }
 
-    if (cta.getAttribute('data-qcx-cta-pro') === '1') return;
     cta.setAttribute('data-qcx-cta-pro', '1');
 
     var primary = cta.querySelector('a.qcx-cta-btn:not(.qcx-cta-outline)');
@@ -565,6 +533,13 @@
   function relocateHeroForDesktopRail() {
     var hero = document.querySelector('.qcx-hero');
     if (!hero) return;
+    var wrap = document.querySelector('.main-wrapper');
+    /* Already in final slot (SSR) — moving it after first paint = CLS ~0.93. */
+    if (wrap && hero.nextElementSibling === wrap) return;
+    if (wrap && hero.parentNode === wrap.parentNode && hero.compareDocumentPosition(wrap) & Node.DOCUMENT_POSITION_FOLLOWING) {
+      var prev = wrap.previousElementSibling;
+      if (prev === hero) return;
+    }
     placeHero(hero, document.querySelector('#main, .main'));
   }
 
@@ -582,7 +557,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.90/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.91/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -2958,16 +2933,20 @@
   function renderHomepage(main, entries) {
     var PAGE_SIZE = QCX_HOME_PAGE_SIZE;
     ensureHero(main);
-    /* Reuse SSR LCP shell in-place as Blog1 — avoids remove-above + paint-below CLS (~0.25). */
+    /* Reuse SSR LCP shell in-place as Blog1 — keep the same <img> node (LCP + CLS). */
     var ssr = document.getElementById('qcx-ssr-lcp-shell');
     var shell;
+    var keptLcpImg = null;
     if (ssr) {
       shell = ssr;
       shell.id = 'Blog1';
       shell.className = 'widget Blog qcx-rescue-blog qcx-feed-in';
       shell.removeAttribute('data-qcx-ssr');
+      try {
+        keptLcpImg = shell.querySelector('img.qcx-card-lcp, .card-header img, img.qcx-card-media');
+        if (keptLcpImg && keptLcpImg.parentNode) keptLcpImg.parentNode.removeChild(keptLcpImg);
+      } catch (ignoreKeep) { keptLcpImg = null; }
       while (shell.firstChild) shell.removeChild(shell.firstChild);
-      /* If shell lived outside #main, keep it there (same box) — do not move (move = CLS). */
       try {
         main.querySelectorAll('.widget.Blog, .qcx-rescue-blog').forEach(function(node){
           if (node !== shell) try { node.remove(); } catch (ignoreOld) {}
@@ -3002,7 +2981,25 @@
 
     function appendNext() {
       var slice = pool.slice(shown, shown + PAGE_SIZE);
-      slice.forEach(function(entry, i){ row.appendChild(cardFromEntry(entry, shown + i)); });
+      slice.forEach(function(entry, i){
+        var col = cardFromEntry(entry, shown + i);
+        if (shown + i === 0 && keptLcpImg) {
+          try {
+            var fresh = col.querySelector('img.qcx-card-media, .card-header img');
+            if (fresh && fresh.parentNode) {
+              keptLcpImg.className = fresh.className || keptLcpImg.className;
+              keptLcpImg.alt = fresh.alt || keptLcpImg.alt || '';
+              keptLcpImg.setAttribute('loading', 'eager');
+              keptLcpImg.setAttribute('fetchpriority', 'high');
+              try { keptLcpImg.fetchPriority = 'high'; } catch (ignoreFp2) {}
+              if (fresh.src && (!keptLcpImg.src || /data:/.test(keptLcpImg.src))) keptLcpImg.src = fresh.src;
+              fresh.parentNode.replaceChild(keptLcpImg, fresh);
+            }
+          } catch (ignoreSwap) {}
+          keptLcpImg = null;
+        }
+        row.appendChild(col);
+      });
       shown += slice.length;
       polishHomepageCards(row);
       return slice.length;
@@ -5854,7 +5851,7 @@
   ensureHeroPreviewClamp();
   ensureSidebarSearch();
   ensureSidebarRail();
-  relocateHeroForDesktopRail();
+  /* relocateHero deferred/boot removed — SSR hero before .main-wrapper is final. */
   hideDropsOnHome();
   polishHeroBrand();
   ensureCardLabelsWithTutorial(document);
@@ -5878,7 +5875,6 @@
       ensureHeroPreviewClamp();
       ensureSidebarSearch();
       ensureSidebarRail();
-      relocateHeroForDesktopRail();
       hideDropsOnHome();
       polishHeroBrand();
       ensureCardLabelsWithTutorial(document);
@@ -5932,8 +5928,7 @@
   }, 400);
   qcxDeferredPolish(ensureSidebarRail, 80);
   qcxDeferredPolish(ensureSidebarRail, 400);
-  qcxDeferredPolish(relocateHeroForDesktopRail, 60);
-  qcxDeferredPolish(relocateHeroForDesktopRail, 300);
+  /* Do not deferred-relocate hero — SSR slot is final; late move = CLS. */
   qcxDeferredPolish(hideDropsOnHome, 80);
   qcxDeferredPolish(hideDropsOnHome, 400);
   qcxDeferredPolish(ensureAdminChrome, 60);

@@ -562,23 +562,26 @@ body#layout .qcx-layout-brand span{display:block;color:rgba(230,245,236,.7);font
   <style id='qcx-critical-home'>
   html,body{background:#07140f;color:#e8efe9}
   .qcx-signal-header,.qcx-hero{visibility:visible}
+  .qcx-hero{min-height:168px}
+  #qcx-ssr-lcp-shell,.all_posts{min-height:200px}
   .all_posts .card-header{position:relative;aspect-ratio:16/9;background:#0b1a12;overflow:hidden}
   .all_posts img.qcx-card-media{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
   .all_posts img.qcx-card-media[loading=lazy]:not(.qcx-card-lcp){content-visibility:auto}
+  @media (max-width:860px){.qcx-hero{min-height:200px}#qcx-ssr-lcp-shell{min-height:180px}}
   </style>
   <!-- QCX CSS: all deferred (Blogger must not see noscript fallbacks — they unwrap to blocking). -->
-  <link id='qcx-polish' rel='stylesheet' href='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.90/theme/qcx-polish.css' media='print' onload='this.media=&apos;all&apos;'/>
-  <link id='qcx-smart-media' rel='stylesheet' href='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.90/theme/qcx-smart-media.css' media='print' onload='this.media=&apos;all&apos;'/>
-  <link id='qcx-atmosphere' rel='stylesheet' href='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.90/theme/qcx-atmosphere.css' media='print' onload='this.media=&apos;all&apos;'/>
+  <link id='qcx-polish' rel='stylesheet' href='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.91/theme/qcx-polish.css' media='print' onload='this.media=&apos;all&apos;'/>
+  <link id='qcx-smart-media' rel='stylesheet' href='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.91/theme/qcx-smart-media.css' media='print' onload='this.media=&apos;all&apos;'/>
+  <link id='qcx-atmosphere' rel='stylesheet' href='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.91/theme/qcx-atmosphere.css' media='print' onload='this.media=&apos;all&apos;'/>
   <b:if cond='data:view.isHomepage'>
     <!-- Static LCP discoverable in HTML (Blog1 may be empty / main.no-items). -->
-    <link id='qcx-lcp-preload' as='image' fetchpriority='high' href='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.90/images/hero/card/vps-mien-phi-2026.webp' rel='preload' type='image/webp'/>
+    <link id='qcx-lcp-preload' as='image' fetchpriority='high' href='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.91/images/hero/card/vps-mien-phi-2026.webp' rel='preload' type='image/webp'/>
     <link as='fetch' crossorigin='anonymous' href='/feeds/posts/default?alt=json&amp;max-results=9' rel='preload'/>
     <!-- Refine LCP preload from default feed (summary feed has no images). -->
     <script>
 /*<![CDATA[*/
 (function(){
-  var PIN = 'v2026.11.19.90';
+  var PIN = 'v2026.11.19.91';
   function toCard(u){
     var s = String(u || '');
     if (!s || s.indexOf('data:') === 0) return '';
@@ -615,26 +618,7 @@ body#layout .qcx-layout-brand span{display:block;color:rgba(230,245,236,.7);font
   }
   /* Seed known first-card WebP immediately; feed may refine. */
   inject('https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@' + PIN + '/images/hero/card/vps-mien-phi-2026.webp');
-  /* Paint a real LCP <img> ASAP if SSR shell is missing (Blogger may strip raw HTML). */
-  (function paintEarlyLcpImg(href){
-    try {
-      if (!href || document.getElementById('qcx-ssr-lcp-shell') || document.getElementById('qcx-early-lcp-img')) return;
-      var img = document.createElement('img');
-      img.id = 'qcx-early-lcp-img';
-      img.className = 'qcx-card-media qcx-card-lcp';
-      img.alt = '';
-      img.width = 720;
-      img.height = 405;
-      img.decoding = 'async';
-      img.loading = 'eager';
-      img.fetchPriority = 'high';
-      img.setAttribute('fetchpriority', 'high');
-      img.src = href;
-      img.style.cssText = 'position:absolute;left:0;top:0;width:min(100vw,720px);height:auto;aspect-ratio:16/9;opacity:0.01;pointer-events:none;z-index:0';
-      var host = document.getElementById('main') || document.body;
-      if (host) host.insertBefore(img, host.firstChild);
-    } catch (e) {}
-  })('https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@' + PIN + '/images/hero/card/vps-mien-phi-2026.webp');
+  /* Absolute early LCP img removed (CLS). SSR #qcx-ssr-lcp-shell + preload only. */
   fetch('/feeds/posts/default?alt=json&max-results=9', { credentials: 'same-origin' })
     .then(function(r){ return r.json(); })
     .then(function(data){
@@ -917,7 +901,7 @@ header .header{-webkit-box-flex:1;-ms-flex:1;flex:1;min-height:50px;height:100%;
 .processing,.success{position:relative}
 .processing:before,.processing:after,.success:before,.success:after{position:absolute;z-index:99;pointer-events:none}
 .processing:before{top:calc(50% - 15px);left:calc(50% - 15px);content:"";border:2px solid transparent;border-left:2px solid #fff;animation:spin .6s infinite linear;border-radius:50%;width:30px;height:30px}
-.success:before{content:url(https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.90/images/icon-check.png)}
+.success:before{content:url(https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.91/images/icon-check.png)}
 .processing:after,.success:after{margin-top:35px;color:#fff}
 .processing:after,.success:before,.success:after{top:50%;left:50%;transform:translate(-50%,-50%)}
 .processing:after{content:"&#272;ang g&#7917;i..."}.success:after{content:"&#272;&#227; g&#7917;i th&#224;nh c&#244;ng!"}
@@ -7227,12 +7211,12 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
         <b:section class='qcx-brand-zone' id='brand' maxwidgets='5' name='Th&#432;&#417;ng hi&#7879;u MMO' showaddelement='true'>
           <b:widget id='HTML3' locked='false' title='Logo MMO' type='HTML' version='2' visible='true'>
             <b:widget-settings>
-              <b:widget-setting name='content'><![CDATA[<div class="qcx-layout-brand"><img alt="MMO" height="72" src="https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.90/theme/qcx-brand-mark.webp" width="72"/><div><strong>MMO</strong><span>MMO TEAM &#183; Layout &amp; branding</span></div></div>]]></b:widget-setting>
+              <b:widget-setting name='content'><![CDATA[<div class="qcx-layout-brand"><img alt="MMO" height="72" src="https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.91/theme/qcx-brand-mark.webp" width="72"/><div><strong>MMO</strong><span>MMO TEAM &#183; Layout &amp; branding</span></div></div>]]></b:widget-setting>
             </b:widget-settings>
             <b:includable id='main'>
   <b:attr name='class' value='widget qcx-brand-widget'/>
   <div class='qcx-layout-brand'>
-    <span class="qcx-avatar qcx-layout-avatar" aria-label="MMO" style="display:inline-block;position:relative;width:72px;height:72px"><img alt="MMO" class="qcx-brand-raster" decoding="async" loading="eager" height="72" src="https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.90/theme/qcx-brand-mark.webp" width="72"/><svg xmlns="http://www.w3.org/2000/svg" class="qcx-brand-mark qcx-brand-svg qcx-brand-eyes-only" viewBox="0 0 512 512" width="72" height="72" role="img" aria-hidden="true" tabindex="-1"><g class="qcx-ghost-eyes"><circle class="qcx-eye-socket" cx="230.6" cy="189.9" r="16.5" fill="#f2f2f2"/><circle class="qcx-eye qcx-eye-l" cx="230.6" cy="189.9" r="13.2" fill="#0a0a0a"/><circle class="qcx-eye-socket" cx="294.1" cy="183.5" r="16" fill="#f2f2f2"/><circle class="qcx-eye qcx-eye-r" cx="294.1" cy="183.5" r="12.8" fill="#0a0a0a"/></g></svg></span>
+    <span class="qcx-avatar qcx-layout-avatar" aria-label="MMO" style="display:inline-block;position:relative;width:72px;height:72px"><img alt="MMO" class="qcx-brand-raster" decoding="async" loading="eager" height="72" src="https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.91/theme/qcx-brand-mark.webp" width="72"/><svg xmlns="http://www.w3.org/2000/svg" class="qcx-brand-mark qcx-brand-svg qcx-brand-eyes-only" viewBox="0 0 512 512" width="72" height="72" role="img" aria-hidden="true" tabindex="-1"><g class="qcx-ghost-eyes"><circle class="qcx-eye-socket" cx="230.6" cy="189.9" r="16.5" fill="#f2f2f2"/><circle class="qcx-eye qcx-eye-l" cx="230.6" cy="189.9" r="13.2" fill="#0a0a0a"/><circle class="qcx-eye-socket" cx="294.1" cy="183.5" r="16" fill="#f2f2f2"/><circle class="qcx-eye qcx-eye-r" cx="294.1" cy="183.5" r="12.8" fill="#0a0a0a"/></g></svg></span>
     <div>
       <strong>MMO</strong>
       <span>MMO TEAM &#183; branding</span>
@@ -7373,8 +7357,28 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
 </b:includable>
         </b:widget>
       </b:section>
+      <!-- SSR hero in final slot (before .main-wrapper) — JS must not relocate (CLS). -->
+      <b:if cond='data:view.isHomepage'>
+<section class='qcx-hero' data-enter='hero'>
+  <div class='qcx-hero-inner'>
+    <h1 class='qcx-hero-title' data-enter='title'>MMO TEAM</h1>
+    <div class='qcx-hero-divider'/>
+    <p class='qcx-bio' data-enter='bio'>Kh&#225;m ph&#225; nh&#7919;ng gi&#7899;i h&#7841;n m&#7899;i c&#7911;a nhi&#7871;p &#7843;nh AI, ngh&#7879; thu&#7853;t k&#7875; chuy&#7879;n b&#7857;ng h&#236;nh &#7843;nh, c&#244;ng ngh&#7879;, th&#7911; thu&#7853;t Windows v&#224; s&#225;ng t&#7841;o m&#227; ngu&#7891;n m&#7903;.</p>
+    <div class='qcx-hero-cta qcx-hero-cta--pro' data-enter='cta' data-qcx-cta-pro='1'>
+      <a class='qcx-cta-btn' href='/search/label/AI'><span class='qcx-cta-label'>Kh&#225;m ph&#225; AI</span><span class='qcx-cta-ico' aria-hidden='true'><svg viewBox='0 0 24 24' fill='none'><path d='M5 12h12M13 6l6 6-6 6' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg></span></a>
+      <a class='qcx-cta-btn qcx-cta-outline' href='https://t.me/superkhung' rel='noopener noreferrer' target='_blank'><span class='qcx-cta-ico' aria-hidden='true'><svg viewBox='0 0 24 24' fill='currentColor'><path d='M21.8 4.2 2.9 11.5c-.9.35-.9 1.62.05 1.9l4.7 1.45 1.8 5.55c.28.87 1.4 1.1 2.02.42l2.55-2.8 4.85 3.55c.78.57 1.88.17 2.12-.78L22.9 5.3c.25-1-.75-1.8-1.7-1.4z'/></svg></span><span class='qcx-cta-label'>H&#7895; tr&#7907; Telegram</span></a>
+    </div>
+  </div>
+  <div class='qcx-avatar-wrap'>
+    <div class='qcx-avatar' aria-label='MMO'>
+      <img alt='MMO' class='qcx-brand-raster' decoding='async' loading='eager' height='64' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.91/theme/qcx-brand-mark.webp' width='64'/>
+      <svg xmlns="http://www.w3.org/2000/svg" class="qcx-brand-mark qcx-brand-svg qcx-brand-eyes-only" viewBox="0 0 512 512" width="300" height="300" role="img" aria-hidden="true"><g class="qcx-ghost-eyes"><circle class="qcx-eye-socket" cx="230.6" cy="189.9" r="16.5" fill="#f2f2f2"/><circle class="qcx-eye qcx-eye-l" cx="230.6" cy="189.9" r="13.2" fill="#0a0a0a"/><circle class="qcx-eye-socket" cx="294.1" cy="183.5" r="16" fill="#f2f2f2"/><circle class="qcx-eye qcx-eye-r" cx="294.1" cy="183.5" r="12.8" fill="#0a0a0a"/></g></svg>
+    </div>
+  </div>
+</section>
+      </b:if>
       <div class='main-wrapper'>
-        <!-- Homepage SSR LCP shell: paints first card image even when #main is no-items (Blog1 missing). Rescue removes it after feed paint. -->
+        <!-- Homepage SSR LCP shell: paints first card image even when #main is no-items (Blog1 missing). Rescue reuses same &lt;img&gt; node. -->
         <b:if cond='data:view.isHomepage'>
           <div class='all_posts' id='qcx-ssr-lcp-shell'>
             <div class='row'>
@@ -7382,7 +7386,7 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
                 <article class='card'>
                   <div class='card-header'>
                     <a href='https://www.mmo.team/2026/11/tong-hop-cac-goi-vps-mien-phi-tot-nhat.html' title='T&#7893;ng H&#7907;p C&#225;c G&#243;i VPS Mi&#7877;n Ph&#237; T&#7889;t Nh&#7845;t 2026'>
-                      <img alt='T&#7893;ng H&#7907;p C&#225;c G&#243;i VPS Mi&#7877;n Ph&#237; T&#7889;t Nh&#7845;t 2026' class='qcx-card-media qcx-card-lcp' decoding='async' fetchpriority='high' height='405' loading='eager' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.90/images/hero/card/vps-mien-phi-2026.webp' width='720'/>
+                      <img alt='T&#7893;ng H&#7907;p C&#225;c G&#243;i VPS Mi&#7877;n Ph&#237; T&#7889;t Nh&#7845;t 2026' class='qcx-card-media qcx-card-lcp' decoding='async' fetchpriority='high' height='405' loading='eager' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.91/images/hero/card/vps-mien-phi-2026.webp' width='720'/>
                     </a>
                   </div>
                   <div class='card-content'>
@@ -7490,26 +7494,7 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
 </b:includable>
             <b:includable id='breadcrumb' var='posts'>
   <b:if cond='data:view.isHomepage'>
-    
-<!-- MMO Hero (homepage) -->
-<section class='qcx-hero' data-enter='hero'>
-  <div class='qcx-hero-inner'>
-    <h1 class='qcx-hero-title' data-enter='title'>MMO TEAM</h1>
-    <div class='qcx-hero-divider'/>
-    <p class='qcx-bio' data-enter='bio'>Kh&#225;m ph&#225; nh&#7919;ng gi&#7899;i h&#7841;n m&#7899;i c&#7911;a nhi&#7871;p &#7843;nh AI, ngh&#7879; thu&#7853;t k&#7875; chuy&#7879;n b&#7857;ng h&#236;nh &#7843;nh, c&#244;ng ngh&#7879;, th&#7911; thu&#7853;t Windows v&#224; s&#225;ng t&#7841;o m&#227; ngu&#7891;n m&#7903;.</p>
-    <div class='qcx-hero-cta qcx-hero-cta--pro' data-enter='cta' data-qcx-cta-pro='1'>
-      <a class='qcx-cta-btn' href='/search/label/AI'><span class='qcx-cta-label'>Kh&#225;m ph&#225; AI</span><span class='qcx-cta-ico' aria-hidden='true'><svg viewBox='0 0 24 24' fill='none'><path d='M5 12h12M13 6l6 6-6 6' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg></span></a>
-      <a class='qcx-cta-btn qcx-cta-outline' href='https://t.me/superkhung' rel='noopener noreferrer' target='_blank'><span class='qcx-cta-ico' aria-hidden='true'><svg viewBox='0 0 24 24' fill='currentColor'><path d='M21.8 4.2 2.9 11.5c-.9.35-.9 1.62.05 1.9l4.7 1.45 1.8 5.55c.28.87 1.4 1.1 2.02.42l2.55-2.8 4.85 3.55c.78.57 1.88.17 2.12-.78L22.9 5.3c.25-1-.75-1.8-1.7-1.4z'/></svg></span><span class='qcx-cta-label'>H&#7895; tr&#7907; Telegram</span></a>
-    </div>
-  </div>
-  <div class='qcx-avatar-wrap'>
-    <div class='qcx-avatar' aria-label='MMO'>
-      <img alt='MMO' class='qcx-brand-raster' decoding='async' loading='eager' height='64' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.90/theme/qcx-brand-mark.webp' width='64'/>
-      <svg xmlns="http://www.w3.org/2000/svg" class="qcx-brand-mark qcx-brand-svg qcx-brand-eyes-only" viewBox="0 0 512 512" width="300" height="300" role="img" aria-hidden="true"><g class="qcx-ghost-eyes"><circle class="qcx-eye-socket" cx="230.6" cy="189.9" r="16.5" fill="#f2f2f2"/><circle class="qcx-eye qcx-eye-l" cx="230.6" cy="189.9" r="13.2" fill="#0a0a0a"/><circle class="qcx-eye-socket" cx="294.1" cy="183.5" r="16" fill="#f2f2f2"/><circle class="qcx-eye qcx-eye-r" cx="294.1" cy="183.5" r="12.8" fill="#0a0a0a"/></g></svg>
-    </div>
-  </div>
-</section>
-
+    <!-- Hero SSR lives before .main-wrapper (final slot). Keep Drops markers only. -->
 <div class='qcx-section-head'>
   <h2>Drops</h2>
 </div>
@@ -8532,7 +8517,8 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
 
 <!-- moved to CDN: qcx-reference-cards-footer -->
 <!-- moved to CDN: qcx-smart-media -->
-<!-- CSS links live in head (all-head); keep admin UI inline for F5 -->
+<!-- Admin cockpit CSS only on /p/admin (and layout mode) — ~15KB unused CSS off homepage PSI. -->
+<b:if cond='data:view.isLayoutMode or contains(data:blog.url, &quot;/p/admin&quot;)'>
 <style id='qcx-admin-ui' type='text/css'>
 /* qcx-admin-ui */
 /* MMO Admin — dense cockpit (PC + mobile) */
@@ -10025,6 +10011,7 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
     }
 
 </style>
+</b:if>
 <!-- moved to CDN: qcx-final-polish -->
 <!-- moved to CDN: qcx-carrd-polish -->
 <!-- moved to CDN: qcx-carrd-motion -->
@@ -10241,21 +10228,21 @@ if (document.readyState === 'loading') {
 window.addEventListener('load', qcxBootMacFrames, { once: true });
 //]]></script>
 
-<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.90/theme/qcx-menu-icons.js'></script>
-<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.90/theme/qcx-mobile-nav-runtime.js'></script>
+<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.91/theme/qcx-menu-icons.js'></script>
+<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.91/theme/qcx-mobile-nav-runtime.js'></script>
 
 
 <!-- moved to CDN: qcx-smart-runtime -->
 
-<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.90/theme/qcx-secure-resource.js'></script>
+<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.91/theme/qcx-secure-resource.js'></script>
 
 <!-- moved to CDN: qcx-terminal-lightbox -->
 
 <!-- Rescue: ne  u Layout ma  t Blog widget, tu   du  ng homepage/cards hoa  c single post tu   feed. -->
-<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.90/theme/qcx-runtime.js'></script>
-<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.90/theme/qcx-smart-runtime.js'></script>
+<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.91/theme/qcx-runtime.js'></script>
+<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.91/theme/qcx-smart-runtime.js'></script>
 <!-- secure-resource.js handles unlock flow -->
-<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.90/theme/qcx-layout-rescue.js'></script>
+<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.91/theme/qcx-layout-rescue.js'></script>
 <!-- moved to CDN: qcx-layout-rescue -->
 <script>//<![CDATA[
 (function(){
@@ -10437,7 +10424,7 @@ window.addEventListener('load', qcxBootMacFrames, { once: true });
     } catch (e) { return ''; }
   }
 
-  var CARD_PIN = 'v2026.11.19.90';
+  var CARD_PIN = 'v2026.11.19.91';
   function toCardWebp(u) {
     var s = String(u || '');
     if (!s || s.indexOf('data:image') !== -1) return '';
@@ -11027,7 +11014,7 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
           var nm=chip.querySelector('.qcx-user-name');
           var bg=chip.querySelector('.qcx-user-role-badge');
           if(av){
-            var ownerPic='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.90/images/avatars/kkymljnk-google.png';
+            var ownerPic='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.91/images/avatars/kkymljnk-google.png';
             var emLow=String(u.email||'').toLowerCase();
             av.src=(emLow==='kkymljnk@gmail.com'||emLow==='superkhung@gmail.com')?ownerPic:(u.picture||('https://ui-avatars.com/api/?name='+encodeURIComponent(u.name||u.email)+'&background=0d261a&color=34e6a0&bold=true&size=96'));
             av.alt=u.name||u.email;
@@ -11106,7 +11093,7 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
       var bgHex=role==='admin'?'2b0907':(role==='vip'?'261c05':(role==='pro'?'061d2b':'0d261a'));
       var fgHex=role==='admin'?'ff6b6b':(role==='vip'?'ffd166':(role==='pro'?'38bdf8':'34e6a0'));
       var fallbackAv='https://ui-avatars.com/api/?name='+encodeURIComponent(name)+'&background='+bgHex+'&color='+fgHex+'&bold=true&size=96';
-      var ownerAv='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.90/images/avatars/kkymljnk-google.png';
+      var ownerAv='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.91/images/avatars/kkymljnk-google.png';
       var pic=(email==='kkymljnk@gmail.com'||email==='superkhung@gmail.com')?ownerAv:(profile.picture||fallbackAv);
       var sess=(recoverRes && recoverRes.sessionToken)||cur.sessionToken||('qcx_gmail_'+encodeURIComponent(email));
       return {
@@ -11239,7 +11226,7 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
       var html='<div style="font-size:11.5px;color:#8fb6a1;margin-bottom:6px;font-weight:600">Ch\u1ecdn nhanh t\u00e0i kho\u1ea3n \u0111\u00e3 \u0111\u0103ng nh\u1eadp:</div>';
       for(var i=0;i<accs.length;i++){
         var a=accs[i];
-        var ownerPic2='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.90/images/avatars/kkymljnk-google.png';
+        var ownerPic2='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.91/images/avatars/kkymljnk-google.png';
         var aEm=String(a.email||'').toLowerCase();
         var av=(aEm==='kkymljnk@gmail.com'||aEm==='superkhung@gmail.com')?ownerPic2:(a.picture||('https://ui-avatars.com/api/?name='+encodeURIComponent(a.name||a.email)+'&background=0d261a&color=34e6a0&bold=true&size=96'));
         html+='<button type="button" class="qcx-ud-btn" data-qcx-pick-email="'+a.email+'" data-qcx-pick-name="'+(a.name||'')+'" style="border:1px solid rgba(52,230,160,0.25);background:rgba(52,230,160,0.06);margin-bottom:6px;padding:8px 10px;border-radius:10px">' +
@@ -11384,7 +11371,7 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
         var cnt=(u.items && u.items.length)||Object.keys(ent.unlockedItems||{}).length||1;
         statusText=ICO_GEM+'<span>Th\u00e0nh vi\u00ean PRO \u2014 S\u1edf h\u1eefu '+cnt+' b\u00e0i</span>';
       }
-      var ownerPic3='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.90/images/avatars/kkymljnk-google.png';
+      var ownerPic3='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.91/images/avatars/kkymljnk-google.png';
       var avUrl=(uEm==='kkymljnk@gmail.com'||uEm==='superkhung@gmail.com')?ownerPic3:(u.picture||('https://ui-avatars.com/api/?name='+encodeURIComponent(u.name||u.email)+'&background=0d261a&color=34e6a0&bold=true&size=96'));
       // Lean public menu: profile + status + logout. FX/VIP/sync/admin live on /p/admin.html
       dd.innerHTML=
