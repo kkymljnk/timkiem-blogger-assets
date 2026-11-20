@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.68/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.69/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -4065,6 +4065,8 @@
         var AVATAR_CACHE_KEY = 'qcx_google_avatar_cache_v1';
         var SAVED_POSTS_KEY = 'qcx_saved_posts_v1';
         var PENDING_SAVE_KEY = 'qcx_pending_save_post_v1';
+        var PENDING_SAVE_INTENT_KEY = 'qcx_pending_save_intent_v1';
+        var PENDING_SAVE_MAX_AGE_MS = 10 * 60 * 1000;
         // Fixed sole ADMIN — never expand from widget/KV/localStorage.
         var FIXED_ADMIN_EMAIL = 'kkymljnk@gmail.com';
         var DEFAULT_ADMIN_EMAILS = [FIXED_ADMIN_EMAIL];
@@ -4247,10 +4249,40 @@
             localStorage.setItem(SAVED_POSTS_KEY, JSON.stringify(all));
           } catch (e) {}
         }
+        function normalizePostUrl(url) {
+          var s = String(url || '').trim();
+          if (!s) return '';
+          try {
+            var u = new URL(s, location.origin);
+            return (u.origin + u.pathname).replace(/\/+$/, '') || u.origin;
+          } catch (e) {
+            return s.split('#')[0].split('?')[0].replace(/\/+$/, '');
+          }
+        }
+        function isSameSavedPost(a, b) {
+          if (!a || !b) return false;
+          var aid = String(a.id || '').trim();
+          var bid = String(b.id || '').trim();
+          if (aid && bid && aid === bid) return true;
+          var au = normalizePostUrl(a.url);
+          var bu = normalizePostUrl(b.url);
+          return !!(au && bu && au === bu);
+        }
+        function syncSavedCountBadge(list) {
+          try {
+            var n = Array.isArray(list) ? list.length : 0;
+            var countEl = document.getElementById('qcx-ud-saved-count');
+            if (!countEl) return;
+            countEl.textContent = String(n);
+            countEl.hidden = n < 1;
+          } catch (e) {}
+        }
         function getCurrentPostMeta() {
-          var url = String(location.href || '').split('#')[0].split('?')[0];
+          var url = normalizePostUrl(location.href || '');
           var titleEl = document.querySelector('h1.post-title, .post-header .post-title, .item-title');
           var title = titleEl ? String(titleEl.textContent || '').trim() : (document.title || '').trim();
+          /* Strip bookmark button text if nested in h1 */
+          title = title.replace(/\s*(Lưu bài|Đã lưu)\s*$/i, '').trim();
           var id = '';
           try {
             var ds = document.documentElement && document.documentElement.dataset;
@@ -4261,7 +4293,11 @@
             id = String((body && (body.getAttribute('data-post-id') || body.getAttribute('data-blog-post-id'))) || '').trim();
           }
           if (!id) {
-            try { id = new URL(url).pathname.replace(/\/+$/, '') || url; } catch (e2) { id = url; }
+            var art = document.querySelector('article[data-post-id], .post-item[data-post-id], #the-article[data-post-id]');
+            if (art) id = String(art.getAttribute('data-post-id') || '').trim();
+          }
+          if (!id) {
+            try { id = new URL(url || location.href).pathname.replace(/\/+$/, '') || url; } catch (e2) { id = url; }
           }
           var thumbEl = document.querySelector('.post-body img, .post-header img, meta[property="og:image"]');
           var thumb = '';
@@ -4297,13 +4333,23 @@
           return fetch(API_BASE + '/api/auth/saved-posts', { method: 'GET', headers: authHeaders() })
             .then(function (r) { return r.json(); })
             .then(function (res) {
+              var list;
               if (res && res.ok && Array.isArray(res.savedPosts)) {
-                writeSavedPostsCache(email, res.savedPosts);
-                return res.savedPosts;
+                list = res.savedPosts;
+                writeSavedPostsCache(email, list);
+              } else {
+                list = readSavedPostsCache(email);
               }
-              return readSavedPostsCache(email);
+              updatePostSaveButtonState();
+              syncSavedCountBadge(list);
+              return list;
             })
-            .catch(function () { return readSavedPostsCache(email); });
+            .catch(function () {
+              var list = readSavedPostsCache(email);
+              updatePostSaveButtonState();
+              syncSavedCountBadge(list);
+              return list;
+            });
         }
         function apiSavePost(meta) {
           var ent = readEnt();
@@ -4322,9 +4368,11 @@
             })
           }).then(function (r) { return r.json(); }).then(function (res) {
             if (!(res && res.ok)) throw new Error((res && res.error) || 'SAVE_FAIL');
-            writeSavedPostsCache(email, res.savedPosts || []);
+            var list = res.savedPosts || [];
+            writeSavedPostsCache(email, list);
             updatePostSaveButtonState();
-            return res.savedPosts || [];
+            syncSavedCountBadge(list);
+            return list;
           });
         }
         function apiUnsavePost(id) {
@@ -4337,26 +4385,57 @@
             body: JSON.stringify({ id: id })
           }).then(function (r) { return r.json(); }).then(function (res) {
             if (!(res && res.ok)) throw new Error((res && res.error) || 'UNSAVE_FAIL');
-            writeSavedPostsCache(email, res.savedPosts || []);
+            var list = res.savedPosts || [];
+            writeSavedPostsCache(email, list);
             updatePostSaveButtonState();
-            return res.savedPosts || [];
+            syncSavedCountBadge(list);
+            return list;
           });
         }
         function setPendingSave(meta) {
-          try { localStorage.setItem(PENDING_SAVE_KEY, JSON.stringify(meta || getCurrentPostMeta())); } catch (e) {}
+          try {
+            localStorage.setItem(PENDING_SAVE_KEY, JSON.stringify(meta || getCurrentPostMeta()));
+            localStorage.setItem(PENDING_SAVE_INTENT_KEY, String(Date.now()));
+          } catch (e) {}
+        }
+        function clearPendingSave() {
+          try {
+            localStorage.removeItem(PENDING_SAVE_KEY);
+            localStorage.removeItem(PENDING_SAVE_INTENT_KEY);
+          } catch (e) {}
         }
         function consumePendingSave() {
           try {
             var raw = localStorage.getItem(PENDING_SAVE_KEY);
+            clearPendingSave();
             if (!raw) return null;
-            localStorage.removeItem(PENDING_SAVE_KEY);
             return JSON.parse(raw);
-          } catch (e) { return null; }
+          } catch (e) {
+            clearPendingSave();
+            return null;
+          }
+        }
+        function hasFreshSaveIntent() {
+          try {
+            var raw = localStorage.getItem(PENDING_SAVE_INTENT_KEY);
+            if (!raw) return false;
+            var ts = parseInt(raw, 10);
+            if (!ts || isNaN(ts)) return false;
+            return (Date.now() - ts) <= PENDING_SAVE_MAX_AGE_MS;
+          } catch (e) { return false; }
         }
         function flushPendingSaveAfterLogin() {
+          /* Only flush when bookmark click set intent — never on casual login. */
+          if (!hasFreshSaveIntent()) {
+            clearPendingSave();
+            return;
+          }
           var pending = consumePendingSave();
           if (!pending || !pending.url) return;
-          apiSavePost(pending).catch(function () {});
+          apiSavePost(pending).then(function (list) {
+            updatePostSaveButtonState();
+            syncSavedCountBadge(list);
+          }).catch(function () {});
         }
         function postSaveIconHtml() {
           return '<svg class="qcx-post-save-ico" viewBox="0 0 16 16" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 2.5h8v11l-4-2.4L4 13.5v-11z"/></svg>';
@@ -4383,31 +4462,33 @@
             var meta = getCurrentPostMeta();
             if (!(ent && ent.user && ent.user.email && ent.sessionToken)) {
               setPendingSave(meta);
-              triggerGoogleSignIn();
+              triggerGoogleSignIn({ fromSave: true });
               return;
             }
             var email = ent.user.email;
             var list = readSavedPostsCache(email);
-            var already = list.some(function (p) { return p && (String(p.id) === String(meta.id) || String(p.url) === String(meta.url)); });
+            var already = list.some(function (p) { return isSameSavedPost(p, meta); });
             /* Optimistic UI: flip color immediately, rollback on API fail. */
             var nextList;
             if (already) {
-              nextList = list.filter(function (p) {
-                return !(p && (String(p.id) === String(meta.id) || String(p.url) === String(meta.url)));
-              });
+              nextList = list.filter(function (p) { return !isSameSavedPost(p, meta); });
               writeSavedPostsCache(email, nextList);
               paintPostSaveButton(btn, false);
+              syncSavedCountBadge(nextList);
               apiUnsavePost(meta.id).catch(function () {
                 writeSavedPostsCache(email, list);
                 paintPostSaveButton(btn, true);
+                syncSavedCountBadge(list);
               });
             } else {
               nextList = [{ id: meta.id, url: meta.url, title: meta.title, thumb: meta.thumb || '' }].concat(list);
               writeSavedPostsCache(email, nextList);
               paintPostSaveButton(btn, true);
+              syncSavedCountBadge(nextList);
               apiSavePost(meta).catch(function () {
                 writeSavedPostsCache(email, list);
                 paintPostSaveButton(btn, false);
+                syncSavedCountBadge(list);
               });
             }
           });
@@ -4419,8 +4500,9 @@
           var email = ent && ent.user && ent.user.email;
           var meta = getCurrentPostMeta();
           var list = readSavedPostsCache(email);
-          var saved = list.some(function (p) { return p && (String(p.id) === String(meta.id) || String(p.url) === String(meta.url)); });
+          var saved = list.some(function (p) { return isSameSavedPost(p, meta); });
           paintPostSaveButton(btn, !!saved);
+          syncSavedCountBadge(list);
         }
         function ensurePostSaveButton() {
           if (!isItemPostPage()) return;
@@ -5141,7 +5223,9 @@
           killAuthModal();
           startGoogleOAuthPopup(null);
         }
-        function triggerGoogleSignIn() {
+        function triggerGoogleSignIn(opts) {
+          /* Casual login (chip/menu) must not inherit a stale bookmark pending-save. */
+          if (!(opts && opts.fromSave)) clearPendingSave();
           killAuthModal();
           loadLocalAuthCfg();
           if (!googleClientId) googleClientId = DEFAULT_GOOGLE_CLIENT_ID;
