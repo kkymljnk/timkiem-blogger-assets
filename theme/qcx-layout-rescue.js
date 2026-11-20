@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.32/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.33/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -3361,7 +3361,8 @@
         'display:none!important;visibility:hidden!important;width:0!important;height:0!important;' +
         'padding:0!important;margin:0!important;overflow:hidden!important;font-size:0!important}' +
       '.qcx-mt-right{display:inline-flex!important;align-items:center!important;gap:10px!important}' +
-      '#qcx-google-auth-modal,#qcx-google-auth-modal.is-open{display:none!important;visibility:hidden!important;pointer-events:none!important}' +
+      '#qcx-google-auth-modal{position:fixed;inset:0;z-index:999999;display:none;align-items:center;justify-content:center;padding:16px;box-sizing:border-box;background:rgba(3,9,6,0.84);backdrop-filter:blur(8px)}' +
+      '#qcx-google-auth-modal.is-open{display:flex!important;visibility:visible!important;pointer-events:auto!important}' +
       '#qcx-saved-modal{position:fixed;inset:0;z-index:999999;display:none;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;background:rgba(6,10,8,0.72)}' +
       '#qcx-saved-modal.is-open{display:flex}' +
       '.qcx-saved-dialog{width:100%;max-width:380px;border-radius:14px;border:1px solid #2a3830;background:#141a16;color:#e6f5ec;padding:22px 22px 18px;box-shadow:0 18px 48px rgba(0,0,0,0.55);box-sizing:border-box;font-family:var(--qcx-article-sans,"IBM Plex Sans",system-ui,sans-serif);display:flex;flex-direction:column;gap:0}' +
