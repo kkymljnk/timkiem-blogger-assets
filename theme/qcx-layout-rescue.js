@@ -22,25 +22,13 @@
     } catch (ignoreReserve) {}
   })();
 
-  /* F5 homepage: hide Blog SSR immediately so stale cards never flash before rescue. */
-  (function hideSsrOnReload() {
+  /* F5: do NOT blank Blog SSR. Hiding cards caused empty dark-grid flash (chip only)
+     until deferred rescue finished. Keep SSR/shell visible; rescue replaces in place. */
+  (function clearStaleReloadHide() {
     try {
-      var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
-      var reload = (nav && nav.type === 'reload') ||
-        (typeof performance.navigation !== 'undefined' && performance.navigation.type === 1);
-      if (!reload) return;
-      var item = document.documentElement.getAttribute('data-page-item') || '';
-      var type = document.documentElement.getAttribute('data-page-type') || '';
-      if (item === 'single' || type === 'post' || type === 'page') return;
-      document.documentElement.setAttribute('data-qcx-reload', '1');
-      if (document.getElementById('qcx-reload-hide-ssr')) return;
-      var st = document.createElement('style');
-      st.id = 'qcx-reload-hide-ssr';
-      st.textContent =
-        'html[data-qcx-reload="1"] .widget.Blog:not(.qcx-rescue-blog):not(.qcx-rescue-skel){' +
-        'visibility:hidden!important;opacity:0!important;pointer-events:none!important;' +
-        'min-height:240px!important}';
-      (document.head || document.documentElement).appendChild(st);
+      document.documentElement.removeAttribute('data-qcx-reload');
+      var st = document.getElementById('qcx-reload-hide-ssr');
+      if (st && st.parentNode) st.parentNode.removeChild(st);
     } catch (e) {}
   })();
 
@@ -251,7 +239,7 @@
 
   function qcxCdnPin() {
     var m = String(QCX_CDN || '').match(/@(v\d[\w.-]+)\//);
-    return (m && m[1]) || 'v2026.11.19.88';
+    return (m && m[1]) || 'v2026.11.19.89';
   }
 
   /* Homepage cards: ~15–55KB WebP instead of 450–1000KB hero JPG (PSI image delivery). */
@@ -558,7 +546,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.88/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.89/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -3055,6 +3043,7 @@
     });
     if (!cols.length) return;
     removeSsrLcpShell();
+    clearReloadHide();
     native.setAttribute('data-qcx-home-more', '1');
     polishHomepageCards(row);
 
@@ -3197,13 +3186,7 @@
 
   function loadHomepageEntries() {
     var cacheKey = 'qcx:feed:summary:' + QCX_HOME_FEED_BATCH;
-    /* F5: never return stale summary — that re-paints after skeleton/native and flashes. */
-    if (isReloadNavigation()) {
-      try { sessionStorage.removeItem(cacheKey); } catch (e) {}
-    } else {
-      var cached = readFeedCache(cacheKey);
-      if (cached) return Promise.resolve(cached);
-    }
+    /* Always network; rescuePosts paints sessionStorage cache first for F5. */
     return fetchJson('/feeds/posts/summary?alt=json&max-results=' + QCX_HOME_FEED_BATCH).then(function(payload){
       var entries = (payload.feed && payload.feed.entry) || [];
       writeFeedCache(cacheKey, entries);
@@ -3476,17 +3459,16 @@
     var cacheKey = isSingle
       ? ((isStaticPage ? 'qcx:page:' : 'qcx:post:') + currentPath)
       : 'qcx:feed:summary:' + QCX_HOME_FEED_BATCH;
-    /* Reload: skip sessionStorage instant paint (F5 stale flash) on home + single. Soft navigate keeps cache. */
-    var skipInstantCache = isReloadNavigation();
-    if (skipInstantCache) {
-      try { sessionStorage.removeItem(cacheKey); } catch (e) {}
-    }
-    var cached = skipInstantCache ? null : readFeedCache(cacheKey);
+    /* F5: still use sessionStorage for instant paint (empty dark-grid flash is worse than
+       a one-frame stale feed). Soft navigate uses the same path. */
+    var cached = readFeedCache(cacheKey);
     var skel = null;
 
-    /* Cache hit → paint ngay (navigate only). Reload always skeleton → fresh feed. */
     if (cached) {
       paintRescue(main, isSingle, cached);
+    } else if (hasUsableNativeBlog() || document.getElementById('qcx-ssr-lcp-shell')) {
+      /* Keep SSR/shell on screen while feed loads — no blank skeleton wipe. */
+      clearReloadHide();
     } else {
       clearRescuePaint(main);
       skel = mountSkeleton(main, isSingle);
