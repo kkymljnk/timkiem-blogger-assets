@@ -231,7 +231,7 @@
 
   function qcxCdnPin() {
     var m = String(QCX_CDN || '').match(/@(v\d[\w.-]+)\//);
-    return (m && m[1]) || 'v2026.11.19.83';
+    return (m && m[1]) || 'v2026.11.19.84';
   }
 
   /* Homepage cards: ~15–55KB WebP instead of 450–1000KB hero JPG (PSI image delivery). */
@@ -538,7 +538,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.83/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.84/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -558,7 +558,22 @@
       '</g></svg></div>';
   }
 
+  function swapBrandMarkToWebp() {
+    /* PSI: 512 PNG (~200KB) shown at 64–140px — swap to 5KB WebP without waiting for theme Lưu. */
+    var webp = QCX_CDN + 'qcx-brand-mark.webp';
+    document.querySelectorAll('img.qcx-brand-raster, img[src*="qcx-brand-mark.png"]').forEach(function (img) {
+      var src = img.getAttribute('src') || '';
+      if (/qcx-brand-mark\.png/i.test(src)) {
+        img.setAttribute('src', webp);
+        img.setAttribute('width', img.getAttribute('width') || '72');
+        img.setAttribute('height', img.getAttribute('height') || '72');
+        img.setAttribute('decoding', 'async');
+      }
+    });
+  }
+
   function ensureSharpBrandAvatar() {
+    swapBrandMarkToWebp();
     var avatars = document.querySelectorAll('.qcx-avatar');
     Array.prototype.forEach.call(avatars, function (avatar) {
       if (avatar.querySelector('img.qcx-brand-raster')) return;
@@ -5762,6 +5777,7 @@
   ensureHomepageCardReveal(document);
   ensureAdminChrome();
   ensureSiteFooter();
+  swapBrandMarkToWebp();
   ensureSharpBrandAvatar();
   ensureGhostBlink();
   scheduleSharpenCardImages();
@@ -5785,6 +5801,7 @@
       ensureHomepageCardReveal(document);
       ensureAdminChrome();
       ensureSiteFooter();
+      swapBrandMarkToWebp();
       ensureSharpBrandAvatar();
       ensureGhostBlink();
       scheduleSharpenCardImages();
