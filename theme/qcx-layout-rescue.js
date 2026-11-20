@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.58/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.59/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -675,19 +675,6 @@
       'html[data-page-type="homepage"] .nav-pagination:not(.qcx-home-pager):not(.qcx-rescue-pager),' +
       'html[data-page-type="index"] .nav-pagination:not(.qcx-home-pager):not(.qcx-rescue-pager){' +
       'display:none!important}' +
-
-      '.all_posts .qcx-card-labels > a:nth-of-type(n+4),' +
-      '[data-page-item=\"multiple\"] .qcx-card-labels > a:nth-of-type(n+4){display:none!important}' +
-      '.all_posts .qcx-card-labels > a:nth-of-type(-n+3),' +
-      '[data-page-item=\"multiple\"] .qcx-card-labels > a:nth-of-type(-n+3){display:inline-flex!important}' +
-      '.all_posts .qcx-card-labels .qcx-label-more:not([hidden]),' +
-      '[data-page-item=\"multiple\"] .qcx-card-labels .qcx-label-more:not([hidden]){' +
-      'display:inline-flex!important;align-items:center;justify-content:center;' +
-      'min-width:1.6em;padding:.22em .55em;border-radius:999px;' +
-      'font:700 10px/1.2 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;' +
-      'letter-spacing:.02em;color:rgba(232,239,233,.88);' +
-      'background:rgba(8,14,10,.72);border:1px solid rgba(255,255,255,.14);' +
-      'backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}' +
 
       '.nav-pagination .blog-pager>a,.nav-pagination .blog-pager>button,' +
       '.blog-pager .older-link,.blog-pager .newer-link,' +
@@ -2128,6 +2115,8 @@
   function ensureCardLabelsWithTutorial(root) {
     try {
       (root || document).querySelectorAll('.qcx-card-labels').forEach(function(wrap){
+        /* After GSAP reshape, skip — fit/hover owns the DOM. */
+        if (wrap.getAttribute('data-qcx-gsap-labels') === '1') return;
         var links = Array.prototype.slice.call(wrap.querySelectorAll('a'));
         if (!links.length) return;
         var tutorial = null;
@@ -2150,51 +2139,114 @@
     } catch (err) {}
   }
 
-  /* Homepage GSAP cards: +N for overflow; fit-to-width so chips never wrap on resize. */
-  function ensureCardLabelMore(root) {
+  /* GSAP filtered-gallery plugins: primary + mask(secondary) + +N; fit never wraps. */
+  function ensureGsapCardLabels(root) {
     try {
       (root || document).querySelectorAll('.card-header .qcx-card-labels, .all_posts .qcx-card-labels').forEach(function(wrap){
-        var links = Array.prototype.slice.call(wrap.querySelectorAll('a'));
-        var n = links.length;
-        var more = wrap.querySelector('.qcx-label-more');
-        if (!more) {
-          more = document.createElement('span');
-          more.className = 'qcx-label-more';
-          more.setAttribute('aria-hidden', 'true');
-          wrap.appendChild(more);
-        }
-        /* Reset fit-hide, then allow CSS nth-of-type(n+4) to hide extras. */
-        links.forEach(function(a){ a.removeAttribute('data-qcx-fit-hide'); });
-
-        var softCap = Math.min(3, n);
-        var visibleBudget = softCap;
-        function applyVisible(count) {
-          links.forEach(function(a, i){
-            if (i < count) a.removeAttribute('data-qcx-fit-hide');
-            else a.setAttribute('data-qcx-fit-hide', '1');
-          });
-          var hidden = n - count;
-          if (hidden > 0) {
-            more.textContent = '+' + hidden;
-            more.removeAttribute('hidden');
-            more.setAttribute('aria-hidden', 'false');
-          } else {
-            more.textContent = '';
-            more.setAttribute('hidden', 'hidden');
-            more.setAttribute('aria-hidden', 'true');
-          }
-        }
-        applyVisible(visibleBudget);
-
-        /* Shrink visible set until single row fits (keep ≥1 chip). */
-        var guard = 0;
-        while (guard < 6 && visibleBudget > 1 && wrap.scrollWidth > wrap.clientWidth + 1) {
-          visibleBudget -= 1;
-          applyVisible(visibleBudget);
-          guard += 1;
-        }
+        reshapeGsapLabelDom(wrap);
+        fitGsapLabelMask(wrap, false);
       });
     } catch (errMore) {}
+  }
+  function ensureCardLabelMore(root) { ensureGsapCardLabels(root); }
+
+  function reshapeGsapLabelDom(wrap) {
+    if (!wrap || wrap.getAttribute('data-qcx-gsap-labels') === '1') {
+      /* Still ensure more node exists after prior reshape. */
+      if (wrap && !wrap.querySelector('.qcx-label-more')) {
+        var m0 = document.createElement('span');
+        m0.className = 'qcx-label-more';
+        m0.setAttribute('hidden', 'hidden');
+        m0.setAttribute('aria-hidden', 'true');
+        wrap.appendChild(m0);
+      }
+      return;
+    }
+    var allLinks = Array.prototype.slice.call(wrap.querySelectorAll('a'));
+    if (!allLinks.length) return;
+    var more = wrap.querySelector('.qcx-label-more');
+    if (!more) {
+      more = document.createElement('span');
+      more.className = 'qcx-label-more';
+      more.setAttribute('hidden', 'hidden');
+      more.setAttribute('aria-hidden', 'true');
+    }
+    var primary = allLinks[0];
+    var secondaryLinks = allLinks.slice(1);
+    wrap.innerHTML = '';
+    wrap.appendChild(primary);
+    var mask = document.createElement('div');
+    mask.className = 'qcx-label-mask';
+    var secondary = document.createElement('div');
+    secondary.className = 'qcx-label-secondary';
+    secondaryLinks.forEach(function(a){ secondary.appendChild(a); });
+    mask.appendChild(secondary);
+    wrap.appendChild(mask);
+    wrap.appendChild(more);
+    wrap.setAttribute('data-qcx-gsap-labels', '1');
+  }
+
+  function fitGsapLabelMask(wrap, expanded) {
+    var primary = wrap.querySelector(':scope > a');
+    var mask = wrap.querySelector(':scope > .qcx-label-mask');
+    var secondary = mask && mask.querySelector('.qcx-label-secondary');
+    var more = wrap.querySelector(':scope > .qcx-label-more');
+    if (!primary || !mask || !secondary || !more) return;
+
+    var secLinks = Array.prototype.slice.call(secondary.querySelectorAll('a'));
+    var total = 1 + secLinks.length;
+    if (!secLinks.length) {
+      mask.style.width = '0px';
+      more.textContent = '';
+      more.setAttribute('hidden', 'hidden');
+      more.setAttribute('aria-hidden', 'true');
+      return;
+    }
+
+    /* Reset to measure natural widths. */
+    mask.style.width = 'auto';
+    more.removeAttribute('hidden');
+    more.style.visibility = 'hidden';
+    more.textContent = '+99';
+
+    var avail = wrap.clientWidth;
+    var primaryW = primary.getBoundingClientRect().width;
+    var moreW = more.getBoundingClientRect().width || 35;
+    var gap = 5.6; /* 0.35rem */
+    var room = Math.max(0, avail - primaryW - moreW - gap - 1);
+
+    if (expanded) {
+      var full = secondary.scrollWidth;
+      mask.style.width = full + 'px';
+      more.textContent = '';
+      more.setAttribute('hidden', 'hidden');
+      more.setAttribute('aria-hidden', 'true');
+      more.style.visibility = '';
+      return;
+    }
+
+    var used = 0;
+    var visibleSec = 0;
+    var padLeft = 5.6; /* secondary padding-left */
+    for (var i = 0; i < secLinks.length; i++) {
+      var w = secLinks[i].getBoundingClientRect().width;
+      var need = (visibleSec === 0 ? padLeft : gap) + w;
+      if (used + need > room) break;
+      used += need;
+      visibleSec += 1;
+    }
+    mask.style.width = (visibleSec ? used : 0) + 'px';
+    var hidden = total - 1 - visibleSec;
+    if (hidden > 0) {
+      more.textContent = '+' + hidden;
+      more.removeAttribute('hidden');
+      more.setAttribute('aria-hidden', 'false');
+    } else {
+      more.textContent = '';
+      more.setAttribute('hidden', 'hidden');
+      more.setAttribute('aria-hidden', 'true');
+    }
+    more.style.visibility = '';
   }
 
   function bindCardLabelMoreResize() {
@@ -2205,10 +2257,34 @@
       if (raf) return;
       raf = window.requestAnimationFrame(function(){
         raf = 0;
-        ensureCardLabelMore(document);
+        ensureGsapCardLabels(document);
       });
     }
     window.addEventListener('resize', onResize, { passive: true });
+
+    /* Desktop hover: expand secondary mask like GSAP (skip coarse pointers). */
+    if (!window.matchMedia || window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      function headerOf(node) {
+        return node && node.closest ? node.closest('.card-header') : null;
+      }
+      document.addEventListener('pointerover', function(ev){
+        var header = headerOf(ev.target);
+        var from = headerOf(ev.relatedTarget);
+        if (!header || header === from) return;
+        var wrap = header.querySelector('.qcx-card-labels');
+        if (!wrap) return;
+        reshapeGsapLabelDom(wrap);
+        fitGsapLabelMask(wrap, true);
+      }, true);
+      document.addEventListener('pointerout', function(ev){
+        var header = headerOf(ev.target);
+        var to = headerOf(ev.relatedTarget);
+        if (!header || header === to) return;
+        var wrap = header.querySelector('.qcx-card-labels');
+        if (!wrap) return;
+        fitGsapLabelMask(wrap, false);
+      }, true);
+    }
   }
 
   function cardFromEntry(entry, index) {
@@ -2228,17 +2304,22 @@
           : ' loading="lazy" decoding="async"') +
         ' src="' + escapeHtml(thumb) + '" width="1200" height="675"/>')
       : '<span class="qcx-card-noimg" aria-hidden="true">// no image</span>';
-    var labelHtml = labels.map(function(label){
-      return '<a href="/search/label/' + encodeURIComponent(label) + '" rel="tag">' + escapeHtml(label) + '</a>';
-    }).join('');
+    var labelHtml = '';
+    if (labels.length) {
+      var primary = '<a href="/search/label/' + encodeURIComponent(labels[0]) + '" rel="tag">' + escapeHtml(labels[0]) + '</a>';
+      var sec = labels.slice(1).map(function(label){
+        return '<a href="/search/label/' + encodeURIComponent(label) + '" rel="tag">' + escapeHtml(label) + '</a>';
+      }).join('');
+      labelHtml =
+        '<div class="qcx-card-labels" data-qcx-gsap-labels="1">' + primary +
+        '<div class="qcx-label-mask"><div class="qcx-label-secondary">' + sec + '</div></div>' +
+        '<span class="qcx-label-more" hidden="hidden" aria-hidden="true"></span></div>';
+    }
     col.innerHTML =
       '<article class="card">' +
       '<div class="card-header">' +
       '<a href="' + escapeHtml(href) + '" title="' + escapeHtml(fullTitle) + '">' + media + '</a>' +
-      (labelHtml
-        ? '<div class="qcx-card-labels">' + labelHtml +
-          '<span class="qcx-label-more" hidden="hidden" aria-hidden="true"></span></div>'
-        : '') +
+      labelHtml +
       '</div>' +
       '<div class="card-content">' +
       '<h2 class="title"><a href="' + escapeHtml(href) + '" title="' + escapeHtml(fullTitle) + '">' + escapeHtml(title) + '</a></h2>' +

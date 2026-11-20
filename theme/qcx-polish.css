@@ -12,14 +12,14 @@ body {
   padding-right: 0 !important;
 }
 
-/* Blogger renders feed cards directly inside .all_posts > .row. */
+/* Blogger feed cards — GSAP auto-fill grid (minmax 350px). */
 [data-page-item='multiple'] .all_posts > .row,
 .qcx-rescue-blog .all_posts > .row,
 .qcx-rescue-blog .row {
   display: grid !important;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  gap: 26px !important;
-  align-items: stretch !important;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 350px), 1fr)) !important;
+  gap: 16px !important;
+  align-items: start !important;
   margin: 0 !important;
 }
 [data-page-item='multiple'] .all_posts > .row > .col-md-4,
@@ -276,25 +276,23 @@ footer.footer #footer.qcx-footer-gadgets .widget {
   margin: 0 !important;
 }
 
-@media (max-width: 1040px) {
-  [data-page-item='multiple'] .all_posts > .row {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 20px !important;
-  }
-}
+/* auto-fill minmax(350px) already handles mid/mobile cols — keep GSAP tokens */
 @media (max-width: 680px) {
   [data-page-item='multiple'] main.main-container {
     width: calc(100% - 32px) !important;
   }
   [data-page-item='multiple'] .all_posts > .row {
-    grid-template-columns: minmax(0, 1fr) !important;
-    gap: 18px !important;
+    gap: 16px !important;
   }
   [data-page-item='multiple'] .card-content {
     min-height: 0 !important;
-    padding: 10px 12px 12px !important;
+    padding: 0 !important;
+    margin: 12px 0 0 !important;
   }
-  [data-page-item='multiple'] .card-content .title { font-size: 14px !important; }
+  [data-page-item='multiple'] .card-content .title {
+    font-size: 1rem !important;
+    font-weight: 400 !important;
+  }
   [data-page-item='multiple'] .card-content .post-entry { display: none !important; }
 }
 /* Mobile homepage: full-width main (fix left-shift / right gap) */
@@ -2150,23 +2148,15 @@ body:not(#layout) .qcx-hero-divider,
   .qcx-hero-title { white-space: normal !important; }
 }
 
-/* Post list — GSAP/Awwwards clone: frameless media + title; 3→2→1 on resize */
+/* Post list — GSAP filtered-gallery clone: auto-fill + frameless media */
 [data-page-item='multiple'] .all_posts > .row,
 .qcx-rescue-blog .all_posts > .row,
 .qcx-rescue-blog .row,
 .all_posts > .row {
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  gap: 28px !important;
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 350px), 1fr)) !important;
+  gap: 16px !important;
   align-items: start !important;
-}
-@media (max-width: 1040px) {
-  [data-page-item='multiple'] .all_posts > .row,
-  .qcx-rescue-blog .all_posts > .row,
-  .qcx-rescue-blog .row,
-  .all_posts > .row {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 20px !important;
-  }
 }
 [data-page-item='multiple'] .all_posts > .row > .col-md-4,
 .qcx-rescue-blog .col-md-4,
@@ -2189,7 +2179,7 @@ body:not(#layout) .qcx-hero-divider,
 }
 [data-page-item='multiple'] .card:hover,
 .all_posts .card:hover {
-  transform: translateY(-2px) !important;
+  transform: none !important;
   border-color: transparent !important;
   box-shadow: none !important;
 }
@@ -2261,13 +2251,6 @@ body:not(#layout) .qcx-hero-divider,
 .all_posts .card-footer {
   display: none !important;
 }
-[data-page-item='multiple'] .card-header .qcx-card-labels a:nth-of-type(n+4),
-.all_posts .card-header .qcx-card-labels a:nth-of-type(n+4),
-[data-page-item='multiple'] .card-content .qcx-card-labels a:nth-of-type(n+4),
-.all_posts .card-content .qcx-card-labels a:nth-of-type(n+4) {
-  display: none !important;
-}
-
 /* Card title hover — keep light on dark cards (mobile sticky :hover too). */
 .card-content .title a:hover,
 .card-content .title a:focus,
@@ -2314,7 +2297,7 @@ body:not(#layout) .qcx-hero-divider,
 [data-view-type='desktop'] .card:hover,
 [data-view-type='mobile'] .card:hover,
 [data-view-type='mobile'] .card:active {
-  transform: translateY(-2px) !important;
+  transform: none !important;
   border-color: transparent !important;
   box-shadow: none !important;
 }
@@ -2370,8 +2353,8 @@ body:not(#layout) .qcx-hero-divider,
   .qcx-rescue-blog .all_posts > .row,
   .qcx-rescue-blog .row,
   .all_posts > .row {
-    grid-template-columns: minmax(0, 1fr) !important;
-    gap: 14px !important;
+    /* auto-fill already 1-col under 350px; keep 16px gap like GSAP */
+    gap: 16px !important;
   }
   [data-page-item='multiple'] .card,
   .all_posts .card {
@@ -2672,23 +2655,16 @@ button.qcx-copy-btn,
 }
 
 */
-/* Equal card height in a row: reserve exactly 2 title lines. PC: 3 cols. */
+/* Equal rows: GSAP auto-fill minmax(350px), gap 16px. */
 [data-page-item='multiple'] .all_posts > .row,
 .qcx-rescue-blog .all_posts > .row,
 .qcx-rescue-blog .row,
 .all_posts > .row {
   display: grid !important;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 350px), 1fr)) !important;
+  gap: 16px !important;
   grid-auto-rows: auto !important;
-  align-items: stretch !important;
-}
-@media (max-width: 680px) {
-  [data-page-item='multiple'] .all_posts > .row,
-  .qcx-rescue-blog .all_posts > .row,
-  .qcx-rescue-blog .row,
-  .all_posts > .row {
-    grid-template-columns: minmax(0, 1fr) !important;
-  }
+  align-items: start !important;
 }
 [data-page-item='multiple'] .all_posts > .row > .col-md-4,
 .qcx-rescue-blog .col-md-4,
