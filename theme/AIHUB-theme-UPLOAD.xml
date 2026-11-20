@@ -2818,19 +2818,13 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
                 <article class='card'>
                   <div class='card-header'>
                     <a href='https://www.mmo.team/2026/11/tong-hop-cac-goi-vps-mien-phi-tot-nhat.html' title='T&#7893;ng H&#7907;p C&#225;c G&#243;i VPS Mi&#7877;n Ph&#237; T&#7889;t Nh&#7845;t 2026'>
-                      <img alt='T&#7893;ng H&#7907;p C&#225;c G&#243;i VPS Mi&#7877;n Ph&#237; T&#7889;t Nh&#7845;t 2026' class='qcx-card-media qcx-card-lcp' decoding='sync' fetchpriority='high' height='405' loading='eager' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.108/images/hero/card/vps-mien-phi-2026.webp' width='720'/>
+                      <img alt='T&#7893;ng H&#7907;p C&#225;c G&#243;i VPS Mi&#7877;n Ph&#237; T&#7889;t Nh&#7845;t 2026' class='qcx-card-media qcx-card-lcp' decoding='async' fetchpriority='high' height='405' loading='eager' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.108/images/hero/card/vps-mien-phi-2026.webp' width='720'/>
                     </a>
                   </div>
                   <div class='card-content'>
                     <h2 class='title'><a href='https://www.mmo.team/2026/11/tong-hop-cac-goi-vps-mien-phi-tot-nhat.html'>T&#7893;ng H&#7907;p C&#225;c G&#243;i VPS Mi&#7877;n Ph&#237;</a></h2>
                   </div>
                 </article>
-              </div>
-              <div aria-hidden='true' class='col-md-4 qcx-ssr-slot'>
-                <article class='card'><div class='card-header'></div><div class='card-content'><h2 class='title'>&nbsp;</h2></div></article>
-              </div>
-              <div aria-hidden='true' class='col-md-4 qcx-ssr-slot'>
-                <article class='card'><div class='card-header'></div><div class='card-content'><h2 class='title'>&nbsp;</h2></div></article>
               </div>
             </div>
           </div>
