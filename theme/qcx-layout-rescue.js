@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.65/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.66/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -2099,17 +2099,45 @@
       if (!name || skip.test(name)) return;
       if (/^tutorial$/i.test(name)) { hasTutorial = true; return; }
       if (/^(free|vip)$/i.test(name)) {
-        if (!mode) mode = /^vip$/i.test(name) ? 'VIP' : 'FREE';
+        /* VIP wins over FREE if both present. */
+        if (!mode || (/^vip$/i.test(name) && mode !== 'VIP')) {
+          mode = /^vip$/i.test(name) ? 'VIP' : 'FREE';
+        }
         return;
       }
       others.push(name);
     });
-    /* Full list for +N; CSS caps visible chips at 3 (mode → topics → Tutorial). */
-    var out = [];
-    if (mode) out.push(mode);
-    others.forEach(function(name){ out.push(name); });
-    if (hasTutorial) out.push('Tutorial');
-    return out;
+    var topics = others.slice();
+    if (hasTutorial) topics.push('Tutorial');
+    /* mode = top-left award; topics = bottom GSAP plugins (+N). */
+    return { mode: mode, topics: topics };
+  }
+
+  function awardModeFromHeader(header) {
+    if (!header) return null;
+    var el = header.querySelector(':scope > .qcx-card-award');
+    if (!el) return null;
+    if (/qcx-card-award--vip|\bVIP\b/i.test(el.className + ' ' + (el.textContent || ''))) return 'VIP';
+    if (/qcx-card-award--free|\bFREE\b/i.test(el.className + ' ' + (el.textContent || ''))) return 'FREE';
+    return null;
+  }
+
+  function ensureCardAward(header, mode) {
+    if (!header || !mode) return;
+    var existing = header.querySelector(':scope > .qcx-card-award');
+    var cls = 'qcx-card-award qcx-card-award--' + (mode === 'VIP' ? 'vip' : 'free');
+    if (existing) {
+      existing.className = cls;
+      existing.textContent = mode;
+      return;
+    }
+    var award = document.createElement('span');
+    award.className = cls;
+    award.textContent = mode;
+    award.setAttribute('aria-hidden', 'true');
+    var labels = header.querySelector('.qcx-card-labels');
+    if (labels) header.insertBefore(award, labels);
+    else header.appendChild(award);
   }
 
   function ensureCardLabelsWithTutorial(root) {
@@ -2139,12 +2167,22 @@
     } catch (err) {}
   }
 
-  /* Beat theme touch-target a[rel=tag]{min-height:40px;margin-bottom:6px} — keep FREE/+N one row. */
+  /* Beat theme touch-target; keep topic chips + award size stable. */
   function ensureGsapChipSizeCss() {
     if (document.getElementById('qcx-gsap-chip-size')) return;
     var st = document.createElement('style');
     st.id = 'qcx-gsap-chip-size';
     st.textContent =
+      '.card-header .qcx-card-award{' +
+      'position:absolute!important;top:.4rem!important;left:.4rem!important;z-index:7!important;' +
+      'display:inline-flex!important;align-items:center!important;' +
+      'padding:2.4px 8px!important;border-radius:99px!important;' +
+      'font-size:11px!important;font-weight:500!important;line-height:1.1!important;' +
+      'min-height:0!important;min-width:0!important;margin:0!important;pointer-events:none!important}' +
+      '.card-header .qcx-card-award--free{background:rgba(14,16,15,.55)!important;color:rgba(255,252,225,.92)!important;' +
+      '-webkit-backdrop-filter:blur(8px)!important;backdrop-filter:blur(8px)!important}' +
+      '.card-header .qcx-card-award--vip{background-image:linear-gradient(114.41deg,rgb(10,228,72) 20.74%,rgb(171,255,132) 65.5%)!important;' +
+      'background-color:transparent!important;color:#0e100f!important}' +
       '.card-header .qcx-card-labels,.all_posts .card-header .qcx-card-labels{' +
       'display:flex!important;flex-wrap:nowrap!important;align-items:center!important;gap:0!important}' +
       '.card-header .qcx-card-labels .qcx-label-mask{align-self:center!important;margin:0!important;padding:0!important}' +
@@ -2175,19 +2213,55 @@
   function ensureCardLabelMore(root) { ensureGsapCardLabels(root); }
 
   function reshapeGsapLabelDom(wrap) {
-    if (!wrap || wrap.getAttribute('data-qcx-gsap-labels') === '1') {
-      /* Still ensure more node exists after prior reshape. */
-      if (wrap && !wrap.querySelector('.qcx-label-more')) {
+    if (!wrap) return;
+    var header = wrap.closest ? wrap.closest('.card-header') : null;
+
+    /* Already reshaped: peel any leftover FREE/VIP chips into top award, keep topics. */
+    if (wrap.getAttribute('data-qcx-gsap-labels') === '1') {
+      if (!wrap.querySelector('.qcx-label-more')) {
         var m0 = document.createElement('span');
         m0.className = 'qcx-label-more';
         m0.setAttribute('hidden', 'hidden');
         m0.setAttribute('aria-hidden', 'true');
         wrap.appendChild(m0);
       }
+      var modeDone = null;
+      var drop = [];
+      Array.prototype.slice.call(wrap.querySelectorAll('a')).forEach(function(a){
+        var t = (a.textContent || '').trim();
+        if (!/^(free|vip)$/i.test(t)) return;
+        if (!modeDone || (/^vip$/i.test(t) && modeDone !== 'VIP')) modeDone = /^vip$/i.test(t) ? 'VIP' : 'FREE';
+        drop.push(a);
+      });
+      drop.forEach(function(a){ if (a.parentNode) a.parentNode.removeChild(a); });
+      ensureCardAward(header, modeDone || awardModeFromHeader(header));
+      if (drop.length) {
+        wrap.removeAttribute('data-qcx-gsap-labels');
+        /* fall through and rebuild from remaining topic links */
+      } else {
+        return;
+      }
+    }
+
+    var allLinks = Array.prototype.slice.call(wrap.querySelectorAll('a'));
+    var mode = null;
+    var topicLinks = [];
+    allLinks.forEach(function(a){
+      var t = (a.textContent || '').trim();
+      if (/^(free|vip)$/i.test(t)) {
+        if (!mode || (/^vip$/i.test(t) && mode !== 'VIP')) mode = /^vip$/i.test(t) ? 'VIP' : 'FREE';
+        return;
+      }
+      topicLinks.push(a);
+    });
+    ensureCardAward(header, mode || awardModeFromHeader(header));
+
+    if (!topicLinks.length) {
+      wrap.innerHTML = '';
+      wrap.setAttribute('data-qcx-gsap-labels', '1');
       return;
     }
-    var allLinks = Array.prototype.slice.call(wrap.querySelectorAll('a'));
-    if (!allLinks.length) return;
+
     var more = wrap.querySelector('.qcx-label-more');
     if (!more) {
       more = document.createElement('span');
@@ -2195,8 +2269,8 @@
       more.setAttribute('hidden', 'hidden');
       more.setAttribute('aria-hidden', 'true');
     }
-    var primary = allLinks[0];
-    var secondaryLinks = allLinks.slice(1);
+    var primary = topicLinks[0];
+    var secondaryLinks = topicLinks.slice(1);
     wrap.innerHTML = '';
     wrap.appendChild(primary);
     var mask = document.createElement('div');
@@ -2211,11 +2285,18 @@
   }
 
   function fitGsapLabelMask(wrap, expanded) {
-    var primary = wrap.querySelector(':scope > a') || wrap.querySelector('a');
+    var primary = wrap.querySelector(':scope > a');
     var mask = wrap.querySelector(':scope > .qcx-label-mask') || wrap.querySelector('.qcx-label-mask');
     var secondary = mask && mask.querySelector('.qcx-label-secondary');
     var more = wrap.querySelector(':scope > .qcx-label-more') || wrap.querySelector('.qcx-label-more');
-    if (!primary || !mask || !secondary || !more) return;
+    if (!mask || !secondary || !more) return;
+    if (!primary) {
+      mask.style.setProperty('width', '0px', 'important');
+      more.textContent = '';
+      more.setAttribute('hidden', 'hidden');
+      more.setAttribute('aria-hidden', 'true');
+      return;
+    }
 
     var secLinks = Array.prototype.slice.call(secondary.querySelectorAll('a'));
     if (!secLinks.length) {
@@ -2294,7 +2375,9 @@
     var fullTitle = (entry.title && entry.title.$t) || 'Bài viết';
     var title = displayPostTitle(fullTitle);
     var href = entryLink(entry) || '/';
-    var labels = cardLabelsWithTutorial(entryLabels(entry));
+    var packed = cardLabelsWithTutorial(entryLabels(entry));
+    var mode = packed && packed.mode;
+    var topics = (packed && packed.topics) || [];
     var meta = entryThumbMeta(entry);
     var thumb = meta.url;
     var eager = index === 0;
@@ -2307,10 +2390,14 @@
           : ' loading="lazy" decoding="async"') +
         ' src="' + escapeHtml(thumb) + '" width="1200" height="675"/>')
       : '<span class="qcx-card-noimg" aria-hidden="true">// no image</span>';
+    var awardHtml = mode
+      ? ('<span class="qcx-card-award qcx-card-award--' + (mode === 'VIP' ? 'vip' : 'free') +
+        '" aria-hidden="true">' + escapeHtml(mode) + '</span>')
+      : '';
     var labelHtml = '';
-    if (labels.length) {
-      var primary = '<a href="/search/label/' + encodeURIComponent(labels[0]) + '" rel="tag">' + escapeHtml(labels[0]) + '</a>';
-      var sec = labels.slice(1).map(function(label){
+    if (topics.length) {
+      var primary = '<a href="/search/label/' + encodeURIComponent(topics[0]) + '" rel="tag">' + escapeHtml(topics[0]) + '</a>';
+      var sec = topics.slice(1).map(function(label){
         return '<a href="/search/label/' + encodeURIComponent(label) + '" rel="tag">' + escapeHtml(label) + '</a>';
       }).join('');
       labelHtml =
@@ -2322,6 +2409,7 @@
       '<article class="card">' +
       '<div class="card-header">' +
       '<a href="' + escapeHtml(href) + '" title="' + escapeHtml(fullTitle) + '">' + media + '</a>' +
+      awardHtml +
       labelHtml +
       '</div>' +
       '<div class="card-content">' +

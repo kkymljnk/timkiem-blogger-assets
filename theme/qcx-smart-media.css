@@ -73,6 +73,50 @@
 .all_posts .card-header {
   position: relative !important;
 }
+/* Exact clone: gsap.com/showcase filtered-gallery__award (SOTD / SOTW) — top-left FREE|VIP */
+[data-page-item='multiple'] .card-header .qcx-card-award,
+.qcx-rescue-blog .card-header .qcx-card-award,
+.all_posts .card-header .qcx-card-award {
+  position: absolute !important;
+  top: 0.4rem !important;
+  left: 0.4rem !important;
+  z-index: 7 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 2.4px 8px !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 99px !important;
+  min-height: 0 !important;
+  min-width: 0 !important;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  line-height: 1.1 !important;
+  letter-spacing: -0.01em !important;
+  text-transform: none !important;
+  white-space: nowrap !important;
+  pointer-events: none !important;
+  box-shadow: none !important;
+}
+[data-page-item='multiple'] .card-header .qcx-card-award--free,
+.qcx-rescue-blog .card-header .qcx-card-award--free,
+.all_posts .card-header .qcx-card-award--free {
+  background: rgba(14, 16, 15, 0.55) !important;
+  color: rgba(255, 252, 225, 0.92) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  backdrop-filter: blur(8px) !important;
+}
+[data-page-item='multiple'] .card-header .qcx-card-award--vip,
+.qcx-rescue-blog .card-header .qcx-card-award--vip,
+.all_posts .card-header .qcx-card-award--vip {
+  background-color: transparent !important;
+  background-image: linear-gradient(114.41deg, rgb(10, 228, 72) 20.74%, rgb(171, 255, 132) 65.5%) !important;
+  color: #0e100f !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
 /* Exact clone: gsap.com/showcase filtered-gallery__plugins (mask + +N) */
 [data-page-item='multiple'] .card-header .qcx-card-labels,
 .qcx-rescue-blog .card-header .qcx-card-labels,
