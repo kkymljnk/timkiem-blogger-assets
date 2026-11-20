@@ -262,21 +262,19 @@
 
           <div class="card card-rolefx hidden" data-section-pane="rolefx" hidden>
             <div class="panel-head tight rfx-panel-head">
-              <h2 style="color:#ff85d0;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;"><svg class="rfx-ico" viewBox="0 0 16 16" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M8 1l1.7 4.3L14 7l-4.3 1.7L8 13l-1.7-4.3L2 7l4.3-1.7L8 1z"/></svg> Style Role &amp; Thành Viên</h2>
-              <span class="rfx-pill-stat">20 FX · WebP Pro</span>
+              <h2 style="color:#ff85d0;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;"><svg class="rfx-ico" viewBox="0 0 16 16" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M8 1l1.7 4.3L14 7l-4.3 1.7L8 13l-1.7-4.3L2 7l4.3-1.7L8 1z"/></svg> Role FX</h2>
+              <span class="rfx-pill-stat">20 FX</span>
             </div>
 
-            <!-- Block 1: Default Styles for 4 Roles (4-Column Single Row) -->
+            <!-- Block 1: Default Styles for 4 Roles -->
             <div class="rfx-section">
               <div class="rfx-head-row">
-                <label class="rfx-sec-title">1. Style mặc định 4 role</label>
-                <span class="rfx-sec-hint">GIF/WebP + màu chữ · toàn site</span>
+                <label class="rfx-sec-title">4 Role</label>
               </div>
               <div class="rfx-roles-grid">
                 <div class="rfx-role-card">
                   <div class="rfx-role-top">
                     <label for="selRoleStyleAdmin" class="rfx-role-lbl" style="color:#ff6b6b;"><svg class="rfx-ico" viewBox="0 0 16 16" width="11" height="11" fill="currentColor" aria-hidden="true"><path d="M9.6 1L2.6 9.2h4.4L6.2 15l7.2-8.2H9L9.6 1z"/></svg> ADMIN</label>
-                    <span class="rfx-role-tier">Toàn quyền</span>
                   </div>
                   <div id="prevRoleAdmin" class="rfx-prev-slot"></div>
                   <select id="selRoleStyleAdmin" data-role-style-sel="admin"></select>
@@ -284,7 +282,6 @@
                 <div class="rfx-role-card">
                   <div class="rfx-role-top">
                     <label for="selRoleStyleVip" class="rfx-role-lbl" style="color:#ffd700;"><svg class="rfx-ico" viewBox="0 0 16 16" width="11" height="11" fill="currentColor" aria-hidden="true"><path d="M2 12.2h12v1.6H2v-1.6zm0-8l3 3.1L8 3l3 4.3 3-3.1-1 6.8H3L2 4.2z"/></svg> VIP</label>
-                    <span class="rfx-role-tier">Gói 30 ngày</span>
                   </div>
                   <div id="prevRoleVip" class="rfx-prev-slot"></div>
                   <select id="selRoleStyleVip" data-role-style-sel="vip"></select>
@@ -292,7 +289,6 @@
                 <div class="rfx-role-card">
                   <div class="rfx-role-top">
                     <label for="selRoleStylePro" class="rfx-role-lbl" style="color:#00d5ff;"><svg class="rfx-ico" viewBox="0 0 16 16" width="11" height="11" fill="currentColor" aria-hidden="true"><path d="M4.2 2.4h7.6l2.7 3.8L8 14 1.5 6.2l2.7-3.8z"/></svg> PRO</label>
-                    <span class="rfx-role-tier">Mua lẻ</span>
                   </div>
                   <div id="prevRolePro" class="rfx-prev-slot"></div>
                   <select id="selRoleStylePro" data-role-style-sel="pro"></select>
@@ -300,39 +296,37 @@
                 <div class="rfx-role-card">
                   <div class="rfx-role-top">
                     <label for="selRoleStyleMember" class="rfx-role-lbl" style="color:#34e6a0;"><svg class="rfx-ico" viewBox="0 0 16 16" width="10" height="10" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="4.5"/></svg> MEMBER</label>
-                    <span class="rfx-role-tier">Mặc định</span>
                   </div>
                   <div id="prevRoleMember" class="rfx-prev-slot"></div>
                   <select id="selRoleStyleMember" data-role-style-sel="member"></select>
                 </div>
               </div>
               <div class="rfx-toolbar">
-                <label class="rfx-check-lbl" title="Cho phép thành viên VIP / PRO tự đổi style trong menu tài khoản">
+                <label class="rfx-check-lbl" title="Cho phép VIP / PRO tự đổi style trong menu tài khoản">
                   <input type="checkbox" id="chkAllowSelfSwitch" checked />
-                  <span>VIP/PRO tự đổi style</span>
+                  <span>VIP/PRO tự đổi</span>
                 </label>
-                <button type="button" class="primary" id="btnSaveRoleDefaults" style="background:linear-gradient(135deg,#ff85d0,#a855f7);color:#120418;border-color:#ff85d0;"><svg class="rfx-ico" viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 2h8l2 2v10H3V2z"/><path d="M5.5 2v4h5V2"/><path d="M5.5 14v-4h5v4"/></svg> Lưu 4 Role</button>
+                <button type="button" class="primary" id="btnSaveRoleDefaults" style="background:linear-gradient(135deg,#ff85d0,#a855f7);color:#120418;border-color:#ff85d0;"><svg class="rfx-ico" viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 2h8l2 2v10H3V2z"/><path d="M5.5 2v4h5V2"/><path d="M5.5 14v-4h5v4"/></svg> Lưu</button>
               </div>
-              <div id="outRoleDefaults" class="status hidden" hidden style="margin-top:4px;"></div>
+              <div id="outRoleDefaults" class="status rfx-status hidden" hidden></div>
             </div>
 
-            <!-- Block 2: Per-Member Style Override (Single-Row Assign Bar) -->
+            <!-- Block 2: Per-Member Style Override -->
             <div class="rfx-section rfx-section-last">
               <div class="rfx-head-row">
-                <label class="rfx-sec-title">2. Gán style theo Gmail</label>
-                <span class="rfx-sec-hint">Ghi đè style Role</span>
+                <label class="rfx-sec-title">Gmail</label>
               </div>
               <div class="rfx-assign-bar">
-                <input id="inpMemberStyleEmail" type="email" placeholder="Gmail thành viên" aria-label="Email thành viên" />
+                <input id="inpMemberStyleEmail" type="email" placeholder="Gmail" aria-label="Email thành viên" />
                 <select id="selMemberStyleId" aria-label="Chọn Style Pro FX"></select>
                 <div id="memberStylePreview" class="rfx-assign-prev"></div>
                 <button type="button" class="primary" id="btnAssignMemberStyle" style="background:linear-gradient(135deg,#00d5ff,#38bdf8);color:#031522;border-color:#00d5ff;"><svg class="rfx-ico" viewBox="0 0 16 16" width="11" height="11" fill="currentColor" aria-hidden="true"><path d="M9.6 1L2.6 9.2h4.4L6.2 15l7.2-8.2H9L9.6 1z"/></svg> Áp dụng</button>
               </div>
-              <div id="outMemberStyle" class="status hidden" hidden style="margin-top:4px;"></div>
+              <div id="outMemberStyle" class="status rfx-status hidden" hidden></div>
 
               <div class="rfx-ov-wrap">
                 <div class="rfx-head-row" style="margin-bottom:4px;">
-                  <label class="rfx-sec-sub">Đang gắn style riêng</label>
+                  <label class="rfx-sec-sub">Overrides</label>
                   <span id="memberOverrideCount" class="rfx-sec-hint"></span>
                 </div>
                 <div id="memberOverridesList" class="rfx-ov-list"></div>
@@ -455,8 +449,21 @@ Chúc các bạn thành công!"></textarea>
   var priceEl = document.getElementById('price');
 
   function setStatus(el, text, kind) {
+    if (!el) return;
     el.textContent = text;
-    el.className = 'status' + (kind ? ' ' + kind : '');
+    var base = el.classList && el.classList.contains('rfx-status') ? 'status rfx-status' : 'status';
+    el.className = base + (kind ? ' ' + kind : '');
+    el.removeAttribute('hidden');
+    if (el.classList.contains('rfx-status')) {
+      if (el._rfxHideTimer) clearTimeout(el._rfxHideTimer);
+      if (kind === 'ok' || kind === 'err') {
+        el._rfxHideTimer = setTimeout(function () {
+          el.setAttribute('hidden', '');
+          el.className = base + ' hidden';
+          el.textContent = '';
+        }, 2500);
+      }
+    }
   }
 
   function readToken() {
@@ -1923,7 +1930,7 @@ Chúc các bạn thành công!"></textarea>
   (function initAdminRoleFxController() {
     var ROLE_STYLES_CACHE_KEY = 'qcx_admin_role_styles_v1';
     var DEFAULT_OWNER_AV = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.3/images/avatars/kkymljnk-google.png';
-    var ROLE_FX_CSS_URL = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.46/theme/qcx-role-styles.css';
+    var ROLE_FX_CSS_URL = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.47/theme/qcx-role-styles.css';
 
     if (!document.getElementById('qcx-role-fx-admin-css')) {
       var linkFx = document.createElement('link');
@@ -1936,13 +1943,16 @@ Chúc các bạn thành công!"></textarea>
       var stPrev = document.createElement('style');
       stPrev.id = 'qcx-role-fx-preview-css';
       stPrev.textContent =
-        '.rfx-prev-slot,#memberStylePreview{overflow:visible!important;min-height:44px!important;display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:6px!important}' +
-        '.rfx-prev-wrap,.qcx-fx-preview-wrap{display:inline-flex!important;flex-direction:column!important;align-items:flex-start!important;gap:5px!important;max-width:100%!important}' +
-        '.qcx-fx-preview.qcx-user-chip{transform:scale(1.08)!important;transform-origin:left center!important;overflow:visible!important}' +
+        '.rfx-prev-slot,#memberStylePreview{overflow:visible!important;min-height:36px!important;display:flex!important;align-items:center!important}' +
+        '.rfx-prev-wrap,.qcx-fx-preview-wrap{display:inline-flex!important;align-items:center!important;max-width:100%!important}' +
+        '.qcx-fx-preview.qcx-user-chip{transform:scale(1.05)!important;transform-origin:left center!important;overflow:visible!important}' +
         '.qcx-fx-preview.qcx-user-chip::before,.qcx-fx-preview.qcx-user-chip::after{pointer-events:none!important}' +
-        '.qcx-fx-preview .qcx-user-name{max-width:140px!important}' +
-        '.qcx-fx-caption{font:700 10px/1.2 var(--mono,ui-monospace,monospace)!important;letter-spacing:.04em!important;text-transform:uppercase!important;color:#8fb39f!important;opacity:.92!important}' +
-        '.rfx-ov-list .qcx-fx-preview{transform:scale(1)!important}';
+        '.qcx-fx-preview .qcx-user-name{max-width:120px!important}' +
+        '.rfx-ov-list .qcx-fx-preview{transform:scale(1)!important}' +
+        '.rfx-status{margin-top:4px!important;padding:4px 8px!important;font-size:11px!important;line-height:1.3!important;max-width:100%!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}' +
+        '.rfx-ov-acts .ghost{padding:4px 6px!important;min-width:28px!important}' +
+        '.rfx-ov-left{gap:8px!important;min-width:0!important}' +
+        '#qcx-admin-root .rfx-section{margin:0 0 10px!important;padding:10px 12px!important}#qcx-admin-root .rfx-roles-grid{gap:8px!important}#qcx-admin-root .rfx-role-card{padding:8px 10px!important;gap:6px!important}#qcx-admin-root .rfx-role-top{margin:0!important}#qcx-admin-root .rfx-role-tier{display:none!important}#qcx-admin-root .rfx-sec-hint{opacity:.7!important;font-size:10px!important}#qcx-admin-root .rfx-toolbar{margin-top:8px!important;gap:10px!important}#qcx-admin-root .rfx-head-row{margin-bottom:6px!important}#qcx-admin-root .rfx-ov-row{padding:6px 0!important;gap:8px!important}#qcx-admin-root .rfx-ov-empty{padding:6px 0!important;opacity:.55!important;font-size:11px!important}#qcx-admin-root .rfx-assign-bar{gap:8px!important}.rfx-ov-email{max-width:180px!important;overflow:hidden!important;text-overflow:ellipsis!important}';
       (document.head || document.documentElement).appendChild(stPrev);
     }
 
@@ -2016,18 +2026,17 @@ Chúc các bạn thành công!"></textarea>
     function pillPreviewHtml(styleId, sampleName) {
       var sid = styleId || 'mint';
       var meta = findStyleMeta(sid);
-      return '<span class="qcx-fx-preview-wrap qcx-auth-slot--topbar">' +
+      return '<span class="qcx-fx-preview-wrap qcx-auth-slot--topbar" title="' + escapeHtml(meta.name || sid) + '">' +
         '<span class="qcx-user-chip qcx-fx-preview" data-name-style="' + escapeHtml(sid) + '" data-qcx-fx-preview="1" style="pointer-events:none">' +
           '<img class="qcx-user-avatar" src="' + DEFAULT_OWNER_AV + '" alt=""/>' +
           '<span class="qcx-user-name">' + escapeHtml(sampleName || 'Nguyễn Văn Cần') + '</span>' +
         '</span>' +
-        '<span class="qcx-fx-caption">' + escapeHtml(meta.name || sid) + '</span>' +
       '</span>';
     }
 
     function populateSelects() {
       var opts = PRO_STYLES.map(function (st) {
-        return '<option value="' + st.id + '">' + escapeHtml(st.label) + '</option>';
+        return '<option value="' + st.id + '" title="' + escapeHtml(st.fx || '') + '" data-fx="' + escapeHtml(st.fx || '') + '">' + escapeHtml(st.name) + '</option>';
       }).join('');
       ['selRoleStyleAdmin', 'selRoleStyleVip', 'selRoleStylePro', 'selRoleStyleMember', 'selMemberStyleId'].forEach(function (id) {
         var sel = document.getElementById(id);
@@ -2067,23 +2076,21 @@ Chúc các bạn thành công!"></textarea>
       var cntEl = document.getElementById('memberOverrideCount');
       if (!box) return;
       var entries = Object.keys(state.userOverrides || {});
-      if (cntEl) cntEl.textContent = entries.length ? (entries.length + ' thành viên đang gắn riêng') : '0 thành viên';
+      if (cntEl) cntEl.textContent = String(entries.length);
       if (!entries.length) {
-        box.innerHTML = '<div class="rfx-ov-empty">Chưa có override — đang dùng style mặc định theo Role.</div>';
+        box.innerHTML = '<div class="rfx-ov-empty">Chưa có</div>';
         return;
       }
       box.innerHTML = entries.map(function (em) {
         var stId = state.userOverrides[em];
-        var meta = findStyleMeta(stId);
         return '<div class="rfx-ov-row">' +
           '<div class="rfx-ov-left">' +
             '<code class="rfx-ov-email" title="' + escapeHtml(em) + '">' + escapeHtml(em) + '</code>' +
             pillPreviewHtml(stId, em.split('@')[0]) +
-            '<span class="rfx-ov-tag">' + escapeHtml(meta.name + ' · ' + meta.fx) + '</span>' +
           '</div>' +
           '<div class="rfx-ov-acts">' +
-            '<button type="button" class="ghost" data-edit-override="' + escapeHtml(em) + '">' + ICO_EDIT + ' Sửa</button>' +
-            '<button type="button" class="ghost" data-del-override="' + escapeHtml(em) + '" style="color:#ff8780;border-color:rgba(255,95,86,0.35);">' + ICO_DEL + ' Gỡ</button>' +
+            '<button type="button" class="ghost" data-edit-override="' + escapeHtml(em) + '" title="Sửa" aria-label="Sửa">' + ICO_EDIT + '</button>' +
+            '<button type="button" class="ghost" data-del-override="' + escapeHtml(em) + '" title="Gỡ" aria-label="Gỡ" style="color:#ff8780;border-color:rgba(255,95,86,0.35);">' + ICO_DEL + '</button>' +
           '</div>' +
         '</div>';
       }).join('');
@@ -2108,7 +2115,7 @@ Chúc các bạn thành công!"></textarea>
           writeCachedRoleStyles();
           renderOverridesList();
           var out = document.getElementById('outMemberStyle');
-          if (out) { out.removeAttribute('hidden'); setStatus(out, 'Đang gỡ style riêng cho ' + em + '…', 'warn'); }
+          if (out) setStatus(out, 'Đang gỡ…', 'warn');
           adminFetch('/api/admin/role-styles', {
             method: 'POST',
             headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
@@ -2116,10 +2123,10 @@ Chúc các bạn thành công!"></textarea>
           }).then(function (r) { return r.json(); }).then(function (j) {
             if (j && j.ok && j.userOverrides) { state.userOverrides = j.userOverrides; writeCachedRoleStyles(); renderOverridesList(); }
             notifyRoleStylesUpdated();
-            if (out) setStatus(out, '[OK] Đã gỡ style riêng của ' + em + ' (về mặc định theo Role).', 'ok');
+            if (out) setStatus(out, 'Đã gỡ', 'ok');
           }).catch(function () {
             notifyRoleStylesUpdated();
-            if (out) setStatus(out, '[OK] Đã gỡ style riêng cục bộ của ' + em + '.', 'ok');
+            if (out) setStatus(out, 'Đã gỡ', 'ok');
           });
         });
       });
@@ -2204,8 +2211,7 @@ Chúc các bạn thành công!"></textarea>
         state.allowSelfSwitch = chk ? !!chk.checked : true;
         writeCachedRoleStyles();
         btnSaveDefaults.disabled = true;
-        outDefaults.removeAttribute('hidden');
-        setStatus(outDefaults, 'Đang lưu Style mặc định 4 Role lên Worker Vault…', 'warn');
+        setStatus(outDefaults, 'Đang lưu…', 'warn');
         adminFetch('/api/admin/role-styles', {
           method: 'POST',
           headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
@@ -2222,11 +2228,11 @@ Chúc các bạn thành công!"></textarea>
               writeCachedRoleStyles();
             }
             notifyRoleStylesUpdated();
-            setStatus(outDefaults, '[OK] Đã lưu Style mặc định 4 Role: ADMIN=' + state.roleDefaults.admin + ' · VIP=' + state.roleDefaults.vip + ' · PRO=' + state.roleDefaults.pro + ' · MEMBER=' + state.roleDefaults.member, 'ok');
+            setStatus(outDefaults, 'Đã lưu', 'ok');
           }).catch(function () {
             btnSaveDefaults.disabled = false;
             notifyRoleStylesUpdated();
-            setStatus(outDefaults, '[OK] Đã lưu Style 4 Role trên trình duyệt (tự đồng bộ khi Worker online).', 'ok');
+            setStatus(outDefaults, 'Đã lưu', 'ok');
           });
       });
     }
@@ -2240,16 +2246,14 @@ Chúc các bạn thành công!"></textarea>
         var email = ((document.getElementById('inpMemberStyleEmail') || {}).value || '').trim().toLowerCase();
         var styleId = ((document.getElementById('selMemberStyleId') || {}).value || '').trim().toLowerCase();
         if (!email || email.indexOf('@') === -1) {
-          outMem.removeAttribute('hidden');
-          setStatus(outMem, '[!] Vui lòng nhập địa chỉ Gmail hợp lệ của thành viên!', 'err');
+          setStatus(outMem, 'Gmail không hợp lệ', 'err');
           return;
         }
         state.userOverrides[email] = styleId;
         writeCachedRoleStyles();
         renderOverridesList();
         btnAssignMem.disabled = true;
-        outMem.removeAttribute('hidden');
-        setStatus(outMem, 'Đang gán style "' + styleId + '" cho ' + email + '…', 'warn');
+        setStatus(outMem, 'Đang gán…', 'warn');
         adminFetch('/api/admin/role-styles', {
           method: 'POST',
           headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
@@ -2263,11 +2267,11 @@ Chúc các bạn thành công!"></textarea>
               renderOverridesList();
             }
             notifyRoleStylesUpdated();
-            setStatus(outMem, '[OK] Đã áp dụng style "' + styleId + '" cho thành viên ' + email + '.', 'ok');
+            setStatus(outMem, 'Đã áp dụng', 'ok');
           }).catch(function () {
             btnAssignMem.disabled = false;
             notifyRoleStylesUpdated();
-            setStatus(outMem, '[OK] Đã áp dụng style "' + styleId + '" cục bộ cho ' + email + '.', 'ok');
+            setStatus(outMem, 'Đã áp dụng', 'ok');
           });
       });
     }
