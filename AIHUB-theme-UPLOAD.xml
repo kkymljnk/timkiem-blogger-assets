@@ -2030,7 +2030,7 @@ a.qcx-sc-btn:not(.qcx-sc-btn-outline):hover {
 .qcx-pager {
   display: flex !important;
   justify-content: center !important;
-  margin: 40px 0 40px !important;
+  margin: 40px 0 0 !important;
 }
 .qcx-pager .blog-pager {
   display: flex !important;
@@ -9175,7 +9175,7 @@ window.addEventListener('load', qcxBootMacFrames, { once: true });
 <script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.13/theme/qcx-runtime.js'></script>
 <script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.26/theme/qcx-smart-runtime.js'></script>
 <!-- secure-resource.js handles unlock flow -->
-<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.27/theme/qcx-layout-rescue.js'></script>
+<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.28/theme/qcx-layout-rescue.js'></script>
 <!-- moved to CDN: qcx-layout-rescue -->
 <script>//<![CDATA[
 (function(){

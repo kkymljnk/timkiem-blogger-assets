@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.27/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.28/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -967,6 +967,7 @@
       'html body footer.footer #footer,html body footer.footer #footer.qcx-footer-gadgets,html body footer.footer .qcx-addon-zone{' +
         'margin:0!important;margin-top:0!important;padding:0!important;min-height:0!important;background:transparent!important;border:0!important;box-shadow:none!important}' +
       'html body footer.footer .qcx-footer-social{margin:0!important;margin-top:0!important}' +
+      '.qcx-pager,.qcx-pager .blog-pager,#blog-pager,.blog-pager{margin-bottom:0!important}' +
       '.qcx-footer-widget,.qcx-footer-widget .widget-content{width:100%!important;float:none!important;padding:0!important;margin:0!important}' + '.footer .widget.qcx-footer-widget{width:100%!important;max-width:100%!important;display:block!important;float:none!important}' + '.footer .widget:nth-of-type(1).qcx-footer-widget,.footer .widget:nth-child(1).qcx-footer-widget{width:100%!important}' + /* ── PRO FOOTER v4 ultra-minimal ── */
       '.qcx-footer-social{padding:16px 20px;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))!important;border-top:1px solid rgba(76,175,130,0.1);background:#060d08;width:100%!important;box-sizing:border-box;margin:0!important}' +
       '@media(max-width:860px){.qcx-footer-social{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))!important}}' +
