@@ -232,17 +232,19 @@
   function upgradeThumb(url, opts) {
     if (!url) return '';
     var anim = !!(opts && opts.anim) || isLikelyAnimatedUrl(url);
+    var forCard = !!(opts && opts.card);
     var u = String(url);
-    /* External featured images via Blogger proxy default to ~512px — force full res. */
+    /* External featured images via Blogger proxy — card LCP caps at 800; else full. */
     if (/blogger_img_proxy/i.test(u)) {
       u = u
         .replace(/=s\d+(?:-[^?&#]*)?(?=$|[?#])/i, '')
         .replace(/=w\d+-h\d+(?:-[^?&#]*)?(?=$|[?#])/i, '');
-      return u + (anim ? '=w800-h450-c' : '=s0');
+      if (anim) return u + '=w800-h450-c';
+      return u + (forCard ? '=w800-h450-c' : '=s0');
     }
-    /* Retina card targets: ~390–700 CSS px × 2–3 DPR needs ≥1200–1600 source. */
-    var crop = anim ? 'w640-h360-c' : 'w1600-h900-c';
-    var bare = anim ? 's640' : 's1600';
+    /* Cards: w800 for LCP/PSI. Post-body / retina: keep larger source. */
+    var crop = anim ? 'w640-h360-c' : (forCard ? 'w800-h450-c' : 'w1600-h900-c');
+    var bare = anim ? 's640' : (forCard ? 's800' : 's1600');
     return u
       .replace(/\/s\d+-c\//i, '/' + crop + '/')
       .replace(/=s\d+-c(?=$|[/?#])/i, '=' + crop)
@@ -264,7 +266,9 @@
         : (srcAttr && srcAttr.indexOf('data:') !== 0 ? srcAttr : '');
       if (!raw) return;
       var anim = img.getAttribute('data-qcx-anim') === '1' || isLikelyAnimatedUrl(raw);
-      var next = upgradeThumb(raw, { anim: anim });
+      var isCard = !!(img.classList && img.classList.contains('qcx-card-media')) ||
+        !!(img.closest && img.closest('.card-header, .item-thumbnail, .qcx-related-card'));
+      var next = upgradeThumb(raw, { anim: anim, card: isCard });
       if (!next) return;
       if (dataSrc && dataSrc.indexOf('data:') !== 0 && dataSrc !== next) {
         img.setAttribute('data-src', next);
@@ -308,20 +312,20 @@
     } catch (ignore) {}
     /* Prefer direct body assets (catbox/etc) over soft feed proxy thumbs. */
     if (bodyUrl && !bodyAnim) {
-      return { url: upgradeThumb(bodyUrl), anim: false, source: 'body' };
+      return { url: upgradeThumb(bodyUrl, { card: true }), anim: false, source: 'body' };
     }
     try {
       if (entry.media$thumbnail && entry.media$thumbnail.url) {
         var feedUrl = entry.media$thumbnail.url;
         return {
-          url: upgradeThumb(feedUrl, { anim: isLikelyAnimatedUrl(feedUrl) }),
+          url: upgradeThumb(feedUrl, { anim: isLikelyAnimatedUrl(feedUrl), card: true }),
           anim: isLikelyAnimatedUrl(feedUrl),
           source: 'feed'
         };
       }
     } catch (ignore) {}
     if (bodyUrl) {
-      return { url: upgradeThumb(bodyUrl, { anim: bodyAnim }), anim: bodyAnim, source: bodyAnim ? 'body-gif' : 'body' };
+      return { url: upgradeThumb(bodyUrl, { anim: bodyAnim, card: true }), anim: bodyAnim, source: bodyAnim ? 'body-gif' : 'body' };
     }
     return { url: '', anim: false, source: '' };
   }
@@ -464,7 +468,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.70/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.71/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -2487,15 +2491,18 @@
     var topics = (packed && packed.topics) || [];
     var meta = entryThumbMeta(entry);
     var thumb = meta.url;
-    var eager = index === 0;
+    var eager = index < 3;
+    var highPrio = index === 0;
     var col = el('div', 'col-md-4');
     var media = thumb
       ? ('<img class="qcx-card-media" alt="' + escapeHtml(title) + '"' +
         (meta.anim ? ' data-qcx-anim="1"' : '') +
         (eager
-          ? ' loading="eager" fetchpriority="high" decoding="async"'
+          ? (highPrio
+            ? ' loading="eager" fetchpriority="high" decoding="async"'
+            : ' loading="eager" decoding="async"')
           : ' loading="lazy" decoding="async"') +
-        ' src="' + escapeHtml(thumb) + '" width="1200" height="675"/>')
+        ' src="' + escapeHtml(thumb) + '" width="800" height="450"/>')
       : '<span class="qcx-card-noimg" aria-hidden="true">// no image</span>';
     var awardHtml = '';
     if (award && award.kind && award.text) {
@@ -2669,17 +2676,39 @@
     } catch (ignoreReveal) {}
   }
 
+  function prioritizeHomepageLcpImages(row) {
+    try {
+      var scope = row || document;
+      var imgs = scope.querySelectorAll('.all_posts .card-header img, .all_posts img.qcx-card-media');
+      Array.prototype.forEach.call(imgs, function(img, index){
+        if (index < 3) {
+          img.setAttribute('loading', 'eager');
+          img.setAttribute('decoding', 'async');
+          if (index === 0) img.setAttribute('fetchpriority', 'high');
+          else img.removeAttribute('fetchpriority');
+        }
+        var raw = img.getAttribute('src') || '';
+        if (!raw || raw.indexOf('data:') === 0) return;
+        var anim = img.getAttribute('data-qcx-anim') === '1' || isLikelyAnimatedUrl(raw);
+        var next = upgradeThumb(raw, { anim: anim, card: true });
+        if (next && next !== raw) img.setAttribute('src', next);
+      });
+    } catch (ignoreLcp) {}
+  }
+
   function polishHomepageCards(row) {
     cleanCardSnippets(row);
     stripDomPostTitles(row);
     ensureCardLabelsWithTutorial(row);
     ensureGsapCardLabels(row);
+    prioritizeHomepageLcpImages(row || document);
     ensureHomepageCardReveal(row || document);
     window.setTimeout(function(){
       cleanCardSnippets(row);
       stripDomPostTitles(row);
       ensureCardLabelsWithTutorial(row);
       ensureGsapCardLabels(row);
+      prioritizeHomepageLcpImages(row || document);
       ensureHomepageCardReveal(row || document);
       try {
         var cards = row.querySelectorAll('.card');
@@ -3226,12 +3255,8 @@
       return;
     }
 
-    /* F5 homepage: kill Blog SSR — enhanceNative keeps stale cards visible until feed refresh. */
-    if (!isSingle && isReloadNavigation()) {
-      main.querySelectorAll('.widget.Blog:not(.qcx-rescue-blog):not(.qcx-rescue-skel)').forEach(function(node){
-        try { node.remove(); } catch (err) { node.style.display = 'none'; }
-      });
-    } else if (hasUsableNativeBlog()) {
+    /* Keep Blog SSR for LCP discovery (PSI). enhanceNative refreshes feed without blank skeleton. */
+    if (!isSingle && hasUsableNativeBlog()) {
       enhanceNativeHomepageFeed();
       return;
     }
@@ -3330,11 +3355,7 @@
     var pageTypeBoot = document.documentElement.getAttribute('data-page-type') || '';
     var pageItemBoot = document.documentElement.getAttribute('data-page-item') || '';
     var isSingleBoot = pageItemBoot === 'single' || pageTypeBoot === 'post' || pageTypeBoot === 'page';
-    /* F5 homepage: skip enhanceNative — rebuild from feed so stale SSR never shows. */
-    if (!isSingleBoot && isReloadNavigation()) {
-      rescuePosts();
-      return;
-    }
+    /* F5 homepage: keep SSR Blog for LCP; enhanceNative refreshes without blanking. */
     var nativeBlog = document.querySelector('.widget.Blog:not(.qcx-rescue-blog)');
     /* Empty #main (Blog1 missing in Layout) → rescue immediately, no 120ms wait. */
     if (!nativeBlog) {
