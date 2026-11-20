@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.47/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.48/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -1660,22 +1660,42 @@
     }
   }
 
-  /* Move #comments into the rail widget so it appears directly below
-     "BÀI VIẾT LIÊN QUAN" on both desktop and mobile. */
+  /* Keep #comments under the article (lock panel + Bình luận mã + form).
+     Never park comments inside the related-posts sidebar rail — that shoved
+     the white Blogger iframe to the right and hid unlock chrome from view. */
   function placeCommentsInRail(rail) {
-    if (!rail) return;
     var cmt = document.getElementById('comments') || document.querySelector('.qcx-comments-shell');
     if (!cmt) return;
-    /* Avoid double-insert */
-    if (rail.contains(cmt)) return;
-    /* Don't move on admin pages or non-article pages */
     if (isAdminPath() || !isSingleArticlePage()) return;
+    var stuckInRail = false;
     try {
-      /* On mobile the rail is .qcx-tutorial-inline; on desktop it's in #sidebar.
-         Either way: append #comments as last child of the rail widget-content wrapper. */
-      var railContent = rail.querySelector('.widget-content') || rail;
-      railContent.appendChild(cmt);
-      cmt.setAttribute('data-qcx-in-rail', '1');
+      stuckInRail =
+        cmt.getAttribute('data-qcx-in-rail') === '1' ||
+        !!(cmt.closest && cmt.closest('#sidebar, .qcx-sidebar-rail, #qcx-sidebar-rail-rescue, .qcx-tutorial-inline')) ||
+        !!(rail && rail.contains && rail.contains(cmt));
+    } catch (ignoreStuck) {}
+    if (!stuckInRail) return;
+    try {
+      cmt.removeAttribute('data-qcx-in-rail');
+      var end = document.querySelector('.qcx-article-end');
+      var theArticle = document.querySelector('#the-article, .the-article');
+      var postBody = document.querySelector('.post-body');
+      var host =
+        (end && end.parentNode) ||
+        (theArticle && theArticle.parentNode) ||
+        postBody ||
+        null;
+      if (!host) return;
+      if (end && end.parentNode === host) {
+        if (end.nextSibling) host.insertBefore(cmt, end.nextSibling);
+        else host.appendChild(cmt);
+      } else if (theArticle && theArticle.parentNode === host) {
+        if (theArticle.nextSibling) host.insertBefore(cmt, theArticle.nextSibling);
+        else host.appendChild(cmt);
+      } else {
+        host.appendChild(cmt);
+      }
+      cmt.setAttribute('data-qcx-layout-settled', '1');
     } catch (ignorePlaceCmt) {}
   }
 

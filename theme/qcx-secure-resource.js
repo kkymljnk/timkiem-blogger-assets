@@ -1220,12 +1220,8 @@
     window.setTimeout(function () {
       if (!comments) return;
       try {
-        /* If comments was moved into rail, scroll to the rail container instead */
+        /* Comments stay under the article — scroll the comments block itself. */
         var scrollTarget = comments;
-        if (comments.getAttribute('data-qcx-in-rail') === '1') {
-          var rail = comments.closest('#qcx-sidebar-rail-rescue, .qcx-sidebar-rail, .qcx-tutorial-inline');
-          if (rail) scrollTarget = rail;
-        }
         scrollTarget.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         /* Animate reveal */
         comments.style.setProperty('opacity', '0', 'important');
