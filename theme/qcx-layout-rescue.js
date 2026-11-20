@@ -3405,8 +3405,9 @@
     healLiveUtf8Mojibake();
     if (isAdminPath()) {
       ensureAdminSlimUserDropdown();
-      return;
     }
+    /* Public surfaces get full Gmail CSS/slots; admin still boots name-style sync below. */
+    if (!isAdminPath()) {
     var cssId = 'qcx-gmail-auth-css';
     var st = document.getElementById(cssId);
     if (!st) {
@@ -3608,6 +3609,7 @@
         else if (cNode.parentNode) cNode.parentNode.removeChild(cNode);
       }
     } catch (eComm) {}
+    } /* end !isAdminPath public CSS/slots */
 
     if (!window.__qcxGmailAuthV9) {
       window.__qcxGmailAuthV9 = true;
