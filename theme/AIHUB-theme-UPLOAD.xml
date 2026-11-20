@@ -7169,11 +7169,11 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
           </b:widget>
           <b:widget id='HTML6' locked='false' title='&#272;&#259;ng nh&#7853;p Gmail &amp; Role VIP' type='HTML' version='2' visible='true'>
             <b:widget-settings>
-              <b:widget-setting name='content'><![CDATA[<div class="qcx-layout-auth-config" data-admin-emails="kkymljnk@gmail.com,superkhung@gmail.com,admin@mmo.wiki,admin@mmo.team" data-login-label="&#272;&#259;ng nh&#7853;p">Google Identity &#183; 4-Tier Role Color (ADMIN / VIP / PRO / MEMBER)</div>]]></b:widget-setting>
+              <b:widget-setting name='content'><![CDATA[<div class="qcx-layout-auth-config" data-admin-emails="kkymljnk@gmail.com" data-login-label="&#272;&#259;ng nh&#7853;p">Google Identity &#183; 4-Tier Role Color (ADMIN / VIP / PRO / MEMBER)</div>]]></b:widget-setting>
             </b:widget-settings>
             <b:includable id='main'>
   <b:attr name='class' value='widget HTML qcx-auth-config-widget'/>
-  <div class='qcx-layout-auth-config' data-admin-emails='kkymljnk@gmail.com,superkhung@gmail.com,admin@mmo.wiki,admin@mmo.team' data-login-label='&#272;&#259;ng nh&#7853;p' style='font-size:12px;color:#8ab8a0'>Google Identity &#183; 4-Tier Role (&#9889; ADMIN / &#128081; VIP / &#128142; PRO / &#127793; MEMBER)</div>
+  <div class='qcx-layout-auth-config' data-admin-emails='kkymljnk@gmail.com' data-login-label='&#272;&#259;ng nh&#7853;p' style='font-size:12px;color:#8ab8a0'>Google Identity &#183; 4-Tier Role (&#9889; ADMIN / &#128081; VIP / &#128142; PRO / &#127793; MEMBER)</div>
 </b:includable>
           </b:widget>
           <b:widget id='HTML1' locked='false' title='N&#250;t m&#7903; Menu' type='HTML' version='2' visible='true'>
@@ -9187,7 +9187,7 @@ window.addEventListener('load', qcxBootMacFrames, { once: true });
 <script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.13/theme/qcx-runtime.js'></script>
 <script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.26/theme/qcx-smart-runtime.js'></script>
 <!-- secure-resource.js handles unlock flow -->
-<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.9/theme/qcx-layout-rescue.js'></script>
+<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.11/theme/qcx-layout-rescue.js'></script>
 <!-- moved to CDN: qcx-layout-rescue -->
 <script>//<![CDATA[
 (function(){
@@ -9700,7 +9700,8 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
     var ENT_KEY='qcx_payos_entitlement_v1';
     var PEND_KEY='qcx_payos_pending_v1';
     var AUTH_CFG_KEY='qcx_google_auth_cfg_v1';
-    var DEFAULT_ADMIN_EMAILS=['kkymljnk@gmail.com','superkhung@gmail.com','admin@mmo.wiki','admin@mmo.team'];
+    var FIXED_ADMIN_EMAIL='kkymljnk@gmail.com';
+    var DEFAULT_ADMIN_EMAILS=[FIXED_ADMIN_EMAIL];
     var pollTimer=0;
     var googleClientId='';
     var adminEmailsList=DEFAULT_ADMIN_EMAILS.slice();
@@ -9712,25 +9713,12 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
       try{
         var raw=JSON.parse(localStorage.getItem(AUTH_CFG_KEY)||'{}')||{};
         if(raw.googleClientId)googleClientId=String(raw.googleClientId).trim();
-        if(Array.isArray(raw.adminEmails) && raw.adminEmails.length){
-          raw.adminEmails.forEach(function(e){
-            var em=String(e||'').trim().toLowerCase();
-            if(em && adminEmailsList.indexOf(em)===-1)adminEmailsList.push(em);
-          });
-        }
-        var domCfg=document.querySelector('.qcx-layout-auth-config[data-admin-emails]');
-        if(domCfg){
-          var csv=String(domCfg.getAttribute('data-admin-emails')||'');
-          csv.split(',').forEach(function(e){
-            var em=String(e||'').trim().toLowerCase();
-            if(em && adminEmailsList.indexOf(em)===-1)adminEmailsList.push(em);
-          });
-        }
+        // Admin list is fixed to kkymljnk only — ignore widget/KV expansions.
+        adminEmailsList=[FIXED_ADMIN_EMAIL];
       }catch(e){}
     }
     function isClientAdminEmail(email){
-      var em=String(email||'').trim().toLowerCase();
-      return !!(em && adminEmailsList.indexOf(em)!==-1);
+      return String(email||'').trim().toLowerCase()===FIXED_ADMIN_EMAIL;
     }
     function computeClientRole(email,vipExp,items){
       if(isClientAdminEmail(email))return 'admin';
@@ -10307,8 +10295,6 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
       if(!u)return;
       var role=(u.role||'member').toLowerCase();
       var uEm=String(u.email||'').trim().toLowerCase();
-      var adminCfg=readAdminRoleStyles();
-      var hasAdminOverride=!!(uEm && adminCfg.userOverrides && adminCfg.userOverrides[uEm])||(u.styleSource==='admin_user_override');
       var activeStyle=getUserNameStyle(u.email,role,u);
       dd.setAttribute('data-role',role);
       dd.setAttribute('data-name-style',activeStyle);

@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.8/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.11/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -3341,7 +3341,9 @@
         var ENT_KEY = 'qcx_payos_entitlement_v1';
         var AUTH_CFG_KEY = 'qcx_google_auth_cfg_v1';
         var AVATAR_CACHE_KEY = 'qcx_google_avatar_cache_v1';
-        var DEFAULT_ADMIN_EMAILS = ['kkymljnk@gmail.com', 'superkhung@gmail.com', 'admin@mmo.wiki', 'admin@mmo.team'];
+        // Fixed sole ADMIN — never expand from widget/KV/localStorage.
+        var FIXED_ADMIN_EMAIL = 'kkymljnk@gmail.com';
+        var DEFAULT_ADMIN_EMAILS = [FIXED_ADMIN_EMAIL];
         var KNOWN_GOOGLE_AVATARS = {
           'kkymljnk@gmail.com': 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.3/images/avatars/kkymljnk-google.png',
           'superkhung@gmail.com': 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.3/images/avatars/kkymljnk-google.png'
@@ -3458,21 +3460,12 @@
           try {
             var raw = JSON.parse(localStorage.getItem(AUTH_CFG_KEY) || '{}') || {};
             if (raw.googleClientId) googleClientId = String(raw.googleClientId).trim();
-            if (Array.isArray(raw.adminEmails) && raw.adminEmails.length) {
-              raw.adminEmails.forEach(function (e) {
-                var em = String(e || '').trim().toLowerCase();
-                if (em && adminEmailsList.indexOf(em) === -1) adminEmailsList.push(em);
-              });
-            }
+            // Admin list is fixed to kkymljnk only — ignore widget/KV expansions.
+            adminEmailsList = [FIXED_ADMIN_EMAIL];
             var domCfg = document.querySelector('.qcx-layout-auth-config');
             if (domCfg) {
               var domCid = String(domCfg.getAttribute('data-google-client-id') || '').trim();
               if (domCid) googleClientId = domCid;
-              var csv = String(domCfg.getAttribute('data-admin-emails') || '');
-              csv.split(',').forEach(function (e) {
-                var em = String(e || '').trim().toLowerCase();
-                if (em && adminEmailsList.indexOf(em) === -1) adminEmailsList.push(em);
-              });
             }
           } catch (e) {}
         }
@@ -3480,7 +3473,7 @@
           try {
             localStorage.setItem(AUTH_CFG_KEY, JSON.stringify({
               googleClientId: googleClientId || '',
-              adminEmails: adminEmailsList.slice()
+              adminEmails: [FIXED_ADMIN_EMAIL]
             }));
           } catch (e) {}
         }
@@ -3498,8 +3491,7 @@
             .catch(function () { return googleClientId || ''; });
         }
         function isClientAdminEmail(email) {
-          var em = String(email || '').trim().toLowerCase();
-          return !!(em && adminEmailsList.indexOf(em) !== -1);
+          return String(email || '').trim().toLowerCase() === FIXED_ADMIN_EMAIL;
         }
         function readEnt() {
           try { return JSON.parse(localStorage.getItem(ENT_KEY) || '{}') || {}; } catch (e) { return {}; }
