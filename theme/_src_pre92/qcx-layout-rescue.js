@@ -16,7 +16,10 @@
       st.id = 'qcx-home-cls-reserve';
       /* Keep reserve modest — 70vh left a huge empty gap when Blog1 sat outside #main. */
       st.textContent =
-        'html[data-page-type="homepage"] #qcx-ssr-lcp-shell,' +
+        'html[data-page-type="homepage"] .main-wrapper{position:relative}' +
+        'html[data-page-type="homepage"] #qcx-ssr-lcp-shell{' +
+        'position:absolute;left:0;right:0;top:0;z-index:2;width:100%;' +
+        'margin:0!important;min-height:0!important;pointer-events:none}' +
         'html[data-page-type="homepage"] #Blog1.qcx-rescue-blog .all_posts,' +
         'html[data-page-type="homepage"] .widget.Blog .all_posts{' +
         'min-height:220px}' +
@@ -282,7 +285,7 @@
 
   function qcxCdnPin() {
     var m = String(QCX_CDN || '').match(/@(v\d[\w.-]+)\//);
-    return (m && m[1]) || 'v2026.11.19.99';
+    return (m && m[1]) || 'v2026.11.19.100';
   }
 
   /* Homepage cards: ~15–55KB WebP instead of 450–1000KB hero JPG (PSI image delivery). */
@@ -599,7 +602,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.99/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.100/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -3124,11 +3127,18 @@
 
   function removeSsrLcpShell() {
     try {
-      /* Prefer in-place reuse via renderHomepage. Only drop leftovers that were NOT converted to Blog1. */
+      /* Prefer in-place reuse via renderHomepage. Hide leftovers (absolute, out of flow)
+         instead of removeChild — DOM remove after dual paint was CLS ~0.115. */
       document.querySelectorAll('#qcx-ssr-lcp-shell, .qcx-ssr-lcp-shell').forEach(function(node){
         if (!node || !node.parentNode) return;
         if (node.id === 'Blog1' || (node.classList && node.classList.contains('qcx-rescue-blog'))) return;
-        try { node.parentNode.removeChild(node); } catch (ignoreDup) {}
+        try {
+          node.setAttribute('hidden', 'hidden');
+          node.setAttribute('aria-hidden', 'true');
+          node.style.cssText = 'display:none!important;position:absolute!important;width:0!important;height:0!important;overflow:hidden!important;pointer-events:none!important';
+        } catch (ignoreHide) {
+          try { node.parentNode.removeChild(node); } catch (ignoreDup) {}
+        }
       });
       var early = document.getElementById('qcx-early-lcp-img');
       if (early && early.parentNode) early.parentNode.removeChild(early);
