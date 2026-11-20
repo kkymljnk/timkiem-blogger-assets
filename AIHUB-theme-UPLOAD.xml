@@ -9174,7 +9174,7 @@ window.addEventListener('load', qcxBootMacFrames, { once: true });
 <script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.13/theme/qcx-runtime.js'></script>
 <script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.26/theme/qcx-smart-runtime.js'></script>
 <!-- secure-resource.js handles unlock flow -->
-<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.33/theme/qcx-layout-rescue.js'></script>
+<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.34/theme/qcx-layout-rescue.js'></script>
 <!-- moved to CDN: qcx-layout-rescue -->
 <script>//<![CDATA[
 (function(){
@@ -10136,50 +10136,26 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
     }
 
     function startGoogleOAuthPopup(statusEl){
-      loadLocalAuthCfg();
-      if(!googleClientId){
-        var emInp=document.getElementById('qcx-ga-email');
-        var nmInp=document.getElementById('qcx-ga-name');
-        if(emInp && emInp.value && emInp.value.indexOf('@')!==-1){
-          var subBtn=document.getElementById('qcx-ga-submit');
-          if(subBtn){subBtn.click();return;}
-        }
-        if(statusEl){
-          statusEl.classList.remove('is-err');
-          statusEl.textContent='Nh\u1eadp H\u1ecd t\u00ean & Gmail c\u1ee7a b\u1ea1n b\u00ean d\u01b0\u1edbi r\u1ed3i b\u1ea5m \u0110\u0103ng nh\u1eadp.';
-        }
-        if(nmInp && !nmInp.value)nmInp.focus();
-        else if(emInp)emInp.focus();
-        return;
+      // Prefer CDN GIS ID-token flow (no initTokenClient / gsi/transform popup).
+      if(typeof window.__qcxStartGoogleOAuthPopup==='function'){
+        try{window.__qcxStartGoogleOAuthPopup(statusEl);return;}catch(eCdn){}
       }
-      loadGsiScript(function(){
-        if(!(window.google && window.google.accounts && window.google.accounts.oauth2)){
-          if(statusEl)statusEl.textContent='Tr\u00ecnh duy\u1ec7t ch\u1eb7n popup Google, vui l\u00f2ng \u0111i\u1ec1n Gmail b\u00ean d\u01b0\u1edbi.';
-          return;
-        }
-        try{
-          gsiTokenClient=window.google.accounts.oauth2.initTokenClient({
-            client_id:googleClientId,
-            scope:'openid email profile',
-            prompt:'select_account',
-            callback:function(tokenRes){
-              if(!tokenRes || !tokenRes.access_token){
-                if(statusEl){statusEl.textContent='B\u1ea1n \u0111\u00e3 \u0111\u00f3ng c\u1eeda s\u1ed5 ch\u1ecdn t\u00e0i kho\u1ea3n Google.';statusEl.classList.add('is-err');}
-                return;
-              }
-              if(statusEl){statusEl.classList.remove('is-err');statusEl.textContent='\u0110ang x\u00e1c th\u1ef1c t\u00e0i kho\u1ea3n Google...';}
-              fetch('https://www.googleapis.com/oauth2/v3/userinfo',{
-                headers:{'Authorization':'Bearer '+tokenRes.access_token}
-              }).then(function(r){return r.json();}).catch(function(){return {};}).then(function(gInfo){
-                return authenticateGmailProfile({email:gInfo.email,name:gInfo.name,picture:gInfo.picture},tokenRes.access_token,statusEl);
-              });
-            }
-          });
-          gsiTokenClient.requestAccessToken({prompt:'select_account'});
-        }catch(e){
-          if(statusEl)statusEl.textContent='Vui l\u00f2ng nh\u1eadp Gmail tr\u1ef1c ti\u1ebfp b\u00ean d\u01b0\u1edbi.';
-        }
-      });
+      loadLocalAuthCfg();
+      if(!googleClientId)googleClientId='94419988478-0os3sguo1jbe06ob9fi5vusb969vpmil.apps.googleusercontent.com';
+      try{
+        sessionStorage.setItem('qcx_oauth_return',location.href.split('#')[0]);
+        sessionStorage.setItem('qcx_oauth_pending','1');
+      }catch(eSs){}
+      var redirectUri=location.origin+'/';
+      location.assign('https://accounts.google.com/o/oauth2/v2/auth?'+[
+        'client_id='+encodeURIComponent(googleClientId),
+        'redirect_uri='+encodeURIComponent(redirectUri),
+        'response_type=token',
+        'scope='+encodeURIComponent('openid email profile'),
+        'prompt=select_account',
+        'include_granted_scopes=true',
+        'state='+encodeURIComponent('qcx_oauth1')
+      ].join('&'));
     }
 
     function renderSavedAccountsPicker(){
@@ -10289,6 +10265,10 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
 
     function triggerGoogleSignIn(afterLoginPayosCfg){
       pendingPayosCfgAfterLogin=afterLoginPayosCfg||null;
+      // CDN GIS wins when present — do not open legacy modal / initTokenClient.
+      if(typeof window.__qcxStartGoogleOAuthPopup==='function'){
+        try{window.__qcxStartGoogleOAuthPopup(null);return;}catch(eCdn2){}
+      }
       loadLocalAuthCfg();
       var m=document.getElementById('qcx-google-auth-modal');
       if(m){m.classList.remove('is-open');m.style.display='none';try{m.remove();}catch(e){}}
@@ -10296,7 +10276,7 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
       startGoogleOAuthPopup(null);
       fetchAuthConfig();
     }
-    window.__qcxTriggerGoogleSignIn=triggerGoogleSignIn;
+    if(typeof window.__qcxTriggerGoogleSignIn!=='function')window.__qcxTriggerGoogleSignIn=triggerGoogleSignIn;
 
     function toggleUserDropdown(anchorBtn){
       var dd=document.getElementById('qcx-user-dropdown');

@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.33/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.34/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -4093,9 +4093,23 @@
               }, true);
             }
           }
-          // Override theme-inline login entry so header always opens native Google chooser.
+          // Override theme-inline login entry (theme script often re-assigns these later).
           window.__qcxTriggerGoogleSignIn = triggerGoogleSignIn;
+          window.__qcxStartGoogleOAuthPopup = startGoogleOAuthPopup;
           try { window.triggerGoogleSignIn = triggerGoogleSignIn; } catch (e) {}
+          if (!window.__qcxGisLoginCapture) {
+            window.__qcxGisLoginCapture = true;
+            document.addEventListener('click', function (ev) {
+              var t = ev.target && ev.target.closest
+                ? ev.target.closest('.qcx-auth-login-btn,[data-qcx-google-login]')
+                : null;
+              if (!t) return;
+              ev.preventDefault();
+              ev.stopPropagation();
+              if (ev.stopImmediatePropagation) ev.stopImmediatePropagation();
+              triggerGoogleSignIn(null);
+            }, true);
+          }
         }
         function buildClientAuthResponse(profile, recoverRes) {
           var cur = readEnt();
@@ -4495,10 +4509,22 @@
           killAuthModal();
           loadLocalAuthCfg();
           if (!googleClientId) googleClientId = DEFAULT_GOOGLE_CLIENT_ID;
-          // Native Google account chooser only (popup/tab) — never show custom modal.
+          // GIS ID-token button / One Tap — never theme initTokenClient (gsi/transform).
           startGoogleOAuthPopup(null);
           fetchAuthConfig().then(function () { /* warm/refresh client id for next time */ });
         }
+        // Keep beating theme-inline re-assignments after boot.
+        window.__qcxTriggerGoogleSignIn = triggerGoogleSignIn;
+        window.__qcxStartGoogleOAuthPopup = startGoogleOAuthPopup;
+        try { window.triggerGoogleSignIn = triggerGoogleSignIn; } catch (eBind) {}
+        var _gisReassert = 0;
+        var _gisReassertTimer = window.setInterval(function () {
+          window.__qcxTriggerGoogleSignIn = triggerGoogleSignIn;
+          window.__qcxStartGoogleOAuthPopup = startGoogleOAuthPopup;
+          try { window.triggerGoogleSignIn = triggerGoogleSignIn; } catch (e2) {}
+          _gisReassert += 1;
+          if (_gisReassert >= 20) window.clearInterval(_gisReassertTimer);
+        }, 250);
         var SAVED_PAGE_SIZE = 5;
         var _savedModalList = [];
         var _savedModalShown = SAVED_PAGE_SIZE;
