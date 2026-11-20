@@ -240,7 +240,7 @@
 
   function qcxCdnPin() {
     var m = String(QCX_CDN || '').match(/@(v\d[\w.-]+)\//);
-    return (m && m[1]) || 'v2026.11.19.97';
+    return (m && m[1]) || 'v2026.11.19.98';
   }
 
   /* Homepage cards: ~15–55KB WebP instead of 450–1000KB hero JPG (PSI image delivery). */
@@ -557,7 +557,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.97/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.98/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -1668,9 +1668,12 @@
   }
   window.__qcxFixAriaHiddenTabindex = fixAriaHiddenTabindex;
 
-  /* Theme often drops .qcx-backdrop / scanline / ghost-blink CSS — restore. */
+  /* Theme often drops .qcx-backdrop / scanline / ghost-blink CSS — restore.
+     Skip atmosphere.css on homepage/index — PSI unused-CSS ~42KiB. */
   function ensureAtmosphere() {
-    ensureStylesheet('qcx-atmosphere', QCX_ATMOSPHERE_CSS);
+    if (!isHomepageView()) {
+      ensureStylesheet('qcx-atmosphere', QCX_ATMOSPHERE_CSS);
+    }
     ensureRaisedChrome();
     ensureMenuDrawer();
     ensureMobileNavReady();
@@ -5938,7 +5941,8 @@
   }
   /* Deferred polish only when chrome is still missing (anti-FOUC: no spare re-paint on F5). */
   function qcxNeedChromePolish() {
-    return !document.getElementById('qcx-atmosphere') ||
+    var needsAtm = !isHomepageView() && !document.getElementById('qcx-atmosphere');
+    return needsAtm ||
       !document.querySelector('.qcx-sidebar-rail, #PopularPosts1, .qcx-site-footer, #qcx-menu');
   }
   function qcxDeferredPolish(fn, ms) {
