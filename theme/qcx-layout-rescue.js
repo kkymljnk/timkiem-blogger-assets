@@ -2,6 +2,44 @@
   var already = document.documentElement.getAttribute('data-qcx-rescue') === 'true';
   document.documentElement.setAttribute('data-qcx-rescue', 'true');
 
+  /* PSI LCP: paint a real <img> as soon as this deferred file runs — do not wait for
+     feed JSON. Preload in <head> warms cache; without a DOM node LCP stays ~4s. */
+  (function paintEarlyLcpFromRescue() {
+    try {
+      var type = document.documentElement.getAttribute('data-page-type') || '';
+      var item = document.documentElement.getAttribute('data-page-item') || '';
+      if (type === 'post' || type === 'page' || item === 'single') return;
+      if (document.getElementById('qcx-ssr-lcp-shell') || document.getElementById('qcx-early-lcp-img')) return;
+      if (document.querySelector('#Blog1 img.qcx-card-media, .all_posts img.qcx-card-media')) return;
+      var pre = document.getElementById('qcx-lcp-preload');
+      var href = (pre && pre.href) || '';
+      if (!href || href.indexOf('data:') === 0) {
+        var pinMatch = (document.querySelector('script[src*="qcx-layout-rescue"]') || {}).src || '';
+        var pin = (pinMatch.match(/@(v20\d{2}\.\d+\.\d+\.\d+)/) || [])[1] || 'v2026.11.19.90';
+        href = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@' + pin + '/images/hero/card/vps-mien-phi-2026.webp';
+      }
+      var img = document.createElement('img');
+      img.id = 'qcx-early-lcp-img';
+      img.className = 'qcx-card-media qcx-card-lcp';
+      img.alt = '';
+      img.width = 720;
+      img.height = 405;
+      img.decoding = 'async';
+      img.loading = 'eager';
+      try { img.fetchPriority = 'high'; } catch (ignoreFp) {}
+      img.setAttribute('fetchpriority', 'high');
+      img.src = href;
+      /* Visible in-viewport node for LCP (opacity>0). Sit where first card will land. */
+      img.style.cssText =
+        'position:absolute;left:12px;right:12px;top:220px;width:auto;max-width:720px;height:auto;' +
+        'aspect-ratio:16/9;object-fit:cover;border-radius:14px;z-index:1;pointer-events:none;';
+      var host = document.querySelector('.main-wrapper') || document.getElementById('main') || document.body;
+      if (!host) return;
+      if (getComputedStyle(host).position === 'static') host.style.position = 'relative';
+      host.insertBefore(img, host.firstChild);
+    } catch (ignoreEarly) {}
+  })();
+
   /* Reserve homepage feed height early so rescue paint does not score ~0.25 CLS. */
   (function reserveHomepageFeedHeight() {
     try {
@@ -11,13 +49,11 @@
       if (document.getElementById('qcx-home-cls-reserve')) return;
       var st = document.createElement('style');
       st.id = 'qcx-home-cls-reserve';
+      /* Keep reserve modest — 70vh left a huge empty gap when Blog1 sat outside #main. */
       st.textContent =
-        'html[data-page-type="homepage"] #main.main,' +
-        'html[data-page-item="multiple"] #main.main{' +
-        'min-height:min(70vh,720px)!important}' +
         'html[data-page-type="homepage"] #qcx-ssr-lcp-shell,' +
         'html[data-page-type="homepage"] #Blog1.qcx-rescue-blog .all_posts{' +
-        'min-height:280px}';
+        'min-height:200px}';
       (document.head || document.documentElement).appendChild(st);
     } catch (ignoreReserve) {}
   })();
@@ -239,7 +275,7 @@
 
   function qcxCdnPin() {
     var m = String(QCX_CDN || '').match(/@(v\d[\w.-]+)\//);
-    return (m && m[1]) || 'v2026.11.19.89';
+    return (m && m[1]) || 'v2026.11.19.90';
   }
 
   /* Homepage cards: ~15–55KB WebP instead of 450–1000KB hero JPG (PSI image delivery). */
@@ -546,7 +582,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.89/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.90/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
