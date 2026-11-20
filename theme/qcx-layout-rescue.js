@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.35/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.36/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -3480,8 +3480,8 @@
       }
     } catch (eComm) {}
 
-    if (!window.__qcxGmailAuthV8) {
-      window.__qcxGmailAuthV8 = true;
+    if (!window.__qcxGmailAuthV9) {
+      window.__qcxGmailAuthV9 = true;
       (function initRescueAuthFallback() {
         var API_BASE = 'https://timkiem-store-api.kkymljnk.workers.dev';
         var ENT_KEY = 'qcx_payos_entitlement_v1';
@@ -4285,113 +4285,18 @@
           });
           return true;
         }
-        var gsiIdInitialized = false;
-        function onGoogleIdCredential(response) {
-          var cred = response && response.credential;
-          if (!cred) return;
-          var st = document.getElementById('qcx-ga-status');
-          if (st) { st.classList.remove('is-err'); st.textContent = 'Đang xác thực Google ID token...'; }
-          authenticateWithIdToken(cred).catch(function () {
-            if (st) { st.classList.add('is-err'); st.textContent = 'Đăng nhập Google thất bại. Thử nút dự phòng bên dưới.'; }
-          });
-        }
-        function ensureGsiIdInitialized() {
-          if (!window.google || !google.accounts || !google.accounts.id) return false;
-          if (!googleClientId) googleClientId = DEFAULT_GOOGLE_CLIENT_ID;
-          if (!gsiIdInitialized) {
-            google.accounts.id.initialize({
-              client_id: googleClientId,
-              callback: onGoogleIdCredential,
-              auto_select: false,
-              cancel_on_tap_outside: true,
-              context: 'signin',
-              ux_mode: 'popup',
-              use_fedcm_for_prompt: true
-            });
-            gsiIdInitialized = true;
-          }
-          return true;
-        }
-        function ensureGoogleIdSignInModal() {
-          var m = document.getElementById('qcx-google-auth-modal');
-          if (m && m.getAttribute('data-qcx-gis') === '1') return m;
-          killAuthModal();
-          m = document.createElement('div');
-          m.id = 'qcx-google-auth-modal';
-          m.setAttribute('role', 'dialog');
-          m.setAttribute('aria-modal', 'true');
-          m.setAttribute('data-qcx-gis', '1');
-          m.className = 'is-open';
-          m.innerHTML =
-            '<div class="qcx-payos-dialog" style="max-width:360px">' +
-              '<div class="qcx-payos-head">' +
-                '<div><span class="qcx-payos-badge">GOOGLE SIGN-IN</span><h3 class="qcx-payos-title">Đăng nhập bằng Google</h3></div>' +
-                '<button type="button" class="qcx-payos-close" id="qcx-ga-close" aria-label="Đóng">&#215;</button>' +
-              '</div>' +
-              '<p style="margin:0 0 12px;font-size:12.5px;line-height:1.45;color:#9bbdad">Chọn tài khoản Google — dùng ID token (không mở popup gsi/transform).</p>' +
-              '<div id="qcx-gis-btn" style="display:flex;justify-content:center;min-height:44px;margin-bottom:12px"></div>' +
-              '<button type="button" class="qcx-payos-btn" id="qcx-ga-oauth-fallback" style="width:100%;margin:0 0 8px">Dự phòng: OAuth full-page</button>' +
-              '<div class="qcx-payos-status" id="qcx-ga-status">Nút Google chính thức bên trên</div>' +
-            '</div>';
-          document.body.appendChild(m);
-          document.getElementById('qcx-ga-close').addEventListener('click', function () { killAuthModal(); });
-          document.getElementById('qcx-ga-oauth-fallback').addEventListener('click', function () {
-            location.assign(buildGoogleOAuthRedirectUrl());
-          });
-          m.addEventListener('click', function (ev) { if (ev.target === m) killAuthModal(); });
-          return m;
-        }
-        function renderGoogleIdButton() {
-          var host = document.getElementById('qcx-gis-btn');
-          if (!host || !ensureGsiIdInitialized()) return false;
-          host.innerHTML = '';
-          try {
-            google.accounts.id.renderButton(host, {
-              type: 'standard',
-              theme: 'outline',
-              size: 'large',
-              text: 'signin_with',
-              shape: 'pill',
-              logo_alignment: 'left',
-              width: 280,
-              locale: 'vi'
-            });
-            return true;
-          } catch (e) {
-            return false;
-          }
-        }
         function startGoogleOAuthPopup(statusEl) {
-          // GIS ID-token Sign-In (official button / One Tap). No oauth2 token popup → no blank gsi/transform.
+          // Same-tab OAuth only. Never open GIS popup / gsi/transform (blank + no return).
           killAuthModal();
           loadLocalAuthCfg();
           if (!googleClientId) googleClientId = DEFAULT_GOOGLE_CLIENT_ID;
-          ensureGoogleIdSignInModal();
-          var st = statusEl || document.getElementById('qcx-ga-status');
-          if (st) { st.classList.remove('is-err'); st.textContent = 'Đang tải Google Sign-In...'; }
-          loadGsiScript(function () {
-            if (!ensureGsiIdInitialized()) {
-              if (st) { st.classList.add('is-err'); st.textContent = 'Không tải được GIS — dùng OAuth full-page.'; }
-              location.assign(buildGoogleOAuthRedirectUrl());
-              return;
-            }
-            var painted = renderGoogleIdButton();
-            if (st) st.textContent = painted ? 'Bấm nút Google để chọn tài khoản' : 'Đang mở One Tap...';
+          if (statusEl) {
             try {
-              google.accounts.id.prompt(function (notification) {
-                if (!notification) return;
-                var missed = (notification.isNotDisplayed && notification.isNotDisplayed()) ||
-                  (notification.isSkippedMoment && notification.isSkippedMoment()) ||
-                  (notification.isDismissedMoment && notification.isDismissedMoment());
-                if (missed && !painted) {
-                  painted = renderGoogleIdButton();
-                  if (st) st.textContent = painted ? 'Bấm nút Google để chọn tài khoản' : 'One Tap không khả dụng — dùng nút dự phòng.';
-                }
-              });
-            } catch (e2) {
-              if (!painted) renderGoogleIdButton();
-            }
-          });
+              statusEl.classList.remove('is-err');
+              statusEl.textContent = 'Đang chuyển tới Google...';
+            } catch (eSt) {}
+          }
+          location.assign(buildGoogleOAuthRedirectUrl());
         }
         function renderSavedAccountsPicker() {
           var box = document.getElementById('qcx-ga-saved-list');

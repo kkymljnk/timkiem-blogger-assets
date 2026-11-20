@@ -9174,7 +9174,7 @@ window.addEventListener('load', qcxBootMacFrames, { once: true });
 <script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.13/theme/qcx-runtime.js'></script>
 <script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.26/theme/qcx-smart-runtime.js'></script>
 <!-- secure-resource.js handles unlock flow -->
-<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.35/theme/qcx-layout-rescue.js'></script>
+<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.36/theme/qcx-layout-rescue.js'></script>
 <!-- moved to CDN: qcx-layout-rescue -->
 <script>//<![CDATA[
 (function(){
@@ -10136,7 +10136,7 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
     }
 
     function startGoogleOAuthPopup(statusEl){
-      // Prefer CDN GIS ID-token flow (no initTokenClient / gsi/transform popup).
+      // Same-tab OAuth only — never initTokenClient / gsi/transform popup.
       if(typeof window.__qcxStartGoogleOAuthPopup==='function'){
         try{window.__qcxStartGoogleOAuthPopup(statusEl);return;}catch(eCdn){}
       }
@@ -10146,10 +10146,9 @@ body:not(#layout) #homepage-widgets:has(.qcx-home-notice-bar[data-active='false'
         sessionStorage.setItem('qcx_oauth_return',location.href.split('#')[0]);
         sessionStorage.setItem('qcx_oauth_pending','1');
       }catch(eSs){}
-      var redirectUri=location.origin+'/';
       location.assign('https://accounts.google.com/o/oauth2/v2/auth?'+[
         'client_id='+encodeURIComponent(googleClientId),
-        'redirect_uri='+encodeURIComponent(redirectUri),
+        'redirect_uri='+encodeURIComponent(location.origin+'/'),
         'response_type=token',
         'scope='+encodeURIComponent('openid email profile'),
         'prompt=select_account',
