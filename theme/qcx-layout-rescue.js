@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.53/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.54/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -580,8 +580,9 @@
       '#sidebar .qcx-sidebar-rail .item-content,.qcx-sidebar-rail .snippet{display:none!important}' +
       '@media (min-width:861px){' +
       'html[data-page-type="post"] #sidebar,html[data-page-item="single"] #sidebar,' +
-      'html[data-page-type="item"] #sidebar{' +
-      'position:sticky!important;top:84px!important;align-self:flex-start!important;' +
+      'html[data-page-type="item"] #sidebar,' +
+      'html[data-page-type="post"] #sidebar.qcx-addon-zone,html[data-page-item="single"] #sidebar.qcx-addon-zone{' +
+      'position:sticky!important;top:84px!important;align-self:start!important;height:fit-content!important;' +
       'max-height:calc(100vh - 96px)!important;overflow-x:clip!important;overflow-y:auto!important;' +
       'overscroll-behavior:contain!important;scrollbar-width:none!important;z-index:5!important}' +
       'html[data-page-type="post"] #sidebar::-webkit-scrollbar,html[data-page-item="single"] #sidebar::-webkit-scrollbar{' +
@@ -592,7 +593,7 @@
       '}' +
       '@media (max-width:860px){' +
       'html[data-page-type="post"] #sidebar,html[data-page-item="single"] #sidebar{' +
-      'position:static!important;top:auto!important;max-height:none!important;overflow:visible!important}' +
+      'position:static!important;top:auto!important;max-height:none!important;overflow:visible!important;height:auto!important}' +
       '}';
     var st = document.getElementById(id);
     if (!st) {
