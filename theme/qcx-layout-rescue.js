@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.30/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.31/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -3170,7 +3170,8 @@
     if (social) {
       social.style.setProperty('margin', '0', 'important');
       social.style.setProperty('margin-top', '0', 'important');
-      social.style.setProperty('padding', '8px 16px', 'important');
+      /* Prefer stylesheet media query for mobile tabbar pad — only clear bad margins inline */
+      social.style.removeProperty('padding');
     }
     if (btn) {
       btn.style.setProperty('height', '26px', 'important');

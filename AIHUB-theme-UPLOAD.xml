@@ -2336,7 +2336,7 @@ html body main.main-container {
 .qcx-load-more-wrap,
 .nav-pagination {
   text-align: center !important;
-  margin: 36px 0 40px !important;
+  margin: 24px 0 12px !important;
 }
 
 /* --- HERO: mobile tweak --- */
@@ -9174,7 +9174,7 @@ window.addEventListener('load', qcxBootMacFrames, { once: true });
 <script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.13/theme/qcx-runtime.js'></script>
 <script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.26/theme/qcx-smart-runtime.js'></script>
 <!-- secure-resource.js handles unlock flow -->
-<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.30/theme/qcx-layout-rescue.js'></script>
+<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.31/theme/qcx-layout-rescue.js'></script>
 <!-- moved to CDN: qcx-layout-rescue -->
 <script>//<![CDATA[
 (function(){
