@@ -9588,10 +9588,10 @@ html body footer.footer .qcx-footer-tg-btn svg {
   flex-shrink: 0 !important;
 }
 html body .scroll--top {
-  bottom: 64px !important;
-  right: 18px !important;
-  width: 36px !important;
-  height: 36px !important;
+  bottom: 52px !important;
+  right: 16px !important;
+  width: 32px !important;
+  height: 32px !important;
   border-radius: 10px !important;
   border: 1px solid rgba(76,175,130,0.36) !important;
   background: rgba(13,24,18,0.92) !important;
@@ -9609,7 +9609,7 @@ html body .scroll--top:hover {
 }
 @media (max-width: 860px) {
   html body footer.footer .qcx-footer-social {
-    padding: 10px 14px calc(64px + env(safe-area-inset-bottom, 0px)) !important;
+    padding: 8px 14px calc(58px + env(safe-area-inset-bottom, 0px)) !important;
   }
   html body footer.footer .qcx-footer-inner {
     padding: 0 !important;
