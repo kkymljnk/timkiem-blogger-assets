@@ -9175,7 +9175,7 @@ window.addEventListener('load', qcxBootMacFrames, { once: true });
 <script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.13/theme/qcx-runtime.js'></script>
 <script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.18.26/theme/qcx-smart-runtime.js'></script>
 <!-- secure-resource.js handles unlock flow -->
-<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.18/theme/qcx-layout-rescue.js'></script>
+<script defer='defer' src='https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.19/theme/qcx-layout-rescue.js'></script>
 <!-- moved to CDN: qcx-layout-rescue -->
 <script>//<![CDATA[
 (function(){
