@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.66/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.67/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -2088,56 +2088,110 @@
     }
   }
 
+  /* Noise labels never become topic chips; price noise still feeds the award. */
+  var QCX_LABEL_NOISE = /^(bca|themeblogspot)$/i;
+  var QCX_LABEL_PRICE = /^(?:\d{1,3}(?:[.,]\d{3})+|\d+)\s*(?:đ|d|vnd|k|đồng)?$/i;
+
+  function formatAwardPrice(raw) {
+    var s = String(raw || '').trim();
+    if (!s) return '';
+    var lower = s.toLowerCase().replace(/\s+/g, '');
+    var kMatch = lower.match(/^(\d+(?:[.,]\d+)?)k$/i);
+    if (kMatch) {
+      var kn = parseFloat(kMatch[1].replace(',', '.'));
+      if (!isNaN(kn)) s = String(Math.round(kn * 1000));
+    } else {
+      s = s.replace(/\s*(đ|d|vnd|đồng)\s*$/i, '');
+    }
+    var digits = s.replace(/[^\d]/g, '');
+    if (!digits) return String(raw || '').trim();
+    var n = parseInt(digits, 10);
+    if (isNaN(n)) return String(raw || '').trim();
+    var withDots = String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    return withDots + 'đ';
+  }
+
+  function parseAwardFromLabel(name) {
+    var t = String(name || '').trim();
+    if (!t) return null;
+    if (/^free$/i.test(t)) return { kind: 'free', text: 'FREE' };
+    if (/^vip$/i.test(t)) return { kind: 'vip', text: 'VIP' };
+    if (QCX_LABEL_PRICE.test(t) || /^50[.,]?000$/i.test(t)) {
+      return { kind: 'price', text: formatAwardPrice(t) };
+    }
+    return null;
+  }
+
+  function isAwardLabelText(name) {
+    return !!parseAwardFromLabel(name);
+  }
+
+  function pickAward(a, b) {
+    /* Priority: free > vip > price (VIP beats price when both paid markers exist). */
+    if (!a) return b || null;
+    if (!b) return a;
+    var rank = { free: 3, vip: 2, price: 1 };
+    return (rank[b.kind] || 0) > (rank[a.kind] || 0) ? b : a;
+  }
+
   function cardLabelsWithTutorial(allLabels) {
     var list = (allLabels || []).filter(Boolean);
-    var skip = /^(50\.?000|bca|themeblogspot)$/i;
-    var mode = null;
+    var award = null;
     var others = [];
     var hasTutorial = false;
     list.forEach(function(label){
       var name = String(label || '').trim();
-      if (!name || skip.test(name)) return;
+      if (!name || QCX_LABEL_NOISE.test(name)) return;
       if (/^tutorial$/i.test(name)) { hasTutorial = true; return; }
-      if (/^(free|vip)$/i.test(name)) {
-        /* VIP wins over FREE if both present. */
-        if (!mode || (/^vip$/i.test(name) && mode !== 'VIP')) {
-          mode = /^vip$/i.test(name) ? 'VIP' : 'FREE';
-        }
+      var parsed = parseAwardFromLabel(name);
+      if (parsed) {
+        award = pickAward(award, parsed);
         return;
       }
       others.push(name);
     });
     var topics = others.slice();
     if (hasTutorial) topics.push('Tutorial');
-    /* mode = top-left award; topics = bottom GSAP plugins (+N). */
-    return { mode: mode, topics: topics };
+    /* award = top-left GSAP pill; topics = bottom plugins (+N). */
+    return { award: award, topics: topics };
   }
 
-  function awardModeFromHeader(header) {
+  function awardFromHeader(header) {
     if (!header) return null;
     var el = header.querySelector(':scope > .qcx-card-award');
     if (!el) return null;
-    if (/qcx-card-award--vip|\bVIP\b/i.test(el.className + ' ' + (el.textContent || ''))) return 'VIP';
-    if (/qcx-card-award--free|\bFREE\b/i.test(el.className + ' ' + (el.textContent || ''))) return 'FREE';
-    return null;
+    var text = (el.textContent || '').trim();
+    if (/qcx-card-award--free/i.test(el.className) || /^free$/i.test(text)) {
+      return { kind: 'free', text: text || 'FREE' };
+    }
+    if (/qcx-card-award--vip/i.test(el.className)) {
+      if (/^vip$/i.test(text)) return { kind: 'vip', text: 'VIP' };
+      return { kind: 'price', text: text || 'VIP' };
+    }
+    return parseAwardFromLabel(text);
   }
 
-  function ensureCardAward(header, mode) {
-    if (!header || !mode) return;
+  function ensureCardAward(header, award) {
+    if (!header || !award || !award.kind) return;
     var existing = header.querySelector(':scope > .qcx-card-award');
-    var cls = 'qcx-card-award qcx-card-award--' + (mode === 'VIP' ? 'vip' : 'free');
+    var variant = award.kind === 'free' ? 'free' : 'vip'; /* vip + price share SOTW green */
+    var cls = 'qcx-card-award qcx-card-award--' + variant;
+    var text = award.text || (award.kind === 'free' ? 'FREE' : (award.kind === 'vip' ? 'VIP' : ''));
+    if (!text) return;
     if (existing) {
       existing.className = cls;
-      existing.textContent = mode;
+      existing.textContent = text;
+      existing.setAttribute('data-qcx-award', award.kind);
       return;
     }
-    var award = document.createElement('span');
-    award.className = cls;
-    award.textContent = mode;
-    award.setAttribute('aria-hidden', 'true');
+    var node = document.createElement('span');
+    node.className = cls;
+    node.textContent = text;
+    node.setAttribute('data-qcx-award', award.kind);
+    node.setAttribute('aria-hidden', 'true');
     var labels = header.querySelector('.qcx-card-labels');
-    if (labels) header.insertBefore(award, labels);
-    else header.appendChild(award);
+    if (labels) header.insertBefore(node, labels);
+    else header.appendChild(node);
   }
 
   function ensureCardLabelsWithTutorial(root) {
@@ -2167,22 +2221,26 @@
     } catch (err) {}
   }
 
-  /* Beat theme touch-target; keep topic chips + award size stable. */
+  /* Beat theme touch-target; keep topic chips + award size stable (GSAP measured). */
   function ensureGsapChipSizeCss() {
     if (document.getElementById('qcx-gsap-chip-size')) return;
     var st = document.createElement('style');
     st.id = 'qcx-gsap-chip-size';
     st.textContent =
       '.card-header .qcx-card-award{' +
-      'position:absolute!important;top:.4rem!important;left:.4rem!important;z-index:7!important;' +
-      'display:inline-flex!important;align-items:center!important;' +
-      'padding:2.4px 8px!important;border-radius:99px!important;' +
-      'font-size:11px!important;font-weight:500!important;line-height:1.1!important;' +
-      'min-height:0!important;min-width:0!important;margin:0!important;pointer-events:none!important}' +
+      'position:absolute!important;top:.4rem!important;left:.4rem!important;z-index:2!important;' +
+      'display:block!important;' +
+      'padding:2.4px 8px!important;border-radius:99px!important;border:0!important;' +
+      'font-size:11px!important;font-weight:500!important;line-height:14.85px!important;' +
+      'letter-spacing:.11px!important;white-space:nowrap!important;' +
+      'min-height:0!important;min-width:0!important;margin:0!important;pointer-events:none!important;' +
+      'box-shadow:none!important}' +
       '.card-header .qcx-card-award--free{background:rgba(14,16,15,.55)!important;color:rgba(255,252,225,.92)!important;' +
-      '-webkit-backdrop-filter:blur(8px)!important;backdrop-filter:blur(8px)!important}' +
+      '-webkit-backdrop-filter:blur(8px)!important;backdrop-filter:blur(8px)!important;' +
+      'background-image:none!important}' +
       '.card-header .qcx-card-award--vip{background-image:linear-gradient(114.41deg,rgb(10,228,72) 20.74%,rgb(171,255,132) 65.5%)!important;' +
-      'background-color:transparent!important;color:#0e100f!important}' +
+      'background-color:transparent!important;color:#0e100f!important;' +
+      '-webkit-backdrop-filter:none!important;backdrop-filter:none!important}' +
       '.card-header .qcx-card-labels,.all_posts .card-header .qcx-card-labels{' +
       'display:flex!important;flex-wrap:nowrap!important;align-items:center!important;gap:0!important}' +
       '.card-header .qcx-card-labels .qcx-label-mask{align-self:center!important;margin:0!important;padding:0!important}' +
@@ -2216,7 +2274,25 @@
     if (!wrap) return;
     var header = wrap.closest ? wrap.closest('.card-header') : null;
 
-    /* Already reshaped: peel any leftover FREE/VIP chips into top award, keep topics. */
+    function peelAwardLinks(links) {
+      var award = null;
+      var topics = [];
+      var drop = [];
+      links.forEach(function(a){
+        var t = (a.textContent || '').trim();
+        if (QCX_LABEL_NOISE.test(t)) { drop.push(a); return; }
+        var parsed = parseAwardFromLabel(t);
+        if (parsed) {
+          award = pickAward(award, parsed);
+          drop.push(a);
+          return;
+        }
+        topics.push(a);
+      });
+      return { award: award, topics: topics, drop: drop };
+    }
+
+    /* Already reshaped: peel leftover FREE/VIP/price chips into top award. */
     if (wrap.getAttribute('data-qcx-gsap-labels') === '1') {
       if (!wrap.querySelector('.qcx-label-more')) {
         var m0 = document.createElement('span');
@@ -2225,17 +2301,10 @@
         m0.setAttribute('aria-hidden', 'true');
         wrap.appendChild(m0);
       }
-      var modeDone = null;
-      var drop = [];
-      Array.prototype.slice.call(wrap.querySelectorAll('a')).forEach(function(a){
-        var t = (a.textContent || '').trim();
-        if (!/^(free|vip)$/i.test(t)) return;
-        if (!modeDone || (/^vip$/i.test(t) && modeDone !== 'VIP')) modeDone = /^vip$/i.test(t) ? 'VIP' : 'FREE';
-        drop.push(a);
-      });
-      drop.forEach(function(a){ if (a.parentNode) a.parentNode.removeChild(a); });
-      ensureCardAward(header, modeDone || awardModeFromHeader(header));
-      if (drop.length) {
+      var peeled0 = peelAwardLinks(Array.prototype.slice.call(wrap.querySelectorAll('a')));
+      peeled0.drop.forEach(function(a){ if (a.parentNode) a.parentNode.removeChild(a); });
+      ensureCardAward(header, peeled0.award || awardFromHeader(header));
+      if (peeled0.drop.length) {
         wrap.removeAttribute('data-qcx-gsap-labels');
         /* fall through and rebuild from remaining topic links */
       } else {
@@ -2243,18 +2312,9 @@
       }
     }
 
-    var allLinks = Array.prototype.slice.call(wrap.querySelectorAll('a'));
-    var mode = null;
-    var topicLinks = [];
-    allLinks.forEach(function(a){
-      var t = (a.textContent || '').trim();
-      if (/^(free|vip)$/i.test(t)) {
-        if (!mode || (/^vip$/i.test(t) && mode !== 'VIP')) mode = /^vip$/i.test(t) ? 'VIP' : 'FREE';
-        return;
-      }
-      topicLinks.push(a);
-    });
-    ensureCardAward(header, mode || awardModeFromHeader(header));
+    var peeled = peelAwardLinks(Array.prototype.slice.call(wrap.querySelectorAll('a')));
+    ensureCardAward(header, peeled.award || awardFromHeader(header));
+    var topicLinks = peeled.topics;
 
     if (!topicLinks.length) {
       wrap.innerHTML = '';
@@ -2376,7 +2436,7 @@
     var title = displayPostTitle(fullTitle);
     var href = entryLink(entry) || '/';
     var packed = cardLabelsWithTutorial(entryLabels(entry));
-    var mode = packed && packed.mode;
+    var award = packed && packed.award;
     var topics = (packed && packed.topics) || [];
     var meta = entryThumbMeta(entry);
     var thumb = meta.url;
@@ -2390,10 +2450,14 @@
           : ' loading="lazy" decoding="async"') +
         ' src="' + escapeHtml(thumb) + '" width="1200" height="675"/>')
       : '<span class="qcx-card-noimg" aria-hidden="true">// no image</span>';
-    var awardHtml = mode
-      ? ('<span class="qcx-card-award qcx-card-award--' + (mode === 'VIP' ? 'vip' : 'free') +
-        '" aria-hidden="true">' + escapeHtml(mode) + '</span>')
-      : '';
+    var awardHtml = '';
+    if (award && award.kind && award.text) {
+      var awardVariant = award.kind === 'free' ? 'free' : 'vip';
+      awardHtml =
+        '<span class="qcx-card-award qcx-card-award--' + awardVariant +
+        '" data-qcx-award="' + escapeHtml(award.kind) +
+        '" aria-hidden="true">' + escapeHtml(award.text) + '</span>';
+    }
     var labelHtml = '';
     if (topics.length) {
       var primary = '<a href="/search/label/' + encodeURIComponent(topics[0]) + '" rel="tag">' + escapeHtml(topics[0]) + '</a>';
