@@ -468,7 +468,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.74/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.75/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -4483,6 +4483,9 @@
           }).then(function (r) { return r.json(); }).then(function (res) {
             if (!(res && res.ok)) throw new Error((res && res.error) || 'UNSAVE_FAIL');
             var list = res.savedPosts || [];
+            /* Drop every row matching id OR url — vault can hold duplicate ids for one post. */
+            var dropMeta = { id: id, url: postUrl };
+            list = list.filter(function (p) { return !isSameSavedPost(p, dropMeta); });
             writeSavedPostsCache(email, list);
             updatePostSaveButtonState();
             syncSavedCountBadge(list);
