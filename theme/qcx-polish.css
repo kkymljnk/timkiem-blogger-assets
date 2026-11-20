@@ -69,8 +69,8 @@ body {
   transition: transform .2s ease, border-color .2s ease !important;
 }
 [data-view-type='desktop'][data-page-item='multiple'] .card:hover {
-  transform: translateY(-2px) !important;
-  border-color: rgba(40,210,140,.48) !important;
+  transform: none !important;
+  border-color: transparent !important;
   box-shadow: none !important;
 }
 [data-view-type='desktop'][data-page-item='multiple'] .card:hover .card-header img {
@@ -82,7 +82,7 @@ body {
   aspect-ratio: 16 / 9 !important;
   border: 0 !important;
   border-bottom: 0 !important;
-  border-radius: 15px 15px 0 0 !important;
+  border-radius: 10px !important;
   background: #050a07 !important;
   overflow: hidden !important;
   position: relative !important;

@@ -105,16 +105,16 @@ body:not(#layout) .qcx-brand-svg:active,
   filter: none !important;
 }
 
-/* Homepage card hover — PC + mobile (restore lift + image zoom) */
+/* Homepage cards — GSAP flat chrome (no lift/glow); media zoom only */
 [data-page-item='multiple'] .card,
 .all_posts .card,
 .qcx-rescue-blog .card {
-  transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease !important;
+  transition: none !important;
 }
 [data-page-item='multiple'] .card-header img,
 .all_posts .card-header img,
 .qcx-rescue-blog .card-header img {
-  transition: transform .22s ease, filter .22s ease !important;
+  transition: transform .22s cubic-bezier(.2,.8,.2,1) !important;
 }
 [data-page-item='multiple'] .card:hover,
 [data-page-item='multiple'] .card:active,
@@ -122,12 +122,9 @@ body:not(#layout) .qcx-brand-svg:active,
 .all_posts .card:active,
 .qcx-rescue-blog .card:hover,
 .qcx-rescue-blog .card:active {
-  transform: translateY(-4px) !important;
-  border-color: rgba(0, 240, 163, .42) !important;
-  box-shadow:
-    0 24px 60px rgba(0, 0, 0, .45),
-    0 0 0 1px rgba(0, 240, 163, .18),
-    0 0 28px rgba(0, 240, 163, .22) !important;
+  transform: none !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
 }
 [data-page-item='multiple'] .card:hover .card-header img,
 [data-page-item='multiple'] .card:active .card-header img,
@@ -136,7 +133,7 @@ body:not(#layout) .qcx-brand-svg:active,
 .qcx-rescue-blog .card:hover .card-header img,
 .qcx-rescue-blog .card:active .card-header img {
   transform: scale(1.03) !important;
-  filter: brightness(1.06) saturate(1.05) !important;
+  filter: none !important;
 }
 
 /* Subscribe rail — elevated matte CTA (not page-grid, not same as #0a0f0a) */

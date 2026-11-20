@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.62/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.63/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -2144,7 +2144,9 @@
     try {
       (root || document).querySelectorAll('.card-header .qcx-card-labels, .all_posts .qcx-card-labels').forEach(function(wrap){
         reshapeGsapLabelDom(wrap);
-        fitGsapLabelMask(wrap, false);
+        var card = wrap.closest ? wrap.closest('.card') : null;
+        var expanded = !!(card && card.matches && card.matches(':hover'));
+        fitGsapLabelMask(wrap, expanded);
       });
     } catch (errMore) {}
   }
@@ -2233,25 +2235,33 @@
     }
     window.addEventListener('resize', onResize, { passive: true });
 
-    /* Desktop hover: expand secondary mask like GSAP (skip coarse pointers). */
+    /* Desktop hover: expand secondary mask like GSAP (whole card; skip coarse pointers). */
     if (!window.matchMedia || window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-      function headerOf(node) {
-        return node && node.closest ? node.closest('.card-header') : null;
+      function cardOf(node) {
+        return node && node.closest ? node.closest('.all_posts .card, .card-header') : null;
+      }
+      function wrapOf(card) {
+        if (!card) return null;
+        if (card.classList && card.classList.contains('card-header')) {
+          return card.querySelector('.qcx-card-labels');
+        }
+        var header = card.querySelector('.card-header');
+        return (header && header.querySelector('.qcx-card-labels')) || card.querySelector('.qcx-card-labels');
       }
       document.addEventListener('pointerover', function(ev){
-        var header = headerOf(ev.target);
-        var from = headerOf(ev.relatedTarget);
-        if (!header || header === from) return;
-        var wrap = header.querySelector('.qcx-card-labels');
+        var card = cardOf(ev.target);
+        var from = cardOf(ev.relatedTarget);
+        if (!card || card === from) return;
+        var wrap = wrapOf(card);
         if (!wrap) return;
         reshapeGsapLabelDom(wrap);
         fitGsapLabelMask(wrap, true);
       }, true);
       document.addEventListener('pointerout', function(ev){
-        var header = headerOf(ev.target);
-        var to = headerOf(ev.relatedTarget);
-        if (!header || header === to) return;
-        var wrap = header.querySelector('.qcx-card-labels');
+        var card = cardOf(ev.target);
+        var to = cardOf(ev.relatedTarget);
+        if (!card || card === to) return;
+        var wrap = wrapOf(card);
         if (!wrap) return;
         fitGsapLabelMask(wrap, false);
       }, true);
@@ -2391,10 +2401,12 @@
     cleanCardSnippets(row);
     stripDomPostTitles(row);
     ensureCardLabelsWithTutorial(row);
+    ensureGsapCardLabels(row);
     window.setTimeout(function(){
       cleanCardSnippets(row);
       stripDomPostTitles(row);
       ensureCardLabelsWithTutorial(row);
+      ensureGsapCardLabels(row);
       try {
         var cards = row.querySelectorAll('.card');
         cards.forEach(function(card){ card.style.minHeight = ''; card.style.height = ''; });

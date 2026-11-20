@@ -202,14 +202,14 @@
 .qcx-mac-topbar .qcx-mt-left { min-width: 0; justify-self: start; }
 .qcx-mac-topbar .qcx-mt-right { justify-self: end; }
 
-/* Fully rounded article cards, including their bottom edge. */
+/* GSAP flat card chrome — radius lives on .card-header media only. */
 [data-page-item='multiple'] .card {
-  border-radius: 16px !important;
-  overflow: hidden !important;
+  border-radius: 0 !important;
+  overflow: visible !important;
   isolation: isolate;
 }
 [data-page-item='multiple'] .card-footer {
-  border-radius: 0 0 19px 19px !important;
+  border-radius: 0 !important;
 }
 @media (max-width: 860px) {
   .qcx-inline-search {
@@ -230,12 +230,12 @@
   .qcx-mac-topbar .qcx-mt-right { grid-column: 2; grid-row: 1; }
   .qcx-mt-path { max-width: 46vw !important; margin-left: 7px !important; }
   [data-page-item='multiple'] .card {
-    border-radius: 16px !important;
+    border-radius: 0 !important;
   }
   [data-page-item='multiple'] .card-header {
-    border-radius: 15px 15px 0 0 !important;
+    border-radius: 10px !important;
   }
-  [data-page-item='multiple'] .card-footer { border-radius: 0 0 15px 15px !important; }
+  [data-page-item='multiple'] .card-footer { border-radius: 0 !important; }
 }
 
 /* Functional mobile command bar and its lightweight panels. */
