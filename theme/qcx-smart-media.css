@@ -106,6 +106,7 @@
   margin: 0 !important;
   padding: 0 !important;
   pointer-events: none !important;
+  transition: width .28s cubic-bezier(.2,.8,.2,1) !important;
 }
 [data-page-item='multiple'] .card-header .qcx-card-labels .qcx-label-secondary,
 .qcx-rescue-blog .card-header .qcx-card-labels .qcx-label-secondary,

@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.59/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.60/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -2187,14 +2187,13 @@
   }
 
   function fitGsapLabelMask(wrap, expanded) {
-    var primary = wrap.querySelector(':scope > a');
-    var mask = wrap.querySelector(':scope > .qcx-label-mask');
+    var primary = wrap.querySelector(':scope > a') || wrap.querySelector('a');
+    var mask = wrap.querySelector(':scope > .qcx-label-mask') || wrap.querySelector('.qcx-label-mask');
     var secondary = mask && mask.querySelector('.qcx-label-secondary');
-    var more = wrap.querySelector(':scope > .qcx-label-more');
+    var more = wrap.querySelector(':scope > .qcx-label-more') || wrap.querySelector('.qcx-label-more');
     if (!primary || !mask || !secondary || !more) return;
 
     var secLinks = Array.prototype.slice.call(secondary.querySelectorAll('a'));
-    var total = 1 + secLinks.length;
     if (!secLinks.length) {
       mask.style.width = '0px';
       more.textContent = '';
@@ -2203,50 +2202,21 @@
       return;
     }
 
-    /* Reset to measure natural widths. */
-    mask.style.width = 'auto';
-    more.removeAttribute('hidden');
-    more.style.visibility = 'hidden';
-    more.textContent = '+99';
-
-    var avail = wrap.clientWidth;
-    var primaryW = primary.getBoundingClientRect().width;
-    var moreW = more.getBoundingClientRect().width || 35;
-    var gap = 5.6; /* 0.35rem */
-    var room = Math.max(0, avail - primaryW - moreW - gap - 1);
-
+    /* Rest: primary + +N only (matches GSAP showcase). Hover: expand all, hide +. */
     if (expanded) {
+      mask.style.width = 'auto';
       var full = secondary.scrollWidth;
       mask.style.width = full + 'px';
       more.textContent = '';
       more.setAttribute('hidden', 'hidden');
       more.setAttribute('aria-hidden', 'true');
-      more.style.visibility = '';
       return;
     }
 
-    var used = 0;
-    var visibleSec = 0;
-    var padLeft = 5.6; /* secondary padding-left */
-    for (var i = 0; i < secLinks.length; i++) {
-      var w = secLinks[i].getBoundingClientRect().width;
-      var need = (visibleSec === 0 ? padLeft : gap) + w;
-      if (used + need > room) break;
-      used += need;
-      visibleSec += 1;
-    }
-    mask.style.width = (visibleSec ? used : 0) + 'px';
-    var hidden = total - 1 - visibleSec;
-    if (hidden > 0) {
-      more.textContent = '+' + hidden;
-      more.removeAttribute('hidden');
-      more.setAttribute('aria-hidden', 'false');
-    } else {
-      more.textContent = '';
-      more.setAttribute('hidden', 'hidden');
-      more.setAttribute('aria-hidden', 'true');
-    }
-    more.style.visibility = '';
+    mask.style.width = '0px';
+    more.textContent = '+' + secLinks.length;
+    more.removeAttribute('hidden');
+    more.setAttribute('aria-hidden', 'false');
   }
 
   function bindCardLabelMoreResize() {
