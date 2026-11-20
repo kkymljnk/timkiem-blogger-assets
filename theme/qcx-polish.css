@@ -344,6 +344,15 @@ body::-webkit-scrollbar {
   display: none !important;
 }
 html, body { overflow-x: clip !important; }
+/* Post desktop: overflow-x:clip on html/body forces overflow-y:auto (CSS quirk) and kills sticky rail. */
+@media (min-width: 861px) {
+  html[data-page-type='post'],
+  html[data-page-item='single'],
+  html[data-page-type='post'] body,
+  html[data-page-item='single'] body {
+    overflow: visible !important;
+  }
+}
 
 /* Article media must render immediately; do not fade the whole hero after F5. */
 .post-body img,

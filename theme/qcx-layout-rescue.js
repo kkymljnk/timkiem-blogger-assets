@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.54/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.55/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -589,6 +589,10 @@
       'width:0!important;height:0!important;display:none!important}' +
       'html[data-page-type="post"] .main-wrapper,html[data-page-item="single"] .main-wrapper,' +
       'html[data-page-type="post"] main.main-container,html[data-page-item="single"] main.main-container{' +
+      'overflow:visible!important}' +
+      /* body/html overflow-x:clip + overflow-y:auto makes sticky containing block = full content → sticky dies */
+      'html[data-page-type="post"],html[data-page-item="single"],' +
+      'html[data-page-type="post"] body,html[data-page-item="single"] body{' +
       'overflow:visible!important}' +
       '}' +
       '@media (max-width:860px){' +
