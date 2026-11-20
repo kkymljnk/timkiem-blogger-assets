@@ -25,11 +25,11 @@
         'position:relative!important;left:auto!important;right:auto!important;top:auto!important;' +
         'z-index:auto!important;width:100%!important;margin:0 0 16px!important;' +
         'pointer-events:auto!important}' +
-        /* Modest reserve — in-place absorb already keeps CLS≈0; huge 78vh hurt Speed Index. */
+        /* ~3 mobile cards: enough for CLS≈0 without 78vh SI cliff from .105. */
         'html[data-page-type="homepage"] #qcx-ssr-lcp-shell > .row,' +
         'html[data-page-type="homepage"] #Blog1.qcx-rescue-blog > .row,' +
         'html[data-page-type="homepage"] #Blog1 .all_posts > .row{' +
-        'min-height:calc((min(100vw,420px) - 24px) * 9 / 16 + 110px)!important}' +
+        'min-height:calc(3 * ((min(100vw,420px) - 24px) * 9 / 16 + 100px))!important}' +
         'html[data-page-type="homepage"] .card-header,' +
         'html[data-page-type="homepage"] #qcx-ssr-lcp-shell .card-header{' +
         'position:relative;aspect-ratio:16/9;overflow:hidden;background:#0b1a12}' +
@@ -295,7 +295,7 @@
 
   function qcxCdnPin() {
     var m = String(QCX_CDN || '').match(/@(v\d[\w.-]+)\//);
-    return (m && m[1]) || 'v2026.11.19.106';
+    return (m && m[1]) || 'v2026.11.19.107';
   }
 
   /* Homepage cards: ~15–55KB WebP instead of 450–1000KB hero JPG (PSI image delivery). */
@@ -612,7 +612,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.106/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.107/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -3042,14 +3042,15 @@
         row = el('div', 'row');
         shell.insertBefore(row, shell.firstChild);
       }
-      keptFirstCol = row.querySelector(':scope > .col-md-4, :scope > div');
+      keptFirstCol = row.querySelector(':scope > .col-md-4:not(.qcx-ssr-slot), :scope > div:not(.qcx-ssr-slot)');
+      if (!keptFirstCol) keptFirstCol = row.querySelector(':scope > .col-md-4, :scope > div');
       keptLcpImg = keptFirstCol && keptFirstCol.querySelector(
         'img.qcx-card-lcp, .card-header img, img.qcx-card-media'
       );
+      /* Drop SSR placeholders + stale cols — never the LCP column. */
       Array.prototype.slice.call(row.children).forEach(function(child){
-        if (child !== keptFirstCol) {
-          try { child.remove(); } catch (ignoreChild) {}
-        }
+        if (child === keptFirstCol) return;
+        try { child.remove(); } catch (ignoreChild) {}
       });
       shell.querySelectorAll('.nav-pagination, .qcx-pager, .qcx-rescue-pager').forEach(function(p){
         try { p.remove(); } catch (ignorePager) {}
