@@ -1923,7 +1923,7 @@ Chúc các bạn thành công!"></textarea>
   (function initAdminRoleFxController() {
     var ROLE_STYLES_CACHE_KEY = 'qcx_admin_role_styles_v1';
     var DEFAULT_OWNER_AV = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.3/images/avatars/kkymljnk-google.png';
-    var ROLE_FX_CSS_URL = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.43/theme/qcx-role-styles.css';
+    var ROLE_FX_CSS_URL = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.46/theme/qcx-role-styles.css';
 
     if (!document.getElementById('qcx-role-fx-admin-css')) {
       var linkFx = document.createElement('link');
@@ -1931,6 +1931,19 @@ Chúc các bạn thành công!"></textarea>
       linkFx.rel = 'stylesheet';
       linkFx.href = ROLE_FX_CSS_URL;
       (document.head || document.documentElement).appendChild(linkFx);
+    }
+    if (!document.getElementById('qcx-role-fx-preview-css')) {
+      var stPrev = document.createElement('style');
+      stPrev.id = 'qcx-role-fx-preview-css';
+      stPrev.textContent =
+        '.rfx-prev-slot,#memberStylePreview{overflow:visible!important;min-height:44px!important;display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:6px!important}' +
+        '.rfx-prev-wrap,.qcx-fx-preview-wrap{display:inline-flex!important;flex-direction:column!important;align-items:flex-start!important;gap:5px!important;max-width:100%!important}' +
+        '.qcx-fx-preview.qcx-user-chip{transform:scale(1.08)!important;transform-origin:left center!important;overflow:visible!important}' +
+        '.qcx-fx-preview.qcx-user-chip::before,.qcx-fx-preview.qcx-user-chip::after{pointer-events:none!important}' +
+        '.qcx-fx-preview .qcx-user-name{max-width:140px!important}' +
+        '.qcx-fx-caption{font:700 10px/1.2 var(--mono,ui-monospace,monospace)!important;letter-spacing:.04em!important;text-transform:uppercase!important;color:#8fb39f!important;opacity:.92!important}' +
+        '.rfx-ov-list .qcx-fx-preview{transform:scale(1)!important}';
+      (document.head || document.documentElement).appendChild(stPrev);
     }
 
     var ICO_EDIT = '<svg class="rfx-ico" viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.5 2.5l2 2L5 13H3v-2l8.5-8.5z"/></svg>';
@@ -2001,11 +2014,15 @@ Chúc các bạn thành công!"></textarea>
     }
 
     function pillPreviewHtml(styleId, sampleName) {
-      return '<span class="qcx-auth-slot--topbar" style="display:inline-flex">' +
-        '<span class="qcx-user-chip" data-name-style="' + escapeHtml(styleId || 'mint') + '" style="pointer-events:none">' +
+      var sid = styleId || 'mint';
+      var meta = findStyleMeta(sid);
+      return '<span class="qcx-fx-preview-wrap qcx-auth-slot--topbar">' +
+        '<span class="qcx-user-chip qcx-fx-preview" data-name-style="' + escapeHtml(sid) + '" data-qcx-fx-preview="1" style="pointer-events:none">' +
           '<img class="qcx-user-avatar" src="' + DEFAULT_OWNER_AV + '" alt=""/>' +
           '<span class="qcx-user-name">' + escapeHtml(sampleName || 'Nguyễn Văn Cần') + '</span>' +
-        '</span></span>';
+        '</span>' +
+        '<span class="qcx-fx-caption">' + escapeHtml(meta.name || sid) + '</span>' +
+      '</span>';
     }
 
     function populateSelects() {

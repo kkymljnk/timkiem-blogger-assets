@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.43/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.46/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -4121,9 +4121,14 @@
           return (cfg.roleDefaults && cfg.roleDefaults[role]) || ROLE_DEFAULT_STYLE[role] || 'mint';
         }
         function applyNameStylesAll() {
-          var nodes = document.querySelectorAll('.qcx-user-chip, #qcx-user-dropdown, [data-qcx-user], [data-qcx-user-name]');
+          /* Real identity surfaces only — never stomp admin Role FX previews (.qcx-fx-preview). */
+          var nodes = document.querySelectorAll(
+            '.qcx-auth-slot .qcx-user-chip, #qcx-user-dropdown, [data-qcx-user], .qcx-comment-chip, .qcx-comment-item[data-qcx-user], .qcx-comment-item[data-qcx-user-name]'
+          );
           for (var i = 0; i < nodes.length; i++) {
             var el = nodes[i];
+            if (el.classList && el.classList.contains('qcx-fx-preview')) continue;
+            if (el.closest && (el.closest('.rfx-prev-slot') || el.closest('#memberStylePreview') || el.closest('.rfx-ov-list') || el.closest('.qcx-fx-preview'))) continue;
             var styleId = resolveStyleForSurface(el);
             if (styleId) el.setAttribute('data-name-style', styleId);
           }
