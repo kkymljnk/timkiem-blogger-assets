@@ -270,12 +270,23 @@
         !!(img.closest && img.closest('.card-header, .item-thumbnail, .qcx-related-card'));
       var next = upgradeThumb(raw, { anim: anim, card: isCard });
       if (!next) return;
+      var lazyPending = !!(img.classList && img.classList.contains('lazyload') &&
+        !img.classList.contains('lazyloaded'));
+      var alreadySharp = img.getAttribute('data-qcx-sharp') === '1';
       if (dataSrc && dataSrc.indexOf('data:') !== 0 && dataSrc !== next) {
         img.setAttribute('data-src', next);
+      }
+      /* Never fight lazysizes: pending lazyload only upgrades data-src. */
+      if (lazyPending) {
+        img.setAttribute('data-qcx-sharp', '1');
+        return;
       }
       try {
         var live = img.currentSrc || img.src || '';
         var soft = /blogger_img_proxy/i.test(live) && img.naturalWidth > 0 && img.naturalWidth < 900;
+        if (alreadySharp && !soft && live === next) {
+          return;
+        }
         if (soft || (live && live.indexOf('data:') !== 0 && live !== next && /blogger_img_proxy|=s\d+|\/s\d+/i.test(live))) {
           img.src = next;
         } else if ((!srcAttr || srcAttr.indexOf('data:') === 0) && dataSrc) {
@@ -285,6 +296,25 @@
         }
       } catch (ignore) {}
       img.setAttribute('data-qcx-sharp', '1');
+    });
+  }
+
+  var __qcxSharpenRaf = 0;
+  var __qcxSharpenDelayed = 0;
+  function scheduleSharpenCardImages(root, delayMs) {
+    var scope = root || null;
+    if (delayMs && delayMs > 0) {
+      if (__qcxSharpenDelayed) return;
+      __qcxSharpenDelayed = window.setTimeout(function(){
+        __qcxSharpenDelayed = 0;
+        try { sharpenCardImages(scope); } catch (ignoreSharp) {}
+      }, delayMs);
+      return;
+    }
+    if (__qcxSharpenRaf) return;
+    __qcxSharpenRaf = window.requestAnimationFrame(function(){
+      __qcxSharpenRaf = 0;
+      try { sharpenCardImages(scope); } catch (ignoreSharp) {}
     });
   }
 
@@ -468,7 +498,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.77/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.78/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -2681,17 +2711,32 @@
       var scope = row || document;
       var imgs = scope.querySelectorAll('.all_posts .card-header img, .all_posts img.qcx-card-media');
       Array.prototype.forEach.call(imgs, function(img, index){
+        var dataSrc = img.getAttribute('data-src') || '';
+        var srcAttr = img.getAttribute('src') || '';
+        var raw = (dataSrc && dataSrc.indexOf('data:') !== 0) ? dataSrc
+          : ((srcAttr && srcAttr.indexOf('data:') !== 0) ? srcAttr : '');
+        var anim = img.getAttribute('data-qcx-anim') === '1' || isLikelyAnimatedUrl(raw || srcAttr || dataSrc);
+        var next = raw ? upgradeThumb(raw, { anim: anim, card: true }) : '';
         if (index < 3) {
           img.setAttribute('loading', 'eager');
           img.setAttribute('decoding', 'async');
           if (index === 0) img.setAttribute('fetchpriority', 'high');
           else img.removeAttribute('fetchpriority');
+          if (next) {
+            if (dataSrc && dataSrc.indexOf('data:') !== 0) img.setAttribute('data-src', next);
+            img.src = next;
+            try {
+              img.classList.remove('lazyload', 'lazyloading');
+              img.classList.add('lazyloaded');
+            } catch (ignoreCls) {}
+          }
+          return;
         }
-        var raw = img.getAttribute('src') || '';
         if (!raw || raw.indexOf('data:') === 0) return;
-        var anim = img.getAttribute('data-qcx-anim') === '1' || isLikelyAnimatedUrl(raw);
-        var next = upgradeThumb(raw, { anim: anim, card: true });
-        if (next && next !== raw) img.setAttribute('src', next);
+        if (next && next !== raw) {
+          if (dataSrc && dataSrc.indexOf('data:') !== 0) img.setAttribute('data-src', next);
+          else if (srcAttr && srcAttr.indexOf('data:') !== 0) img.setAttribute('src', next);
+        }
       });
     } catch (ignoreLcp) {}
   }
@@ -2703,15 +2748,19 @@
     ensureGsapCardLabels(row);
     prioritizeHomepageLcpImages(row || document);
     ensureHomepageCardReveal(row || document);
+    var scope = row || document;
+    var needsLabelFit = false;
+    try {
+      needsLabelFit = !!scope.querySelector(
+        '.qcx-card-labels:not([data-qcx-gsap-labels=\"1\"]), .card-content a[rel=tag]'
+      ) && !scope.querySelector('.qcx-card-labels[data-qcx-gsap-labels=\"1\"] .qcx-label-mask');
+    } catch (ignoreNeed) {}
+    if (!needsLabelFit) return;
     window.setTimeout(function(){
-      cleanCardSnippets(row);
-      stripDomPostTitles(row);
       ensureCardLabelsWithTutorial(row);
       ensureGsapCardLabels(row);
-      prioritizeHomepageLcpImages(row || document);
-      ensureHomepageCardReveal(row || document);
       try {
-        var cards = row.querySelectorAll('.card');
+        var cards = scope.querySelectorAll('.card');
         cards.forEach(function(card){ card.style.minHeight = ''; card.style.height = ''; });
       } catch (err) {}
     }, 40);
@@ -5594,12 +5643,11 @@
     ensureMobileNavReady();
     ensureSharpBrandAvatar();
     ensureGhostBlink();
-    sharpenCardImages();
+    scheduleSharpenCardImages();
     window.setTimeout(ensureGmailAuthEngine, 100);
     window.setTimeout(ensureGhostBlink, 400);
     window.setTimeout(ensureSharpBrandAvatar, 200);
-    window.setTimeout(sharpenCardImages, 200);
-    window.setTimeout(sharpenCardImages, 900);
+    scheduleSharpenCardImages(null, 400);
     return;
   }
 
@@ -5624,7 +5672,7 @@
   ensureSiteFooter();
   ensureSharpBrandAvatar();
   ensureGhostBlink();
-  sharpenCardImages();
+  scheduleSharpenCardImages();
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function(){
       ensureBreakdevFonts();
@@ -5647,7 +5695,7 @@
       ensureSiteFooter();
       ensureSharpBrandAvatar();
       ensureGhostBlink();
-      sharpenCardImages();
+      scheduleSharpenCardImages();
     }, { once: true });
   }
   /* Deferred polish only when chrome is still missing (anti-FOUC: no spare re-paint on F5). */
@@ -5709,8 +5757,7 @@
   window.setTimeout(ensureGhostBlink, 800);
   window.setTimeout(ensureSharpBrandAvatar, 80);
   window.setTimeout(ensureSharpBrandAvatar, 400);
-  window.setTimeout(sharpenCardImages, 120);
-  window.setTimeout(sharpenCardImages, 500);
+  scheduleSharpenCardImages(null, 120);
 
   /* Always scrub native Blog1 snippets (CSS leak), even when rescue skips. */
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bootSnippetClean, { once: true });

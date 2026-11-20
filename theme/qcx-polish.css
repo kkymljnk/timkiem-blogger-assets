@@ -73,8 +73,10 @@ body {
   border-color: transparent !important;
   box-shadow: none !important;
 }
-[data-view-type='desktop'][data-page-item='multiple'] .card:hover .card-header img {
-  transform: scale(1.03) !important;
+@media (hover: hover) and (pointer: fine) {
+  [data-view-type='desktop'][data-page-item='multiple'] .card:hover .card-header img {
+    transform: scale(1.03) !important;
+  }
 }
 
 [data-page-item='multiple'] .card-header {
@@ -107,7 +109,6 @@ body {
   image-rendering: auto !important;
   -ms-interpolation-mode: bicubic;
   backface-visibility: hidden;
-  transition: transform .35s ease !important;
 }
 [data-page-item='multiple'] .card-header.is-video::after {
   content: '▶' !important;
@@ -369,6 +370,37 @@ html, body { overflow-x: clip !important; }
   animation: none !important;
   opacity: 1 !important;
   transition: none !important;
+}
+
+/* Homepage / feed cards: kill lazysizes + global fadeInImages opacity freeze on scroll. */
+.card-header img,
+.card-header img.lazyload,
+.card-header img.lazyloading,
+.card-header img.lazyloaded,
+img.qcx-card-media,
+img.qcx-card-media.lazyload,
+img.qcx-card-media.lazyloading,
+img.qcx-card-media.lazyloaded,
+.all_posts .card-header img,
+.all_posts .card-header img.lazyload,
+.all_posts .card-header img.lazyloading,
+.all_posts .card-header img.lazyloaded,
+.qcx-rescue-blog .card-header img,
+.qcx-rescue-blog .card-header img.lazyload,
+.qcx-rescue-blog .card-header img.lazyloading,
+.qcx-rescue-blog .card-header img.lazyloaded {
+  -webkit-animation: none !important;
+  animation: none !important;
+  opacity: 1 !important;
+  transition: none !important;
+}
+@media (hover: hover) and (pointer: fine) {
+  .card-header img,
+  img.qcx-card-media,
+  .all_posts .card-header img,
+  .qcx-rescue-blog .card-header img {
+    transition: transform .22s cubic-bezier(.2,.8,.2,1) !important;
+  }
 }
 
 /* Move the resource card and related posts as one desktop sticky rail. */
@@ -2213,13 +2245,14 @@ body:not(#layout) .qcx-hero-divider,
   height: 100% !important;
   object-fit: cover !important;
   object-position: center center !important;
-  transition: transform .22s cubic-bezier(.2,.8,.2,1) !important;
   transform-origin: center center !important;
-  will-change: transform;
 }
-[data-page-item='multiple'] .card:hover .card-header img,
-.all_posts .card:hover .card-header img {
-  transform: scale(1.03) !important;
+@media (hover: hover) and (pointer: fine) {
+  [data-page-item='multiple'] .card:hover .card-header img,
+  .all_posts .card:hover .card-header img,
+  .qcx-rescue-blog .card:hover .card-header img {
+    transform: scale(1.03) !important;
+  }
 }
 [data-page-item='multiple'] .card-content,
 .all_posts .card-content {
@@ -2277,16 +2310,11 @@ body:not(#layout) .qcx-hero-divider,
   -webkit-text-fill-color: #e7fff3 !important;
 }
 
-/* Card hover — PC + mobile (sticky :hover after tap, :active while pressing). */
+/* Card hover — fine pointer only (avoid sticky :hover scale jank on touch scroll). */
 [data-page-item='multiple'] .card,
 .all_posts .card,
 .qcx-rescue-blog .card {
-  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease, opacity .14s ease !important;
-}
-[data-page-item='multiple'] .card-header img,
-.all_posts .card-header img,
-.qcx-rescue-blog .card-header img {
-  transition: transform .2s ease !important;
+  transition: border-color .2s ease, box-shadow .2s ease, opacity .14s ease !important;
 }
 [data-page-item='multiple'] .card:hover,
 [data-page-item='multiple'] .card:active,
@@ -2301,15 +2329,17 @@ body:not(#layout) .qcx-hero-divider,
   border-color: transparent !important;
   box-shadow: none !important;
 }
-[data-page-item='multiple'] .card:hover .card-header img,
-[data-page-item='multiple'] .card:active .card-header img,
-.all_posts .card:hover .card-header img,
-.all_posts .card:active .card-header img,
-.qcx-rescue-blog .card:hover .card-header img,
-.qcx-rescue-blog .card:active .card-header img,
-[data-view-type='mobile'] .card:hover .card-header img,
-[data-view-type='mobile'] .card:active .card-header img {
-  transform: scale(1.03) !important;
+@media (hover: hover) and (pointer: fine) {
+  [data-page-item='multiple'] .card-header img,
+  .all_posts .card-header img,
+  .qcx-rescue-blog .card-header img {
+    transition: transform .2s ease !important;
+  }
+  [data-page-item='multiple'] .card:hover .card-header img,
+  .all_posts .card:hover .card-header img,
+  .qcx-rescue-blog .card:hover .card-header img {
+    transform: scale(1.03) !important;
+  }
 }
 /* Kill first-card pulse (not Taste) + override older -4px hover */
 [data-page-item='multiple'] .all_posts > .row > .col-md-4:first-child .card,

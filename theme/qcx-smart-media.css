@@ -1184,26 +1184,23 @@ body.qcx-panel-open { overflow: hidden !important; }
   }
 }
 
-/* Homepage / feed: light opacity+translate reveal (no blur — GPU-friendly) */
+/* Homepage / feed: opacity-only reveal (no translate — cheaper while scrolling) */
 [data-page-item='multiple'] .card.qcx-reveal,
 .qcx-rescue-blog .card.qcx-reveal,
 .all_posts .card.qcx-reveal {
   opacity: 0;
-  transform: translateY(14px);
-  transition: opacity 0.32s ease, transform 0.32s ease;
+  transition: opacity 0.28s ease;
 }
 [data-page-item='multiple'] .card.qcx-reveal.is-in,
 .qcx-rescue-blog .card.qcx-reveal.is-in,
 .all_posts .card.qcx-reveal.is-in {
   opacity: 1;
-  transform: none;
 }
 @media (prefers-reduced-motion: reduce) {
   [data-page-item='multiple'] .card.qcx-reveal,
   .qcx-rescue-blog .card.qcx-reveal,
   .all_posts .card.qcx-reveal {
     opacity: 1 !important;
-    transform: none !important;
     transition: none !important;
   }
 }
