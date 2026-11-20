@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.13/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.14/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -3355,8 +3355,8 @@
       belowZone.appendChild(commWidget);
     }
 
-    if (!window.__qcxGmailAuthV5) {
-      window.__qcxGmailAuthV5 = true;
+    if (!window.__qcxGmailAuthV6) {
+      window.__qcxGmailAuthV6 = true;
       (function initRescueAuthFallback() {
         var API_BASE = 'https://timkiem-store-api.kkymljnk.workers.dev';
         var ENT_KEY = 'qcx_payos_entitlement_v1';
@@ -4065,49 +4065,57 @@
           s.onload = function () { if (cb) cb(); };
           (document.head || document.documentElement).appendChild(s);
         }
+        function buildGoogleOAuthRedirectUrl() {
+          if (!googleClientId) googleClientId = DEFAULT_GOOGLE_CLIENT_ID;
+          // Same-tab redirect avoids blank accounts.google.com/gsi/transform popups
+          // (GSI token popup breaks when opener/COOP is lost in embedded browsers).
+          var redirectUri = location.origin + '/';
+          try {
+            sessionStorage.setItem('qcx_oauth_return', location.href.split('#')[0]);
+            sessionStorage.setItem('qcx_oauth_pending', '1');
+          } catch (e) {}
+          return 'https://accounts.google.com/o/oauth2/v2/auth?' + [
+            'client_id=' + encodeURIComponent(googleClientId),
+            'redirect_uri=' + encodeURIComponent(redirectUri),
+            'response_type=token',
+            'scope=' + encodeURIComponent('openid email profile'),
+            'prompt=select_account',
+            'include_granted_scopes=true',
+            'state=' + encodeURIComponent('qcx_oauth1')
+          ].join('&');
+        }
+        function consumeOAuthRedirectHash() {
+          var hash = String(location.hash || '');
+          if (hash.indexOf('access_token=') === -1) return false;
+          var params = new URLSearchParams(hash.replace(/^#/, ''));
+          var token = params.get('access_token');
+          var state = params.get('state') || '';
+          if (!token) return false;
+          try {
+            history.replaceState(null, '', location.pathname + location.search);
+          } catch (e) {}
+          try { sessionStorage.removeItem('qcx_oauth_pending'); } catch (e2) {}
+          fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+            headers: { 'Authorization': 'Bearer ' + token }
+          }).then(function (r) { return r.json(); }).catch(function () { return {}; }).then(function (gInfo) {
+            if (!(gInfo && gInfo.email)) return;
+            if (gInfo.picture) saveAvatarCache(gInfo.email, gInfo.picture);
+            return authenticateGmailProfile({ email: gInfo.email, name: gInfo.name, picture: gInfo.picture }, token);
+          }).then(function () {
+            var ret = '';
+            try { ret = sessionStorage.getItem('qcx_oauth_return') || ''; sessionStorage.removeItem('qcx_oauth_return'); } catch (e3) {}
+            if (ret && ret.indexOf(location.origin) === 0 && ret.split('#')[0] !== location.href.split('#')[0]) {
+              location.replace(ret);
+            }
+          });
+          return true;
+        }
         function startGoogleOAuthPopup(statusEl) {
           killAuthModal();
           loadLocalAuthCfg();
           if (!googleClientId) googleClientId = DEFAULT_GOOGLE_CLIENT_ID;
-          loadGsiScript(function () {
-            if (!(window.google && window.google.accounts && window.google.accounts.oauth2)) {
-              // Last resort: open Google accounts chooser in a new tab.
-              try {
-                window.open(
-                  'https://accounts.google.com/AccountChooser?continue=' + encodeURIComponent(location.href),
-                  '_blank',
-                  'noopener'
-                );
-              } catch (e) {}
-              return;
-            }
-            try {
-              var client = window.google.accounts.oauth2.initTokenClient({
-                client_id: googleClientId,
-                scope: 'openid email profile',
-                prompt: 'select_account',
-                callback: function (tokenRes) {
-                  if (!tokenRes || !tokenRes.access_token) return;
-                  if (statusEl) statusEl.textContent = 'Đang xác thực tài khoản Google...';
-                  fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-                    headers: { 'Authorization': 'Bearer ' + tokenRes.access_token }
-                  }).then(function (r) { return r.json(); }).catch(function () { return {}; }).then(function (gInfo) {
-                    if (gInfo && gInfo.email && gInfo.picture) saveAvatarCache(gInfo.email, gInfo.picture);
-                    return authenticateGmailProfile({ email: gInfo.email, name: gInfo.name, picture: gInfo.picture }, tokenRes.access_token);
-                  });
-                }
-              });
-              client.requestAccessToken({ prompt: 'select_account' });
-            } catch (e) {
-              try {
-                window.open(
-                  'https://accounts.google.com/AccountChooser?continue=' + encodeURIComponent(location.href),
-                  '_blank',
-                  'noopener'
-                );
-              } catch (e2) {}
-            }
-          });
+          // Always use full-page Google OAuth (account chooser) — no gsi/transform popup.
+          location.assign(buildGoogleOAuthRedirectUrl());
         }
         function renderSavedAccountsPicker() {
           var box = document.getElementById('qcx-ga-saved-list');
@@ -4342,6 +4350,7 @@
         }
         fetchAdminRoleStyles();
         fetchAuthConfig().then(function () { /* warm GSI client id for native chooser */ });
+        consumeOAuthRedirectHash();
         ensurePostSaveButton();
         window.__qcxRenderAuthSlots = renderAuthSlots;
         window.__qcxTriggerGoogleSignIn = triggerGoogleSignIn;
