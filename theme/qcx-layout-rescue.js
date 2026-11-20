@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.52/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.53/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -505,10 +505,16 @@
   function ensureStylesheet(id, href) {
     var link = document.getElementById(id);
     if (link) {
-      /* CDN bump: refresh href so atmosphere/fonts pick up new tag without full reload race. */
-      if (link.getAttribute('href') !== href) link.setAttribute('href', href);
+      /* Anti-FOUC: never mid-paint swap when head already has this sheet (XML owns pin). */
+      var cur = link.getAttribute('href') || '';
+      if (cur === href) return;
+      var file = (href.split('/').pop() || '');
+      if (file && cur.indexOf('/' + file) !== -1) return;
+      link.setAttribute('href', href);
       return;
     }
+    /* Also respect inline/font style tags with same id. */
+    if (document.querySelector('style#' + id + ', link#' + id)) return;
     link = document.createElement('link');
     link.id = id;
     link.rel = 'stylesheet';
@@ -1433,7 +1439,8 @@
         try { window.__qcxInitMobileNav(); } catch (ignoreInit) {}
         menu = document.getElementById('qcx-menu');
       }
-      if (!menu && !document.getElementById('qcx-mobile-nav-rescue')) {
+      if (!menu && !document.getElementById('qcx-mobile-nav-rescue') &&
+          !document.querySelector('script[src*="qcx-mobile-nav-runtime.js"]')) {
         document.documentElement.removeAttribute('data-qcx-nav-ready');
         var script = document.createElement('script');
         script.id = 'qcx-mobile-nav-rescue';
@@ -5039,34 +5046,54 @@
       sharpenCardImages();
     }, { once: true });
   }
+  /* Deferred polish only when chrome is still missing (anti-FOUC: no spare re-paint on F5). */
+  function qcxNeedChromePolish() {
+    return !document.getElementById('qcx-atmosphere') ||
+      !document.querySelector('.qcx-sidebar-rail, #PopularPosts1, .qcx-site-footer, #qcx-menu');
+  }
+  function qcxDeferredPolish(fn, ms) {
+    window.setTimeout(function () {
+      if (!qcxNeedChromePolish() && fn !== ensureGmailAuthEngine && fn !== syncEmptyCommentsShell &&
+          fn !== ensureGhostBlink && fn !== sharpenCardImages && fn !== ensureSharpBrandAvatar) {
+        return;
+      }
+      try { fn(); } catch (ignoreDefer) {}
+    }, ms);
+  }
   window.setTimeout(ensureGmailAuthEngine, 100);
   window.setTimeout(ensureGmailAuthEngine, 500);
   window.setTimeout(function(){ polishHeroBrand(); ensureCardLabelsWithTutorial(document); }, 80);
-  window.setTimeout(function(){ polishHeroBrand(); ensureCardLabelsWithTutorial(document); }, 400);
-  window.setTimeout(ensureSidebarRail, 80);
-  window.setTimeout(ensureSidebarRail, 400);
-  window.setTimeout(relocateHeroForDesktopRail, 60);
-  window.setTimeout(relocateHeroForDesktopRail, 300);
-  window.setTimeout(hideDropsOnHome, 80);
-  window.setTimeout(hideDropsOnHome, 400);
-  window.setTimeout(ensureAdminChrome, 60);
-  window.setTimeout(ensureAdminChrome, 300);
+  window.setTimeout(function(){
+    if (qcxNeedChromePolish() || !document.querySelector('.qcx-card-labels, .card-content a[rel=tag]')) {
+      polishHeroBrand();
+      ensureCardLabelsWithTutorial(document);
+    }
+  }, 400);
+  qcxDeferredPolish(ensureSidebarRail, 80);
+  qcxDeferredPolish(ensureSidebarRail, 400);
+  qcxDeferredPolish(relocateHeroForDesktopRail, 60);
+  qcxDeferredPolish(relocateHeroForDesktopRail, 300);
+  qcxDeferredPolish(hideDropsOnHome, 80);
+  qcxDeferredPolish(hideDropsOnHome, 400);
+  qcxDeferredPolish(ensureAdminChrome, 60);
+  qcxDeferredPolish(ensureAdminChrome, 300);
   window.setTimeout(ensureAdminChrome, 800);
-  window.setTimeout(ensureSiteFooter, 100);
-  window.setTimeout(ensureSiteFooter, 500);
-  window.setTimeout(ensureAtmosphere, 80);
+  qcxDeferredPolish(ensureSiteFooter, 100);
+  qcxDeferredPolish(ensureSiteFooter, 500);
+  /* Atmosphere already in head — only inject if truly missing. */
+  window.setTimeout(function(){
+    if (!document.getElementById('qcx-atmosphere')) ensureAtmosphere();
+  }, 80);
   window.setTimeout(syncEmptyCommentsShell, 120);
   window.setTimeout(syncEmptyCommentsShell, 600);
-  window.setTimeout(ensureMobileNavReady, 120);
-  window.setTimeout(ensureMobileNavReady, 500);
+  qcxDeferredPolish(ensureMobileNavReady, 120);
+  qcxDeferredPolish(ensureMobileNavReady, 500);
   window.setTimeout(ensureGhostBlink, 200);
   window.setTimeout(ensureGhostBlink, 800);
-  window.setTimeout(ensureGhostBlink, 1600);
   window.setTimeout(ensureSharpBrandAvatar, 80);
   window.setTimeout(ensureSharpBrandAvatar, 400);
   window.setTimeout(sharpenCardImages, 120);
   window.setTimeout(sharpenCardImages, 500);
-  window.setTimeout(sharpenCardImages, 1200);
 
   /* Always scrub native Blog1 snippets (CSS leak), even when rescue skips. */
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bootSnippetClean, { once: true });
