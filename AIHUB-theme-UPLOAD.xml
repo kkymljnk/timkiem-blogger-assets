@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html>
 <html b:css='false' b:defaultwidgetversion='2' b:layoutsVersion='3' b:responsive='true' b:templateUrl='indie.xml' b:templateVersion='4.0.0' expr:lang='data:blog.locale' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr' xmlns:g='http://schemas.google.com/g/2005'>
   <b:attr name='xmlns' value=''/>
@@ -7801,9 +7801,9 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
             <img class='lazyload qcx-card-media' decoding='async' expr:alt='data:post.title' expr:data-src='data:post.featuredImage.youtubeMaxResDefaultUrl' height='675' loading='lazy' onerror='this.hidden=true;this.parentNode.classList.add(&quot;no-img&quot;)' src='data:image/png;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=' width='1200'/>
           <b:elseif cond='data:post.featuredImage'/>
             <b:if cond='data:posts.first.id == data:post.id'>
-              <img class='qcx-card-media qcx-card-lcp' decoding='async' fetchpriority='high' loading='eager' expr:alt='data:post.title' expr:src='resizeImage(data:post.featuredImage, 720, &quot;16:9&quot;)' height='405' onerror='this.hidden=true;this.parentNode.classList.add(&quot;no-img&quot;)' width='720'/>
+              <img class='qcx-card-media qcx-card-lcp' decoding='async' fetchpriority='high' loading='eager' expr:alt='data:post.title' expr:src='resizeImage(data:post.featuredImage, 800, &quot;16:9&quot;)' height='450' onerror='this.hidden=true;this.parentNode.classList.add(&quot;no-img&quot;)' width='800'/>
             <b:else/>
-              <img class='lazyload qcx-card-media' decoding='async' expr:alt='data:post.title' expr:data-src='resizeImage(data:post.featuredImage, 720, &quot;16:9&quot;)' height='405' loading='lazy' onerror='this.hidden=true;this.parentNode.classList.add(&quot;no-img&quot;)' src='data:image/png;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=' width='720'/>
+              <img class='lazyload qcx-card-media' decoding='async' expr:alt='data:post.title' expr:data-src='resizeImage(data:post.featuredImage, 800, &quot;16:9&quot;)' height='450' loading='lazy' onerror='this.hidden=true;this.parentNode.classList.add(&quot;no-img&quot;)' src='data:image/png;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=' width='800'/>
             </b:if>
           <b:else/>
             <span class='qcx-card-noimg' aria-hidden='true'>Kh&#244;ng c&#243; &#7843;nh</span>
@@ -7848,9 +7848,9 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
             <img class='lazyload qcx-card-media' decoding='async' expr:alt='data:post.title' expr:data-src='data:post.featuredImage.youtubeMaxResDefaultUrl' height='675' loading='lazy' onerror='this.hidden=true;this.parentNode.classList.add(&quot;no-img&quot;)' src='data:image/png;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=' width='1200'/>
           <b:elseif cond='data:post.featuredImage'/>
             <b:if cond='data:posts.first.id == data:post.id'>
-              <img class='qcx-card-media qcx-card-lcp' decoding='async' fetchpriority='high' loading='eager' expr:alt='data:post.title' expr:src='resizeImage(data:post.featuredImage, 720, &quot;16:9&quot;)' height='405' onerror='this.hidden=true;this.parentNode.classList.add(&quot;no-img&quot;)' width='720'/>
+              <img class='qcx-card-media qcx-card-lcp' decoding='async' fetchpriority='high' loading='eager' expr:alt='data:post.title' expr:src='resizeImage(data:post.featuredImage, 800, &quot;16:9&quot;)' height='450' onerror='this.hidden=true;this.parentNode.classList.add(&quot;no-img&quot;)' width='800'/>
             <b:else/>
-              <img class='lazyload qcx-card-media' decoding='async' expr:alt='data:post.title' expr:data-src='resizeImage(data:post.featuredImage, 720, &quot;16:9&quot;)' height='405' loading='lazy' onerror='this.hidden=true;this.parentNode.classList.add(&quot;no-img&quot;)' src='data:image/png;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=' width='720'/>
+              <img class='lazyload qcx-card-media' decoding='async' expr:alt='data:post.title' expr:data-src='resizeImage(data:post.featuredImage, 800, &quot;16:9&quot;)' height='450' loading='lazy' onerror='this.hidden=true;this.parentNode.classList.add(&quot;no-img&quot;)' src='data:image/png;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=' width='800'/>
             </b:if>
           <b:else/>
             <span class='qcx-card-noimg' aria-hidden='true'>Kh&#244;ng c&#243; &#7843;nh</span>
