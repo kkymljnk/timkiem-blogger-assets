@@ -7831,8 +7831,8 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
           <b:if cond='data:post.featuredImage.isYoutube'>
             <img class='lazyload qcx-card-media' decoding='async' expr:alt='data:post.title' expr:data-src='data:post.featuredImage.youtubeMaxResDefaultUrl' height='675' loading='lazy' onerror='this.hidden=true;this.parentNode.classList.add(&quot;no-img&quot;)' src='data:image/png;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=' width='1200'/>
           <b:elseif cond='data:post.featuredImage'/>
-            <!-- LCP: first *visible* homepage card (label filter), not unfiltered data:posts.first -->
-            <b:if cond='data:view.isHomepage ? ((data:posts where (p =&gt; p.labels any (l =&gt; l.name != &quot;blog&quot;))).first.id == data:post.id) : (data:posts.first.id == data:post.id)'>
+            <!-- Homepage LCP = SSR WebP shell only; Blog1 must not compete with fetchpriority=high. -->
+            <b:if cond='!data:view.isHomepage and (data:posts.first.id == data:post.id)'>
               <img class='qcx-card-media qcx-card-lcp' decoding='async' fetchpriority='high' loading='eager' expr:alt='data:post.title' expr:src='resizeImage(data:post.featuredImage, 800, &quot;16:9&quot;)' height='450' onerror='this.hidden=true;this.parentNode.classList.add(&quot;no-img&quot;)' width='800'/>
             <b:else/>
               <img class='lazyload qcx-card-media' decoding='async' expr:alt='data:post.title' expr:data-src='resizeImage(data:post.featuredImage, 800, &quot;16:9&quot;)' height='450' loading='lazy' onerror='this.hidden=true;this.parentNode.classList.add(&quot;no-img&quot;)' src='data:image/png;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=' width='800'/>
@@ -7879,7 +7879,7 @@ html body .qcx-code-wrap:has(.mac-frame) > .qcx-copy-btn {
           <b:if cond='data:post.featuredImage.isYoutube'>
             <img class='lazyload qcx-card-media' decoding='async' expr:alt='data:post.title' expr:data-src='data:post.featuredImage.youtubeMaxResDefaultUrl' height='675' loading='lazy' onerror='this.hidden=true;this.parentNode.classList.add(&quot;no-img&quot;)' src='data:image/png;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=' width='1200'/>
           <b:elseif cond='data:post.featuredImage'/>
-            <b:if cond='data:view.isHomepage ? ((data:posts where (p =&gt; p.labels any (l =&gt; l.name != &quot;blog&quot;))).first.id == data:post.id) : (data:posts.first.id == data:post.id)'>
+            <b:if cond='!data:view.isHomepage and (data:posts.first.id == data:post.id)'>
               <img class='qcx-card-media qcx-card-lcp' decoding='async' fetchpriority='high' loading='eager' expr:alt='data:post.title' expr:src='resizeImage(data:post.featuredImage, 800, &quot;16:9&quot;)' height='450' onerror='this.hidden=true;this.parentNode.classList.add(&quot;no-img&quot;)' width='800'/>
             <b:else/>
               <img class='lazyload qcx-card-media' decoding='async' expr:alt='data:post.title' expr:data-src='resizeImage(data:post.featuredImage, 800, &quot;16:9&quot;)' height='450' loading='lazy' onerror='this.hidden=true;this.parentNode.classList.add(&quot;no-img&quot;)' src='data:image/png;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=' width='800'/>
