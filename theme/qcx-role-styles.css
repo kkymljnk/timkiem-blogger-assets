@@ -144,7 +144,9 @@
 .qcx-user-chip[data-name-style="mint"] .qcx-user-name,
 #qcx-user-dropdown[data-name-style="mint"] .qcx-ud-name,
 .qcx-comment-item[data-name-style="mint"] .qcx-comment-name,
-.qcx-comment-chip[data-name-style="mint"] .qcx-user-name {
+.qcx-comment-chip[data-name-style="mint"] .qcx-user-name,
+#comments .qcx-comment-item .qcx-user-chip[data-name-style="mint"] .qcx-user-name,
+#comments .qcx-comment-item[data-name-style="mint"] .qcx-comment-name {
   color: #34e6a0 !important;
   font-weight: 700 !important;
   text-shadow: #0f764c 1px 1px 8px, 0 0 6px rgba(52, 230, 160, 0.55) !important;
@@ -177,7 +179,9 @@
 .qcx-user-chip[data-name-style="thunder"] .qcx-user-name,
 #qcx-user-dropdown[data-name-style="thunder"] .qcx-ud-name,
 .qcx-comment-item[data-name-style="thunder"] .qcx-comment-name,
-.qcx-comment-chip[data-name-style="thunder"] .qcx-user-name {
+.qcx-comment-chip[data-name-style="thunder"] .qcx-user-name,
+#comments .qcx-comment-item .qcx-user-chip[data-name-style="thunder"] .qcx-user-name,
+#comments .qcx-comment-item[data-name-style="thunder"] .qcx-comment-name {
   background-image: linear-gradient(123deg, #008cff 0%, #00d5ff 20%, #064fa2 27%, #0065d9 35%, #b5fffe 49%, #d4ecff 57%, #00d5ff 68%, #008cff 78%, #00d5ff 92%, #008cff 100%) !important;
   background-size: 300% 100% !important;
   -webkit-text-fill-color: transparent !important;
@@ -210,7 +214,9 @@
 .qcx-user-chip[data-name-style="gold"] .qcx-user-name,
 #qcx-user-dropdown[data-name-style="gold"] .qcx-ud-name,
 .qcx-comment-item[data-name-style="gold"] .qcx-comment-name,
-.qcx-comment-chip[data-name-style="gold"] .qcx-user-name {
+.qcx-comment-chip[data-name-style="gold"] .qcx-user-name,
+#comments .qcx-comment-item .qcx-user-chip[data-name-style="gold"] .qcx-user-name,
+#comments .qcx-comment-item[data-name-style="gold"] .qcx-comment-name {
   color: #ffd700 !important;
   font-weight: 800 !important;
   text-shadow: #c98600 1px 1px 10px, 0 0 8px rgba(255, 215, 0, 0.85) !important;
@@ -237,7 +243,9 @@
 .qcx-user-chip[data-name-style="crimson"] .qcx-user-name,
 #qcx-user-dropdown[data-name-style="crimson"] .qcx-ud-name,
 .qcx-comment-item[data-name-style="crimson"] .qcx-comment-name,
-.qcx-comment-chip[data-name-style="crimson"] .qcx-user-name {
+.qcx-comment-chip[data-name-style="crimson"] .qcx-user-name,
+#comments .qcx-comment-item .qcx-user-chip[data-name-style="crimson"] .qcx-user-name,
+#comments .qcx-comment-item[data-name-style="crimson"] .qcx-comment-name {
   color: #ff2630 !important;
   font-weight: 800 !important;
   text-shadow: #b52231 1px 1px 10px, 0 0 8px rgba(255, 30, 39, 0.9) !important;
@@ -270,7 +278,9 @@
 .qcx-user-chip[data-name-style="thunder-red"] .qcx-user-name,
 #qcx-user-dropdown[data-name-style="thunder-red"] .qcx-ud-name,
 .qcx-comment-item[data-name-style="thunder-red"] .qcx-comment-name,
-.qcx-comment-chip[data-name-style="thunder-red"] .qcx-user-name {
+.qcx-comment-chip[data-name-style="thunder-red"] .qcx-user-name,
+#comments .qcx-comment-item .qcx-user-chip[data-name-style="thunder-red"] .qcx-user-name,
+#comments .qcx-comment-item[data-name-style="thunder-red"] .qcx-comment-name {
   background-image: linear-gradient(123deg, #ff1e34 0%, #ff6b7a 22%, #990018 32%, #ff2e44 45%, #ffd6dc 55%, #ff4d63 72%, #ff1e34 100%) !important;
   background-size: 300% 100% !important;
   -webkit-text-fill-color: transparent !important;
@@ -309,7 +319,9 @@
 .qcx-user-chip[data-name-style="thunder-gold"] .qcx-user-name,
 #qcx-user-dropdown[data-name-style="thunder-gold"] .qcx-ud-name,
 .qcx-comment-item[data-name-style="thunder-gold"] .qcx-comment-name,
-.qcx-comment-chip[data-name-style="thunder-gold"] .qcx-user-name {
+.qcx-comment-chip[data-name-style="thunder-gold"] .qcx-user-name,
+#comments .qcx-comment-item .qcx-user-chip[data-name-style="thunder-gold"] .qcx-user-name,
+#comments .qcx-comment-item[data-name-style="thunder-gold"] .qcx-comment-name {
   background-image: linear-gradient(123deg, #e68a00 0%, #ffd23f 24%, #8f5400 34%, #ffae00 46%, #fff8c9 56%, #ffd23f 74%, #e68a00 100%) !important;
   background-size: 300% 100% !important;
   -webkit-text-fill-color: transparent !important;
@@ -343,7 +355,9 @@
 .qcx-user-chip[data-name-style="dragon-fire"] .qcx-user-name,
 #qcx-user-dropdown[data-name-style="dragon-fire"] .qcx-ud-name,
 .qcx-comment-item[data-name-style="dragon-fire"] .qcx-comment-name,
-.qcx-comment-chip[data-name-style="dragon-fire"] .qcx-user-name {
+.qcx-comment-chip[data-name-style="dragon-fire"] .qcx-user-name,
+#comments .qcx-comment-item .qcx-user-chip[data-name-style="dragon-fire"] .qcx-user-name,
+#comments .qcx-comment-item[data-name-style="dragon-fire"] .qcx-comment-name {
   background-image: linear-gradient(0deg, #ff2a00 0%, #ff8000 48%, #fff066 100%) !important;
   -webkit-text-fill-color: transparent !important;
   -webkit-background-clip: text !important;
@@ -373,7 +387,9 @@
 .qcx-user-chip[data-name-style="inferno"] .qcx-user-name,
 #qcx-user-dropdown[data-name-style="inferno"] .qcx-ud-name,
 .qcx-comment-item[data-name-style="inferno"] .qcx-comment-name,
-.qcx-comment-chip[data-name-style="inferno"] .qcx-user-name {
+.qcx-comment-chip[data-name-style="inferno"] .qcx-user-name,
+#comments .qcx-comment-item .qcx-user-chip[data-name-style="inferno"] .qcx-user-name,
+#comments .qcx-comment-item[data-name-style="inferno"] .qcx-comment-name {
   background-image: linear-gradient(90deg, #ff9f1c, #ff4d4d, #ff2e93, #ff9f1c) !important;
   background-size: 200% 100% !important;
   -webkit-text-fill-color: transparent !important;
@@ -404,7 +420,9 @@
 .qcx-user-chip[data-name-style="liquid-gold"] .qcx-user-name,
 #qcx-user-dropdown[data-name-style="liquid-gold"] .qcx-ud-name,
 .qcx-comment-item[data-name-style="liquid-gold"] .qcx-comment-name,
-.qcx-comment-chip[data-name-style="liquid-gold"] .qcx-user-name {
+.qcx-comment-chip[data-name-style="liquid-gold"] .qcx-user-name,
+#comments .qcx-comment-item .qcx-user-chip[data-name-style="liquid-gold"] .qcx-user-name,
+#comments .qcx-comment-item[data-name-style="liquid-gold"] .qcx-comment-name {
   background-image: linear-gradient(110deg, #b87b00 0%, #ffd700 22%, #fff8c9 38%, #ffae00 55%, #fff5b8 72%, #ffd700 88%, #b87b00 100%) !important;
   background-size: 300% 100% !important;
   -webkit-text-fill-color: transparent !important;
@@ -435,7 +453,9 @@
 .qcx-user-chip[data-name-style="hologram"] .qcx-user-name,
 #qcx-user-dropdown[data-name-style="hologram"] .qcx-ud-name,
 .qcx-comment-item[data-name-style="hologram"] .qcx-comment-name,
-.qcx-comment-chip[data-name-style="hologram"] .qcx-user-name {
+.qcx-comment-chip[data-name-style="hologram"] .qcx-user-name,
+#comments .qcx-comment-item .qcx-user-chip[data-name-style="hologram"] .qcx-user-name,
+#comments .qcx-comment-item[data-name-style="hologram"] .qcx-comment-name {
   background-image: linear-gradient(135deg, #ffe600 0%, #ff00ea 33%, #00ffff 66%, #ffe600 100%) !important;
   background-size: 300% 100% !important;
   -webkit-text-fill-color: transparent !important;
@@ -466,7 +486,9 @@
 .qcx-user-chip[data-name-style="galaxy"] .qcx-user-name,
 #qcx-user-dropdown[data-name-style="galaxy"] .qcx-ud-name,
 .qcx-comment-item[data-name-style="galaxy"] .qcx-comment-name,
-.qcx-comment-chip[data-name-style="galaxy"] .qcx-user-name {
+.qcx-comment-chip[data-name-style="galaxy"] .qcx-user-name,
+#comments .qcx-comment-item .qcx-user-chip[data-name-style="galaxy"] .qcx-user-name,
+#comments .qcx-comment-item[data-name-style="galaxy"] .qcx-comment-name {
   background-image: linear-gradient(90deg, #e879f9, #60a5fa, #c084fc, #f472b6, #38bdf8, #e879f9) !important;
   background-size: 200% 100% !important;
   -webkit-text-fill-color: transparent !important;
@@ -498,7 +520,9 @@
 .qcx-user-chip[data-name-style="diamond"] .qcx-user-name,
 #qcx-user-dropdown[data-name-style="diamond"] .qcx-ud-name,
 .qcx-comment-item[data-name-style="diamond"] .qcx-comment-name,
-.qcx-comment-chip[data-name-style="diamond"] .qcx-user-name {
+.qcx-comment-chip[data-name-style="diamond"] .qcx-user-name,
+#comments .qcx-comment-item .qcx-user-chip[data-name-style="diamond"] .qcx-user-name,
+#comments .qcx-comment-item[data-name-style="diamond"] .qcx-comment-name {
   background-image: linear-gradient(110deg, #bae6fd 0%, #ffffff 28%, #38bdf8 50%, #ffffff 74%, #bae6fd 100%) !important;
   background-size: 200% 100% !important;
   -webkit-text-fill-color: transparent !important;
@@ -529,7 +553,9 @@
 .qcx-user-chip[data-name-style="glitch"] .qcx-user-name,
 #qcx-user-dropdown[data-name-style="glitch"] .qcx-ud-name,
 .qcx-comment-item[data-name-style="glitch"] .qcx-comment-name,
-.qcx-comment-chip[data-name-style="glitch"] .qcx-user-name {
+.qcx-comment-chip[data-name-style="glitch"] .qcx-user-name,
+#comments .qcx-comment-item .qcx-user-chip[data-name-style="glitch"] .qcx-user-name,
+#comments .qcx-comment-item[data-name-style="glitch"] .qcx-comment-name {
   color: #00ffcc !important;
   font-weight: 800 !important;
   animation: qcxGlitchShift 2.4s infinite !important;
@@ -556,7 +582,9 @@
 .qcx-user-chip[data-name-style="rainbow"] .qcx-user-name,
 #qcx-user-dropdown[data-name-style="rainbow"] .qcx-ud-name,
 .qcx-comment-item[data-name-style="rainbow"] .qcx-comment-name,
-.qcx-comment-chip[data-name-style="rainbow"] .qcx-user-name {
+.qcx-comment-chip[data-name-style="rainbow"] .qcx-user-name,
+#comments .qcx-comment-item .qcx-user-chip[data-name-style="rainbow"] .qcx-user-name,
+#comments .qcx-comment-item[data-name-style="rainbow"] .qcx-comment-name {
   background-image: linear-gradient(90deg, #ff3b3b, #ffd700, #34e6a0, #00d9ff, #c084fc, #ff3b3b) !important;
   background-size: 200% 100% !important;
   -webkit-text-fill-color: transparent !important;
@@ -587,7 +615,9 @@
 .qcx-user-chip[data-name-style="purple"] .qcx-user-name,
 #qcx-user-dropdown[data-name-style="purple"] .qcx-ud-name,
 .qcx-comment-item[data-name-style="purple"] .qcx-comment-name,
-.qcx-comment-chip[data-name-style="purple"] .qcx-user-name {
+.qcx-comment-chip[data-name-style="purple"] .qcx-user-name,
+#comments .qcx-comment-item .qcx-user-chip[data-name-style="purple"] .qcx-user-name,
+#comments .qcx-comment-item[data-name-style="purple"] .qcx-comment-name {
   color: #e9d5ff !important;
   font-weight: 800 !important;
   text-shadow: #9333ea 1px 1px 10px, 0 0 9px rgba(192, 132, 252, 0.95) !important;
@@ -615,7 +645,9 @@
 .qcx-user-chip[data-name-style="emerald"] .qcx-user-name,
 #qcx-user-dropdown[data-name-style="emerald"] .qcx-ud-name,
 .qcx-comment-item[data-name-style="emerald"] .qcx-comment-name,
-.qcx-comment-chip[data-name-style="emerald"] .qcx-user-name {
+.qcx-comment-chip[data-name-style="emerald"] .qcx-user-name,
+#comments .qcx-comment-item .qcx-user-chip[data-name-style="emerald"] .qcx-user-name,
+#comments .qcx-comment-item[data-name-style="emerald"] .qcx-comment-name {
   color: #00ff88 !important;
   font-weight: 800 !important;
   text-shadow: #059669 1px 1px 10px, 0 0 9px rgba(0, 255, 136, 0.92) !important;
@@ -643,7 +675,9 @@
 .qcx-user-chip[data-name-style="sakura"] .qcx-user-name,
 #qcx-user-dropdown[data-name-style="sakura"] .qcx-ud-name,
 .qcx-comment-item[data-name-style="sakura"] .qcx-comment-name,
-.qcx-comment-chip[data-name-style="sakura"] .qcx-user-name {
+.qcx-comment-chip[data-name-style="sakura"] .qcx-user-name,
+#comments .qcx-comment-item .qcx-user-chip[data-name-style="sakura"] .qcx-user-name,
+#comments .qcx-comment-item[data-name-style="sakura"] .qcx-comment-name {
   color: #ffc8e6 !important;
   font-weight: 800 !important;
   text-shadow: #db2777 1px 1px 10px, 0 0 8px rgba(255, 145, 195, 0.9) !important;
@@ -671,7 +705,9 @@
 .qcx-user-chip[data-name-style="hearts"] .qcx-user-name,
 #qcx-user-dropdown[data-name-style="hearts"] .qcx-ud-name,
 .qcx-comment-item[data-name-style="hearts"] .qcx-comment-name,
-.qcx-comment-chip[data-name-style="hearts"] .qcx-user-name {
+.qcx-comment-chip[data-name-style="hearts"] .qcx-user-name,
+#comments .qcx-comment-item .qcx-user-chip[data-name-style="hearts"] .qcx-user-name,
+#comments .qcx-comment-item[data-name-style="hearts"] .qcx-comment-name {
   color: #ff70a6 !important;
   font-weight: 800 !important;
   text-shadow: #be123c 1px 1px 10px, 0 0 8px rgba(255, 77, 141, 0.9) !important;
@@ -696,7 +732,9 @@
 .qcx-user-chip[data-name-style="cyan"] .qcx-user-name,
 #qcx-user-dropdown[data-name-style="cyan"] .qcx-ud-name,
 .qcx-comment-item[data-name-style="cyan"] .qcx-comment-name,
-.qcx-comment-chip[data-name-style="cyan"] .qcx-user-name {
+.qcx-comment-chip[data-name-style="cyan"] .qcx-user-name,
+#comments .qcx-comment-item .qcx-user-chip[data-name-style="cyan"] .qcx-user-name,
+#comments .qcx-comment-item[data-name-style="cyan"] .qcx-comment-name {
   color: #00d9ff !important;
   font-weight: 800 !important;
   text-shadow: #0284c7 1px 1px 10px, 0 0 8px rgba(0, 217, 255, 0.88) !important;
@@ -723,7 +761,9 @@
 .qcx-user-chip[data-name-style="verdant"] .qcx-user-name,
 #qcx-user-dropdown[data-name-style="verdant"] .qcx-ud-name,
 .qcx-comment-item[data-name-style="verdant"] .qcx-comment-name,
-.qcx-comment-chip[data-name-style="verdant"] .qcx-user-name {
+.qcx-comment-chip[data-name-style="verdant"] .qcx-user-name,
+#comments .qcx-comment-item .qcx-user-chip[data-name-style="verdant"] .qcx-user-name,
+#comments .qcx-comment-item[data-name-style="verdant"] .qcx-comment-name {
   color: #7dffa8 !important;
   font-weight: 800 !important;
   text-shadow: #0f764c 1px 1px 10px, 0 0 8px rgba(52, 230, 160, 0.9) !important;
@@ -756,7 +796,9 @@
 .qcx-user-chip[data-name-style="thunder-purple"] .qcx-user-name,
 #qcx-user-dropdown[data-name-style="thunder-purple"] .qcx-ud-name,
 .qcx-comment-item[data-name-style="thunder-purple"] .qcx-comment-name,
-.qcx-comment-chip[data-name-style="thunder-purple"] .qcx-user-name {
+.qcx-comment-chip[data-name-style="thunder-purple"] .qcx-user-name,
+#comments .qcx-comment-item .qcx-user-chip[data-name-style="thunder-purple"] .qcx-user-name,
+#comments .qcx-comment-item[data-name-style="thunder-purple"] .qcx-comment-name {
   background-image: linear-gradient(123deg, #a855f7 0%, #e9d5ff 22%, #6b21a8 34%, #c084fc 48%, #f5d0fe 58%, #a855f7 78%, #7c3aed 100%) !important;
   background-size: 300% 100% !important;
   -webkit-text-fill-color: transparent !important;

@@ -1858,12 +1858,17 @@ html body .qcx-download-pro .qcx-resource-link:not([data-qcx-rendered='true'])::
 }
 #comments .qcx-comment-meta b,
 .qcx-comment-list .qcx-comment-meta b {
-  font: 800 13px/1.25 system-ui, -apple-system, sans-serif !important;
-  color: #eaf7f0 !important;
   font-weight: 800 !important;
+  font-size: 13px !important;
+  line-height: 1.25 !important;
+  font-family: system-ui, -apple-system, sans-serif !important;
 }
-#comments .qcx-comment-meta b.is-admin,
-.qcx-comment-list .qcx-comment-meta b.is-admin {
+#comments .qcx-comment-item:not([data-name-style]):not(:has([data-name-style])) .qcx-comment-meta b,
+.qcx-comment-list .qcx-comment-item:not([data-name-style]):not(:has([data-name-style])) .qcx-comment-meta b {
+  color: #eaf7f0 !important;
+}
+#comments .qcx-comment-item:not([data-name-style]):not(:has([data-name-style])) .qcx-comment-meta b.is-admin,
+.qcx-comment-list .qcx-comment-item:not([data-name-style]):not(:has([data-name-style])) .qcx-comment-meta b.is-admin {
   color: #ff3b3b !important;
 }
 #comments .qcx-comment-meta time {

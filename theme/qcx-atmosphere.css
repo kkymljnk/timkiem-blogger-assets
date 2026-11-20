@@ -985,15 +985,21 @@ html[data-page-item='single'] .qcx-comments-shell:not(:has(iframe, textarea, .co
   margin: 0 !important;
 }
 
-/* Commenter names — clearly bold (system-ui beats mono weight) */
+/* Commenter names — longhand only (font: shorthand resets color / fill).
+   Role FX owns color when data-name-style is bound on item/chip. */
 #comments .qcx-comment-meta b,
 .qcx-comment-list .qcx-comment-meta b {
-  font: 800 13px/1.25 system-ui, -apple-system, sans-serif !important;
   font-weight: 800 !important;
+  font-size: 13px !important;
+  line-height: 1.25 !important;
+  font-family: system-ui, -apple-system, sans-serif !important;
+}
+#comments .qcx-comment-item:not([data-name-style]):not(:has([data-name-style])) .qcx-comment-meta b,
+.qcx-comment-list .qcx-comment-item:not([data-name-style]):not(:has([data-name-style])) .qcx-comment-meta b {
   color: #eaf7f0 !important;
 }
-#comments .qcx-comment-meta b.is-admin,
-.qcx-comment-list .qcx-comment-meta b.is-admin {
+#comments .qcx-comment-item:not([data-name-style]):not(:has([data-name-style])) .qcx-comment-meta b.is-admin,
+.qcx-comment-list .qcx-comment-item:not([data-name-style]):not(:has([data-name-style])) .qcx-comment-meta b.is-admin {
   color: #ff3b3b !important;
 }
 

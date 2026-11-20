@@ -1012,8 +1012,9 @@
       ' style="display:flex!important;align-items:flex-start!important;gap:6px!important;flex:1 1 auto!important;min-width:0!important;pointer-events:none!important"';
     return (
       '<li class="qcx-comment-item" data-id="' + String(c.id).replace(/"/g, '') + '"' +
-      (email ? ' data-qcx-user="' + email + '"' : '') +
+      (email && email.indexOf('noreply@') !== 0 ? ' data-qcx-user="' + email + '"' : '') +
       ' data-qcx-user-name="' + nameLower + '"' +
+      (isAdmin ? ' data-role="admin" data-tier="ADMIN"' : ' data-role="member" data-tier="MEMBER"') +
       ' style="display:flex!important;align-items:flex-start!important;gap:6px!important;margin:0!important;padding:4px 0!important;list-style:none!important">' +
       '<div' + chipAttrs + '>' +
       avatar +
