@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.57/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.58/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -2150,11 +2150,11 @@
     } catch (err) {}
   }
 
-  /* Homepage GSAP cards: show +N when more than 3 tag links remain after excludes. */
+  /* Homepage GSAP cards: +N for overflow; fit-to-width so chips never wrap on resize. */
   function ensureCardLabelMore(root) {
     try {
       (root || document).querySelectorAll('.card-header .qcx-card-labels, .all_posts .qcx-card-labels').forEach(function(wrap){
-        var links = Array.prototype.slice.call(wrap.querySelectorAll('a[rel="tag"], a[rel=tag], a'));
+        var links = Array.prototype.slice.call(wrap.querySelectorAll('a'));
         var n = links.length;
         var more = wrap.querySelector('.qcx-label-more');
         if (!more) {
@@ -2163,17 +2163,52 @@
           more.setAttribute('aria-hidden', 'true');
           wrap.appendChild(more);
         }
-        if (n > 3) {
-          more.textContent = '+' + (n - 3);
-          more.removeAttribute('hidden');
-          more.setAttribute('aria-hidden', 'false');
-        } else {
-          more.textContent = '';
-          more.setAttribute('hidden', 'hidden');
-          more.setAttribute('aria-hidden', 'true');
+        /* Reset fit-hide, then allow CSS nth-of-type(n+4) to hide extras. */
+        links.forEach(function(a){ a.removeAttribute('data-qcx-fit-hide'); });
+
+        var softCap = Math.min(3, n);
+        var visibleBudget = softCap;
+        function applyVisible(count) {
+          links.forEach(function(a, i){
+            if (i < count) a.removeAttribute('data-qcx-fit-hide');
+            else a.setAttribute('data-qcx-fit-hide', '1');
+          });
+          var hidden = n - count;
+          if (hidden > 0) {
+            more.textContent = '+' + hidden;
+            more.removeAttribute('hidden');
+            more.setAttribute('aria-hidden', 'false');
+          } else {
+            more.textContent = '';
+            more.setAttribute('hidden', 'hidden');
+            more.setAttribute('aria-hidden', 'true');
+          }
+        }
+        applyVisible(visibleBudget);
+
+        /* Shrink visible set until single row fits (keep ≥1 chip). */
+        var guard = 0;
+        while (guard < 6 && visibleBudget > 1 && wrap.scrollWidth > wrap.clientWidth + 1) {
+          visibleBudget -= 1;
+          applyVisible(visibleBudget);
+          guard += 1;
         }
       });
     } catch (errMore) {}
+  }
+
+  function bindCardLabelMoreResize() {
+    if (document.documentElement.getAttribute('data-qcx-label-fit') === '1') return;
+    document.documentElement.setAttribute('data-qcx-label-fit', '1');
+    var raf = 0;
+    function onResize() {
+      if (raf) return;
+      raf = window.requestAnimationFrame(function(){
+        raf = 0;
+        ensureCardLabelMore(document);
+      });
+    }
+    window.addEventListener('resize', onResize, { passive: true });
   }
 
   function cardFromEntry(entry, index) {
@@ -5083,6 +5118,7 @@
   polishHeroBrand();
   ensureCardLabelsWithTutorial(document);
   ensureCardLabelMore(document);
+  bindCardLabelMoreResize();
   ensureAdminChrome();
   ensureSiteFooter();
   ensureSharpBrandAvatar();
@@ -5103,6 +5139,7 @@
       polishHeroBrand();
       ensureCardLabelsWithTutorial(document);
       ensureCardLabelMore(document);
+      bindCardLabelMoreResize();
       ensureAdminChrome();
       ensureSiteFooter();
       ensureSharpBrandAvatar();
