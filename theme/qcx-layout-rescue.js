@@ -464,7 +464,7 @@
   }
 
   /* Font-only: Inter title/body like breakdev.org — no UI chrome changes. */
-  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.20/theme/';
+  var QCX_CDN = 'https://cdn.jsdelivr.net/gh/kkymljnk/timkiem-blogger-assets@v2026.11.19.21/theme/';
   var QCX_FONTS_CSS = QCX_CDN + 'qcx-breakdev-fonts.css';
   var QCX_ATMOSPHERE_CSS = QCX_CDN + 'qcx-atmosphere.css';
   var QCX_SITE_FAVICON = 'https://www.mmo.team/favicon.ico';
@@ -3206,7 +3206,8 @@
       'html[data-page-type="post"] .qcx-mac-topbar .qcx-auth-slot,' +
       'html[data-page-type="page"] .qcx-mac-topbar .qcx-auth-slot,' +
       'html[data-page-item="single"] .qcx-mac-topbar .qcx-auth-slot,' +
-      '.qcx-auth-slot--sidebar,.qcx-sidebar-vip-card,#HTML8.widget.HTML:has(.qcx-sidebar-vip-card){display:none!important}' +
+      '.qcx-auth-slot--sidebar,.qcx-sidebar-vip-card,#HTML8.widget.HTML:has(.qcx-sidebar-vip-card),' +
+      '.qcx-community-support,#HTML10.widget.HTML:has(.qcx-community-support){display:none!important}' +
       '.qcx-auth-login-btn{appearance:none;border:1px solid rgba(52,230,160,0.32)!important;background:rgba(9,20,14,0.88)!important;color:#e6f5ec!important;cursor:pointer!important;font:600 11px/1 var(--qcx-article-mono,monospace)!important;display:inline-flex!important;align-items:center!important;gap:5px!important;height:28px!important;padding:0 10px!important;border-radius:999px!important;white-space:nowrap!important;transition:border-color .18s,background .18s,transform .18s!important}' +
       '.qcx-auth-slot--topbar .qcx-auth-login-btn{height:26px!important;padding:0 8px!important;font-size:10.5px!important;gap:4px!important}' +
       '.qcx-auth-login-btn:hover{border-color:#34e6a0!important;background:rgba(52,230,160,0.14)!important;transform:translateY(-1px)}' +
@@ -3366,26 +3367,16 @@
       }
     } catch (eVip) {}
 
-    var belowZone = document.getElementById('below-main');
-    if (belowZone && !belowZone.querySelector('.qcx-community-support')) {
-      belowZone.classList.remove('no-items');
-      var commWidget = document.createElement('div');
-      commWidget.className = 'widget HTML';
-      commWidget.id = 'HTML10';
-      commWidget.innerHTML =
-        '<div class="widget-content"><section aria-label="Hỗ trợ cộng đồng MMO TEAM" class="qcx-community-support" style="max-width:1120px;margin:24px auto 8px;padding:18px 22px;border-radius:16px;border:1px solid rgba(76,175,130,0.24);background:linear-gradient(135deg,rgba(12,26,19,0.92),rgba(7,15,11,0.96));display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;box-sizing:border-box">' +
-          '<div style="min-width:220px;flex:1 1 320px">' +
-            '<div style="font:800 10px/1.2 monospace;letter-spacing:.08em;color:#34e6a0;text-transform:uppercase;margin-bottom:4px">MMO TEAM &#183; HỖ TRỢ TRỰC TUYẾN 24/7</div>' +
-            '<div style="font-size:15px;font-weight:700;color:#ecfdf5;margin-bottom:3px">Cần hỗ trợ kích hoạt VIP, nhận tài nguyên hoặc báo lỗi link?</div>' +
-            '<div style="font-size:12.5px;color:#97bda9">Liên hệ trực tiếp quản trị viên qua Telegram hoặc đăng nhập Gmail để tự động đồng bộ quyền truy cập.</div>' +
-          '</div>' +
-          '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px">' +
-            '<a href="https://t.me/superkhung" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:999px;background:#28d28c;color:#05140d;font:700 12.5px/1.2 system-ui,sans-serif;text-decoration:none" target="_blank">Chat Telegram @superkhung</a>' +
-            '<button class="qcx-community-login-trigger" data-qcx-google-login="1" style="appearance:none;display:inline-flex;align-items:center;gap:7px;padding:9px 15px;border-radius:999px;border:1px solid rgba(52,230,160,0.38);background:rgba(52,230,160,0.1);color:#d8f8e8;font:600 12.5px/1.2 system-ui,sans-serif;cursor:pointer" type="button">Đồng bộ Gmail</button>' +
-          '</div>' +
-        '</section></div>';
-      belowZone.appendChild(commWidget);
-    }
+    /* Remove legacy community support banner (Telegram / Đồng bộ Gmail) */
+    try {
+      var staleComm = document.querySelectorAll('.qcx-community-support, #HTML10 .qcx-community-support');
+      for (var ci = 0; ci < staleComm.length; ci++) {
+        var cNode = staleComm[ci];
+        var cHost = cNode.closest ? cNode.closest('#HTML10.widget, .widget.HTML') : null;
+        if (cHost && cHost.parentNode) cHost.parentNode.removeChild(cHost);
+        else if (cNode.parentNode) cNode.parentNode.removeChild(cNode);
+      }
+    } catch (eComm) {}
 
     if (!window.__qcxGmailAuthV7) {
       window.__qcxGmailAuthV7 = true;
