@@ -12,29 +12,15 @@ body {
   padding-right: 0 !important;
 }
 
-/* Homepage cards: exactly 3 equal columns (GSAP gallery density). */
+/* Homepage cards: GSAP filtered-gallery density (auto-fill min 350px). */
 [data-page-item='multiple'] .all_posts > .row,
 .qcx-rescue-blog .all_posts > .row,
 .qcx-rescue-blog .row {
   display: grid !important;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)) !important;
   gap: 16px !important;
   align-items: start !important;
   margin: 0 !important;
-}
-@media (max-width: 1040px) {
-  [data-page-item='multiple'] .all_posts > .row,
-  .qcx-rescue-blog .all_posts > .row,
-  .qcx-rescue-blog .row {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  }
-}
-@media (max-width: 680px) {
-  [data-page-item='multiple'] .all_posts > .row,
-  .qcx-rescue-blog .all_posts > .row,
-  .qcx-rescue-blog .row {
-    grid-template-columns: minmax(0, 1fr) !important;
-  }
 }
 [data-page-item='multiple'] .all_posts > .row > .col-md-4,
 .qcx-rescue-blog .col-md-4 {
@@ -2162,31 +2148,15 @@ body:not(#layout) .qcx-hero-divider,
   .qcx-hero-title { white-space: normal !important; }
 }
 
-/* Post list — GSAP filtered-gallery: 3 equal cards / row on desktop */
+/* Post list — GSAP filtered-gallery auto-fill (dedupe forced 3-col). */
 [data-page-item='multiple'] .all_posts > .row,
 .qcx-rescue-blog .all_posts > .row,
 .qcx-rescue-blog .row,
 .all_posts > .row {
   display: grid !important;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)) !important;
   gap: 16px !important;
   align-items: start !important;
-}
-@media (max-width: 1040px) {
-  [data-page-item='multiple'] .all_posts > .row,
-  .qcx-rescue-blog .all_posts > .row,
-  .qcx-rescue-blog .row,
-  .all_posts > .row {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  }
-}
-@media (max-width: 680px) {
-  [data-page-item='multiple'] .all_posts > .row,
-  .qcx-rescue-blog .all_posts > .row,
-  .qcx-rescue-blog .row,
-  .all_posts > .row {
-    grid-template-columns: minmax(0, 1fr) !important;
-  }
 }
 [data-page-item='multiple'] .all_posts > .row > .col-md-4,
 .qcx-rescue-blog .col-md-4,
@@ -2685,32 +2655,16 @@ button.qcx-copy-btn,
 }
 
 */
-/* Equal rows: force 3-col desktop (wins over earlier rules). */
+/* Equal rows: GSAP auto-fill wins over earlier rules. */
 [data-page-item='multiple'] .all_posts > .row,
 .qcx-rescue-blog .all_posts > .row,
 .qcx-rescue-blog .row,
 .all_posts > .row {
   display: grid !important;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)) !important;
   gap: 16px !important;
   grid-auto-rows: auto !important;
   align-items: start !important;
-}
-@media (max-width: 1040px) {
-  [data-page-item='multiple'] .all_posts > .row,
-  .qcx-rescue-blog .all_posts > .row,
-  .qcx-rescue-blog .row,
-  .all_posts > .row {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  }
-}
-@media (max-width: 680px) {
-  [data-page-item='multiple'] .all_posts > .row,
-  .qcx-rescue-blog .all_posts > .row,
-  .qcx-rescue-blog .row,
-  .all_posts > .row {
-    grid-template-columns: minmax(0, 1fr) !important;
-  }
 }
 [data-page-item='multiple'] .all_posts > .row > .col-md-4,
 .qcx-rescue-blog .col-md-4,
